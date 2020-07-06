@@ -3,22 +3,34 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ApplicationHeaderComponent } from './utility/presentation/application-header/application-header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatIconModule} from "@angular/material/icon";
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ApplicationHeaderComponent } from './application-header/application-header.component';
+import { ApplicationSidenavComponent } from './application-sidenav/application-sidenav.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ApplicationHeaderComponent
+    ApplicationHeaderComponent,
+    ApplicationSidenavComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
