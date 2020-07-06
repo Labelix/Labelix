@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "labelix-web-app"
+    }
+  },
+  "defaultProject": "labelix-web-app",
+  "cli": {
+    "analytics": false
+  }
 }
