@@ -1,7 +1,6 @@
 version: '3.1'
 
 services: 
-
     postgresDB:
         image: postgres
         restart: always
@@ -16,8 +15,8 @@ services:
         networks: 
             - labelixNetwork
 volumes: 
-    - postgres_data
+    postgres_data:
 networks: 
-    - labelixNetwork
+    labelixNetwork:
 
             
