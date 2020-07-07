@@ -75,6 +75,7 @@ import {NgModule} from '@angular/core';
     MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
+    MatButtonModule,
     MatAutocompleteModule,
     MatDatepickerModule,
     MatFormFieldModule,

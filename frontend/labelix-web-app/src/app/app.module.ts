@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 
 import { MaterialModule } from './material.module';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
