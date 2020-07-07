@@ -14,8 +14,38 @@ services:
             - postgres_data:/var/lib/postgresql/data
         networks: 
             - labelixNetwork
+    postgres-keycloak:
+        image: postgres
+        volumes:
+            - postgres-keycloak_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB:=keycloak
+            - POSTGRES_USER=keycloak
+            - POSTGRES_PASSWORD=password
+        networks:
+            - labelixNetwork
+    keycloak:
+        image: jboss/keycloak
+        environment:
+            - DB_VENDOR=POSTGRES
+            - DB_ADDR=postgres-keycloak
+            - DB_PORT=5432
+            - DB_DATABASE=keycloak
+            - DB_USER=keycloak
+            - DB_SCHEMA=public
+            - DB_PASSWORD=password
+            - KEYCLOAK_USER=admin
+            - KEYCLOAK_PASSWORD=admin
+        ports:
+            - 8180:8080
+        depends_on:
+            - postgres-keycloak
+        networks:
+            - labelixNetwork
+            
 volumes: 
     postgres_data:
+    postgres-keycloak_data:
 networks: 
     labelixNetwork:
 
