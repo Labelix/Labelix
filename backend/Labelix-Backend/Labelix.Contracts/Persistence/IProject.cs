@@ -9,7 +9,5 @@ namespace Labelix.Contracts.Persistence
         string Description { get; set; }
         DateTime CreationDate { get; set; }
         bool FinishedAnnotation { get; set; }
-        ICollection<IImage> ListOfImages { get; set; }
-        ICollection<ILabel> ListOfLabel { get; set; }
     }
 }
