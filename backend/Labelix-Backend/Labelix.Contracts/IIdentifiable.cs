@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Labelix.Contracts
+﻿namespace Labelix.Contracts
 {
     public partial interface IIdentifiable
     {

@@ -2,7 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>efe5812f-4d0f-487f-b19f-10e9b8a55530</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommonBase\CommonBase.csproj" />
+    <ProjectReference Include="..\Labelix.Contracts\Labelix.Contracts.csproj" />
+    <ProjectReference Include="..\Labelix.Logic\Labelix.Logic.csproj" />
+    <ProjectReference Include="..\Labelix.Transfer\Labelix.Transfer.csproj" />
+  </ItemGroup>
 
 
 </Project>

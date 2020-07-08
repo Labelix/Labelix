@@ -2,13 +2,15 @@
 using Labelix.Logic.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Labelix.Logic.DataContext
 {
     internal partial interface IContext : IDisposable
     {
+        IEnumerable<E> Set<I, E>()
+            where I : IIdentifiable
+            where E : IdentityObject, I;
         #region Async-Methods
         Task<int> CountAsync<I, E>()
             where I : IIdentifiable
@@ -30,9 +32,6 @@ namespace Labelix.Logic.DataContext
             where I : IIdentifiable
             where E : IdentityObject, I;
 
-        public Task<E> DeleteAllAsync<I, E>()
-            where I : IIdentifiable
-            where E : IdentityObject, ICopyable<I>, I, new();
         Task SaveAsync();
         #endregion Async-Methods
     }
