@@ -1,5 +1,7 @@
 ﻿using Labelix.Logic.Entities.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Labelix.Logic.DataContext.Db
 {
@@ -8,13 +10,9 @@ namespace Labelix.Logic.DataContext.Db
 
         public DbSet<Image> ImageSet { get; set; }
         public DbSet<Label> LabelSet { get; set; }
-        /*
-        protected DbSet<Project> ProjectSet
-        {
-            get;
-            set;
-        }
-        */
+        
+        protected DbSet<Project> ProjectSet{get;set;}
+        
         public override DbSet<E> Set<I, E>()
         {
             DbSet<E> result = null;
@@ -26,12 +24,12 @@ namespace Labelix.Logic.DataContext.Db
             {
                 result = LabelSet as DbSet<E>;
             }
-            /*
+            
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject))
             {
                 result = ProjectSet as DbSet<E>;
             }
-            */
+            
             return result;
         }
 
@@ -48,6 +46,25 @@ namespace Labelix.Logic.DataContext.Db
         }
         partial void BeforeConfiguring(DbContextOptionsBuilder optionsBuilder);
         partial void AfterConfiguring(DbContextOptionsBuilder optionsBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            ConfigureEntityType(modelBuilder.Entity<Image>());
+            ConfigureEntityType(modelBuilder.Entity<Label>());
+            ConfigureEntityType(modelBuilder.Entity<Project>());
+        }
 
+        private void ConfigureEntityType(EntityTypeBuilder<Image> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("images");
+        }
+        private void ConfigureEntityType(EntityTypeBuilder<Label> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("labels");
+        }
+        private void ConfigureEntityType(EntityTypeBuilder<Project> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("projects");
+        }
     }
 }

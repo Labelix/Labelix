@@ -1,4 +1,5 @@
 ﻿using Labelix.Contracts.Persistence;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Labelix.Logic.Entities.Persistence
 {
@@ -11,6 +12,11 @@ namespace Labelix.Logic.Entities.Persistence
         }
         public string Name { get; set; }
         public string Color { get; set; }
+
+        [ForeignKey("Project")]
+        public int ProjectId { get; set; }
+        public Project Project{get;set;}
+
 
         public void CopyProperties(ILabel other)
         {
