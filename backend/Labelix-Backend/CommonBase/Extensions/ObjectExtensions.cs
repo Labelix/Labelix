@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+//@QnSCodeCopy
+//MdStart
+using System;
 
 namespace CommonBase.Extensions
 {
-    public static class ObjectExtensions
+    public static partial class ObjectExtensions
     {
-        public static void CheckArgument(this object source, string name)
+        public static void CheckArgument(this object source, string argName)
         {
             if (source == null)
-                throw new ArgumentNullException(name);
+                throw new ArgumentNullException(argName);
         }
     }
 }
+//MdEnd
