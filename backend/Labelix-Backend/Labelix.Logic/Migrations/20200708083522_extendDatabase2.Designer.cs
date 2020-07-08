@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Labelix.Logic.Migrations
 {
     [DbContext(typeof(LabelixDbContext))]
-    [Migration("20200707120021_initDB1")]
-    partial class initDB1
+    [Migration("20200708083522_extendDatabase2")]
+    partial class extendDatabase2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,17 +20,32 @@ namespace Labelix.Logic.Migrations
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Project", b =>
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Image", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("A")
+                    b.Property<string>("ImagePath")
                         .HasColumnType("text");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("LabeledPath")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ImageSet");
+                });
+
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Label", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Color")
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -38,7 +53,7 @@ namespace Labelix.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("LabelSet");
                 });
 #pragma warning restore 612, 618
         }
