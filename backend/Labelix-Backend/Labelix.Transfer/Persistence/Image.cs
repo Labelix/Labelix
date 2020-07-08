@@ -3,12 +3,16 @@ using System.Text.Json.Serialization;
 
 namespace Labelix.Transfer.Persistence
 {
-    public partial class Image : IImage
+    public partial class Image : TransferObject, IImage
     {
         [JsonPropertyName("ImagePath")]
         public string ImagePath { get; set; } = "";
         [JsonPropertyName("LabeledPath")]
         public string LabeledPath { get; set; } = "";
+        [JsonPropertyName("ProjectImageId")]
+        public int ProjectImageId { get; set; }
+
+        
 
 
         public void CopyProperties(IImage other)
@@ -16,7 +20,7 @@ namespace Labelix.Transfer.Persistence
             Id = other.Id;
             ImagePath = other.ImagePath;
             LabeledPath = other.LabeledPath;
+            ProjectImageId = other.ProjectImageId;
         }
     }
-    partial class Image : TransferObject { }
 }
