@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-project-overview-base',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectOverviewBaseComponent implements OnInit {
 
-  constructor() { }
+  constructor(public router: Router) {
+  }
 
   ngOnInit(): void {
   }
 
+  onSingleImageAnnotation(): void {
+    this.router.navigate(['/image-annotation']);
+  }
 }

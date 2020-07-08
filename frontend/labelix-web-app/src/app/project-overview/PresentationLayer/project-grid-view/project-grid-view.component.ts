@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IProject} from '../../../utility/contracts/IProject';
+import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
 
 @Component({
   selector: 'app-project-grid-view',
@@ -7,17 +8,37 @@ import {IProject} from '../../../utility/contracts/IProject';
   styleUrls: ['./project-grid-view.component.css']
 })
 export class ProjectGridViewComponent implements OnInit {
+  
+  projects: IProject[] = undefined;
 
-  testProject: IProject = {
-    name: 'Das Testprojekt',
-    creator: 'Max Mustermann',
-    id: 1,
-    creationDate: Date.now(),
-  };
+  breakpoint: number;
 
-  constructor() { }
+  constructor(private projectsFacade: ProjectsFacade) {
+    this.projectsFacade.getProjects().subscribe((m) => this.projects = m);
+  }
 
   ngOnInit(): void {
+    this.changeRelation(window.innerWidth);
+  }
+
+  onResize(event) {
+    this.changeRelation(event.target.innerWidth);
+  }
+
+  private changeRelation(width) {
+    if (width >= 3840) {
+      this.breakpoint = 8;
+    } else if (width >= 3000) {
+      this.breakpoint = 6;
+    } else if (width >= 1860) {
+      this.breakpoint = 4;
+    } else if (width >= 1420) {
+      this.breakpoint = 3;
+    } else if (width >= 950) {
+      this.breakpoint = 2;
+    } else {
+      this.breakpoint = 1;
+    }
   }
 
 }

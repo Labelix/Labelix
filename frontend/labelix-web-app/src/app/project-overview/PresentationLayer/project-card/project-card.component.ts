@@ -14,6 +14,7 @@ export class ProjectCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.myProject.finishedAnnotation);
   }
 
 }
