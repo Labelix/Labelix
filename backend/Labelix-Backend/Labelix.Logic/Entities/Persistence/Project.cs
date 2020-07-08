@@ -1,7 +1,6 @@
 ﻿using Labelix.Contracts.Persistence;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Labelix.Logic.Entities.Persistence
 {

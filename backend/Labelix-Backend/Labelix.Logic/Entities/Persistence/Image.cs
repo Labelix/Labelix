@@ -1,13 +1,11 @@
 ﻿using Labelix.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Labelix.Logic.Entities.Persistence
 {
-    class Image : IdentityObject, IImage
+    partial class Image : IdentityObject, IImage
     {
-        public Image (string imagePath, string labeledPath)
+        public Image() { }
+        public Image(string imagePath, string labeledPath)
         {
             ImagePath = imagePath;
             LabeledPath = labeledPath;
@@ -22,4 +20,6 @@ namespace Labelix.Logic.Entities.Persistence
             LabeledPath = other.LabeledPath;
         }
     }
+
+
 }
