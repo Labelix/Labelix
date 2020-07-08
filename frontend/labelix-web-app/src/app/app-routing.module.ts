@@ -20,6 +20,11 @@ const routes: Routes = [
       .then((m) => m.ColleaguesModule)
   },
   {
+    path: 'image-annotation',
+    loadChildren: () => import('./image-annotation/image-annotation.module')
+      .then((m) => m.ImageAnnotationModule)
+  },
+  {
     path: '', component: ApplicationHeaderComponent
   }
 ];
