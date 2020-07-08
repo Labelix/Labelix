@@ -19,7 +19,7 @@ services:
         volumes:
             - postgres-keycloak_data:/var/lib/postgresql/data
         environment:
-            - POSTGRES_DB:=keycloak
+            - POSTGRES_DB=keycloak
             - POSTGRES_USER=keycloak
             - POSTGRES_PASSWORD=password
         networks:
@@ -34,19 +34,19 @@ services:
             - DB_USER=keycloak
             - DB_SCHEMA=public
             - DB_PASSWORD=password
+            - KEYCLOAK_IMPORT=/tmp/labelix-realm.json
             - KEYCLOAK_USER=admin
             - KEYCLOAK_PASSWORD=admin
         ports:
             - 8180:8080
-        depends_on:
-            - postgres-keycloak
+        volumes:
+            - ./docker/labelix-realm.json:/tmp/labelix-realm.json
         networks:
             - labelixNetwork
-            
+        depends_on:
+            - postgres-keycloak
 volumes: 
     postgres_data:
     postgres-keycloak_data:
 networks: 
     labelixNetwork:
-
-            
