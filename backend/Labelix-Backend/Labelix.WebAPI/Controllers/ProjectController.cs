@@ -24,5 +24,25 @@ namespace Labelix.WebAPI.Controllers
         {
             return GetModelsAsync();
         }
-    }
+		[HttpGet("count")]
+		public Task<int> GetCountAsync()
+		{
+			return CountAsync();
+		}
+		[HttpPost("create")]
+		public Task<Model> PostAsync(Model model)
+		{
+			return InsertModelAsync(model);
+		}
+		[HttpPut("update")]
+		public Task<Model> PutAsync(Model model)
+		{
+			return UpdateModelAsync(model);
+		}
+		[HttpDelete("delete-{id}")]
+		public Task DeleteAsync(int id)
+		{
+			return DeleteModelAsync(id);
+		}
+	}
 }
