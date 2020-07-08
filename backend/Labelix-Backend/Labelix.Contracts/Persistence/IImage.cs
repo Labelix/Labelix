@@ -4,5 +4,6 @@
     {
         string ImagePath { get; set; }
         string LabeledPath { get; set; }
+        int ProjectImageId { get; set; }
     }
 }
