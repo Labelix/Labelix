@@ -1,6 +1,7 @@
 ﻿using Labelix.Contracts.Persistence;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Labelix.Logic.Entities.Persistence
 {
@@ -8,7 +9,7 @@ namespace Labelix.Logic.Entities.Persistence
     {
         public Project() { }
 
-        public Project(string name, string description, DateTime creationDate, bool finishedAnnotation, ICollection<IImage> images, ICollection<ILabel> labels)
+        public Project(string name, string description, DateTime creationDate, bool finishedAnnotation, ICollection<Image> images, ICollection<Label> labels)
         {
             Name = name;
             Description = description;
@@ -21,8 +22,8 @@ namespace Labelix.Logic.Entities.Persistence
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
         public bool FinishedAnnotation { get; set; }
-        public ICollection<IImage> ListOfImages { get; set; }
-        public ICollection<ILabel> ListOfLabel { get; set; }
+        public ICollection<Image> ListOfImages { get; set; }
+        public ICollection<Label> ListOfLabel { get; set; }
 
         public void CopyProperties(IProject other)
         {
@@ -30,8 +31,6 @@ namespace Labelix.Logic.Entities.Persistence
             Description = other.Description;
             CreationDate = other.CreationDate;
             FinishedAnnotation = other.FinishedAnnotation;
-            ListOfImages = other.ListOfImages;
-            ListOfLabel = other.ListOfLabel;
         }
     }
 }
