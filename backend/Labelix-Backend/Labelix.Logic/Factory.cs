@@ -40,11 +40,11 @@ namespace Labelix.Logic
             }
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.ILabel))
             {
-                //result = new Controllers.Persistence.App.ExpenseController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
+                result = new Controllers.Persistence.LabelController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject))
             {
-                //result = new Controllers.Persistence.Account.LoginSessionController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
+                result = new Controllers.Persistence.ProjectController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
 
             return result;
