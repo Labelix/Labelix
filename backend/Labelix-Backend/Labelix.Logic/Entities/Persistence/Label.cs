@@ -5,6 +5,7 @@ namespace Labelix.Logic.Entities.Persistence
 {
     class Label : IdentityObject, ILabel
     {
+        public Label() { }
         public Label(string name, string color)
         {
             Name = name;
