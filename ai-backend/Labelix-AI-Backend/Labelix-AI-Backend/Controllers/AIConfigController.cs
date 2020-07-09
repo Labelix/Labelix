@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Labelix_AI_Backend.Transfer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -27,9 +28,10 @@ namespace Labelix_AI_Backend.Controllers
 
 
         [HttpPost]
-        public void Post([FromBody]string config)
+        public AIConfig Post([FromBody] AIConfig config)
         {
             System.Diagnostics.Debug.WriteLine(config);
+            return config;
         }
 
 
