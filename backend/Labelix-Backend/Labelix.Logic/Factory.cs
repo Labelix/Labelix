@@ -46,6 +46,10 @@ namespace Labelix.Logic
             {
                 result = new Controllers.Persistence.ProjectController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
+            {
+                result = new Controllers.Persistence.AIConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
+            }
 
             return result;
         }
