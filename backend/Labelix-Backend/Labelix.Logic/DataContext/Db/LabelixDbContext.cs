@@ -33,7 +33,7 @@ namespace Labelix.Logic.DataContext.Db
             }
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
             {
-                result = ProjectSet as DbSet<E>;
+                result = AIConfigSet as DbSet<E>;
             }
 
             return result;
