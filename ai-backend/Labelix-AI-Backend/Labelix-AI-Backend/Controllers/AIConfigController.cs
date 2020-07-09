@@ -26,9 +26,10 @@ namespace Labelix_AI_Backend.Controllers
         }
 
 
-        [HttpPut]
-        public void Put([FromBody] string j)
+        [HttpPost]
+        public void Post([FromBody]string config)
         {
+            System.Diagnostics.Debug.WriteLine(config);
         }
 
 
