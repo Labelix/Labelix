@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Labelix.Transfer.Persistence
 {
-    class AIConfig : TransferObject, IAIConfig
+    public class AIConfig : TransferObject, IAIConfig
     {
         [JsonPropertyName("Name")]
         public string Name { get; set; }
