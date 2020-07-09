@@ -8,10 +8,12 @@ namespace Labelix.Logic.DataContext.Db
     partial class LabelixDbContext : GenericDbContext
     {
 
-        public DbSet<Image> ImageSet { get; set; }
-        public DbSet<Label> LabelSet { get; set; }
+        protected DbSet<Image> ImageSet { get; set; }
+        protected DbSet<Label> LabelSet { get; set; }
         
         protected DbSet<Project> ProjectSet{get;set;}
+
+        protected DbSet<AIConfig> AIConfigSet { get; set; }
         
         public override DbSet<E> Set<I, E>()
         {
@@ -29,12 +31,13 @@ namespace Labelix.Logic.DataContext.Db
             {
                 result = ProjectSet as DbSet<E>;
             }
-            
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
+            {
+                result = ProjectSet as DbSet<E>;
+            }
+
             return result;
         }
-
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql("Host=localhost;Port=5422;Database=postgres;Username=postgres;Password=mysecretpassword");
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -52,6 +55,7 @@ namespace Labelix.Logic.DataContext.Db
             ConfigureEntityType(modelBuilder.Entity<Image>());
             ConfigureEntityType(modelBuilder.Entity<Label>());
             ConfigureEntityType(modelBuilder.Entity<Project>());
+            ConfigureEntityType(modelBuilder.Entity<AIConfig>());
         }
 
         private void ConfigureEntityType(EntityTypeBuilder<Image> entityTypeBuilder)
@@ -65,6 +69,10 @@ namespace Labelix.Logic.DataContext.Db
         private void ConfigureEntityType(EntityTypeBuilder<Project> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("projects");
+        }
+        private void ConfigureEntityType(EntityTypeBuilder<AIConfig> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("ai_configs");
         }
     }
 }
