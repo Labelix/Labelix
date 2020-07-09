@@ -19,6 +19,13 @@ namespace Labelix_AI_Backend.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public string Get()
+        {
+            return "Works";
+        }
+
+
         [HttpPut]
         public void Put([FromBody] string j)
         {
