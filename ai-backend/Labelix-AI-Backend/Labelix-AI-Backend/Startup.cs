@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +19,9 @@ namespace Labelix_AI_Backend
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //System.Diagnostics.Debug.WriteLine("Hello World");
+            Trace.WriteLine("HALLO WORLD");
+
         }
 
         public IConfiguration Configuration { get; }
