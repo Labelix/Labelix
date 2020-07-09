@@ -1,0 +1,11 @@
+<div *ngIf="projects != undefined">
+  <mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
+    <mat-grid-tile *ngFor="let element of projects">
+      <app-project-card [myProject]="element"></app-project-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+<div *ngIf="projects == undefined">
+  <mat-spinner class="center"></mat-spinner>
+</div>
