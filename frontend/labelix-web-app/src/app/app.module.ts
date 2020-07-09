@@ -10,6 +10,8 @@ import {AppRoutingModule} from './app-routing.module';
 
 import {MaterialModule} from './material.module';
 import {HttpClientModule} from '@angular/common/http';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
   ],
   providers: [],
   bootstrap: [AppComponent]

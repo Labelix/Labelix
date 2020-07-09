@@ -10,7 +10,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ProjectsFacade} from './AbstractionLayer/ProjectsFacade';
-import {MaterialModule} from "../material.module";
+import {MaterialModule} from '../material.module';
 
 
 @NgModule({

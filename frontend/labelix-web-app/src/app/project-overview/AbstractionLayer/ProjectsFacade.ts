@@ -9,10 +9,13 @@ export class ProjectsFacade {
   private projects$: Observable<IProject[]>;
 
   constructor(private projectApi: ProjectServiceService) {
-    this.projects$ = this.projectApi.getItems().pipe(shareReplay(1));
+    this.projects$ = this.projectApi.getItems()
+      .pipe(
+        shareReplay(1)
+      );
   }
 
-  getProjects(){
+  getProjects() {
     return this.projects$;
   }
 }
