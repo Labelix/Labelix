@@ -10,7 +10,7 @@ export class FileApiService extends GenericApiService<IFile>{
 
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
-    this.urlRoot = 'noch leer';
+    this.urlRoot = 'https://localhost:5001/ImageUpload/upload';
   }
 
   postListOfRawImages(rawImages: IFile[]){
