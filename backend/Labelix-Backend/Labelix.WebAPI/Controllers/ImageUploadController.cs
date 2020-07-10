@@ -13,7 +13,7 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ImageUploadController : ControllerBase
     {
-        [HttpPost, DisableRequestSizeLimit]
+        [HttpPost("upload"), DisableRequestSizeLimit]
         public IActionResult Upload()
         {
             try
