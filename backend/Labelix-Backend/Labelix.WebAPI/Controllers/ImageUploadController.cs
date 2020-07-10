@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace Labelix.WebAPI.Controllers
 {
@@ -14,38 +15,11 @@ namespace Labelix.WebAPI.Controllers
     public class ImageUploadController : ControllerBase
     {
         [HttpPost("upload"), DisableRequestSizeLimit]
-        public IActionResult Upload()
+        public string PostRawBuffer(string raw)
         {
-            try
-            {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Ressources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-                if(file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
-
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-
-                    return Ok(new { dbPath });
-                }
-                else
-                {
-                    return BadRequest();
-                }
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, $"Internal Server Eroor: {ex}");
-            }
+            return raw;
         }
 
-        
+
     }
 }
