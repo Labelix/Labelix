@@ -45,5 +45,7 @@ namespace Labelix.WebAPI.Controllers
                 return StatusCode(500, $"Internal Server Eroor: {ex}");
             }
         }
+
+        
     }
 }
