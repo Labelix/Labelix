@@ -20,6 +20,6 @@ export class FileApiService extends GenericApiService<IFile>{
     }
   }
   postRawFile(item: File): Observable<File> {
-    return this.httpClient.post<File>(`${this.urlRoot}`, item).subscribe();
+    return this.httpClient.post<File>(`${this.urlRoot}`, item);
   }
 }
