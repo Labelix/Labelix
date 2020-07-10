@@ -16,7 +16,7 @@ export class FileApiService extends GenericApiService<IFile>{
 
   postListOfRawImages(rawImages: IFile[]){
     for (const item of rawImages){
-      this.postRawFile(item.file);
+      this.postRawFile(item.file).subscribe(value => console.log(value));
     }
   }
   postRawFile(item: File): Observable<File> {

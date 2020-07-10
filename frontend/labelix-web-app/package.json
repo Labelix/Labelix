@@ -23,6 +23,8 @@
     "@angular/router": "~10.0.2",
     "@ngrx/effects": "^9.2.0",
     "@ngrx/store": "^9.2.0",
+    "golden-layout": "^1.5.9",
+    "jquery": "^3.5.1",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
