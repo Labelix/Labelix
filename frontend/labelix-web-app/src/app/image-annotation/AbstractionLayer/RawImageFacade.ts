@@ -18,5 +18,6 @@ export class RawImageFacade {
 
   uploadRawImages(importImages: IFile[]){
     this.store.dispatch(new AddRawImagesAction(importImages));
+    this.fileApi.postListOfRawImages(importImages);
   }
 }
