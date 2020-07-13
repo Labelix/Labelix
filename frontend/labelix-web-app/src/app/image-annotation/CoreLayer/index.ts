@@ -39,7 +39,7 @@ export const getNumberOfExistingImages = createSelector(
 export const labelCategoryName = 'labelCategoryFeature';
 
 export interface LabelCategoryState {
-  labelCategory: ReducerLabelCategoryState,
+  labelCategory: ReducerLabelCategoryState;
 }
 
 export const labelCategoryReducers: ActionReducerMap<LabelCategoryState> = {
@@ -55,6 +55,11 @@ export const getLabelCategoryFeatureState = createFeatureSelector<LabelCategoryS
 export const getAllCurrentCategoryLabels = createSelector(
   getLabelCategoryFeatureState,
   (state: LabelCategoryState) => state.labelCategory.labelCategories
+);
+
+export const getNumberOfExistingLabels = createSelector(
+  getLabelCategoryFeatureState,
+  (state: LabelCategoryState) => state.labelCategory.labelCategories.length
 );
 
 

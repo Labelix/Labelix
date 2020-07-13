@@ -1,17 +1,12 @@
-
-#toolBarTitle {
-  writing-mode: tb-rl;
-  color: rgba(255,255,255,0.87);
-}
-
 .side-location{
   margin-top: 3.35%;
   position: fixed;
-  left: 0;
+  right: 0;
   top: 0;
   height: 100%;
-  width: 3%;
+  width: 15%;
   background-color: #ebe9e7;
   overflow: hidden;
   z-index: 1999;
+  padding: 1em;
 }

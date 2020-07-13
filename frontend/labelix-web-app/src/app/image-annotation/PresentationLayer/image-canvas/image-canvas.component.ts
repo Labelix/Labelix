@@ -13,7 +13,7 @@ export class ImageCanvasComponent implements OnInit {
   }
 
   selectedFile: ImageSnippet;
-  imgWidth = 1150;
+  imgWidth = 1400;
   @ViewChild('test', { static: false }) pic: ElementRef;
 
   file: IFile;
@@ -32,13 +32,12 @@ export class ImageCanvasComponent implements OnInit {
 
   mouseWheelUpFunc() {
     console.log(this.imgWidth);
-    this.imgWidth = this.imgWidth + 10;
+    this.imgWidth = this.imgWidth + 20;
   }
 
   mouseWheelDownFunc() {
     console.log(this.imgWidth);
-    this.imgWidth = this.imgWidth - 10;
-    this.pic.nativeElement.style.width -= 10;
+    this.imgWidth = this.imgWidth - 20;
   }
 }
 

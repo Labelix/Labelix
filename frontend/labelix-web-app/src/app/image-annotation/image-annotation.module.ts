@@ -11,7 +11,7 @@ import {ImageFacade} from './AbstractionLayer/ImageFacade';
 import {RawImageEffects} from './CoreLayer/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {featureStateName, rawImageReducers} from './CoreLayer';
+import {featureStateName, labelCategoryName, labelCategoryReducers, rawImageReducers} from './CoreLayer';
 import { ImageCanvasComponent } from './PresentationLayer/image-canvas/image-canvas.component';
 import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component';
 import {MaterialModule} from '../material.module';
@@ -19,6 +19,8 @@ import { MouseWheelDirective } from './PresentationLayer/directives/mouse-wheel.
 import { LabelWidgetComponent } from './PresentationLayer/label-widget/label-widget.component';
 import { SinleLabelPresentationComponent } from './PresentationLayer/label-widget/sub-components/sinle-label-presentation/sinle-label-presentation.component';
 import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
+import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
     ToolbarComponent,
     MouseWheelDirective,
     LabelWidgetComponent,
-    SinleLabelPresentationComponent
+    SinleLabelPresentationComponent,
+    WidgetBarComponent
   ],
   providers: [
     RawImageFacade,
@@ -40,8 +43,10 @@ import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
   imports: [
     CommonModule,
     ImageAnnotationRoutingModule,
+    DragDropModule,
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
+    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
     EffectsModule.forFeature([RawImageEffects]),
     MaterialModule
   ]
