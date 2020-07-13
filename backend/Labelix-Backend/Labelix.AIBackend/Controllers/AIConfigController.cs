@@ -29,7 +29,7 @@ namespace Labelix.AIBackend.Controllers
             //var exists = File.Exists(PATH);
             //Debug.WriteLine($"File found: {exists}");
 
-            var processInfo = new ProcessStartInfo(@"C:/Program Files/Docker/Docker/resources/bin/docker.exe", $"run -it --rm {config.DockerImageName}");
+            var processInfo = new ProcessStartInfo(@"C:/Program Files/Docker/Docker/resources/bin/docker.exe", $"run -it --rm {config.DockerImageName} {config.Parameter}");
 
             processInfo.CreateNoWindow = true;
             processInfo.UseShellExecute = false;
