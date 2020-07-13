@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 import {ICategory} from '../../../utility/contracts/ICategory';
-import {MaterialModule} from '../../../material.module';
 
 @Component({
   selector: 'app-label-widget',
@@ -13,6 +12,9 @@ export class LabelWidgetComponent implements OnInit {
   currentLabelCategories: ICategory[] = [];
 
   currentlyAdding = false;
+
+  newLabelName: string;
+  newSupercategory: string;
 
   constructor(private facade: LabelCategoryFacade) { }
 
