@@ -17,8 +17,8 @@ export class RawImageFacade {
   files$: Observable<IFile[]>;
 
   uploadRawImages(importImages: IFile[]){
-    this.store.dispatch(new AddRawImagesAction(importImages));
     this.fileApi.postListOfRawImages(importImages);
+    this.store.dispatch(new AddRawImagesAction(importImages));
   }
 
 }
