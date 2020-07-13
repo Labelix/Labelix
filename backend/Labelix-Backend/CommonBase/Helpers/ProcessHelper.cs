@@ -9,9 +9,16 @@ namespace CommonBase.Helpers
 {
     public static partial class ProcessHelper
     {
+        /// <summary>
+        /// Runs a process asyncronously.
+        /// </summary>
+        /// <param name="fileName">The name of the application to start.</param>
+        /// <param name="arguments">CLI arguments to be appended when application starts.</param>
+        /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
+        /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
+        /// <returns>The processes exit code.</returns>
         public static Task<int> RunProcessAsync(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
         {
-
             using var process = new Process
             {
                 StartInfo = {
@@ -25,11 +32,26 @@ namespace CommonBase.Helpers
             return RunProcessAsync(process, noWindow, shellExecute);
         }
 
+        /// <summary>
+        /// Runs a process.
+        /// </summary>
+        /// <param name="fileName">The name of the application to start.</param>
+        /// <param name="arguments">CLI arguments to be appended when application starts.</param>
+        /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
+        /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
+        /// <returns>The processes exit code.</returns>
         public static int RunProcess(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
         {
             return RunProcessAsync(fileName, arguments, noWindow, shellExecute).Result;
         }
 
+        /// <summary>
+        /// Runs a process asyncronously.
+        /// </summary>
+        /// <param name="process">The process which will be started.</param>
+        /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
+        /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
+        /// <returns>The processes exit code.</returns>
         public static Task<int> RunProcessAsync(Process process, bool noWindow = true, bool shellExecute = false)
         {
             var tcs = new TaskCompletionSource<int>();
@@ -44,6 +66,13 @@ namespace CommonBase.Helpers
             return tcs.Task;
         }
 
+        /// <summary>
+        /// Runs a process.
+        /// </summary>
+        /// <param name="process">The process which will be started.</param>
+        /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
+        /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
+        /// <returns>The processes exit code.</returns>
         public static int RunProcess(Process process, string arguments, bool noWindow = true, bool shellExecute = false)
         {
             return RunProcessAsync(process, noWindow, shellExecute).Result;
