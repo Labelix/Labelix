@@ -41,11 +41,15 @@ export function labelCategoryReducer(state = initialLabelCategoryState, action: 
   switch (action.type) {
     case ActionTypes.AddAnnotationLabel: {
       const tempLabels: ICategory[] = [];
+
       state.labelCategories.forEach(value => tempLabels.push(value));
+      tempLabels.push(action.payload);
 
       return {
         labelCategories: tempLabels
       };
     }
+    default:
+      return state;
   }
 }

@@ -1,25 +1,26 @@
-<mat-card class="label-card">
-  <mat-chip-list>
-    <mat-chip>Alles Klar</mat-chip>
-    <mat-chip *ngFor="let item of currentLabelCategories">{{ item.name }}</mat-chip>
-  </mat-chip-list>
+<mat-card-title>Labels</mat-card-title>
 
-  <div *ngIf="currentlyAdding === false">
-    <button mat-raised-button style="margin-top: 1em" (click)="onAddLabel()">Add Label</button>
-  </div>
 
-  <div *ngIf="currentlyAdding === true" style="margin-top: 1em;">
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput [(ngModel)]="newLabelName">
-    </mat-form-field>
-    <br>
-    <mat-form-field appearance="fill">
-      <mat-label>Supercategory</mat-label>
-      <input matInput [(ngModel)]="newSupercategory">
-    </mat-form-field>
-    <br>
-    <button mat-raised-button style="margin-top: 1em" (click)="onSave()">Save</button>
-  </div>
+<mat-chip-list>
+  <mat-chip *ngFor="let item of currentLabelCategories"
+            [ngStyle]="{backgroundColor: item.colorCode}">{{currentLabelCategories.indexOf(item) + 1}}
+    : {{ item.name }}</mat-chip>
+</mat-chip-list>
 
-</mat-card>
+<div *ngIf="currentlyAdding === false">
+  <button mat-raised-button style="margin-top: 1em" (click)="onAddLabel()">Add Label</button>
+</div>
+
+<div *ngIf="currentlyAdding === true" style="margin-top: 1em;">
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="newLabelName">
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill">
+    <mat-label>Supercategory</mat-label>
+    <input matInput [(ngModel)]="newSupercategory">
+  </mat-form-field>
+  <br>
+  <button mat-raised-button style="margin-top: 1em" (click)="onSave()">Save</button>
+</div>

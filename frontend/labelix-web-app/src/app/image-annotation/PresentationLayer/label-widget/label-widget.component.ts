@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 import {ICategory} from '../../../utility/contracts/ICategory';
 
@@ -16,14 +16,10 @@ export class LabelWidgetComponent implements OnInit {
   newLabelName: string;
   newSupercategory: string;
 
-  constructor(private facade: LabelCategoryFacade) { }
+  constructor(private facade: LabelCategoryFacade) {
+  }
 
   ngOnInit(): void {
-    this.currentLabelCategories.push({
-      id: -1,
-      name: 'test',
-      supercategory: 'testus'
-    });
     this.facade.labelCategories$.subscribe(value => this.currentLabelCategories = value);
   }
 
@@ -31,8 +27,15 @@ export class LabelWidgetComponent implements OnInit {
     this.currentlyAdding = true;
   }
 
-  onSave(){
-
+  onSave() {
+    this.facade.addLabelCategory({
+      name: this.newLabelName,
+      supercategory: this.newSupercategory,
+      id: -1,
+      colorCode: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
+    });
+    this.newLabelName = '';
+    this.newSupercategory = '';
     this.currentlyAdding = false;
   }
 
