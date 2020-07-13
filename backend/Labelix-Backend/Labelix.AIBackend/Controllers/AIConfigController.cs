@@ -1,6 +1,7 @@
 ﻿using Labelix.Transfer.Persistence;
 using Microsoft.AspNetCore.Mvc;
-
+using DockerUtils;
+using System.Threading.Tasks;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -16,10 +17,10 @@ namespace Labelix.AIBackend.Controllers
         }
 
         [HttpPost]
-        public int Post([FromBody] AIConfig config)
+        public async Task<int> PostAsync([FromBody] AIConfig config)
         {
-            //return DockerHelpers.DockerRun(config);
-            return 0;
+            var res = await DockerUtils.DockerUtils.DockerRunAsync(config.DockerImageName, "--rm", config.Parameter);
+            return res;
         }
 
     }
