@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Labelix.Transfer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Labelix.AIBackend.Controllers
 {
 
@@ -13,6 +14,8 @@ namespace Labelix.AIBackend.Controllers
     [Route("[controller]")]
     public class AIConfigController : ControllerBase
     {
+        public const string PATH = @"C:/Program Files/Docker/Docker/resources/bin/docker.exe";
+
 
         [HttpGet]
         public string Get()
@@ -21,13 +24,14 @@ namespace Labelix.AIBackend.Controllers
         }
 
         [HttpPost]
-        public AIConfig Post([System.Web.Http.FromBody] AIConfig config)
+        public int Post([System.Web.Http.FromBody] AIConfig config)
         {
-            System.Diagnostics.Debug.WriteLine(config);
+            //var exists = File.Exists(PATH);
+            //Debug.WriteLine($"File found: {exists}");
 
-            var processInfo = new ProcessStartInfo("docker.exe", $"run -it --rm hello-world");
+            var processInfo = new ProcessStartInfo(@"C:/Program Files/Docker/Docker/resources/bin/docker.exe", $"run -it --rm {config.DockerImageName}");
 
-            processInfo.CreateNoWindow = false;
+            processInfo.CreateNoWindow = true;
             processInfo.UseShellExecute = false;
             //processInfo.RedirectStandardOutput = true;
             //processInfo.RedirectStandardError = true;
@@ -35,19 +39,19 @@ namespace Labelix.AIBackend.Controllers
             int exitCode;
             using var process = new Process();
 
-                process.StartInfo = processInfo;
-                // process.OutputDataReceived += new DataReceivedEventHandler(logOrWhatever());
-                // process.ErrorDataReceived += new DataReceivedEventHandler(logOrWhatever());
+            process.StartInfo = processInfo;
+            //process.OutputDataReceived += new DataReceivedEventHandler(logOrWhatever());
+            //process.ErrorDataReceived += new DataReceivedEventHandler(logOrWhatever());
 
-                process.Start();
+            process.Start();
 
-                process.WaitForExit();
+            process.WaitForExit();
             exitCode = process.ExitCode;
-            
 
 
 
-            return config;
+
+            return exitCode;
         }
 
     }
