@@ -29,7 +29,7 @@ namespace CommonBase.Helpers
                 }
             };
 
-            return RunProcessAsync(process, noWindow, shellExecute);
+            return RunProcessAsync(process);
         }
 
         /// <summary>
@@ -49,10 +49,8 @@ namespace CommonBase.Helpers
         /// Runs a process asyncronously.
         /// </summary>
         /// <param name="process">The process which will be started.</param>
-        /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
-        /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static Task<int> RunProcessAsync(Process process, bool noWindow = true, bool shellExecute = false)
+        public static Task<int> RunProcessAsync(Process process)
         {
             var tcs = new TaskCompletionSource<int>();
 
@@ -73,9 +71,9 @@ namespace CommonBase.Helpers
         /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
         /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static int RunProcess(Process process, string arguments, bool noWindow = true, bool shellExecute = false)
+        public static int RunProcess(Process process)
         {
-            return RunProcessAsync(process, noWindow, shellExecute).Result;
+            return RunProcessAsync(process).Result;
         }
     }
 }
