@@ -21,6 +21,7 @@ namespace Labelix.Logic.Entities.Persistence
 
         public void CopyProperties(ILabel other)
         {
+            Id = other.Id;
             Name = other.Name;
             Color = other.Color;
         }

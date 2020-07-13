@@ -9,14 +9,14 @@ namespace Labelix.Transfer.Persistence
         public string ImagePath { get; set; } = "";
 
         [JsonPropertyName("ProjectImageId")]
-        public int ProjectImageId { get; set; }
+        public int ProjectId { get; set; }
 
 
         public void CopyProperties(IImage other)
         {
             Id = other.Id;
             ImagePath = other.ImagePath;
-            ProjectImageId = other.ProjectImageId;
+            ProjectId = other.ProjectId;
         }
     }
 }
