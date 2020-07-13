@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {IFile} from '../../../utility/contracts/IFile';
-import * as GoldenLayout from 'golden-layout';
 
 @Component({
   selector: 'app-image-canvas',
@@ -16,32 +15,6 @@ export class ImageCanvasComponent implements OnInit {
   selectedFile: ImageSnippet;
 
   file: IFile;
-
-  myLayout: GoldenLayout;
-  title = 'popout-ex';
-
-  config: any = {
-    content: [{
-      type: 'row',
-      content: [
-        {
-          type: 'component',
-          componentName: 'example',
-          componentState: {text: 'Component 1'}
-        },
-        {
-          type: 'component',
-          componentName: 'example',
-          componentState: {text: 'Component 2'}
-        },
-        {
-          type: 'component',
-          componentName: 'example',
-          componentState: {text: 'Component 3'}
-        }
-      ]
-    }]
-  };
 
   ngOnInit(): void {
     const reader = new FileReader();

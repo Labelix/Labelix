@@ -14,11 +14,18 @@ import {EffectsModule} from '@ngrx/effects';
 import {featureStateName, rawImageReducers} from './CoreLayer';
 import { ImageCanvasComponent } from './PresentationLayer/image-canvas/image-canvas.component';
 import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component';
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatIconModule} from "@angular/material/icon";
-import {MaterialModule} from "../material.module";
+import {MaterialModule} from '../material.module';
 
+import {ComponentType, GoldenLayoutModule} from 'ngx-golden-layout';
+import * as $ from 'jquery';
+
+// It is required to have JQuery as global in the window object.
+window['$'] = $;
+
+const componentTypes: ComponentType[] = [{
+  name: 'toolbar',
+  type: ToolbarComponent,
+}];
 
 @NgModule({
   declarations: [
@@ -39,10 +46,8 @@ import {MaterialModule} from "../material.module";
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
     EffectsModule.forFeature([RawImageEffects]),
-    MatSidenavModule,
-    MatToolbarModule,
-    MatIconModule,
     MaterialModule,
+    GoldenLayoutModule.forRoot(componentTypes)
   ]
 })
 export class ImageAnnotationModule {
