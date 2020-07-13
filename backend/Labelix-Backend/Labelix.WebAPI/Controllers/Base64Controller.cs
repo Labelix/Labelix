@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Labelix.WebAPI.Modules;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
 
 namespace Labelix.WebAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ImageUploadController : ControllerBase
+    public class Base64Controller : ControllerBase
     {
-        [HttpPost("upload"), DisableRequestSizeLimit]
-        public string PostRawBuffer(string raw)
+        [HttpPost("UploadImage")]
+        public HttpResponseMessage ImageUpload(Data data)
         {
-            return raw;
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
-
-
     }
 }

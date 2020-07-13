@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Modules\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CommonBase\CommonBase.csproj" />
     <ProjectReference Include="..\Labelix.Contracts\Labelix.Contracts.csproj" />
   </ItemGroup>
