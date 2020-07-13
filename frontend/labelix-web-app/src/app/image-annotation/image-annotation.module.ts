@@ -15,6 +15,10 @@ import {featureStateName, rawImageReducers} from './CoreLayer';
 import { ImageCanvasComponent } from './PresentationLayer/image-canvas/image-canvas.component';
 import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component';
 import {MaterialModule} from '../material.module';
+import { MouseWheelDirective } from './PresentationLayer/directives/mouse-wheel.directive';
+import { LabelWidgetComponent } from './PresentationLayer/label-widget/label-widget.component';
+import { SinleLabelPresentationComponent } from './PresentationLayer/label-widget/sub-components/sinle-label-presentation/sinle-label-presentation.component';
+import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
 
 @NgModule({
   declarations: [
@@ -22,12 +26,16 @@ import {MaterialModule} from '../material.module';
     TestCanvasComponent,
     DragNDropDirective,
     ImageCanvasComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    MouseWheelDirective,
+    LabelWidgetComponent,
+    SinleLabelPresentationComponent
   ],
   providers: [
     RawImageFacade,
     ImageFacade,
-    RawImageEffects
+    RawImageEffects,
+    LabelCategoryFacade
   ],
   imports: [
     CommonModule,
