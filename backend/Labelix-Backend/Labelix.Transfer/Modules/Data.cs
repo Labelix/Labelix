@@ -10,11 +10,13 @@ namespace Labelix.Transfer.Modules
 {
     public class Data : TransferObject,IData
     {
-        [JsonPropertyName("name")]
+        [JsonPropertyName("ProjectId")]
+        public int ProjectId { get; set; }
+        [JsonPropertyName("Name")]
         public string Name { get; set; }
-        [JsonPropertyName("format")]
+        [JsonPropertyName("Format")]
         public string Format { get; set; }
-        [JsonPropertyName("data")]
+        [JsonPropertyName("Data")]
         public string Base64 { get; set; }
     }
 }

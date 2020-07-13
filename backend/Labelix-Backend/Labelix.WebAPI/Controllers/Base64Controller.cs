@@ -17,6 +17,7 @@ namespace Labelix.WebAPI.Controllers
     public class Base64Controller : ControllerBase
     {
         public ImageController imageController = new ImageController();
+        public ProjectController projectController = new ProjectController();
 
         [HttpPost("UploadImage")]
         public async Task<HttpResponseMessage> ImageUploadAsync(Data data)
@@ -24,14 +25,29 @@ namespace Labelix.WebAPI.Controllers
             try
             {
                 var bytes = ImageExtensions.Base64ToByte(data.Base64);
-
+                Project project = await projectController.GetAsync(data.ProjectId);
                 Image image = new Image();
-                if (!System.IO.File.Exists($"./Resources/Images/{data.Name}.{data.Format}"))
+
+                //Queries whether the directory (for images) of the respective project exists and creates it if not.
+                string dir_path = $"./Resources/Images/{project.Id}_{project.Name}";
+                if (!System.IO.Directory.Exists(dir_path))
                 {
-                    image.ImagePath = $"./Resources/Images/{data.Name}.{data.Format}";
+                    System.IO.Directory.CreateDirectory(dir_path);
+                }
+
+                //Queries whether the image exists 
+                //  -if so, it will only be updated
+                //  -if no, a database entry is made with the respective path
+                string img_path = $"./Resources/Images/{project.Id}_{project.Name}/{data.Name}.{data.Format}";
+                if (!System.IO.File.Exists(img_path))
+                {
+                    image.ImagePath = img_path;
+                    image.ProjectImageId = data.ProjectId;
                     await imageController.PostAsync(image);
                 }
-                System.IO.File.WriteAllBytes($"./Resources/Images/{data.Name}.{data.Format}", bytes);
+
+                //the image is saved
+                System.IO.File.WriteAllBytes(img_path, bytes);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception er)
