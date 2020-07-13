@@ -8,10 +8,8 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ProjectServiceService extends GenericApiService<IProject>{
 
-  path = 'http://localhost:3400/projects';
-
   constructor(protected  httpClient: HttpClient) {
     super(httpClient);
-    this.urlRoot = this.path;
+    this.urlRoot = 'http://localhost:3400/projects';
   }
 }
