@@ -25,7 +25,7 @@ namespace Labelix.WebAPI.Controllers
             try
             {
                 data = GetBase64OutOfXML(data);
-                var bytes = ImageExtensions.Base64ToByte(data.Base64);
+                var bytes = data.Base64.Base64ToByte();
                 Project project = await projectController.GetAsync(data.ProjectId);
                 Image image = new Image();
 
@@ -58,11 +58,19 @@ namespace Labelix.WebAPI.Controllers
             }
         }
 
+        //Reads Base64Code and Image Format out of XML
         private Data GetBase64OutOfXML(Data data)
         {
             string[] text = data.Base64.Split(';');
             data.Base64 = text[1].Split(',')[1];
             data.Format = text[0].Split('/')[1];
+            return data;
+        }
+
+        //Sets the base64 to xml variant
+        private Data GetXMLOfBase(Data data)
+        {
+            data.Base64 = $"data:image/{data.Format};base64,{data.Base64}";
             return data;
         }
 
