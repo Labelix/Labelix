@@ -5,13 +5,11 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.Contracts", "Labelix.Contracts\Labelix.Contracts.csproj", "{4152597B-1F16-4917-878C-06A185BAD41E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.ConApp", "Labelix.ConApp\Labelix.ConApp.csproj", "{BA28DBB1-86C9-4339-AB46-E7E6B8C77ABE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.Logic", "Labelix.Logic\Labelix.Logic.csproj", "{3E9042B3-0C6D-41CC-BCD6-6E7F1D3A17E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labelix.WebAPI", "Labelix.WebAPI\Labelix.WebAPI.csproj", "{59E3F536-C985-4F65-B4ED-D1302BD5D37C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.WebAPI", "Labelix.WebAPI\Labelix.WebAPI.csproj", "{59E3F536-C985-4F65-B4ED-D1302BD5D37C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labelix.Transfer", "Labelix.Transfer\Labelix.Transfer.csproj", "{92C04AD0-A021-41FA-847D-7EDDDDD40803}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.Transfer", "Labelix.Transfer\Labelix.Transfer.csproj", "{92C04AD0-A021-41FA-847D-7EDDDDD40803}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonBase", "CommonBase\CommonBase.csproj", "{A81BCF5C-4E2B-4660-ACA8-B9F6DE29DEB3}"
 EndProject
@@ -25,10 +23,6 @@ Global
 		{4152597B-1F16-4917-878C-06A185BAD41E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4152597B-1F16-4917-878C-06A185BAD41E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4152597B-1F16-4917-878C-06A185BAD41E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA28DBB1-86C9-4339-AB46-E7E6B8C77ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA28DBB1-86C9-4339-AB46-E7E6B8C77ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA28DBB1-86C9-4339-AB46-E7E6B8C77ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA28DBB1-86C9-4339-AB46-E7E6B8C77ABE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3E9042B3-0C6D-41CC-BCD6-6E7F1D3A17E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3E9042B3-0C6D-41CC-BCD6-6E7F1D3A17E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E9042B3-0C6D-41CC-BCD6-6E7F1D3A17E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
