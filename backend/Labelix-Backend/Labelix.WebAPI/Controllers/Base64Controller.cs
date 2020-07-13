@@ -29,7 +29,7 @@ namespace Labelix.WebAPI.Controllers
                 Image image = new Image();
 
                 //Queries whether the directory (for images) of the respective project exists and creates it if not.
-                string dir_path = $"./Resources/Images/{project.Id}_{project.Name}";
+                string dir_path = $"./Ressources/Images/{project.Id}_{project.Name}";
                 if (!System.IO.Directory.Exists(dir_path))
                 {
                     System.IO.Directory.CreateDirectory(dir_path);
@@ -38,7 +38,7 @@ namespace Labelix.WebAPI.Controllers
                 //Queries whether the image exists 
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
-                string img_path = $"./Resources/Images/{project.Id}_{project.Name}/{data.Name}.{data.Format}";
+                string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}.{data.Format}";
                 if (!System.IO.File.Exists(img_path))
                 {
                     image.ImagePath = img_path;
@@ -61,11 +61,29 @@ namespace Labelix.WebAPI.Controllers
         }
 
         [HttpPost("UploadCoco")]
-        public HttpResponseMessage CocoUpload(Data data)
+        public async Task<HttpResponseMessage> CocoUploadAsync(Data data)
         {
             try
             {
-                System.IO.File.WriteAllText($"./Resources/LabeldImages/{data.Name}.json", data.Base64);
+                Project project = await projectController.GetAsync(data.ProjectId);
+
+                //Queries whether the directory (for labels) of the respective project exists and creates it if not.
+                string dir_path = $"./Ressources/Labels/{project.Id}_{project.Name}";
+                if (!System.IO.Directory.Exists(dir_path))
+                {
+                    System.IO.Directory.CreateDirectory(dir_path);
+                }
+
+                //Queries whether the image exists 
+                //  -if so, it will only be updated
+                //  -if no, a database entry is made with the respective path
+                string label_path = $"{dir_path}/{data.Name}.json";
+                if (!System.IO.File.Exists(label_path))
+                {
+                    project.LabeledPath = label_path;
+                    await projectController.PutAsync(project);
+                }
+                System.IO.File.WriteAllText(label_path, data.Base64);
                 return new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception er)
