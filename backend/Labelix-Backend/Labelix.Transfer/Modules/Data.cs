@@ -9,6 +9,6 @@ namespace Labelix.WebAPI.Modules
     public class Data
     {
         [JsonPropertyName("data")]
-        string Base64 { get; set; }
+        public string Base64 { get; set; }
     }
 }
