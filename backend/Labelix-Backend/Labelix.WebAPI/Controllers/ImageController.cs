@@ -6,7 +6,7 @@ using Contract = Labelix.Contracts.Persistence.IImage;
 using Model = Labelix.Transfer.Persistence.Image;
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ImageController : GenericController<Contract, Model>
     {

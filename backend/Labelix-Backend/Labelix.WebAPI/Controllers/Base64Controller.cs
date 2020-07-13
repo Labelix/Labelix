@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class Base64Controller : ControllerBase
     {

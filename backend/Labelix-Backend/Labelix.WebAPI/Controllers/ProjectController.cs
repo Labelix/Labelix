@@ -10,7 +10,7 @@ using Model = Labelix.Transfer.Persistence.Project;
 
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
