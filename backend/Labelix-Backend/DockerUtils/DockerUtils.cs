@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Labelix.DockerUtils
+namespace DockerUtils
 {
-    public static class Helpers
+    public static partial class DockerUtils
     {
-        public static int DockerRun(string image, string parameters) {
-
-
+        //public async int DockerRunAsync()
+        public static Task<int> DockerRun() 
+        {
+            return null;
         }
-
-        public static int StartProcess
     }
 }

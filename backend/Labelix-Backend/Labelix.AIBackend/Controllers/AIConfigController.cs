@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Labelix.DockerUtils;
-using Labelix.Transfer.Persistence;
+﻿using Labelix.Transfer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -15,9 +9,6 @@ namespace Labelix.AIBackend.Controllers
     [Route("[controller]")]
     public class AIConfigController : ControllerBase
     {
-        public const string PATH = @"C:/Program Files/Docker/Docker/resources/bin/docker.exe";
-
-
         [HttpGet]
         public string Get()
         {
@@ -25,9 +16,10 @@ namespace Labelix.AIBackend.Controllers
         }
 
         [HttpPost]
-        public int Post([System.Web.Http.FromBody] AIConfig config)
+        public int Post([FromBody] AIConfig config)
         {
-            return DockerUtils.DockerUtils.DockerRun(config.DockerImageName, config.Parameter);
+            //return DockerHelpers.DockerRun(config);
+            return 0;
         }
 
     }
