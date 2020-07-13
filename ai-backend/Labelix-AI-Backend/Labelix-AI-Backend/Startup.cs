@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -20,7 +21,8 @@ namespace Labelix_AI_Backend
         {
             Configuration = configuration;
             //System.Diagnostics.Debug.WriteLine("Hello World");
-            Trace.WriteLine("HALLO WORLD");
+            Trace.WriteLine(File.Exists("C:/Reflect_Install.log"));
+            
 
         }
 
