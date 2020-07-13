@@ -12,8 +12,6 @@ namespace Labelix.Transfer.Persistence
         [JsonPropertyName("ProjectImageId")]
         public int ProjectImageId { get; set; }
 
-        
-
 
         public void CopyProperties(IImage other)
         {
