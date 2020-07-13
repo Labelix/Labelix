@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DockerUtils\DockerUtils.csproj" />
     <ProjectReference Include="..\Labelix.Transfer\Labelix.Transfer.csproj" />
   </ItemGroup>
 
