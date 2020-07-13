@@ -16,12 +16,16 @@ export class FileApiService extends GenericApiService<IFile>{
 
   postListOfRawImages(rawImages: IFile[]){
     for (const item of rawImages){
-      this.postRawFile(item.file).subscribe(value => console.log(value));
+      const reader = new FileReader();
+      reader.readAsDataURL(item.file);
+      reader.onload = () => {
+        console.log(reader.result);
+        this.postBase64Code(reader.result).subscribe(value => console.log(value));
+      };
     }
   }
-  postRawFile(item: File): Observable<HttpEvent<File>> {
-    const formData = new FormData();
-    formData.append('file', item, item.name);
-    return this.httpClient.post<File>(`${this.urlRoot}`, formData, { reportProgress: true, observe: 'events'});
+  postBase64Code(item: any): Observable<HttpEvent<any>> {
+    return this.httpClient.post<any>(`${this.urlRoot}`, {data: item}, { reportProgress: true, observe: 'events'});
   }
+
 }

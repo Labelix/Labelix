@@ -13,10 +13,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 
-import * as $ from 'jquery';
-
-window['$'] = $;
-
 @NgModule({
   declarations: [
     AppComponent,
