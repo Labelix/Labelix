@@ -10,8 +10,8 @@
 }
 
 .side-location{
-  display: flex;
-  position: relative;
+  margin-top: 3.35%;
+  position: fixed;
   left: 0;
   top: 0;
   height: 100%;

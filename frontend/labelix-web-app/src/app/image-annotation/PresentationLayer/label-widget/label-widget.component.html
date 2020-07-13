@@ -1,0 +1,25 @@
+<mat-card class="label-card">
+  <mat-chip-list>
+    <mat-chip>Alles Klar</mat-chip>
+    <mat-chip *ngFor="let item of currentLabelCategories">{{ item.name }}</mat-chip>
+  </mat-chip-list>
+
+  <div *ngIf="currentlyAdding === false">
+    <button mat-raised-button style="margin-top: 1em" (click)="onAddLabel()">Add Label</button>
+  </div>
+
+  <div *ngIf="currentlyAdding === true" style="margin-top: 1em;">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Supercategory</mat-label>
+      <input matInput>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button style="margin-top: 1em" (click)="onSave()">Save</button>
+  </div>
+
+</mat-card>
