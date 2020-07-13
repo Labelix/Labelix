@@ -20,4 +20,5 @@ export class RawImageFacade {
     this.fileApi.postListOfRawImages(importImages);
     this.store.dispatch(new AddRawImagesAction(importImages));
   }
+
 }
