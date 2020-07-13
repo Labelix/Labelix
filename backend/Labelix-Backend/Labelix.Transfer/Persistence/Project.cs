@@ -16,6 +16,8 @@ namespace Labelix.Transfer.Persistence
         public DateTime CreationDate { get; set; }
         [JsonPropertyName("FinishedAnnotation")]
         public bool FinishedAnnotation { get; set; }
+        [JsonPropertyName("LabeledPath")]
+        public string LabeledPath { get; set; } = "";
 
         public void CopyProperties(IProject other)
         {
@@ -23,6 +25,7 @@ namespace Labelix.Transfer.Persistence
             Description = other.Description;
             CreationDate = other.CreationDate;
             FinishedAnnotation = other.FinishedAnnotation;
+            LabeledPath = other.LabeledPath;
         }
     }
 }
