@@ -26,7 +26,9 @@ export class FileApiService extends GenericApiService<IFile>{
   }
 
   postBase64Code(item: any, file: IFile): Observable<HttpEvent<any>> {
-    return this.httpClient.post<any>(`${this.urlRoot}`, {data: item, name: file.file.name, format: file.file.type}, { reportProgress: true, observe: 'events'});
+    return this.httpClient.post<any>(`${this.urlRoot}`,
+      {data: item, name: file.file.name, format: file.file.type},
+      { reportProgress: true, observe: 'events'});
   }
 
 }
