@@ -10,6 +10,7 @@
 }
 
 .side-location{
+  display: flex;
   position: relative;
   left: 0;
   top: 0;
