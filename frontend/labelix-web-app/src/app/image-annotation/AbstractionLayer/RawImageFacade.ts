@@ -8,6 +8,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class RawImageFacade {
+
   constructor(private fileApi: FileApiService, private store: Store<RawImageState>) {
     this.files$ = this.store.pipe(select(getAllRawImages));
     this.numberOfImages$ = this.store.pipe(select(getNumberOfExistingImages));
