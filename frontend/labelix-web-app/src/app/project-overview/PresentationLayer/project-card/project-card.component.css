@@ -1,0 +1,41 @@
+.example-card {
+  width: 30em;
+  max-width: 600px;
+  height: 12em;
+}
+
+.icon-footer {
+  margin-left: 1em;
+  margin-top: 3em;
+  justify-content: right;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.check-icon {
+  color: lightgreen;
+  font-size: 28pt;
+  margin-left: 7.5em;
+}
+
+.not-finished-icon{
+  color: red;
+  font-size: 28pt;
+  margin-left: 7.5em;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}

@@ -1,0 +1,116 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    },
+    {
+      "id": 1,
+      "name": "Test Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "15.11.2020",
+      "finishedAnnotation": true
+    },
+    {
+      "id": 2,
+      "name": "Anderes Projekt",
+      "creator": "Max Mustermann",
+      "creationDate": "16.03.2019",
+      "finishedAnnotation": false
+    }
+  ]
+}

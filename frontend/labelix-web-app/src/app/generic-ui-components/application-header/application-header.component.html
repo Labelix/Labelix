@@ -1,0 +1,16 @@
+<mat-drawer-container class="example-container" [hasBackdrop]="false" autosize>
+
+  <mat-drawer #drawer mode="push" class="example-sidenav">
+    <app-drawer-content></app-drawer-content>
+  </mat-drawer>
+
+  <mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Labelix</span>
+  </mat-toolbar>
+
+  <router-outlet></router-outlet>
+
+</mat-drawer-container>
