@@ -6,20 +6,16 @@ using System.IO;
 
 namespace CommonBase.Extensions
 {
-    public class ImageExtensions
+    public static partial class ImageExtensions
     {
-        public Image Base64ToImage(string base64String)
+        public static byte[] Base64ToByte(string base64String)
         {
             // Convert base 64 string to byte[]
             byte[] imageBytes = Convert.FromBase64String(base64String);
-            // Convert byte[] to Image
-            using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
-            {
-                Image image = Image.FromStream(ms, true);
-                return image;
-            }
+
+            return imageBytes;
         }
-        public string ImageToBase64(Image image, System.Drawing.Imaging.ImageFormat format)
+        public static string ImageToBase64(Image image, System.Drawing.Imaging.ImageFormat format)
         {
             using (MemoryStream ms = new MemoryStream())
             {
