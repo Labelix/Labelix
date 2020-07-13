@@ -9,7 +9,7 @@ namespace Labelix.Logic.Entities.Persistence
     {
         public Project() { }
 
-        public Project(string name, string description, DateTime creationDate, bool finishedAnnotation, ICollection<Image> images, ICollection<Label> labels)
+        public Project(string name, string description, DateTime creationDate, bool finishedAnnotation, ICollection<Image> images, ICollection<Label> labels, string labeledPath)
         {
             Name = name;
             Description = description;
@@ -17,11 +17,13 @@ namespace Labelix.Logic.Entities.Persistence
             FinishedAnnotation = finishedAnnotation;
             ListOfImages = images;
             ListOfLabel = labels;
+            LabeledPath = labeledPath;
         }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
         public bool FinishedAnnotation { get; set; }
+        public string LabeledPath { get; set; }
         public ICollection<Image> ListOfImages { get; set; }
         public ICollection<Label> ListOfLabel { get; set; }
 
@@ -31,6 +33,7 @@ namespace Labelix.Logic.Entities.Persistence
             Description = other.Description;
             CreationDate = other.CreationDate;
             FinishedAnnotation = other.FinishedAnnotation;
+            LabeledPath = other.LabeledPath;
         }
     }
 }
