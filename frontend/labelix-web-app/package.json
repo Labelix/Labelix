@@ -25,6 +25,7 @@
     "@ngrx/store": "^9.2.0",
     "golden-layout": "^1.5.9",
     "jquery": "^3.5.1",
+    "ngx-golden-layout": "0.0.37",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -35,6 +36,7 @@
     "@angular/compiler-cli": "~10.0.2",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/jquery": "^3.5.0",
     "@types/node": "^12.11.1",
     "angular-cli": "^1.0.0-beta.28.3",
     "codelyzer": "^5.1.2",
