@@ -43,7 +43,7 @@ namespace Labelix.WebAPI.Controllers
                 if (!System.IO.File.Exists(img_path))
                 {
                     image.ImagePath = img_path;
-                    image.ProjectImageId = data.ProjectId;
+                    image.ProjectId = data.ProjectId;
                     await imageController.PostAsync(image);
                 }
 
@@ -67,12 +67,7 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
-        //Sets the base64 to xml variant
-        private Data GetXMLOfBase(Data data)
-        {
-            data.Base64 = $"data:image/{data.Format};base64,{data.Base64}";
-            return data;
-        }
+        
 
         [HttpPost("UploadCoco")]
         public async Task<IActionResult> CocoUploadAsync(Data data)
