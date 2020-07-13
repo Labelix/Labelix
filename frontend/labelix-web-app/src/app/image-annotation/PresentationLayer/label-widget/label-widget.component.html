@@ -11,12 +11,12 @@
   <div *ngIf="currentlyAdding === true" style="margin-top: 1em;">
     <mat-form-field appearance="fill">
       <mat-label>Name</mat-label>
-      <input matInput>
+      <input matInput [(ngModel)]="newLabelName">
     </mat-form-field>
     <br>
     <mat-form-field appearance="fill">
       <mat-label>Supercategory</mat-label>
-      <input matInput>
+      <input matInput [(ngModel)]="newSupercategory">
     </mat-form-field>
     <br>
     <button mat-raised-button style="margin-top: 1em" (click)="onSave()">Save</button>
