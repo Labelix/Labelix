@@ -20,13 +20,13 @@ export class FileApiService extends GenericApiService<IFile>{
       reader.readAsDataURL(item.file);
       reader.onload = () => {
         console.log(reader.result);
-        this.postBase64Code(reader.result).subscribe(value => console.log(value));
+        this.postBase64Code(reader.result, item).subscribe(value => console.log(value));
       };
     }
   }
 
-  postBase64Code(item: any): Observable<HttpEvent<any>> {
-    return this.httpClient.post<any>(`${this.urlRoot}`, {data: item}, { reportProgress: true, observe: 'events'});
+  postBase64Code(item: any, file: IFile): Observable<HttpEvent<any>> {
+    return this.httpClient.post<any>(`${this.urlRoot}`, {data: item, name: file.file.name, format: file.file.type}, { reportProgress: true, observe: 'events'});
   }
 
 }
