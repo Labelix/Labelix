@@ -1,16 +1,25 @@
 import {IFile} from '../../utility/contracts/IFile';
 import {ActionTypes, ImageAnnotationActions} from './actions/image-annotation.actions';
+import {ICategory} from '../../utility/contracts/ICategory';
 
 export interface ReducerRawImageState {
   rawImages: IFile[];
 }
 
-export const initialState: ReducerRawImageState = {
+export interface ReducerLabelCategoryState {
+  labelCategories: ICategory[];
+}
+
+export const initialRawImageState: ReducerRawImageState = {
   rawImages: [],
 };
 
+export const initialLabelCategoryState: ReducerLabelCategoryState = {
+  labelCategories: [],
+};
+
 export function rawImageReducer(
-  state = initialState,
+  state = initialRawImageState,
   action: ImageAnnotationActions): ReducerRawImageState {
   switch (action.type) {
     case ActionTypes.AddRawImages: {
@@ -25,5 +34,18 @@ export function rawImageReducer(
     }
     default:
       return state;
+  }
+}
+
+export function labelCategoryReducer(state = initialLabelCategoryState, action: ImageAnnotationActions): ReducerLabelCategoryState {
+  switch (action.type) {
+    case ActionTypes.AddAnnotationLabel: {
+      const tempLabels: ICategory[] = [];
+      state.labelCategories.forEach(value => tempLabels.push(value));
+
+      return {
+        labelCategories: tempLabels
+      };
+    }
   }
 }

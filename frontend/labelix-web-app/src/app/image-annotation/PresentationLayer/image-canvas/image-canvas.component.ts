@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {IFile} from '../../../utility/contracts/IFile';
 
@@ -13,6 +13,8 @@ export class ImageCanvasComponent implements OnInit {
   }
 
   selectedFile: ImageSnippet;
+  imgWidth = 1150;
+  @ViewChild('test', { static: false }) pic: ElementRef;
 
   file: IFile;
 
@@ -28,6 +30,16 @@ export class ImageCanvasComponent implements OnInit {
     reader.readAsDataURL(this.file.file);
   }
 
+  mouseWheelUpFunc() {
+    console.log(this.imgWidth);
+    this.imgWidth = this.imgWidth + 10;
+  }
+
+  mouseWheelDownFunc() {
+    console.log(this.imgWidth);
+    this.imgWidth = this.imgWidth - 10;
+    this.pic.nativeElement.style.width -= 10;
+  }
 }
 
 class ImageSnippet {
