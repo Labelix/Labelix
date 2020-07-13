@@ -74,7 +74,7 @@ namespace Labelix.WebAPI.Controllers
                     System.IO.Directory.CreateDirectory(dir_path);
                 }
 
-                //Queries whether the image exists 
+                //Queries whether the label exists 
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
                 string label_path = $"{dir_path}/{data.Name}.json";
