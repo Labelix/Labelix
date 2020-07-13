@@ -9,5 +9,6 @@ namespace Labelix.Contracts.Persistence
         string Description { get; set; }
         DateTime CreationDate { get; set; }
         bool FinishedAnnotation { get; set; }
+        string LabeledPath { get; set; }
     }
 }
