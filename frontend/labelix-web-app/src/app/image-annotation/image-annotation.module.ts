@@ -16,6 +16,11 @@ import { ImageCanvasComponent } from './PresentationLayer/image-canvas/image-can
 import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component';
 import {MaterialModule} from '../material.module';
 
+const componentTypes: ComponentType[] = [{
+  name: 'toolbar',
+  type: ToolbarComponent,
+}];
+
 @NgModule({
   declarations: [
     ImageUploadComponent,
