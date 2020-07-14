@@ -339,3 +339,7 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 docker/backendData/Images/1_ErstesProjekt/
+
+docker/backendData/Images/1_CoolesProject/
+
+backend/Labelix-Backend/Labelix.WebAPI/Ressources/Images/1_ErstesProjekt/
