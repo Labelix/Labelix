@@ -12,9 +12,10 @@ namespace Labelix.AIBackend.Controllers
     public class AIConfigController : ControllerBase
     {
         [HttpGet]
-        public string Get()
+        public async Task<string> Get()
         {
-            return $"Controller works!";
+            var (err, stdout) = await DockerUtils.DockerUtils.DockerPsAsync();
+            return stdout;
         }
 
         [HttpPost]

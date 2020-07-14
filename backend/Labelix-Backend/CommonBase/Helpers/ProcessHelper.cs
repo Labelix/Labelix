@@ -55,9 +55,11 @@ namespace CommonBase.Helpers
             var tcs = new TaskCompletionSource<(int, string)>();
 
             process.EnableRaisingEvents = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            
             process.Exited += (sender, args) =>
             {
-                tcs.SetResult((process.ExitCode, process.StandardOutput.ToString()));
+                tcs.SetResult((process.ExitCode, process.StandardOutput.ReadToEnd()));
                 process.Dispose();
             };
 
