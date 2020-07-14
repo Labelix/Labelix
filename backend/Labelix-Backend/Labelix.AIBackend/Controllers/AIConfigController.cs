@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DockerUtils;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -20,6 +21,7 @@ namespace Labelix.AIBackend.Controllers
         public async Task<int> PostAsync([FromBody] AIConfig config)
         {
             var res = await DockerUtils.DockerUtils.DockerRunAsync(config.DockerImageName, "--rm", config.Parameter);
+            Debug.WriteLine($"{System.Reflection.MethodBase.GetCurrentMethod().Name}: {res}");
             return res;
         }
 

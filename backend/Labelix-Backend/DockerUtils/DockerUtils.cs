@@ -13,7 +13,7 @@ namespace DockerUtils
     {
         public static Task<int> DockerRunAsync(string image, string options = "", string command = "", string arguments = "") 
         {
-            return ProcessHelper.RunProcessAsync(@"C:\Program Files\Docker\Docker\resources\bin\docker", $"run {options} {image} {command} {arguments}");
+            return ProcessHelper.RunProcessAsync(@"C:/Program Files/Docker/Docker/resources/bin/docker.exe", $"run {options} {image} {command} {arguments}");
         }
 
         public static int DockerRun(string image, string options = "", string command = "", string arguments = "") {
