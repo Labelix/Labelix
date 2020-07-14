@@ -6,9 +6,8 @@ services:
         restart: always
         environment:
             - POSTGRES_PASSWORD=sicheres123Passwort
-            - POSTGRES_USER=postgres_user
         ports:
-            - 5432:5432
+            - 5422:5432
         volumes:
             - .docker/database/dbscripts:/docker-entrypoint-initdb.d
             - postgres_data:/var/lib/postgresql/data

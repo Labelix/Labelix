@@ -44,7 +44,7 @@ namespace Labelix.Logic.DataContext.Db
         {
             base.OnConfiguring(optionsBuilder);
             BeforeConfiguring(optionsBuilder);
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5422;Database=postgres;Username=postgres;Password=mysecretpassword");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5422;Database=postgres;Username=postgres;Password=sicheres123Passwort");
             AfterConfiguring(optionsBuilder);
         }
         partial void BeforeConfiguring(DbContextOptionsBuilder optionsBuilder);
