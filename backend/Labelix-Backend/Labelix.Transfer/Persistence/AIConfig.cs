@@ -21,6 +21,7 @@ namespace Labelix.Transfer.Persistence
 
         public void CopyProperties(IAIConfig other)
         {
+            Id = other.Id;
             Name = other.Name;
             DockerImageName = other.DockerImageName;
             Parameter = other.Parameter;

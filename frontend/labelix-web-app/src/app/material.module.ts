@@ -68,8 +68,7 @@ import {NgModule} from '@angular/core';
     MatTableModule,
     MatSortModule,
     MatPaginatorModule
-
-  ],
+],
   exports: [
     MatCheckboxModule,
     MatCheckboxModule,

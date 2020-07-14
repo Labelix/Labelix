@@ -1,8 +1,3 @@
-#vericalToolBar {
-  background-color: rgb(1,74,182);
-  width: 50px;
-}
-
 
 #toolBarTitle {
   writing-mode: tb-rl;
@@ -10,12 +5,21 @@
 }
 
 .side-location{
-  display: flex;
-  position: relative;
+  margin-top: 3.35%;
+  position: fixed;
   left: 0;
   top: 0;
   height: 100%;
   width: 3%;
   background-color: #ebe9e7;
   overflow: hidden;
+  z-index: 1999;
+}
+
+.side-icon-button{
+  margin-left: 0.5em;
+}
+
+.selected-icon{
+  background-color: #d0cecc;
 }
