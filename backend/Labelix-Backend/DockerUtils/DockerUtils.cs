@@ -11,9 +11,10 @@ namespace DockerUtils
 {
     public static partial class DockerUtils
     {
-        public static Task<int> DockerRunAsync(string image, string options = "", string command = "", string arguments = "") 
+        public async static Task<int> DockerRunAsync(string image, string options = "", string command = "", string arguments = "") 
         {
-            return ProcessHelper.RunProcessAsync(@"C:/Program Files/Docker/Docker/resources/bin/docker.exe", $"run {options} {image} {command} {arguments}");
+            var res =  await ProcessHelper.RunProcessAsync(@"C:/Program Files/Docker/Docker/resources/bin/docker.exe", $"run {options} {image} {command} {arguments}");
+            return res.Item1;
         }
 
         public static int DockerRun(string image, string options = "", string command = "", string arguments = "") {
