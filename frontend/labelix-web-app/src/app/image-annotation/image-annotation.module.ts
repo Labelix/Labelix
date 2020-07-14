@@ -11,7 +11,8 @@ import {ImageFacade} from './AbstractionLayer/ImageFacade';
 import {RawImageEffects} from './CoreLayer/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {featureStateName, labelCategoryName, labelCategoryReducers, rawImageReducers} from './CoreLayer';
+import {featureStateName, rawImageReducers} from './CoreLayer/states/rawImageState';
+import {labelCategoryName, labelCategoryReducers} from './CoreLayer/states/labelCategoryState';
 import { ImageCanvasComponent } from './PresentationLayer/image-canvas/image-canvas.component';
 import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component';
 import {MaterialModule} from '../material.module';
@@ -21,6 +22,10 @@ import { SinleLabelPresentationComponent } from './PresentationLayer/label-widge
 import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
 import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {AnnotationFacade} from './AbstractionLayer/AnnotationFacade';
+import {annoationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
+import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
+import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
 
 @NgModule({
   declarations: [
@@ -32,13 +37,16 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MouseWheelDirective,
     LabelWidgetComponent,
     SinleLabelPresentationComponent,
-    WidgetBarComponent
+    WidgetBarComponent,
+    WholeImageAnnotationWidgetComponent,
+    SingleAnnotationExportFormComponent
   ],
   providers: [
     RawImageFacade,
     ImageFacade,
     RawImageEffects,
-    LabelCategoryFacade
+    LabelCategoryFacade,
+    AnnotationFacade
   ],
   imports: [
     CommonModule,
@@ -47,6 +55,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
     StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+    StoreModule.forFeature(annoationStateName, annotationStateReducers),
     EffectsModule.forFeature([RawImageEffects]),
     MaterialModule
   ]

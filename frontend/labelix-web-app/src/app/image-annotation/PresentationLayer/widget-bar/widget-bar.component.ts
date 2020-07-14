@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
+import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
 
 @Component({
   selector: 'app-widget-bar',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WidgetBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private annotationFacade: AnnotationFacade) { }
+
+  currentAnnotationMode: AnnotaionMode;
 
   ngOnInit(): void {
+    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
   }
 
 }

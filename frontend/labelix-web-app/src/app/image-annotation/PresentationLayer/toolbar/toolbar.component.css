@@ -15,3 +15,11 @@
   overflow: hidden;
   z-index: 1999;
 }
+
+.side-icon-button{
+  margin-left: 0.5em;
+}
+
+.selected-icon{
+  background-color: #d0cecc;
+}
