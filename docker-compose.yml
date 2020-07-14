@@ -22,6 +22,9 @@ services:
             - 80:80
         links: 
             - postgresdb
+        volumes:
+            - ./docker/backendData/Images:/app/Ressources/Images
+            - ./docker/backendData/Labels:/app/Ressources/Labels
         networks: 
             - labelixNetwork
 volumes: 
