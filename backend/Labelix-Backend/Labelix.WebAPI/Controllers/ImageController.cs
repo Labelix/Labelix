@@ -13,8 +13,13 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ImageController : GenericController<Contract, Model>
     {
-        [HttpGet("{id}")]
-        public async Task<Data> GetAsync(int id)
+		[HttpGet("{id}")]
+		public async Task<Model> GetImageAsync(int id)
+		{
+			return await GetModelByIdAsync(id);
+		}
+        [HttpGet("Picture-{id}")]
+        public async Task<Data> GetAsyncPicture(int id)
         {
             Model image = await GetModelByIdAsync(id);
 			byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);

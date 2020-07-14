@@ -1,4 +1,5 @@
 ﻿using Labelix.Contracts.Persistence;
+using Labelix.Transfer.Modules;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace Labelix.Transfer.Persistence
         [JsonPropertyName("LabeledPath")]
         public string LabeledPath { get; set; } = "";
         [JsonPropertyName("Images")]
-        public List<Image> Images { get; set; }
+        public List<Data> Images { get; set; }
 
         public void CopyProperties(IProject other)
         {

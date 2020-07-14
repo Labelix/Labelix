@@ -20,13 +20,14 @@ namespace Labelix.WebAPI.Controllers
         public ProjectController projectController = new ProjectController();
 
         [HttpPost("UploadImage")]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> ImageUploadAsync(Data data)
         {
             try
             {
                 data = GetBase64OutOfXML(data);
                 var bytes = data.Base64.Base64ToByte();
-                Project project = await projectController.GetAsync(data.ProjectId);
+                Project project = await projectController.GetAsyncOnlyProject(data.ProjectId);
                 Image image = new Image();
 
                 //Queries whether the directory (for images) of the respective project exists and creates it if not.
@@ -56,6 +57,18 @@ namespace Labelix.WebAPI.Controllers
                 Console.WriteLine(er.ToString());
                 return BadRequest();
             }
+        }
+        
+        [HttpPost("MultipleImageUpload")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> MultipleImageUpload(MultipleData datas)
+        {
+            foreach (var item in datas.data)
+            {
+                await ImageUploadAsync(item);
+            }
+
+            return Ok();
         }
 
         //Reads Base64Code and Image Format out of XML
