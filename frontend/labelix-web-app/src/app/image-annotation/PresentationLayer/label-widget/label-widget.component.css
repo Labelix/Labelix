@@ -1,8 +1,14 @@
-.label-card{
+.label-card {
   width: 15%;
   top: 0;
   right: 0;
   position: fixed;
   margin: 1%;
   margin-top: 4%;
+}
+
+.add-button {
+  margin-top: 1em;
+  background-color: #3f51b5;
+  color: white;
 }

@@ -5,15 +5,15 @@
 
 <div style="display: flex; flex-direction: row;">
 
-  <mat-card class="image-card">
+  <div cdkDrag>
     <mat-card-content>
       <div *ngIf="selectedFile != undefined">
         <img [style.width]="imgWidth + 'px'" appMouseWheel  [src]="selectedFile.src" (mouseWheelUp)="mouseWheelUpFunc()"
              (mouseWheelDown)="mouseWheelDownFunc()"/>
       </div>
     </mat-card-content>
-  </mat-card>
+  </div>
 </div>
 
-<app-label-widget></app-label-widget>
+<app-widget-bar></app-widget-bar>
 
