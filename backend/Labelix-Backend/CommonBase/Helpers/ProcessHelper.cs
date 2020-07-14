@@ -63,10 +63,8 @@ namespace CommonBase.Helpers
                 process.Dispose();
             };
 
-            process.OutputDataReceived += (sender, args) => 
-            
-            process.BeginOutputReadLine();
-            //process.BeginErrorReadLine();
+            process.OutputDataReceived += (sender, args) => process.BeginOutputReadLine();
+            //process.ErrorDataReceived() += (sender, args) => process.BeginErrorReadLine();
 
             process.Start();
             return tcs.Task;
