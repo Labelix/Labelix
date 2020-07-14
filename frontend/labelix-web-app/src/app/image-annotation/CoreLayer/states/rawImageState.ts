@@ -1,9 +1,7 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 import {
   ReducerRawImageState,
-  rawImageReducer,
-  labelCategoryReducer,
-  ReducerLabelCategoryState
+  rawImageReducer
 } from './ReducerRawImageState';
 
 // For the raw image state handling
@@ -32,34 +30,6 @@ export const getAllRawImages = createSelector(
 export const getNumberOfExistingImages = createSelector(
   getRawImageFeatureState,
   (state: RawImageState) => state.rawImage.rawImages.length
-);
-
-// For the label category handling
-
-export const labelCategoryName = 'labelCategoryFeature';
-
-export interface LabelCategoryState {
-  labelCategory: ReducerLabelCategoryState;
-}
-
-export const labelCategoryReducers: ActionReducerMap<LabelCategoryState> = {
-  labelCategory: labelCategoryReducer,
-};
-
-export const getLabelCategoryFeatureState = createFeatureSelector<LabelCategoryState>(
-  labelCategoryName
-);
-
-// Methods to subscribe to
-
-export const getAllCurrentCategoryLabels = createSelector(
-  getLabelCategoryFeatureState,
-  (state: LabelCategoryState) => state.labelCategory.labelCategories
-);
-
-export const getNumberOfExistingLabels = createSelector(
-  getLabelCategoryFeatureState,
-  (state: LabelCategoryState) => state.labelCategory.labelCategories.length
 );
 
 

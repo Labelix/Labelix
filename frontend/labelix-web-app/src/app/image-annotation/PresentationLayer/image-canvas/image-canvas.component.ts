@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {IFile} from '../../../utility/contracts/IFile';
+import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 
 @Component({
   selector: 'app-image-canvas',
@@ -9,34 +10,44 @@ import {IFile} from '../../../utility/contracts/IFile';
 })
 export class ImageCanvasComponent implements OnInit {
 
-  constructor(private facade: RawImageFacade) {
+  constructor(private annotationFacade: AnnotationFacade, private rawImageFacade: RawImageFacade) {
   }
 
   selectedFile: ImageSnippet;
   imgWidth = 1400;
-  @ViewChild('test', { static: false }) pic: ElementRef;
+  @ViewChild('test', {static: false}) pic: ElementRef;
 
   file: IFile;
 
   ngOnInit(): void {
     const reader = new FileReader();
-    this.facade.files$.subscribe(value => this.file = value[0]);
+    this.annotationFacade.currentAnnotationImage.subscribe(value => this.file = value);
+
+    const image = new Image();
+
     reader.addEventListener('load', (event: any) => {
-
       this.selectedFile = new ImageSnippet(event.target.result, this.file.file);
-
+      image.src = event.target.result;
+      image.onload = () => {
+        const newRawImage = {
+          id: this.file.id,
+          file: this.file.file,
+          width: image.width,
+          height: image.height
+        };
+        this.rawImageFacade.updateRawImage(newRawImage);
+        this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
+      };
     });
 
     reader.readAsDataURL(this.file.file);
   }
 
   mouseWheelUpFunc() {
-    console.log(this.imgWidth);
     this.imgWidth = this.imgWidth + 20;
   }
 
   mouseWheelDownFunc() {
-    console.log(this.imgWidth);
     this.imgWidth = this.imgWidth - 20;
   }
 }
