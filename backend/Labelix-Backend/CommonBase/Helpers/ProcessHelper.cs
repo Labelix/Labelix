@@ -17,7 +17,7 @@ namespace CommonBase.Helpers
         /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
         /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static Task<int> RunProcessAsync(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
+        public static async Task<int> RunProcessAsync(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
         {
             using var process = new Process
             {
@@ -29,7 +29,7 @@ namespace CommonBase.Helpers
                 }
             };
 
-            return RunProcessAsync(process);
+            return await RunProcessAsync(process);
         }
 
         /// <summary>
@@ -60,6 +60,8 @@ namespace CommonBase.Helpers
                 tcs.SetResult(process.ExitCode);
                 process.Dispose();
             };
+
+            process.Start();
 
             return tcs.Task;
         }
