@@ -21,15 +21,14 @@ namespace DockerUtils
             return DockerRunAsync(image, options, command, arguments).Result;
         }
 
-        //TODO Change parameters of ProcessHelper to tuple where seccond value equals the stdout. 
-        //public static Task<(int, string)> DockerPsAsync()
-        //{
-        //    return ProcessHelper.RunProcessAsync("docker", $"ps");
-        //}
+        public static Task<(int, string)> DockerPsAsync()
+        {
+            return ProcessHelper.RunProcessAsync("docker", $"ps");
+        }
 
-        //public static (int, string) DockerPs()
-        //{
-        //    return DockerPsAsync().Result;
-        //}
+        public static (int, string) DockerPs()
+        {
+            return DockerPsAsync().Result;
+        }
     }
 }
