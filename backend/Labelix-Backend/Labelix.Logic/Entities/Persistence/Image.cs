@@ -15,12 +15,13 @@ namespace Labelix.Logic.Entities.Persistence
         public string ImagePath { get; set; }
 
         [ForeignKey("Project")]
-        public int ProjectImageId { get; set; }
+        public int ProjectId { get; set; }
         Project Project { get; set; }
         public void CopyProperties(IImage other)
         {
+            Id = other.Id;
             ImagePath = other.ImagePath;
-            
+            ProjectId = other.ProjectId;
         }
     }
 

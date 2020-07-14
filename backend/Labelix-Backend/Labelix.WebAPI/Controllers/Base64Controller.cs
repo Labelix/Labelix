@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class Base64Controller : ControllerBase
     {
@@ -20,12 +20,14 @@ namespace Labelix.WebAPI.Controllers
         public ProjectController projectController = new ProjectController();
 
         [HttpPost("UploadImage")]
-        public async Task<HttpResponseMessage> ImageUploadAsync(Data data)
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> ImageUploadAsync(Data data)
         {
             try
             {
-                var bytes = ImageExtensions.Base64ToByte(data.Base64);
-                Project project = await projectController.GetAsync(data.ProjectId);
+                data = GetBase64OutOfXML(data);
+                var bytes = data.Base64.Base64ToByte();
+                Project project = await projectController.GetAsyncOnlyProject(data.ProjectId);
                 Image image = new Image();
 
                 //Queries whether the directory (for images) of the respective project exists and creates it if not.
@@ -38,30 +40,50 @@ namespace Labelix.WebAPI.Controllers
                 //Queries whether the image exists 
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
-                string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}.{data.Format}";
+                string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
                 if (!System.IO.File.Exists(img_path))
                 {
                     image.ImagePath = img_path;
-                    image.ProjectImageId = data.ProjectId;
+                    image.ProjectId = data.ProjectId;
                     await imageController.PostAsync(image);
                 }
 
                 //the image is saved
                 System.IO.File.WriteAllBytes(img_path, bytes);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return Ok();
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return BadRequest();
+            }
+        }
+        
+        [HttpPost("MultipleImageUpload")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> MultipleImageUpload(MultipleData datas)
+        {
+            foreach (var item in datas.data)
+            {
+                await ImageUploadAsync(item);
             }
 
-
-
+            return Ok();
         }
 
+        //Reads Base64Code and Image Format out of XML
+        private Data GetBase64OutOfXML(Data data)
+        {
+            string[] text = data.Base64.Split(';');
+            data.Base64 = text[1].Split(',')[1];
+            data.Format = text[0].Split('/')[1];
+            return data;
+        }
+
+        
+
         [HttpPost("UploadCoco")]
-        public async Task<HttpResponseMessage> CocoUploadAsync(Data data)
+        public async Task<IActionResult> CocoUploadAsync(Data data)
         {
             try
             {
@@ -84,12 +106,12 @@ namespace Labelix.WebAPI.Controllers
                     await projectController.PutAsync(project);
                 }
                 System.IO.File.WriteAllText(label_path, data.Base64);
-                return new HttpResponseMessage(HttpStatusCode.OK);
+                return Ok();
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                return BadRequest();
             }
         }
     }
