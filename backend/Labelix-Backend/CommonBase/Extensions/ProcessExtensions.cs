@@ -13,7 +13,7 @@ namespace CommonBase.Extensions
         /// </summary>
         /// <param name="process">This Process.</param>
         /// <returns>The processes exit code.</returns>
-        public static Task<int> RunProcessAsync(this Process process) {
+        public static Task<(int, string)> RunProcessAsync(this Process process) {
             return RunProcessAsync(process);
         }
 
@@ -24,7 +24,7 @@ namespace CommonBase.Extensions
         /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
         /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static int RunProcess(this Process process)
+        public static (int, string) RunProcess(this Process process)
         {
             return RunProcess(process);
         }
