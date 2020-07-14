@@ -21,8 +21,6 @@ namespace CommonBase.Extensions
         /// Extension method to run a process.
         /// </summary>
         /// <param name="process">This Process.</param>
-        /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
-        /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
         public static (int, string) RunProcess(this Process process)
         {
