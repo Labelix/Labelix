@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Labelix.Transfer.Persistence;
 using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,14 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
+		ImageController imageController = new ImageController();
+
         [HttpGet("{id}")]
-        public Task<Model> GetAsync(int id)
+        public async Task<Model> GetAsync(int id)
         {
-            return GetModelByIdAsync(id);
+            Project project = await GetModelByIdAsync(id);
+			project.Images = (await imageController.GetByProjectId(project.Id)).ToList();
+			return project;
         }
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
