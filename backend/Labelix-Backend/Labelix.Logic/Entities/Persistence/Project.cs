@@ -29,6 +29,7 @@ namespace Labelix.Logic.Entities.Persistence
 
         public void CopyProperties(IProject other)
         {
+            Id = other.Id;
             Name = other.Name;
             Description = other.Description;
             CreationDate = other.CreationDate;

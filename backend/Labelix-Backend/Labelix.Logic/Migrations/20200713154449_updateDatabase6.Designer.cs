@@ -3,15 +3,17 @@ using System;
 using Labelix.Logic.DataContext.Db;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Labelix.Logic.Migrations
 {
     [DbContext(typeof(LabelixDbContext))]
-    partial class LabelixDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200713154449_updateDatabase6")]
+    partial class updateDatabase6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
