@@ -51,9 +51,8 @@ namespace Labelix.AIBackend.Controllers
             
             options.Add("--rm");
             
-            //TODO Figure out right formating to mount directories
-            //options.Add($"-v {inDir}:{config.InputDirectory}");
-            //options.Add($"-v {outDir}:{config.OutputDirectory}");
+            options.Add($"-v {inDir}:{config.InputDirectory}");
+            options.Add($"-v {outDir}:{config.OutputDirectory}");
 
             var optionsString = string.Join(" ", options.ToArray());
 
