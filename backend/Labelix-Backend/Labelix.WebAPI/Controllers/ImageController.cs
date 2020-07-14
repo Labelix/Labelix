@@ -50,7 +50,6 @@ namespace Labelix.WebAPI.Controllers
 		public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
 		{
 			IEnumerable<Model> entities = await GetAllAsync();
-
 			return entities.Where(i => i.ProjectId == projectId);
 		}
 		[HttpPost("create")]
