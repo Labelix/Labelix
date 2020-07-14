@@ -17,7 +17,8 @@ namespace DockerUtils
             return res.Item1;
         }
 
-        public static int DockerRun(string image, string options = "", string command = "", string arguments = "") {
+        public static int DockerRun(string image, string options = "", string command = "", string arguments = "")
+        {
             return DockerRunAsync(image, options, command, arguments).Result;
         }
 
