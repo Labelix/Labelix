@@ -18,6 +18,8 @@ namespace Labelix.Transfer.Persistence
         public bool FinishedAnnotation { get; set; }
         [JsonPropertyName("LabeledPath")]
         public string LabeledPath { get; set; } = "";
+        [JsonPropertyName("Images")]
+        public List<Image> Images { get; set; }
 
         public void CopyProperties(IProject other)
         {
