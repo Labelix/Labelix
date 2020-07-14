@@ -21,9 +21,9 @@ namespace DockerUtils
             return DockerRunAsync(image, options, command, arguments).Result;
         }
 
-        public static Task<(int, string)> DockerPsAsync()
+        public async static Task<(int, string)> DockerPsAsync()
         {
-            return ProcessHelper.RunProcessAsync("docker", $"ps");
+            return await ProcessHelper.RunProcessAsync("docker", $"ps");
         }
 
         public static (int, string) DockerPs()
