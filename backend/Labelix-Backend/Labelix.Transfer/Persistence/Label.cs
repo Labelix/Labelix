@@ -15,6 +15,7 @@ namespace Labelix.Transfer.Persistence
 
         public void CopyProperties(ILabel other)
         {
+            Id = other.Id;
             Name = other.Name;
             Color = other.Color;
         }

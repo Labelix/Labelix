@@ -10,7 +10,7 @@ using Model = Labelix.Transfer.Persistence.AIConfig;
 
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AIConfigController : GenericController<Contract, Model>
     {
