@@ -4,6 +4,7 @@ using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Contract = Labelix.Contracts.Persistence.IImage;
 using Model = Labelix.Transfer.Persistence.Image;
 namespace Labelix.WebAPI.Controllers
@@ -44,6 +45,13 @@ namespace Labelix.WebAPI.Controllers
 		public Task<int> GetCountAsync()
 		{
 			return CountAsync();
+		}
+		[HttpGet("GetByProjectId-{projectId}")]
+		public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
+		{
+			IEnumerable<Model> entities = await GetAllAsync();
+
+			return entities.Where(i => i.ProjectId == projectId);
 		}
 		[HttpPost("create")]
 		public Task<Model> PostAsync(Model model)
