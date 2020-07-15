@@ -20,6 +20,7 @@ namespace Labelix.AIBackend.Controllers
     [Route("[controller]")]
     public class AIConfigController : ControllerBase
     {
+        #region CRUD
         [HttpGet]
         public async Task<string> Get()
         {
@@ -37,7 +38,28 @@ namespace Labelix.AIBackend.Controllers
 
             tempDir = PathHelper.GetRandomFileNameSecure(tempPath);
 
+            var (inDir, outDir) = CreateFolders(tempDir);
 
+            List<string> options;
+
+            options = new List<string>();
+            options.Add("--rm");
+            options.Add($"-v {inDir}:{config.InputDirectory}");
+            options.Add($"-v {outDir}:{config.OutputDirectory}");
+            var optionsString = string.Join(" ", options.ToArray());
+
+            var res = await DockerUtils.DockerUtils.DockerRunAsync(config.DockerImageName, optionsString, config.Parameter);
+
+            Directory.Delete(tempDir, true);
+
+
+            return res;
+        } 
+        #endregion
+
+        #region Static Methods
+        private static (string, string) CreateFolders(string tempDir)
+        {
             string inDir, outDir;
 
             inDir = Path.Combine(tempDir, "in");
@@ -46,22 +68,8 @@ namespace Labelix.AIBackend.Controllers
             Directory.CreateDirectory(inDir);
             Directory.CreateDirectory(outDir);
 
-            var options = new List<string>();
-            
-            options.Add("--rm");
-            
-            options.Add($"-v {inDir}:{config.InputDirectory}");
-            options.Add($"-v {outDir}:{config.OutputDirectory}");
-
-            var optionsString = string.Join(" ", options.ToArray());
-
-            var res = await DockerUtils.DockerUtils.DockerRunAsync(config.DockerImageName, optionsString, config.Parameter);
-
-            Directory.Delete(tempDir, true);
-            
-            
-            return res;
-        }
-
+            return (inDir, outDir);
+        } 
+        #endregion
     }
 }
