@@ -1,17 +1,31 @@
 version: '3.1'
 
 services: 
-    postgresDB:
+    postgresdb:
         image: postgres
         restart: always
         environment:
             - POSTGRES_PASSWORD=sicheres123Passwort
-            - POSTGRES_USER=postgres_user
         ports:
-            - 5432:5432
+            - 5422:5432
         volumes:
             - .docker/database/dbscripts:/docker-entrypoint-initdb.d
             - postgres_data:/var/lib/postgresql/data
+        networks: 
+            - labelixNetwork
+
+    webapi:
+        build:
+            context: ./backend/Labelix-Backend
+            dockerfile: ./Labelix.WebAPI/Dockerfile
+        ports:
+            - 80:80
+            - 443:443
+        links: 
+            - postgresdb
+        volumes:
+            - ./docker/backendData/Images:/app/Ressources/Images
+            - ./docker/backendData/Labels:/app/Ressources/Labels
         networks: 
             - labelixNetwork
 volumes: 

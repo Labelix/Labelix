@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Labelix.Contracts.Persistence;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace Labelix.WebAPI.Modules
+namespace Labelix.Transfer.Modules
 {
-    public class Data
+    public class Data : TransferObject, IData
     {
-        [JsonPropertyName("data")]
-        string Base64 { get; set; }
+        [JsonPropertyName("ProjectId")]
+        public int ProjectId { get; set; }
+        [JsonPropertyName("Name")]
+        public string Name { get; set; }
+        [JsonPropertyName("Format")]
+        public string Format { get; set; }
+        [JsonPropertyName("Data")]
+        public string Base64 { get; set; }
     }
 }

@@ -11,21 +11,21 @@ import {ImageFacade} from './AbstractionLayer/ImageFacade';
 import {RawImageEffects} from './CoreLayer/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {featureStateName, rawImageReducers} from './CoreLayer';
+import {featureStateName, rawImageReducers} from './CoreLayer/states/rawImageState';
+import {labelCategoryName, labelCategoryReducers} from './CoreLayer/states/labelCategoryState';
 import { ImageCanvasComponent } from './PresentationLayer/image-canvas/image-canvas.component';
 import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component';
 import {MaterialModule} from '../material.module';
-
-import {ComponentType, GoldenLayoutModule} from 'ngx-golden-layout';
-import * as $ from 'jquery';
-
-// It is required to have JQuery as global in the window object.
-window['$'] = $;
-
-const componentTypes: ComponentType[] = [{
-  name: 'toolbar',
-  type: ToolbarComponent,
-}];
+import { MouseWheelDirective } from './PresentationLayer/directives/mouse-wheel.directive';
+import { LabelWidgetComponent } from './PresentationLayer/label-widget/label-widget.component';
+import { SinleLabelPresentationComponent } from './PresentationLayer/label-widget/sub-components/sinle-label-presentation/sinle-label-presentation.component';
+import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
+import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {AnnotationFacade} from './AbstractionLayer/AnnotationFacade';
+import {annoationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
+import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
+import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
 
 @NgModule({
   declarations: [
@@ -33,21 +33,31 @@ const componentTypes: ComponentType[] = [{
     TestCanvasComponent,
     DragNDropDirective,
     ImageCanvasComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    MouseWheelDirective,
+    LabelWidgetComponent,
+    SinleLabelPresentationComponent,
+    WidgetBarComponent,
+    WholeImageAnnotationWidgetComponent,
+    SingleAnnotationExportFormComponent
   ],
   providers: [
     RawImageFacade,
     ImageFacade,
-    RawImageEffects
+    RawImageEffects,
+    LabelCategoryFacade,
+    AnnotationFacade
   ],
   imports: [
     CommonModule,
     ImageAnnotationRoutingModule,
+    DragDropModule,
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
+    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+    StoreModule.forFeature(annoationStateName, annotationStateReducers),
     EffectsModule.forFeature([RawImageEffects]),
-    MaterialModule,
-    GoldenLayoutModule.forRoot(componentTypes)
+    MaterialModule
   ]
 })
 export class ImageAnnotationModule {

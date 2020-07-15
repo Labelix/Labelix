@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  mbcwebapi:
-    image: mbcrump/mbcwebapi
-    build:
-      context: ./Labelix-Backend
-      dockerfile: Dockerfile

@@ -13,3 +13,10 @@
 .example-sidenav {
   width: 15%;
 }
+
+.header{
+  position: fixed;
+  top: 0;
+  margin-bottom: 3.35%;
+  z-index: 2000;
+}
