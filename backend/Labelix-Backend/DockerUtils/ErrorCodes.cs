@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DockerUtils
+namespace DockerAccess
 {
     public enum ErrorCodes
     {
