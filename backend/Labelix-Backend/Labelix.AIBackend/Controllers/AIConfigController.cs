@@ -9,6 +9,9 @@ using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using CommonBase.Helpers;
+using PathHelper = CommonBase.Helpers.PathHelper;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -27,23 +30,19 @@ namespace Labelix.AIBackend.Controllers
         [HttpPost]
         public async Task<int> PostAsync([FromBody] AIConfig config)
         {
-            string dirName, tempPath, tempDir;
 
+
+            string tempPath, tempDir;
             tempPath = Path.GetTempPath();
-            
-            
-            do
-            {
-                dirName = Path.GetRandomFileName();
-                tempDir = Path.Combine(tempPath, dirName);
-            } while (Directory.Exists(tempDir));
 
-            Directory.CreateDirectory(tempDir);
+            tempDir = PathHelper.GetRandomFileNameSecure(tempPath);
+
 
             string inDir, outDir;
 
             inDir = Path.Combine(tempDir, "in");
             outDir = Path.Combine(tempDir, "out");
+
             Directory.CreateDirectory(inDir);
             Directory.CreateDirectory(outDir);
 

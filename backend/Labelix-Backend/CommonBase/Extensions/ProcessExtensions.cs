@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace CommonBase.Extensions
         /// </summary>
         /// <param name="process">This Process.</param>
         /// <returns>The processes exit code.</returns>
-        public static Task<(int, string)> RunProcessAsync(this Process process) {
+        public static Task<(int, StreamReader, StreamReader)> RunProcessAsync(this Process process) {
             return RunProcessAsync(process);
         }
 
@@ -22,7 +23,7 @@ namespace CommonBase.Extensions
         /// </summary>
         /// <param name="process">This Process.</param>
         /// <returns>The processes exit code.</returns>
-        public static (int, string) RunProcess(this Process process)
+        public static (int, StreamReader, StreamReader) RunProcess(this Process process)
         {
             return RunProcess(process);
         }
