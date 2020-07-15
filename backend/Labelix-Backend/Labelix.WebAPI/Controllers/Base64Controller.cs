@@ -58,7 +58,7 @@ namespace Labelix.WebAPI.Controllers
         [DisableRequestSizeLimit]
         public async Task<IActionResult> MultipleImageUpload(MultipleData datas)
         {
-            foreach (var item in datas.data)
+            foreach (var item in datas.Data)
             {
                 await ImageUploadAsync(item);
             }
