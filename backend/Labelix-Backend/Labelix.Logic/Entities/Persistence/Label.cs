@@ -16,11 +16,12 @@ namespace Labelix.Logic.Entities.Persistence
 
         [ForeignKey("Project")]
         public int ProjectId { get; set; }
-        public Project Project{get;set;}
+        public Project Project { get; set; }
 
 
         public void CopyProperties(ILabel other)
         {
+            Id = other.Id;
             Name = other.Name;
             Color = other.Color;
         }

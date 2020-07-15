@@ -1,5 +1,21 @@
 <div class="side-location">
   <mat-list>
-    <button mat-icon-button style="margin-left: 0.5em"><mat-icon >format_color_text</mat-icon></button>
+    <button mat-icon-button class="side-icon-button"
+            [ngClass]="{'selected-icon': currentAnnotationMode === 0}"
+            (click)="clickToolbarItem(0)">
+      <mat-icon>format_color_text</mat-icon>
+    </button>
+  </mat-list>
+  <mat-list>
+    <button mat-icon-button class="side-icon-button" [ngClass]="{'selected-icon': currentAnnotationMode === 1}"
+            (click)="clickToolbarItem(1)">
+      <mat-icon>crop_din</mat-icon>
+    </button>
+  </mat-list>
+  <mat-list>
+    <button mat-icon-button class="side-icon-button" [ngClass]="{'selected-icon': currentAnnotationMode === 2}"
+            (click)="clickToolbarItem(2)">
+      <mat-icon>create</mat-icon>
+    </button>
   </mat-list>
 </div>

@@ -1,7 +1,4 @@
 ﻿using Labelix.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Labelix.Transfer.Persistence
@@ -21,6 +18,7 @@ namespace Labelix.Transfer.Persistence
 
         public void CopyProperties(IAIConfig other)
         {
+            Id = other.Id;
             Name = other.Name;
             DockerImageName = other.DockerImageName;
             Parameter = other.Parameter;

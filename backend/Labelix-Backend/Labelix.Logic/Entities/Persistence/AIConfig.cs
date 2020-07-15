@@ -1,7 +1,4 @@
 ﻿using Labelix.Contracts.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Labelix.Logic.Entities.Persistence
 {
@@ -15,6 +12,7 @@ namespace Labelix.Logic.Entities.Persistence
 
         public void CopyProperties(IAIConfig other)
         {
+            Id = other.Id;
             Name = other.Name;
             DockerImageName = other.DockerImageName;
             Parameter = other.Parameter;
