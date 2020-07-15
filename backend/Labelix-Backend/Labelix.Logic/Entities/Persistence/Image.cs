@@ -9,7 +9,7 @@ namespace Labelix.Logic.Entities.Persistence
         public Image(string imagePath)
         {
             ImagePath = imagePath;
-            
+
         }
 
         public string ImagePath { get; set; }
