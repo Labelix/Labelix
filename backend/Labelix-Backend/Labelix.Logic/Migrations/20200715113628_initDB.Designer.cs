@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Labelix.Logic.Migrations
 {
     [DbContext(typeof(LabelixDbContext))]
-    [Migration("20200708145655_updateDatabase4")]
-    partial class updateDatabase4
+    [Migration("20200715113628_initDB")]
+    partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,33 @@ namespace Labelix.Logic.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.AIConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("DockerImageName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("InputDirectory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("OutputDirectory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Parameter")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ai_configs");
+                });
 
             modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Image", b =>
                 {
@@ -31,13 +58,7 @@ namespace Labelix.Logic.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("text");
 
-                    b.Property<string>("LabeledPath")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProjectImageId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -86,6 +107,9 @@ namespace Labelix.Logic.Migrations
                     b.Property<bool>("FinishedAnnotation")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("LabeledPath")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -94,11 +118,35 @@ namespace Labelix.Logic.Migrations
                     b.ToTable("projects");
                 });
 
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Project_AIConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AIConfigKey")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProjectKey")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AIConfigKey");
+
+                    b.HasIndex("ProjectKey");
+
+                    b.ToTable("Project_AIConfigSet");
+                });
+
             modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Image", b =>
                 {
                     b.HasOne("Labelix.Logic.Entities.Persistence.Project", null)
                         .WithMany("ListOfImages")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Label", b =>
@@ -106,6 +154,21 @@ namespace Labelix.Logic.Migrations
                     b.HasOne("Labelix.Logic.Entities.Persistence.Project", "Project")
                         .WithMany("ListOfLabel")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Project_AIConfig", b =>
+                {
+                    b.HasOne("Labelix.Logic.Entities.Persistence.AIConfig", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("AIConfigKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labelix.Logic.Entities.Persistence.Project", null)
+                        .WithMany("AIConfigs")
+                        .HasForeignKey("ProjectKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

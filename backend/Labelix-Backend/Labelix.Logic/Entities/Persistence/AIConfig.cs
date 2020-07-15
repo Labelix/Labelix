@@ -1,4 +1,5 @@
 ﻿using Labelix.Contracts.Persistence;
+using System.Collections.Generic;
 
 namespace Labelix.Logic.Entities.Persistence
 {
@@ -9,6 +10,7 @@ namespace Labelix.Logic.Entities.Persistence
         public string Parameter { get; set; }
         public string InputDirectory { get; set; }
         public string OutputDirectory { get; set; }
+        public ICollection<Project_AIConfig> Projects { get; set; }
 
         public void CopyProperties(IAIConfig other)
         {
