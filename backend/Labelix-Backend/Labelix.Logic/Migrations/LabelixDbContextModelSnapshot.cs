@@ -56,13 +56,7 @@ namespace Labelix.Logic.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("text");
 
-                    b.Property<string>("LabeledPath")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProjectImageId")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -111,6 +105,9 @@ namespace Labelix.Logic.Migrations
                     b.Property<bool>("FinishedAnnotation")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("LabeledPath")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -123,7 +120,9 @@ namespace Labelix.Logic.Migrations
                 {
                     b.HasOne("Labelix.Logic.Entities.Persistence.Project", null)
                         .WithMany("ListOfImages")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Label", b =>
