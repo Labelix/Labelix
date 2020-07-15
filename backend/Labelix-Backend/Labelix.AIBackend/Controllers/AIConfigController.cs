@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using CommonBase.Helpers;
 using PathHelper = CommonBase.Helpers.PathHelper;
+using Labelix.Contracts.Persistence;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -29,7 +30,7 @@ namespace Labelix.AIBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<int> PostAsync([FromBody] AIConfig config)
+        public async Task<int> PostAsync([FromBody] a { Config: IAIConfig, Images: IEnumerable<IImage>})
         {
 
 
