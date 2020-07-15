@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Labelix.Logic.Migrations
 {
     [DbContext(typeof(LabelixDbContext))]
-    [Migration("20200713154449_updateDatabase6")]
-    partial class updateDatabase6
+    [Migration("20200715113628_initDB")]
+    partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -118,6 +118,28 @@ namespace Labelix.Logic.Migrations
                     b.ToTable("projects");
                 });
 
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Project_AIConfig", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AIConfigKey")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ProjectKey")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AIConfigKey");
+
+                    b.HasIndex("ProjectKey");
+
+                    b.ToTable("Project_AIConfigSet");
+                });
+
             modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Image", b =>
                 {
                     b.HasOne("Labelix.Logic.Entities.Persistence.Project", null)
@@ -132,6 +154,21 @@ namespace Labelix.Logic.Migrations
                     b.HasOne("Labelix.Logic.Entities.Persistence.Project", "Project")
                         .WithMany("ListOfLabel")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Labelix.Logic.Entities.Persistence.Project_AIConfig", b =>
+                {
+                    b.HasOne("Labelix.Logic.Entities.Persistence.AIConfig", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("AIConfigKey")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Labelix.Logic.Entities.Persistence.Project", null)
+                        .WithMany("AIConfigs")
+                        .HasForeignKey("ProjectKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
