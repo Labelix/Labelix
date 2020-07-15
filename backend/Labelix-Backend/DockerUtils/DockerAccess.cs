@@ -7,31 +7,31 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DockerUtils
+namespace DockerAccess
 {
-    public static partial class DockerUtils
+    public static partial class Docker
     {
-        public async static Task<int> DockerRunAsync(string image, string options = "", string command = "", string arguments = "") 
+        public async static Task<int> RunAsync(string image, string options = "", string command = "", string arguments = "") 
         {
             var res =  await ProcessHelper.RunProcessAsync("docker", $"run {options} {image} {command} {arguments}");
 
             return res.Item1;
         }
 
-        public static int DockerRun(string image, string options = "", string command = "", string arguments = "")
+        public static int Run(string image, string options = "", string command = "", string arguments = "")
         {
-            return DockerRunAsync(image, options, command, arguments).Result;
+            return RunAsync(image, options, command, arguments).Result;
         }
 
-        public async static Task<(int, string)> DockerPsAsync()
+        public async static Task<(int, string)> PsAsync()
         {
             var (err, stdout, stderr) = await ProcessHelper.RunProcessAsync("docker", $"ps");
             return (err, await stdout.ReadToEndAsync());
         }
 
-        public static (int, string) DockerPs()
+        public static (int, string) Ps()
         {
-            return DockerPsAsync().Result;
+            return PsAsync().Result;
         }
     }
 }

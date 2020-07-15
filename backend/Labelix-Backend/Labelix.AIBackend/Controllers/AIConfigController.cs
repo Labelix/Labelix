@@ -1,20 +1,12 @@
-﻿using Labelix.Transfer.Persistence;
-using Microsoft.AspNetCore.Mvc;
-using DockerUtils;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Text;
 using System.Collections.Generic;
-using Microsoft.Extensions.Options;
-using System;
 using System.IO;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using CommonBase.Helpers;
 using PathHelper = CommonBase.Helpers.PathHelper;
 using Labelix.Transfer.Modules;
-using System.Linq;
 using CommonBase.Extensions;
+using DockerAccess;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -27,7 +19,7 @@ namespace Labelix.AIBackend.Controllers
         [HttpGet]
         public async Task<string> Get()
         {
-            var (err, stdout) = await DockerUtils.DockerUtils.DockerPsAsync();
+            var (err, stdout) = await Docker.PsAsync();
             return stdout;
         }
 
@@ -56,7 +48,7 @@ namespace Labelix.AIBackend.Controllers
             options.Add($"-v {outDir}:{info.config.OutputDirectory}");
             var optionsString = string.Join(" ", options.ToArray());
 
-            var res = await DockerUtils.DockerUtils.DockerRunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
+            var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
 
             Directory.Delete(tempDir, true);
 
