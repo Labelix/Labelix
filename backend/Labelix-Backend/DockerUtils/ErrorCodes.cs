@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DockerUtils
 {
-    enum ErrorCodes
+    public enum ErrorCodes
     {
         Success = 0,
         DockerRunFailed = 125,

@@ -12,7 +12,9 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using CommonBase.Helpers;
 using PathHelper = CommonBase.Helpers.PathHelper;
-using Labelix.Contracts.Persistence;
+using Labelix.Transfer.Modules;
+using System.Linq;
+using CommonBase.Extensions;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -30,12 +32,12 @@ namespace Labelix.AIBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<int> PostAsync([FromBody] a { Config: IAIConfig, Images: IEnumerable<IImage>})
+        public async Task<int> PostAsync([FromBody] AILabelingInfo info)
         {
-
-
             string tempPath, tempDir;
             tempPath = Path.GetTempPath();
+
+            info.data.ForEach((x) => x.Base64 = x.Base64.Replace("data:image/png;base64,", ""));
 
             tempDir = PathHelper.GetRandomFileNameSecure(tempPath);
 
@@ -43,16 +45,20 @@ namespace Labelix.AIBackend.Controllers
 
             List<string> options;
 
+            info.data.ForEach((x) => {
+                var bytes = x.Base64.Base64ToByte();
+                System.IO.File.WriteAllBytes(Path.Combine(inDir, x.Name), bytes);
+            });
+
             options = new List<string>();
             options.Add("--rm");
-            options.Add($"-v {inDir}:{config.InputDirectory}");
-            options.Add($"-v {outDir}:{config.OutputDirectory}");
+            options.Add($"-v {inDir}:{info.config.InputDirectory}");
+            options.Add($"-v {outDir}:{info.config.OutputDirectory}");
             var optionsString = string.Join(" ", options.ToArray());
 
-            var res = await DockerUtils.DockerUtils.DockerRunAsync(config.DockerImageName, optionsString, config.Parameter);
+            var res = await DockerUtils.DockerUtils.DockerRunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
 
             Directory.Delete(tempDir, true);
-
 
             return res;
         } 
