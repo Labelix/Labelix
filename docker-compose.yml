@@ -20,6 +20,7 @@ services:
             dockerfile: ./Labelix.WebAPI/Dockerfile
         ports:
             - 80:80
+            - 443:443
         links: 
             - postgresdb
         volumes:

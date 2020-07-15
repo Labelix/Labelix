@@ -13,6 +13,7 @@ namespace Labelix.Logic.DataContext.Db
         protected DbSet<Project> ProjectSet { get; set; }
 
         protected DbSet<AIConfig> AIConfigSet { get; set; }
+        protected DbSet<Project_AIConfig> Project_AIConfigSet { get; set; }
 
         public override DbSet<E> Set<I, E>()
         {
@@ -33,6 +34,10 @@ namespace Labelix.Logic.DataContext.Db
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
             {
                 result = AIConfigSet as DbSet<E>;
+            }
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIConfig))
+            {
+                result = Project_AIConfigSet as DbSet<E>;
             }
 
             return result;
@@ -72,10 +77,20 @@ namespace Labelix.Logic.DataContext.Db
         private void ConfigureEntityType(EntityTypeBuilder<Project> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("projects");
+            entityTypeBuilder
+                .HasMany<Project_AIConfig>(e => e.AIConfigs)
+                .WithOne()
+                .HasForeignKey(i => i.ProjectKey);
+
+            
         }
         private void ConfigureEntityType(EntityTypeBuilder<AIConfig> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("ai_configs");
+            entityTypeBuilder
+                .HasMany<Project_AIConfig>(e => e.Projects)
+                .WithOne()
+                .HasForeignKey(i => i.AIConfigKey);
         }
     }
 }

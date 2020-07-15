@@ -6,6 +6,6 @@ namespace Labelix.Transfer.Modules
     public class MultipleData : TransferObject
     {
         [JsonPropertyName("images")]
-        public List<Data> data { get; set; }
+        public List<Data> Data { get; set; }
     }
 }

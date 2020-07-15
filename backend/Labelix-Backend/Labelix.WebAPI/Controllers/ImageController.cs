@@ -24,13 +24,14 @@ namespace Labelix.WebAPI.Controllers
             Model image = await GetModelByIdAsync(id);
             byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
             string base64 = bytes.ImageToBase64();
-            Data data = new Data();
-            data.Base64 = base64;
             string[] pathParts = image.ImagePath.Split('/');
-            data.Name = pathParts[pathParts.Length - 1];
+            Data data = new Data
+            {
+                Base64 = base64,
+                Name = pathParts[^1],
+                ProjectId = image.ProjectId
+            };
             data.Format = data.Name.Split('.')[1];
-            data.ProjectId = image.ProjectId;
-
             return GetXMLOfBase(data);
         }
 

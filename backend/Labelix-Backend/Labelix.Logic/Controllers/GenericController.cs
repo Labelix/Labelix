@@ -52,8 +52,8 @@ namespace Labelix.Logic.Controllers
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
 
             int idx = 0;
-            int qryCount = 0;
             List<I> result = new List<I>();
+            int qryCount;
 
             do
             {
