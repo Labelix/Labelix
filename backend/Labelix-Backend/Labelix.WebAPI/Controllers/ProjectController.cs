@@ -14,7 +14,7 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
-        ImageController imageController = new ImageController();
+        readonly ImageController imageController = new ImageController();
 
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
