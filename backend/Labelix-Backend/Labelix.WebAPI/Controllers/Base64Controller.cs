@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using CommonBase.Extensions;
+﻿using CommonBase.Extensions;
 using Labelix.Transfer.Modules;
 using Labelix.Transfer.Persistence;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Labelix.WebAPI.Controllers
 {
@@ -58,7 +53,7 @@ namespace Labelix.WebAPI.Controllers
                 return BadRequest();
             }
         }
-        
+
         [HttpPost("MultipleImageUpload")]
         [DisableRequestSizeLimit]
         public async Task<IActionResult> MultipleImageUpload(MultipleData datas)
@@ -80,7 +75,7 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
-        
+
 
         [HttpPost("UploadCoco")]
         public async Task<IActionResult> CocoUploadAsync(Data data)
