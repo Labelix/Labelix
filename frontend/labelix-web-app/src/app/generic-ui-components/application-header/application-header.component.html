@@ -4,13 +4,15 @@
     <app-drawer-content></app-drawer-content>
   </mat-drawer>
 
-  <mat-toolbar color="primary">
+  <mat-toolbar color="primary" class="header">
     <button mat-icon-button class="example-icon" (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <span>Labelix</span>
   </mat-toolbar>
 
-  <router-outlet></router-outlet>
+  <div style="margin-top: 3.35%;">
+    <router-outlet></router-outlet>
+  </div>
 
 </mat-drawer-container>

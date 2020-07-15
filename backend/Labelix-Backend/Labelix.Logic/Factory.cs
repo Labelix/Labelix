@@ -28,9 +28,6 @@ namespace Labelix.Logic
             }
             return result;
         }
-    }
-    public static partial class Factory
-    {
         public static Contracts.Client.IControllerAccess<I> Create<I>() where I : Contracts.IIdentifiable
         {
             Contracts.Client.IControllerAccess<I> result = null;
@@ -49,6 +46,10 @@ namespace Labelix.Logic
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
             {
                 result = new Controllers.Persistence.AIConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
+            }
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIConfig))
+            {
+                result = new Controllers.Persistence.Project_AIConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
 
             return result;

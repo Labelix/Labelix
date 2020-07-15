@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controller\**" />
+    <EmbeddedResource Remove="Controller\**" />
+    <None Remove="Controller\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
   </ItemGroup>
 

@@ -1,11 +1,19 @@
-<link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-base.css" />
-<link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-dark-theme.css" />
+<link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-base.css"/>
+<link type="text/css" rel="stylesheet" href="//golden-layout.com/assets/css/goldenlayout-dark-theme.css"/>
 
 <app-toolbar></app-toolbar>
 
-<div *ngIf="selectedFile" class="img-preview-container">
+<div style="display: flex; flex-direction: row;">
 
-  <img  class="images" [src]="selectedFile.src"/>
-
+  <div cdkDrag>
+    <mat-card-content>
+      <div *ngIf="selectedFile != undefined">
+        <img [style.width]="imgWidth + 'px'" appMouseWheel  [src]="selectedFile.src" (mouseWheelUp)="mouseWheelUpFunc()"
+             (mouseWheelDown)="mouseWheelDownFunc()"/>
+      </div>
+    </mat-card-content>
+  </div>
 </div>
+
+<app-widget-bar></app-widget-bar>
 

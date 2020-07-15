@@ -6,22 +6,22 @@ namespace Labelix.Logic.Entities.Persistence
     partial class Image : IdentityObject, IImage
     {
         public Image() { }
-        public Image(string imagePath, string labeledPath)
+        public Image(string imagePath)
         {
             ImagePath = imagePath;
-            LabeledPath = labeledPath;
+
         }
 
         public string ImagePath { get; set; }
-        public string LabeledPath { get; set; }
 
-        [ForeignKey("Project")]
-        public int ProjectImageId { get; set; }
+        [ForeignKey("Project_Id")]
+        public int ProjectId { get; set; }
         Project Project { get; set; }
         public void CopyProperties(IImage other)
         {
+            Id = other.Id;
             ImagePath = other.ImagePath;
-            LabeledPath = other.LabeledPath;
+            ProjectId = other.ProjectId;
         }
     }
 
