@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace CommonBase.Helpers
         /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
         /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static async Task<(int, string)> RunProcessAsync(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
+        public static async Task<(int, StreamReader, StreamReader)> RunProcessAsync(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
         {
             using var process = new Process
             {
@@ -40,7 +41,7 @@ namespace CommonBase.Helpers
         /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
         /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static (int, string) RunProcess(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
+        public static (int, StreamReader, StreamReader) RunProcess(string fileName, string arguments, bool noWindow = true, bool shellExecute = false)
         {
             return RunProcessAsync(fileName, arguments, noWindow, shellExecute).Result;
         }
@@ -50,23 +51,22 @@ namespace CommonBase.Helpers
         /// </summary>
         /// <param name="process">The process which will be started.</param>
         /// <returns>The processes exit code.</returns>
-        public static Task<(int, string)> RunProcessAsync(Process process)
+        public static Task<(int, StreamReader, StreamReader)> RunProcessAsync(Process process)
         {
-            var tcs = new TaskCompletionSource<(int, string)>();
+            var tcs = new TaskCompletionSource<(int, StreamReader, StreamReader)>();
 
             process.EnableRaisingEvents = true;
             process.StartInfo.RedirectStandardOutput = true;
-            
+            process.StartInfo.RedirectStandardError = true;
+
             process.Exited += (sender, args) =>
             {
-                tcs.SetResult((process.ExitCode, process.StandardOutput.ReadToEnd()));
+                tcs.SetResult((process.ExitCode, process.StandardOutput, process.StandardError));
                 process.Dispose();
             };
 
-            process.OutputDataReceived += (sender, args) => 
-            
-            process.BeginOutputReadLine();
-            //process.BeginErrorReadLine();
+            process.OutputDataReceived += (sender, args) => process.BeginOutputReadLine();
+            process.ErrorDataReceived += (sender, args) => process.BeginErrorReadLine();
 
             process.Start();
             return tcs.Task;
@@ -79,7 +79,7 @@ namespace CommonBase.Helpers
         /// <param name="noWindow">Defines whether the application should be started in windowed mode.</param>
         /// <param name="shellExecute">Defines whether the application is run by the systems shell or the process is started directly.</param>
         /// <returns>The processes exit code.</returns>
-        public static (int, string) RunProcess(Process process)
+        public static (int, StreamReader, StreamReader) RunProcess(Process process)
         {
             return RunProcessAsync(process).Result;
         }
