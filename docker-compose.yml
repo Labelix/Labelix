@@ -9,7 +9,7 @@ services:
         ports:
             - 5422:5432
         volumes:
-            - .\docker\database\dbscripts:/docker-entrypoint-initdb.d
+            - ./docker/database/dbscripts:/docker-entrypoint-initdb.d
             - postgres_data:/var/lib/postgresql/data
         networks: 
             - labelixNetwork
@@ -24,8 +24,8 @@ services:
         links: 
             - postgresdb
         volumes:
-            - .\docker\backendData\Images:/app/Ressources/Images
-            - .\docker\backendData\Labels:/app/Ressources/Labels
+            - ./docker/backendData/Images:/app/Ressources/Images
+            - ./docker/backendData/Labels:/app/Ressources/Labels
         networks: 
             - labelixNetwork
 volumes: 
