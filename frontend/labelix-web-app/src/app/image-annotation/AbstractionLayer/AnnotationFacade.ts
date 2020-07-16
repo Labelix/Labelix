@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {
-  AnnotationState,
+  AnnotationState, getActiveLabel,
   getCurrentAnnotatingImage,
   getCurrentAnnotationMode, getCurrentImageAnnotations
 } from '../CoreLayer/states/annotationState';
@@ -8,7 +8,7 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {IFile} from '../../utility/contracts/IFile';
 import {
-  AddImageAnnotation, ChangeCategoryOfCurrentImageAnnoation,
+  AddImageAnnotation, ChangeActiveLabel, ChangeCategoryOfCurrentImageAnnoation,
   ChangeCurrentAnnotationMode,
   SetCurrentAnnotationPicture
 } from '../CoreLayer/actions/image-annotation.actions';
@@ -22,11 +22,14 @@ export class AnnotationFacade {
   currentAnnotationImage: Observable<IFile>;
   currentAnnotationMode: Observable<AnnotaionMode>;
   currentImageAnnotations: Observable<IImageAnnotation[]>;
+  activeLabel: Observable<ICategory>;
+  numberOfCurrentImageAnnotations: Observable<number>;
 
   constructor(private store: Store<AnnotationState>) {
     this.currentAnnotationImage = this.store.pipe(select(getCurrentAnnotatingImage));
     this.currentAnnotationMode = this.store.pipe(select(getCurrentAnnotationMode));
     this.currentImageAnnotations = this.store.pipe(select(getCurrentImageAnnotations));
+    this.activeLabel = this.store.pipe(select(getActiveLabel));
   }
 
   changeCurrentAnnotationImage(input: IFile) {
@@ -43,5 +46,9 @@ export class AnnotationFacade {
 
   changeCurrentAnnotationCategory(input: ICategory) {
     this.store.dispatch(new ChangeCategoryOfCurrentImageAnnoation(input));
+  }
+
+  changeActiveLabel(input: ICategory) {
+    this.store.dispatch(new ChangeActiveLabel(input));
   }
 }

@@ -52,7 +52,7 @@ namespace Labelix.WebAPI.Controllers
         [HttpPut("update")]
         public Task<Model> PutAsync(Model model)
         {
-            return UpdateModelAsync(model);
+            return UpdateModelAsync(model); 
         }
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
