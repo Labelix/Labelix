@@ -9,6 +9,7 @@ using CommonBase.Extensions;
 using DockerAccess;
 using System.Web.Http.Results;
 using System;
+using System.Linq;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -45,8 +46,6 @@ namespace Labelix.AIBackend.Controllers
                 System.IO.File.WriteAllBytes(Path.Combine(inDir, x.Name), bytes);
             });
 
-            //return Ok();
-            //return BadRequest();
 
             options = new List<string>();
             options.Add("--rm");
@@ -57,13 +56,15 @@ namespace Labelix.AIBackend.Controllers
 
             var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
 
-            Directory.Delete(tempDir, true);
+
 
             IActionResult actionResult;
 
             if ((ErrorCodes)res == ErrorCodes.Success)
             {
-                actionResult = Accepted(res);
+                var file = Directory.GetFiles(outDir, "*.json").First();
+                var coco = System.IO.File.ReadAllText(file);
+                actionResult = Ok(coco);
             }
             else if (Enum.IsDefined(typeof(ErrorCodes), res)) {
 
@@ -73,6 +74,8 @@ namespace Labelix.AIBackend.Controllers
             {
                 actionResult = BadRequest($"Process-Error: {res}");
             }
+
+            Directory.Delete(tempDir, true);
             return actionResult;
         } 
         #endregion
