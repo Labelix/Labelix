@@ -26,6 +26,7 @@ import {AnnotationFacade} from './AbstractionLayer/AnnotationFacade';
 import {annoationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
 import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
 import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
+import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-
     SinleLabelPresentationComponent,
     WidgetBarComponent,
     WholeImageAnnotationWidgetComponent,
-    SingleAnnotationExportFormComponent
+    SingleAnnotationExportFormComponent,
+    DeleteImageAnnotationDialogComponent
   ],
   providers: [
     RawImageFacade,
