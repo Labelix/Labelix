@@ -8,7 +8,7 @@ import {ICocoLicense} from '../../utility/contracts/cocoFormat/ICocoLicense';
 import {ICocoAnnotation} from '../../utility/contracts/cocoFormat/ICocoAnnotation';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
 
-export class CocoFormater {
+export class CocoFormatter {
 
   createICocoInfo(
     contributor: string,
@@ -51,10 +51,10 @@ export class CocoFormater {
     const result: ICocoAnnotation[] = [];
     input.forEach(value => result.push({
       area: value.area,
-      bbox: [value.boundingBox.xCoordinate,
+      bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
         value.boundingBox.yCoordinate,
         value.boundingBox.height,
-        value.boundingBox.width],
+        value.boundingBox.width] : [0, 0, 0, 0],
       categoryId: value.categoryLabel.id,
       id: value.id,
       imageId: value.image.id,
@@ -86,8 +86,4 @@ export class CocoFormater {
     };
   }
 
-  convertToJson(input: ICocoFormat) {
-    const jsonCode = JSON.stringify(input);
-    console.log(jsonCode);
-  }
 }

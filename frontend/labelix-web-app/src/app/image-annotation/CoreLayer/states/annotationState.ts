@@ -15,7 +15,7 @@ export const getAnnotationFeatureState = createFeatureSelector<AnnotationState>(
   annoationStateName
 );
 
-// Methods to subscribe to
+// Selectors to subscribe to
 
 export const getCurrentAnnotatingImage = createSelector(
   getAnnotationFeatureState,
@@ -35,4 +35,9 @@ export const getCurrentImageAnnotations = createSelector(
 export const getNumberOfImageAnnotations = createSelector(
   getAnnotationFeatureState,
   (state: AnnotationState) => state.annotation.currentImageAnnotations.length
+);
+
+export const getActiveLabel = createSelector(
+  getAnnotationFeatureState,
+  (state: AnnotationState) => state.annotation.activeLabel
 );

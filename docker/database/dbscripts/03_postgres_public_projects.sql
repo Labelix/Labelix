@@ -1,0 +1,2 @@
+INSERT INTO public.projects ("Id", "Name", "Description", "CreationDate", "FinishedAnnotation", "LabeledPath") VALUES (1, 'Erstes Project', 'Ein erstes Testproject', '2020-07-15 13:38:35.000000', false, null);
+INSERT INTO public.projects ("Id", "Name", "Description", "CreationDate", "FinishedAnnotation", "LabeledPath") VALUES (2, 'Zweites Project', 'Ein zweites Testproject', '2020-07-15 13:38:37.000000', false, null);
