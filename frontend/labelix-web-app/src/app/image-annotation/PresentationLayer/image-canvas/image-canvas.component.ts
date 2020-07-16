@@ -26,6 +26,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   currentlyDrawing = false;
   activeLabel: ICategory;
 
+  private nextAnnotationId: number;
   private opacity = 0.25;
 
   @ViewChild('canvas') canvas: ElementRef;
@@ -37,7 +38,15 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     this.annotationFacade.currentAnnotationImage.subscribe(value => this.file = value);
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
     this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
-    this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
+    this.annotationFacade.currentImageAnnotations.subscribe(value => {
+      this.currentImageAnnotations = value;
+    });
+    this.annotationFacade.currentImageAnnotations.subscribe(value => {
+      if (this.canvas !== undefined){
+        this.drawExistingAnnotations(this.canvas.nativeElement, value);
+      }
+    });
+    this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
 
     const image = new Image();
 
@@ -86,32 +95,9 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         && this.currentlyDrawing
         && this.activeLabel !== undefined) {
 
-        canvasEl.height = canvasEl.getBoundingClientRect().bottom - canvasEl.getBoundingClientRect().top;
-        canvasEl.width = canvasEl.getBoundingClientRect().right - canvasEl.getBoundingClientRect().left;
+        this.setCanvasDimensions(canvasEl);
 
-        this.ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
-
-        for (const item of this.currentImageAnnotations) {
-          if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
-            this.ctx.strokeStyle = item.categoryLabel.colorCode;
-            this.ctx.fillStyle = this.hexToRGB(item.categoryLabel.colorCode, this.opacity);
-
-            this.ctx.beginPath();
-            this.ctx.fillRect(
-              item.boundingBox.xCoordinate / this.file.width * canvasEl.width,
-              item.boundingBox.yCoordinate / this.file.height * canvasEl.height,
-              item.boundingBox.width / this.file.width * canvasEl.width,
-              item.boundingBox.height / this.file.height * canvasEl.height
-            );
-            this.ctx.rect(
-              item.boundingBox.xCoordinate / this.file.width * canvasEl.width,
-              item.boundingBox.yCoordinate / this.file.height * canvasEl.height,
-              item.boundingBox.width / this.file.width * canvasEl.width,
-              item.boundingBox.height / this.file.height * canvasEl.height
-            );
-            this.ctx.stroke();
-          }
-        }
+        this.drawExistingAnnotations(canvasEl, this.currentImageAnnotations);
 
         this.ctx.strokeStyle = this.activeLabel.colorCode;
         this.ctx.fillStyle = this.hexToRGB(this.activeLabel.colorCode, this.opacity);
@@ -145,13 +131,47 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           segmentations: [],
           isCrowd: false,
           image: this.file,
-          id: -1,
+          id: this.nextAnnotationId,
           categoryLabel: this.activeLabel,
           area: -1,
           annotationMode: AnnotaionMode.BOUNDING_BOXES
         });
       }
     });
+  }
+
+  setCanvasDimensions(canvasEl: HTMLCanvasElement) {
+    canvasEl.height = canvasEl.getBoundingClientRect().bottom - canvasEl.getBoundingClientRect().top;
+    canvasEl.width = canvasEl.getBoundingClientRect().right - canvasEl.getBoundingClientRect().left;
+  }
+
+  drawExistingAnnotations(canvasEl: HTMLCanvasElement, elements) {
+    this.setCanvasDimensions(canvasEl);
+    // this.ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+    console.log(this.currentImageAnnotations.length);
+
+    for (const item of elements) {
+      if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+        this.ctx.strokeStyle = item.categoryLabel.colorCode;
+        this.ctx.fillStyle = this.hexToRGB(item.categoryLabel.colorCode, this.opacity);
+
+        this.ctx.beginPath();
+        this.ctx.fillRect(
+          item.boundingBox.xCoordinate / this.file.width * canvasEl.width,
+          item.boundingBox.yCoordinate / this.file.height * canvasEl.height,
+          item.boundingBox.width / this.file.width * canvasEl.width,
+          item.boundingBox.height / this.file.height * canvasEl.height
+        );
+        this.ctx.rect(
+          item.boundingBox.xCoordinate / this.file.width * canvasEl.width,
+          item.boundingBox.yCoordinate / this.file.height * canvasEl.height,
+          item.boundingBox.width / this.file.width * canvasEl.width,
+          item.boundingBox.height / this.file.height * canvasEl.height
+        );
+        this.ctx.stroke();
+      }
+    }
   }
 
   hexToRGB(hex, alpha): string {
