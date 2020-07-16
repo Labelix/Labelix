@@ -83,7 +83,15 @@ namespace Labelix.WebAPI.Controllers
             try
             {
                 Project project = await projectController.GetAsync(data.ProjectId);
-
+                if (data.Format == "")
+                {
+                    data.Format = "Coco";
+                }
+                if(data.Name == "")
+                {
+                    data.Name = data.Format;
+                }
+                
                 //Queries whether the directory (for labels) of the respective project exists and creates it if not.
                 string dir_path = $"./Ressources/Labels/{project.Id}_{project.Name}";
                 if (!System.IO.Directory.Exists(dir_path))
