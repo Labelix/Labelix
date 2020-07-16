@@ -5,15 +5,18 @@
 
 <div style="display: flex; flex-direction: row;">
 
-  <div cdkDrag>
-    <mat-card-content>
-      <div *ngIf="selectedFile != undefined">
-        <img [style.width]="imgWidth + 'px'" appMouseWheel  [src]="selectedFile.src" (mouseWheelUp)="mouseWheelUpFunc()"
-             (mouseWheelDown)="mouseWheelDownFunc()"/>
-      </div>
-    </mat-card-content>
+  <div>
+    <!-- maße von bild als optionen einführen -->
+    <canvas style="margin-top: 1em; margin-left: 5em;" #canvas id="canvas" [style.width]="imgWidth + 'px'"
+            [style.height]="imgWidth * 9 / 16 + 'px'" appMouseWheel
+            [ngStyle]="{backgroundImage: selectedFile != undefined
+                        ? 'url('+selectedFile.src+')'
+                        : 'url()', backgroundSize: 'cover'}"
+            (mouseWheelUp)="mouseWheelUpFunc()"
+            (mouseWheelDown)="mouseWheelDownFunc()"></canvas>
   </div>
 </div>
 
 <app-widget-bar></app-widget-bar>
+
 
