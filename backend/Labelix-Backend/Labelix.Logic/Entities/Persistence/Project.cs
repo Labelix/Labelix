@@ -1,7 +1,6 @@
 ﻿using Labelix.Contracts.Persistence;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Labelix.Logic.Entities.Persistence
 {
@@ -26,6 +25,7 @@ namespace Labelix.Logic.Entities.Persistence
         public string LabeledPath { get; set; }
         public ICollection<Image> ListOfImages { get; set; }
         public ICollection<Label> ListOfLabel { get; set; }
+        public ICollection<Project_AIConfig> AIConfigs { get; set; }
 
         public void CopyProperties(IProject other)
         {
