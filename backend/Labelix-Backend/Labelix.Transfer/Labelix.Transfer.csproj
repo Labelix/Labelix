@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Labelix.Contracts\Labelix.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Business\" />
+  </ItemGroup>
+
 </Project>

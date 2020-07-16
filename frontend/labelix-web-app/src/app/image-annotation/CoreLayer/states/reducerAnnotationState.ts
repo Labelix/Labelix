@@ -2,17 +2,20 @@ import {IFile} from '../../../utility/contracts/IFile';
 import {AnnotaionMode} from '../annotaionModeEnum';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
+import {ICategory} from '../../../utility/contracts/ICategory';
 
 export interface ReducerAnnotationState {
   currentAnnotatingImage: IFile;
   currentAnnotationMode: AnnotaionMode;
   currentImageAnnotations: IImageAnnotation[];
+  activeLabel: ICategory;
 }
 
 export const initalAnnotationState: ReducerAnnotationState = {
   currentAnnotatingImage: undefined,
   currentAnnotationMode: AnnotaionMode.WHOLE_IMAGE,
   currentImageAnnotations: [],
+  activeLabel: undefined
 };
 
 export function annotationReducer(state = initalAnnotationState,
@@ -22,14 +25,16 @@ export function annotationReducer(state = initalAnnotationState,
       return {
         currentImageAnnotations: state.currentImageAnnotations,
         currentAnnotationMode: state.currentAnnotationMode,
-        currentAnnotatingImage: action.payload
+        currentAnnotatingImage: action.payload,
+        activeLabel: state.activeLabel
       };
     }
     case ActionTypes.ChangeCurrentAnnotationMode: {
       return {
         currentAnnotationMode: action.payload,
         currentAnnotatingImage: state.currentAnnotatingImage,
-        currentImageAnnotations: state.currentImageAnnotations
+        currentImageAnnotations: state.currentImageAnnotations,
+        activeLabel: state.activeLabel
       };
     }
     case ActionTypes.AddImageAnnotation: {
@@ -39,7 +44,8 @@ export function annotationReducer(state = initalAnnotationState,
       return {
         currentImageAnnotations: tmpImages,
         currentAnnotatingImage: state.currentAnnotatingImage,
-        currentAnnotationMode: state.currentAnnotationMode
+        currentAnnotationMode: state.currentAnnotationMode,
+        activeLabel: state.activeLabel
       };
     }
     case ActionTypes.ChangeCategoryOfCurrentImageAnnotation: {
@@ -62,6 +68,15 @@ export function annotationReducer(state = initalAnnotationState,
 
       return {
         currentImageAnnotations: tmpImages,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        activeLabel: state.activeLabel
+      };
+    }
+    case ActionTypes.ChangeActiveLabel: {
+      return {
+        activeLabel: action.payload,
+        currentImageAnnotations: state.currentImageAnnotations,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode
       };

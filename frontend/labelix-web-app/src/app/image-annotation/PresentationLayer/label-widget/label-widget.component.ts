@@ -18,6 +18,7 @@ export class LabelWidgetComponent implements OnInit {
 
   newLabelName: string;
   newSupercategory: string;
+  numExistingLabels: number;
 
   constructor(private facade: LabelCategoryFacade, private annotationFacade: AnnotationFacade) {
   }
@@ -25,6 +26,7 @@ export class LabelWidgetComponent implements OnInit {
   ngOnInit(): void {
     this.facade.labelCategories$.subscribe(value => this.currentLabelCategories = value);
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
+    this.facade.numberOfExistingLabels$.subscribe(value => this.numExistingLabels = value);
   }
 
   onAddLabel() {
@@ -44,7 +46,9 @@ export class LabelWidgetComponent implements OnInit {
   }
 
   onLabelClick(item: ICategory) {
-    if (this.currentAnnotationMode == AnnotaionMode.WHOLE_IMAGE) {
+    this.annotationFacade.changeActiveLabel(item);
+    // wenn nur das ganze Bild annotiert werden soll, kann sofort die Kategorie aktualisiert werden
+    if (this.currentAnnotationMode === AnnotaionMode.WHOLE_IMAGE) {
       this.annotationFacade.changeCurrentAnnotationCategory(item);
     }
   }
