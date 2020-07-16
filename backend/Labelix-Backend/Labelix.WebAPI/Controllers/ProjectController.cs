@@ -26,6 +26,7 @@ namespace Labelix.WebAPI.Controllers
             {
                 projectImages.Add(await imageController.GetAsyncPicture(item.Id));
             }
+            project.LabeledPath = System.IO.File.ReadAllText(project.LabeledPath);
             project.Images = projectImages;
             return project;
         }
