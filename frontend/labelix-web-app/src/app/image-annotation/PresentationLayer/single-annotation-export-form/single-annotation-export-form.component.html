@@ -1,1 +1,35 @@
-<p>single-annotation-export-form works!</p>
+
+<mat-card-title>Export Meta Data</mat-card-title>
+
+<mat-divider></mat-divider>
+
+<br>
+
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="description" name="description"/>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Contributor</mat-label>
+    <input matInput [(ngModel)]="contributor" name="contributor"/>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>URL</mat-label>
+    <input matInput [ngModel]="url" name="url"/>
+  </mat-form-field>
+</form>
+
+<button mat-raised-button style="width: 100%; background-color: #3f51b5; color: white" (click)="onExport()"> Export </button>
+
+<br>
+
+<div *ngIf="url != undefined" style="margin-top: 1em">
+  <a mat-raised-button style="width: 100%; background-color: #3f51b5; color: white" title="Download JSON" [href]="url" download="download.json"> Download </a>
+</div>
