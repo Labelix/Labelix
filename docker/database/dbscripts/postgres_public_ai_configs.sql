@@ -1,3 +1,0 @@
-INSERT INTO public.ai_configs ("Id", "Name", "DockerImageName", "Parameter", "InputDirectory", "OutputDirectory") VALUES (1, '1', '1', '1', '1', '1');
-INSERT INTO public.ai_configs ("Id", "Name", "DockerImageName", "Parameter", "InputDirectory", "OutputDirectory") VALUES (2, '2', '2', '2', '2', '2');
-INSERT INTO public.ai_configs ("Id", "Name", "DockerImageName", "Parameter", "InputDirectory", "OutputDirectory") VALUES (3, '3', '3', '3', '3', '3');
