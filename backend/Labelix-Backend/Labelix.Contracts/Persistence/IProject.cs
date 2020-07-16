@@ -5,10 +5,10 @@ namespace Labelix.Contracts.Persistence
 {
     public interface IProject : IIdentifiable, ICopyable<IProject>
     {
-        string Name { get; set; }
-        string Description { get; set; }
-        DateTime CreationDate { get; set; }
-        bool FinishedAnnotation { get; set; }
-        string LabeledPath { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime CreationDate { get; set; }
+        public bool FinishedAnnotation { get; set; }
+        public string LabeledPath { get; set; }
     }
 }
