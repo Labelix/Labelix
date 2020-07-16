@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.Transfer", "Labelix
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonBase", "CommonBase\CommonBase.csproj", "{A81BCF5C-4E2B-4660-ACA8-B9F6DE29DEB3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labelix.AIBackend", "Labelix.AIBackend\Labelix.AIBackend.csproj", "{FECFCAF2-7089-41CC-BCC4-CBDE429CF109}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DockerAccess", "DockerUtils\DockerAccess.csproj", "{509B4060-7FC8-483D-A400-E7381E23A7B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{A81BCF5C-4E2B-4660-ACA8-B9F6DE29DEB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A81BCF5C-4E2B-4660-ACA8-B9F6DE29DEB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A81BCF5C-4E2B-4660-ACA8-B9F6DE29DEB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FECFCAF2-7089-41CC-BCC4-CBDE429CF109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FECFCAF2-7089-41CC-BCC4-CBDE429CF109}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FECFCAF2-7089-41CC-BCC4-CBDE429CF109}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FECFCAF2-7089-41CC-BCC4-CBDE429CF109}.Release|Any CPU.Build.0 = Release|Any CPU
+		{509B4060-7FC8-483D-A400-E7381E23A7B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{509B4060-7FC8-483D-A400-E7381E23A7B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{509B4060-7FC8-483D-A400-E7381E23A7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{509B4060-7FC8-483D-A400-E7381E23A7B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
