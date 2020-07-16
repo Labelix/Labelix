@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Labelix.Contracts.Persistence
+﻿namespace Labelix.Contracts.Persistence
 {
     public interface IData
     {

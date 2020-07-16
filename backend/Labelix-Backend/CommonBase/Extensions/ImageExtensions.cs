@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.IO;
 
 namespace CommonBase.Extensions
 {
@@ -17,8 +13,8 @@ namespace CommonBase.Extensions
         }
         public static string ImageToBase64(this byte[] imageBytes)
         {
-             string base64String = Convert.ToBase64String(imageBytes);
-             return base64String;
+            string base64String = Convert.ToBase64String(imageBytes);
+            return base64String;
         }
     }
 }

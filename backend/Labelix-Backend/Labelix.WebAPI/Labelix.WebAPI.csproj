@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <Content Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
@@ -17,10 +24,6 @@
     <ProjectReference Include="..\Labelix.Contracts\Labelix.Contracts.csproj" />
     <ProjectReference Include="..\Labelix.Logic\Labelix.Logic.csproj" />
     <ProjectReference Include="..\Labelix.Transfer\Labelix.Transfer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
 

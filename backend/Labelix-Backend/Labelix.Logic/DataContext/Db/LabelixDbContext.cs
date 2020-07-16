@@ -1,7 +1,6 @@
 ﻿using Labelix.Logic.Entities.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace Labelix.Logic.DataContext.Db
 {
@@ -10,11 +9,12 @@ namespace Labelix.Logic.DataContext.Db
 
         protected DbSet<Image> ImageSet { get; set; }
         protected DbSet<Label> LabelSet { get; set; }
-        
-        protected DbSet<Project> ProjectSet{get;set;}
+
+        protected DbSet<Project> ProjectSet { get; set; }
 
         protected DbSet<AIConfig> AIConfigSet { get; set; }
-        
+        protected DbSet<Project_AIConfig> Project_AIConfigSet { get; set; }
+
         public override DbSet<E> Set<I, E>()
         {
             DbSet<E> result = null;
@@ -26,7 +26,7 @@ namespace Labelix.Logic.DataContext.Db
             {
                 result = LabelSet as DbSet<E>;
             }
-            
+
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject))
             {
                 result = ProjectSet as DbSet<E>;
@@ -34,6 +34,10 @@ namespace Labelix.Logic.DataContext.Db
             else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
             {
                 result = AIConfigSet as DbSet<E>;
+            }
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIConfig))
+            {
+                result = Project_AIConfigSet as DbSet<E>;
             }
 
             return result;
@@ -45,9 +49,9 @@ namespace Labelix.Logic.DataContext.Db
             base.OnConfiguring(optionsBuilder);
             BeforeConfiguring(optionsBuilder);
             string connectionString = "Host=labelix_postgresdb_1;Port=5432;Database=postgres;Username=postgres;Password=sicheres123Passwort";
-            #if DEBUG
-                connectionString = "Host = localhost; Port = 5422; Database = postgres; Username = postgres; Password = sicheres123Passwort";
-            #endif
+#if DEBUG
+            connectionString = "Host = localhost; Port = 5422; Database = postgres; Username = postgres; Password = sicheres123Passwort";
+#endif
             optionsBuilder.UseNpgsql(connectionString);
             AfterConfiguring(optionsBuilder);
         }
@@ -73,10 +77,20 @@ namespace Labelix.Logic.DataContext.Db
         private void ConfigureEntityType(EntityTypeBuilder<Project> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("projects");
+            entityTypeBuilder
+                .HasMany<Project_AIConfig>(e => e.AIConfigs)
+                .WithOne()
+                .HasForeignKey(i => i.ProjectKey);
+
+            
         }
         private void ConfigureEntityType(EntityTypeBuilder<AIConfig> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("ai_configs");
+            entityTypeBuilder
+                .HasMany<Project_AIConfig>(e => e.Projects)
+                .WithOne()
+                .HasForeignKey(i => i.AIConfigKey);
         }
     }
 }
