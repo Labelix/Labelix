@@ -11,7 +11,8 @@ export enum ActionTypes {
   ChangeCurrentAnnotationMode = '[ImageAnnotation] Change Current Annotation Mode',
   AddImageAnnotation = '[ImageAnnotation] Add Annotation to CurrentImageAnnotations',
   ChangeCategoryOfCurrentImageAnnotation = '[ImageAnnoation] Change Category Of Current Image Annotation',
-  UpdateRawImage = '[ImageAnnotation] UpdateRawImage'
+  UpdateRawImage = '[ImageAnnotation] UpdateRawImage',
+  ChangeActiveLabel = '[ImageAnnotation] Change Active Label'
 }
 
 export class AddRawImagesAction implements Action {
@@ -63,6 +64,13 @@ export class UpdateRawImage implements Action {
   }
 }
 
+export class ChangeActiveLabel implements Action {
+  readonly type = ActionTypes.ChangeActiveLabel;
+
+  constructor(public payload: ICategory) {
+  }
+}
+
 export type ImageAnnotationActions =
   | AddRawImagesAction
   | AddAnnotationLabel
@@ -70,4 +78,5 @@ export type ImageAnnotationActions =
   | ChangeCurrentAnnotationMode
   | AddImageAnnotation
   | ChangeCategoryOfCurrentImageAnnoation
-  | UpdateRawImage;
+  | UpdateRawImage
+  | ChangeActiveLabel;
