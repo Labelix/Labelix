@@ -16,7 +16,7 @@ namespace Labelix.Transfer.Persistence
         public DateTime CreationDate { get; set; }
         [JsonPropertyName("FinishedAnnotation")]
         public bool FinishedAnnotation { get; set; }
-        [JsonPropertyName("LabeledPath")]
+        [JsonPropertyName("Label")]
         public string LabeledPath { get; set; } = "";
         [JsonPropertyName("Images")]
         public List<Data> Images { get; set; }
