@@ -73,5 +73,17 @@ namespace Labelix.WebAPI.Controllers
         {
             return DeleteModelAsync(id);
         }
+
+        public async Task<IActionResult> DeleteByProjectId(int projectId)
+        {
+            IEnumerable<Model> entities = await GetByProjectId(projectId);
+            foreach (var img in entities)
+            {
+                System.IO.File.Delete(img.ImagePath);
+                await DeleteAsync(img.Id);
+            }
+
+            return Ok();
+        }
     }
 }

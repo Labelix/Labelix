@@ -11,8 +11,8 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class Base64Controller : ControllerBase
     {
-        public ImageController imageController = new ImageController();
-        public ProjectController projectController = new ProjectController();
+        private readonly ImageController imageController = new ImageController();
+        private readonly ProjectController projectController = new ProjectController();
 
         [HttpPost("UploadImage")]
         [DisableRequestSizeLimit]

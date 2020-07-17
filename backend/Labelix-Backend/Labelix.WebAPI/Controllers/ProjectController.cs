@@ -15,6 +15,7 @@ namespace Labelix.WebAPI.Controllers
     public class ProjectController : GenericController<Contract, Model>
     {
         readonly ImageController imageController = new ImageController();
+        readonly  Base64Controller base64Controller = new Base64Controller();
 
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
@@ -51,9 +52,34 @@ namespace Labelix.WebAPI.Controllers
             return InsertModelAsync(model);
         }
         [HttpPut("update")]
-        public Task<Model> PutAsync(Model model)
+        public async Task<Model> PutAsync(Model model)
         {
-            return UpdateModelAsync(model); 
+            Model oldProject = await GetAsyncOnlyProject(model.Id);
+            Model oldProjectConverted = await GetAsync(model.Id);
+            if (oldProjectConverted.LabeledPath != model.LabeledPath)
+            {
+                System.IO.File.WriteAllText(oldProject.LabeledPath, model.LabeledPath);
+            }
+
+            if (oldProjectConverted.Images != model.Images)
+            {
+                await imageController.DeleteByProjectId(oldProjectConverted.Id);
+                var images = new MultipleData()
+                {
+                    Data = model.Images
+                };
+                await base64Controller.MultipleImageUpload(images);
+            }
+            Model newModel = new Project()
+            {
+                CreationDate = model.CreationDate,
+                Description = model.Description,
+                FinishedAnnotation = model.FinishedAnnotation,
+                LabeledPath =  $"./Ressources/Images/{model.Id}_{model.Name}",
+                Name = model.Name,
+                Timestamp = model.Timestamp
+            };
+            return await UpdateModelAsync(newModel); 
         }
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
