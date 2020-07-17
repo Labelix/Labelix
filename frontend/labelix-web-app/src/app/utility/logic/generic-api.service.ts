@@ -13,7 +13,7 @@ export class GenericApiService<T extends IIdentifiable> {
    }
 
     getItems(): Observable<T[]> {
-      return this.httpClient.get<T[]>(this.urlRoot);
+      return this.httpClient.get<T[]>(`${this.urlRoot}/all`);
     }
 
     getItemById(id: number): Observable<T> {
