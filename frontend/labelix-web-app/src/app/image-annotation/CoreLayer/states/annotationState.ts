@@ -41,3 +41,8 @@ export const getNextAnnotationId = createSelector(
   getAnnotationFeatureState,
   (state: AnnotationState) => state.annotation.annotationCount
 );
+
+export const getActivePolygonAnnotation = createSelector(
+  getAnnotationFeatureState,
+  (state: AnnotationState) => state.annotation.activePolygonAnnotation
+);
