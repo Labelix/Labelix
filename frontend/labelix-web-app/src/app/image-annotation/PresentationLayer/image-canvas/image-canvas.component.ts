@@ -1,4 +1,11 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  ViewChild,
+  OnInit
+} from '@angular/core';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {IFile} from '../../../utility/contracts/IFile';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
@@ -26,24 +33,32 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   currentlyDrawing = false;
   activeLabel: ICategory;
 
+  activePolygonAnnotation: IImageAnnotation;
+
   private nextAnnotationId: number;
   private opacity = 0.25;
+
+  points: number[] = [];
 
   @ViewChild('canvas') canvas: ElementRef;
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
     const reader = new FileReader();
-
     this.annotationFacade.currentAnnotationImage.subscribe(value => this.file = value);
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
     this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
+    this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activePolygonAnnotation = value);
     this.annotationFacade.currentImageAnnotations.subscribe(value => {
       this.currentImageAnnotations = value;
     });
     this.annotationFacade.currentImageAnnotations.subscribe(value => {
-      if (this.canvas !== undefined){
-        this.drawExistingAnnotations(this.canvas.nativeElement, value);
+      if (this.canvas !== undefined) {
+        const canvasEl = this.canvas.nativeElement;
+        this.setCanvasDimensions(canvasEl);
+        this.drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations);
+        this.drawExistingPolygonAnnotations(canvasEl);
+        this.fillExistingPolygonAnnotations(canvasEl);
       }
     });
     this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
@@ -82,62 +97,129 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     // TODO build in exception handling, when no label is selected
     fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
 
-      if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES && this.activeLabel !== undefined) {
-        lastPos.x = (value.clientX - canvasEl.getBoundingClientRect().left);
-        lastPos.y = (value.clientY - canvasEl.getBoundingClientRect().top);
+      if (this.activeLabel !== undefined) {
         this.currentlyDrawing = true;
+        this.setCanvasDimensions(canvasEl);
+        if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
+          this.onMouseDownBoundingBoxen(lastPos, value, canvasEl);
+        } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
+          this.onMouseDownPolygon(lastPos, value, canvasEl);
+        }
       }
     });
 
     fromEvent(canvasEl, 'mousemove').subscribe((value: MouseEvent) => {
 
-      if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES
-        && this.currentlyDrawing
-        && this.activeLabel !== undefined) {
-
+      if (this.currentlyDrawing && this.activeLabel !== undefined) {
         this.setCanvasDimensions(canvasEl);
-
-        this.drawExistingAnnotations(canvasEl, this.currentImageAnnotations);
-
-        this.ctx.strokeStyle = this.activeLabel.colorCode;
-        this.ctx.fillStyle = this.hexToRGB(this.activeLabel.colorCode, this.opacity);
-
-        const width = ((value.clientX - canvasEl.getBoundingClientRect().left) - lastPos.x);
-        const height = ((value.clientY - canvasEl.getBoundingClientRect().top) - lastPos.y);
-        this.ctx.beginPath();
-        this.ctx.fillRect(lastPos.x, lastPos.y, width, height);
-        this.ctx.rect(lastPos.x, lastPos.y, width, height);
-        this.ctx.stroke();
+        this.drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations);
+        this.drawExistingPolygonAnnotations(canvasEl);
+        if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
+          this.onMouseMoveBoundingBoxen(lastPos, value, canvasEl);
+        } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
+          this.onMouseMovePolygon(lastPos, value, canvasEl);
+        }
       }
     });
 
     fromEvent(canvasEl, 'mouseup').subscribe((value: MouseEvent) => {
 
-      if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES && this.activeLabel !== undefined) {
+      if (this.activeLabel !== undefined) {
         this.currentlyDrawing = false;
-
-        const tmpX = lastPos.x / canvasEl.width;
-        const tmpY = lastPos.y / canvasEl.height;
-        const tmpWidth = ((value.clientX - canvasEl.getBoundingClientRect().left) - lastPos.x) / canvasEl.width;
-        const tmpHeight = ((value.clientY - canvasEl.getBoundingClientRect().top) - lastPos.y) / canvasEl.height;
-
-        this.annotationFacade.addImageAnnotation({
-          boundingBox: {
-            width: tmpWidth * this.file.width,
-            height: tmpHeight * this.file.height,
-            xCoordinate: tmpX * this.file.width,
-            yCoordinate: tmpY * this.file.height
-          },
-          segmentations: [],
-          isCrowd: false,
-          image: this.file,
-          id: this.nextAnnotationId,
-          categoryLabel: this.activeLabel,
-          area: -1,
-          annotationMode: AnnotaionMode.BOUNDING_BOXES
-        });
+        if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
+          this.onMouseUpBoundingBoxen(lastPos, value, canvasEl);
+        } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
+          this.onMouseUpPolygon(lastPos, value, canvasEl);
+        }
       }
     });
+  }
+
+  onMouseDownBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+    lastPos.x = (value.clientX - canvasEl.getBoundingClientRect().left);
+    lastPos.y = (value.clientY - canvasEl.getBoundingClientRect().top);
+  }
+
+  onMouseMoveBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+    this.ctx.strokeStyle = this.activeLabel.colorCode;
+    this.ctx.fillStyle = this.hexToRGB(this.activeLabel.colorCode, this.opacity);
+
+    const width = ((value.clientX - canvasEl.getBoundingClientRect().left) - lastPos.x);
+    const height = ((value.clientY - canvasEl.getBoundingClientRect().top) - lastPos.y);
+    this.ctx.beginPath();
+    this.ctx.fillRect(lastPos.x, lastPos.y, width, height);
+    this.ctx.rect(lastPos.x, lastPos.y, width, height);
+    this.ctx.stroke();
+  }
+
+  onMouseUpBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+    const tmpX = lastPos.x / canvasEl.width;
+    const tmpY = lastPos.y / canvasEl.height;
+    const tmpWidth = ((value.clientX - canvasEl.getBoundingClientRect().left) - lastPos.x) / canvasEl.width;
+    const tmpHeight = ((value.clientY - canvasEl.getBoundingClientRect().top) - lastPos.y) / canvasEl.height;
+
+    this.annotationFacade.addImageAnnotation({
+      boundingBox: {
+        width: tmpWidth * this.file.width,
+        height: tmpHeight * this.file.height,
+        xCoordinate: tmpX * this.file.width,
+        yCoordinate: tmpY * this.file.height
+      },
+      segmentations: [],
+      isCrowd: false,
+      image: this.file,
+      id: this.nextAnnotationId,
+      categoryLabel: this.activeLabel,
+      area: -1,
+      annotationMode: AnnotaionMode.BOUNDING_BOXES
+    });
+  }
+
+  onMouseDownPolygon(lasPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+    if (this.activePolygonAnnotation === undefined) {
+      this.annotationFacade.setActivePolygonAnnotation({
+        annotationMode: AnnotaionMode.POLYGON,
+        segmentations: [
+          (value.clientX - canvasEl.getBoundingClientRect().left) / canvasEl.width,
+          (value.clientY - canvasEl.getBoundingClientRect().top) / canvasEl.height
+        ],
+        isCrowd: false,
+        image: this.file,
+        area: -1,
+        boundingBox: undefined,
+        categoryLabel: this.activeLabel,
+        id: this.nextAnnotationId
+      });
+    }
+  }
+
+  onMouseMovePolygon(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+
+    this.ctx.strokeStyle = this.activeLabel.colorCode;
+
+    this.drawExistingPolygonAnnotations(canvasEl);
+
+    if (this.activePolygonAnnotation !== undefined){
+      this.drawPointsOfPolygonAnnoation(canvasEl, this.activePolygonAnnotation);
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 2] * canvasEl.width,
+        this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 1] * canvasEl.height);
+      this.ctx.lineTo((value.clientX - canvasEl.getBoundingClientRect().left),
+        (value.clientY - canvasEl.getBoundingClientRect().top));
+      this.ctx.stroke();
+    }
+  }
+
+  onMouseUpPolygon(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+    this.annotationFacade.addPointsToActivePolygonAnnotation({
+      x: (value.clientX - canvasEl.getBoundingClientRect().left) / canvasEl.width,
+      y: (value.clientY - canvasEl.getBoundingClientRect().top) / canvasEl.height
+    });
+
+    this.drawExistingPolygonAnnotations(canvasEl);
+    this.fillExistingPolygonAnnotations(canvasEl);
+    this.drawPointsOfPolygonAnnoation(canvasEl, this.activePolygonAnnotation);
+    this.fillShape(canvasEl, this.activePolygonAnnotation);
   }
 
   setCanvasDimensions(canvasEl: HTMLCanvasElement) {
@@ -145,9 +227,24 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     canvasEl.width = canvasEl.getBoundingClientRect().right - canvasEl.getBoundingClientRect().left;
   }
 
-  drawExistingAnnotations(canvasEl: HTMLCanvasElement, elements) {
+  drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement) {
+    for (const item of this.currentImageAnnotations) {
+      if (item.annotationMode === AnnotaionMode.POLYGON) {
+        this.drawPointsOfPolygonAnnoation(canvasEl, item);
+      }
+    }
+  }
+
+  fillExistingPolygonAnnotations(canvasEl: HTMLCanvasElement) {
+    for (const item of this.currentImageAnnotations) {
+      if (item.annotationMode === AnnotaionMode.POLYGON) {
+        this.fillShape(canvasEl, item);
+      }
+    }
+  }
+
+  drawExistingAnnotationsBoundingBoxes(canvasEl: HTMLCanvasElement, elements) {
     this.setCanvasDimensions(canvasEl);
-    // this.ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
 
     console.log(this.currentImageAnnotations.length);
 
@@ -171,6 +268,49 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         );
         this.ctx.stroke();
       }
+    }
+  }
+
+  fillShape(canvasEl: HTMLCanvasElement, annotation: IImageAnnotation) {
+
+    if (annotation.segmentations.length > 0) {
+      this.ctx.fillStyle = this.hexToRGB(annotation.categoryLabel.colorCode, this.opacity);
+      this.ctx.beginPath();
+      this.ctx.moveTo(annotation.segmentations[0] * canvasEl.width, annotation.segmentations[1] * canvasEl.height);
+      for (let i = 2; i <= annotation.segmentations.length; i += 2) {
+        this.ctx.lineTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+      }
+      this.ctx.fill();
+    }
+  }
+
+  drawPointsOfPolygonAnnoation(canvasEl: HTMLCanvasElement, annotation: IImageAnnotation) {
+    this.ctx.strokeStyle = annotation.categoryLabel.colorCode;
+    for (let i = 2; i <= annotation.segmentations.length; i += 2) {
+      this.ctx.beginPath();
+      if (i === 2) {
+        this.ctx.moveTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+      }
+      if (i + 2 <= annotation.segmentations.length) {
+        this.ctx.lineTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+        this.ctx.lineTo(annotation.segmentations[i] * canvasEl.width, annotation.segmentations[i + 1] * canvasEl.height);
+      } else if (this.currentlyDrawing === false) {
+        this.ctx.lineTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+        this.ctx.lineTo(annotation.segmentations[0] * canvasEl.width, annotation.segmentations[1] * canvasEl.height);
+      }
+      this.ctx.fill();
+      this.ctx.stroke();
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      console.log(event);
+      if (this.activePolygonAnnotation !== undefined) {
+        this.annotationFacade.addImageAnnotation(this.activePolygonAnnotation);
+      }
+      this.annotationFacade.setActivePolygonAnnotation(undefined);
     }
   }
 

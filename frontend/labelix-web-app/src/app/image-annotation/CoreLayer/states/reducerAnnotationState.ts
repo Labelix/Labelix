@@ -10,6 +10,7 @@ export interface ReducerAnnotationState {
   currentImageAnnotations: IImageAnnotation[];
   activeLabel: ICategory;
   annotationCount: number;
+  activePolygonAnnotation: IImageAnnotation;
 }
 
 export const initalAnnotationState: ReducerAnnotationState = {
@@ -17,7 +18,8 @@ export const initalAnnotationState: ReducerAnnotationState = {
   currentAnnotationMode: AnnotaionMode.WHOLE_IMAGE,
   currentImageAnnotations: [],
   activeLabel: undefined,
-  annotationCount: 1
+  annotationCount: 1,
+  activePolygonAnnotation: undefined
 };
 
 export function annotationReducer(state = initalAnnotationState,
@@ -29,7 +31,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotationMode: state.currentAnnotationMode,
         currentAnnotatingImage: action.payload,
         activeLabel: state.activeLabel,
-        annotationCount: state.annotationCount
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: state.activePolygonAnnotation
       };
     }
     case ActionTypes.ChangeCurrentAnnotationMode: {
@@ -38,7 +41,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentImageAnnotations: state.currentImageAnnotations,
         activeLabel: state.activeLabel,
-        annotationCount: state.annotationCount
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: state.activePolygonAnnotation
       };
     }
     case ActionTypes.AddImageAnnotation: {
@@ -50,7 +54,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         activeLabel: state.activeLabel,
-        annotationCount: state.annotationCount
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: state.activePolygonAnnotation
       };
     }
     case ActionTypes.ChangeCategoryOfCurrentImageAnnotation: {
@@ -77,7 +82,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         activeLabel: state.activeLabel,
-        annotationCount: state.annotationCount
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: state.activePolygonAnnotation
       };
     }
     case ActionTypes.ChangeActiveLabel: {
@@ -86,7 +92,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentImageAnnotations: state.currentImageAnnotations,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
-        annotationCount: state.annotationCount
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: state.activePolygonAnnotation
       };
     }
 
@@ -103,7 +110,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentImageAnnotations: tmpAnnotations,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
-        annotationCount: state.annotationCount
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: state.activePolygonAnnotation
       };
     }
 
@@ -113,7 +121,43 @@ export function annotationReducer(state = initalAnnotationState,
         currentImageAnnotations: state.currentImageAnnotations,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
-        annotationCount: (state.annotationCount + 1)
+        annotationCount: (state.annotationCount + 1),
+        activePolygonAnnotation: state.activePolygonAnnotation
+      };
+    }
+
+    case ActionTypes.SetActivePolygonAnnotation: {
+      return {
+        activeLabel: state.activeLabel,
+        currentImageAnnotations: state.currentImageAnnotations,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: action.payload
+      };
+    }
+
+    case ActionTypes.AddPositionToActivePolygonAnnotation: {
+      const tmpPositions: number[] = [];
+      state.activePolygonAnnotation.segmentations.forEach(value => tmpPositions.push(value));
+      tmpPositions.push(action.payload.x);
+      tmpPositions.push(action.payload.y);
+      return {
+        activeLabel: state.activeLabel,
+        currentImageAnnotations: state.currentImageAnnotations,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        annotationCount: state.annotationCount,
+        activePolygonAnnotation: {
+          id: state.activePolygonAnnotation.id,
+          segmentations: tmpPositions,
+          categoryLabel: state.activePolygonAnnotation.categoryLabel,
+          annotationMode: state.activePolygonAnnotation.annotationMode,
+          boundingBox: state.activePolygonAnnotation.boundingBox,
+          area: state.activePolygonAnnotation.area,
+          image: state.activePolygonAnnotation.image,
+          isCrowd: state.activePolygonAnnotation.isCrowd
+        }
       };
     }
     default:
