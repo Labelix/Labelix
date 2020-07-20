@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IProject} from '../../utility/contracts/IProject';
-import {ProjectServiceService} from '../CoreLayer/project-service.service';
+import {ProjectServiceService} from '../CoreLayer/services/project-service.service';
 import {shareReplay} from 'rxjs/operators';
 
 @Injectable()

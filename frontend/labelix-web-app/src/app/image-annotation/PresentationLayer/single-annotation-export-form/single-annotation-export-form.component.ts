@@ -8,7 +8,6 @@ import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {IFile} from '../../../utility/contracts/IFile';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http';
-import {Buffer} from 'buffer';
 
 @Component({
   selector: 'app-single-annotation-export-form',
@@ -26,6 +25,8 @@ export class SingleAnnotationExportFormComponent implements OnInit {
 
   description: string = undefined;
   contributor: string = undefined;
+  inputUrl: string = undefined;
+
   url: SafeUrl = undefined;
 
   currentCategoryLabels: ICategory[];
@@ -50,13 +51,13 @@ export class SingleAnnotationExportFormComponent implements OnInit {
         year: 2020,
         description: this.description,
         version: '1.0',
-        url: this.url,
+        url: this.inputUrl,
         dateCreated: new Date(Date.now()),
         contributor: this.contributor
       }
     });
 
-    this.url = this.sanitizer.bypassSecurityTrustUrl('data:text/json;charset=UTF-8,' + encodeURIComponent(jsonObject));
+    this.url = this.sanitizer.bypassSecurityTrustUrl('data:text/json;charset=UTF-8,' + jsonObject);
   }
 
 }

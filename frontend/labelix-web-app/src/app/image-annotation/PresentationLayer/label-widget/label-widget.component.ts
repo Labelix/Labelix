@@ -3,6 +3,7 @@ import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-label-widget',
@@ -13,6 +14,7 @@ export class LabelWidgetComponent implements OnInit {
 
   currentLabelCategories: ICategory[] = [];
   currentAnnotationMode: AnnotaionMode;
+  selectedCategoryLabel: ICategory;
 
   currentlyAdding = false;
 
@@ -20,13 +22,15 @@ export class LabelWidgetComponent implements OnInit {
   newSupercategory: string;
   numExistingLabels: number;
 
-  constructor(private facade: LabelCategoryFacade, private annotationFacade: AnnotationFacade) {
+  constructor(private facade: LabelCategoryFacade, private annotationFacade: AnnotationFacade,
+              private snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
     this.facade.labelCategories$.subscribe(value => this.currentLabelCategories = value);
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
     this.facade.numberOfExistingLabels$.subscribe(value => this.numExistingLabels = value);
+    this.annotationFacade.activeLabel.subscribe(value => this.selectedCategoryLabel = value);
   }
 
   onAddLabel() {
@@ -51,6 +55,13 @@ export class LabelWidgetComponent implements OnInit {
     if (this.currentAnnotationMode === AnnotaionMode.WHOLE_IMAGE) {
       this.annotationFacade.changeCurrentAnnotationCategory(item);
     }
+    this.openSnackBar(item.name);
+  }
+
+  openSnackBar(message: string, action?: string) {
+    this.snackBar.open(message, action ? action : undefined, {
+      verticalPosition: 'bottom', horizontalPosition: 'start'
+    });
   }
 
 }

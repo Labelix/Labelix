@@ -7,6 +7,7 @@ import {IFile} from '../../utility/contracts/IFile';
 import {ICocoLicense} from '../../utility/contracts/cocoFormat/ICocoLicense';
 import {ICocoAnnotation} from '../../utility/contracts/cocoFormat/ICocoAnnotation';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
+import {replaceTsWithNgInErrors} from "@angular/compiler-cli/src/ngtsc/diagnostics";
 
 export class CocoFormatter {
 
@@ -49,18 +50,33 @@ export class CocoFormatter {
 
   getCocoAnnotations(input: IImageAnnotation[]): ICocoAnnotation[] {
     const result: ICocoAnnotation[] = [];
-    input.forEach(value => result.push({
-      area: value.area,
-      bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
-        value.boundingBox.yCoordinate,
-        value.boundingBox.height,
-        value.boundingBox.width] : [0, 0, 0, 0],
-      categoryId: value.categoryLabel.id,
-      id: value.id,
-      imageId: value.image.id,
-      iscrowd: value.isCrowd,
-      segmentation: value.segmentations
-    }));
+    input.forEach(value => {
+      if (value.categoryLabel !== undefined) {
+        result.push({
+          area: value.area,
+          bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
+            value.boundingBox.yCoordinate,
+            value.boundingBox.height,
+            value.boundingBox.width] : [0, 0, 0, 0],
+          categoryId: value.categoryLabel.id,
+          id: value.id,
+          imageId: value.image.id,
+          iscrowd: value.isCrowd,
+          segmentation: this.getRealPositions(value.segmentations, value.image)
+        });
+      }
+    });
+    return result;
+  }
+
+  private getRealPositions(percentagePositions: number[], image: IFile): number[] {
+    const result: number[] = [];
+
+    for (let i = 2; i <= percentagePositions.length; i += 2) {
+      result.push(percentagePositions[i - 2] * image.width);
+      result.push(percentagePositions[i - 1] * image.height);
+    }
+
     return result;
   }
 
