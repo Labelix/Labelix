@@ -1,5 +1,6 @@
 import {IProject} from '../../../utility/contracts/IProject';
 import {ActionTypes, ProjectActions} from '../actions/project.actions';
+import {act} from '@ngrx/effects';
 
 export interface ReducerProjectState{
   projects: IProject[];
@@ -17,8 +18,7 @@ export function projectReducer(
         const tempActions: IProject[] = [];
 
         state.projects.forEach(value => tempActions.push(value));
-        action.payload.forEach(value => tempActions.push(value));
-
+        tempActions.push(action.payload);
         return{
           projects: tempActions
         };
@@ -31,6 +31,15 @@ export function projectReducer(
             tempActions.push(value);
           }
         });
+        return {
+          projects: tempActions
+        };
+      }
+      case ActionTypes.GetProjects: {
+        const tempActions: IProject[] = [];
+
+        state.projects.forEach(value => tempActions.push(value));
+        action.payload.forEach(value => tempActions.push(value));
         return {
           projects: tempActions
         };

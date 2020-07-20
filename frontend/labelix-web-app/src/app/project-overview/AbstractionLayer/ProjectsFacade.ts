@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import { ProjectServiceService } from '../CoreLayer/services/project-service.service';
+import {ProjectServiceService} from '../CoreLayer/services/project-service.service';
 import {select, Store} from '@ngrx/store';
 import {getAllProjects, getNumberOfExistingProjects, ProjectState} from '../CoreLayer/states/projectState';
 import {IProject} from '../../utility/contracts/IProject';
-import {AddProjectAction, DeleteProjectAction} from '../CoreLayer/actions/project.actions';
+import {AddProjectAction, DeleteProjectAction, GetProjectsAction} from '../CoreLayer/actions/project.actions';
 import {shareReplay} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
@@ -18,6 +18,11 @@ export class ProjectsFacade {
   }
 
   getProjects() {
-    return this.projects$;
+    this.projectApi.getItems().subscribe((value: IProject[]) => this.store.dispatch(new GetProjectsAction(value)));
+  }
+
+  addProject(importProject: IProject) {
+    this.projectApi.postItem(importProject);
+    this.store.dispatch(new AddProjectAction(importProject));
   }
 }
