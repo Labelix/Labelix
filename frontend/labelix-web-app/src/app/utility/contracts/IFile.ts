@@ -5,4 +5,5 @@ export interface IFile extends IIdentifiable{
   file: File;
   height: number;
   width: number;
+  base64Url: string;
 }

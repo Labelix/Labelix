@@ -27,6 +27,8 @@ import {annoationStateName, annotationStateReducers} from './CoreLayer/states/an
 import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
 import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
 import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete-image-annotation-dialog/delete-image-annotation-dialog.component';
+import { ImageTimelineComponent } from './PresentationLayer/image-timeline/image-timeline.component';
+import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-timeline-single-image/image-timeline-single-image.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete
     WidgetBarComponent,
     WholeImageAnnotationWidgetComponent,
     SingleAnnotationExportFormComponent,
-    DeleteImageAnnotationDialogComponent
+    DeleteImageAnnotationDialogComponent,
+    ImageTimelineComponent,
+    ImageTimelineSingleImageComponent
   ],
   providers: [
     RawImageFacade,

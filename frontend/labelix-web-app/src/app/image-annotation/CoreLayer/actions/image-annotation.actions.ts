@@ -16,7 +16,8 @@ export enum ActionTypes {
   DeleteImageAnnotation = '[ImageAnnotation] Delete Image Annotation',
   IncrementAnnotationCount = '[ImageAnnotation] Increment Annotation Count',
   SetActivePolygonAnnotation = '[ImageAnnotation] Set active Polygon Annotation',
-  AddPositionToActivePolygonAnnotation = '[ImageAnnotation]Add Position to active Polygon Annotation'
+  AddPositionToActivePolygonAnnotation = '[ImageAnnotation]Add Position to active Polygon Annotation',
+  AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile'
 }
 
 export class AddRawImagesAction implements Action {
@@ -103,6 +104,13 @@ export class SetActivePolygonAnnotation implements Action {
   }
 }
 
+export class AddBase64CodeToIFile implements Action {
+  readonly type = ActionTypes.AddBase64CodeToIFile;
+
+  constructor(public payload: {id: number, baseCode: string}) {
+  }
+}
+
 export type ImageAnnotationActions =
   | AddRawImagesAction
   | AddAnnotationLabel
@@ -115,4 +123,5 @@ export type ImageAnnotationActions =
   | DeleteImageAnnoation
   | IncrementAnnotationCount
   | AddPositionToActivePolygonAnnotation
-  | SetActivePolygonAnnotation;
+  | SetActivePolygonAnnotation
+  | AddBase64CodeToIFile;

@@ -7,7 +7,6 @@ import {IFile} from '../../utility/contracts/IFile';
 import {ICocoLicense} from '../../utility/contracts/cocoFormat/ICocoLicense';
 import {ICocoAnnotation} from '../../utility/contracts/cocoFormat/ICocoAnnotation';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
-import {replaceTsWithNgInErrors} from "@angular/compiler-cli/src/ngtsc/diagnostics";
 
 export class CocoFormatter {
 
