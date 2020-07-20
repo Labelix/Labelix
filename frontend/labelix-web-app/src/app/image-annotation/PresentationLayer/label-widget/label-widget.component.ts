@@ -22,7 +22,10 @@ export class LabelWidgetComponent implements OnInit {
   newSupercategory: string;
   numExistingLabels: number;
 
-  constructor(private facade: LabelCategoryFacade, private annotationFacade: AnnotationFacade,
+  nextLabelId: number;
+
+  constructor(private facade: LabelCategoryFacade,
+              private annotationFacade: AnnotationFacade,
               private snackBar: MatSnackBar) {
   }
 
@@ -31,6 +34,7 @@ export class LabelWidgetComponent implements OnInit {
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
     this.facade.numberOfExistingLabels$.subscribe(value => this.numExistingLabels = value);
     this.annotationFacade.activeLabel.subscribe(value => this.selectedCategoryLabel = value);
+    this.facade.nextLabelId$.subscribe(value => this.nextLabelId = value);
   }
 
   onAddLabel() {
@@ -41,7 +45,7 @@ export class LabelWidgetComponent implements OnInit {
     this.facade.addLabelCategory({
       name: this.newLabelName,
       supercategory: this.newSupercategory,
-      id: -1,
+      id: this.nextLabelId,
       colorCode: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
     });
     this.newLabelName = '';
@@ -60,7 +64,7 @@ export class LabelWidgetComponent implements OnInit {
 
   openSnackBar(message: string, action?: string) {
     this.snackBar.open(message, action ? action : undefined, {
-      verticalPosition: 'bottom', horizontalPosition: 'start'
+      verticalPosition: 'top', horizontalPosition: 'center'
     });
   }
 

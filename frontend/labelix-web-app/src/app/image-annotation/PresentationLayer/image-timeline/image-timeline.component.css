@@ -1,0 +1,16 @@
+.horizontal-list {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  overflow: auto;
+  height: 9em;
+}
+
+.time-line{
+  padding-top: 1em;
+  margin-left: 3%;
+  position: fixed;
+  bottom: 0;
+  width: 80.7%;
+  background-color: #ebe9e7;
+}

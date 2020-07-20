@@ -21,11 +21,11 @@ import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 })
 export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
-  constructor(private annotationFacade: AnnotationFacade, private rawImageFacade: RawImageFacade) {
+  constructor(private annotationFacade: AnnotationFacade,
+              private rawImageFacade: RawImageFacade) {
   }
 
-  file: IFile;
-  selectedFile: ImageSnippet;
+  activeRawImage: IFile;
   imgWidth = 1400;
 
   currentImageAnnotations: IImageAnnotation[];
@@ -38,14 +38,15 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   private nextAnnotationId: number;
   private opacity = 0.25;
 
-  points: number[] = [];
-
   @ViewChild('canvas') canvas: ElementRef;
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
-    const reader = new FileReader();
-    this.annotationFacade.currentAnnotationImage.subscribe(value => this.file = value);
+    this.annotationFacade.currentAnnotationImage.subscribe(value => {
+      this.activeRawImage = value;
+      this.readDataFromRawImage();
+      this.redrawCanvas();
+    });
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
     this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
     this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activePolygonAnnotation = value);
@@ -53,34 +54,45 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       this.currentImageAnnotations = value;
     });
     this.annotationFacade.currentImageAnnotations.subscribe(value => {
-      if (this.canvas !== undefined) {
-        const canvasEl = this.canvas.nativeElement;
-        this.setCanvasDimensions(canvasEl);
-        this.drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations);
-        this.drawExistingPolygonAnnotations(canvasEl);
-        this.fillExistingPolygonAnnotations(canvasEl);
-      }
+      this.readDataFromRawImage();
+      this.redrawCanvas();
     });
     this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
+    this.readDataFromRawImage();
+  }
 
-    const image = new Image();
-
-    reader.addEventListener('load', (event: any) => {
-      this.selectedFile = new ImageSnippet(event.target.result, this.file.file);
-      image.src = event.target.result;
-      image.onload = () => {
-        const newRawImage = {
-          id: this.file.id,
-          file: this.file.file,
-          width: image.width,
-          height: image.height
+  readDataFromRawImage() {
+    if (this.activeRawImage.height === -1
+      || this.activeRawImage.width === -1
+      || this.activeRawImage.base64Url === '') {
+      const reader = new FileReader();
+      const image = new Image();
+      reader.addEventListener('load', (event: any) => {
+        image.src = event.target.result;
+        image.onload = () => {
+          const newRawImage = {
+            id: this.activeRawImage.id,
+            file: this.activeRawImage.file,
+            width: image.width,
+            height: image.height,
+            base64Url: image.src
+          };
+          this.rawImageFacade.updateRawImage(newRawImage);
+          this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
         };
-        this.rawImageFacade.updateRawImage(newRawImage);
-        this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
-      };
-    });
+      });
+      reader.readAsDataURL(this.activeRawImage.file);
+    }
+  }
 
-    reader.readAsDataURL(this.file.file);
+  private redrawCanvas() {
+    if (this.canvas !== undefined) {
+      const canvasEl = this.canvas.nativeElement;
+      this.setCanvasDimensions(canvasEl);
+      this.drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations);
+      this.drawExistingPolygonAnnotations(canvasEl);
+      this.fillExistingPolygonAnnotations(canvasEl);
+    }
   }
 
   ngAfterViewInit() {
@@ -160,14 +172,14 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     this.annotationFacade.addImageAnnotation({
       boundingBox: {
-        width: tmpWidth * this.file.width,
-        height: tmpHeight * this.file.height,
-        xCoordinate: tmpX * this.file.width,
-        yCoordinate: tmpY * this.file.height
+        width: tmpWidth * this.activeRawImage.width,
+        height: tmpHeight * this.activeRawImage.height,
+        xCoordinate: tmpX * this.activeRawImage.width,
+        yCoordinate: tmpY * this.activeRawImage.height
       },
       segmentations: [],
       isCrowd: false,
-      image: this.file,
+      image: this.activeRawImage,
       id: this.nextAnnotationId,
       categoryLabel: this.activeLabel,
       area: -1,
@@ -184,7 +196,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           (value.clientY - canvasEl.getBoundingClientRect().top) / canvasEl.height
         ],
         isCrowd: false,
-        image: this.file,
+        image: this.activeRawImage,
         area: -1,
         boundingBox: undefined,
         categoryLabel: this.activeLabel,
@@ -199,11 +211,13 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     this.drawExistingPolygonAnnotations(canvasEl);
 
-    if (this.activePolygonAnnotation !== undefined){
+    if (this.activePolygonAnnotation !== undefined) {
       this.drawPointsOfPolygonAnnoation(canvasEl, this.activePolygonAnnotation);
       this.ctx.beginPath();
-      this.ctx.moveTo(this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 2] * canvasEl.width,
-        this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 1] * canvasEl.height);
+      this.ctx.moveTo(this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 2]
+        * canvasEl.width,
+        this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 1]
+        * canvasEl.height);
       this.ctx.lineTo((value.clientX - canvasEl.getBoundingClientRect().left),
         (value.clientY - canvasEl.getBoundingClientRect().top));
       this.ctx.stroke();
@@ -229,7 +243,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement) {
     for (const item of this.currentImageAnnotations) {
-      if (item.annotationMode === AnnotaionMode.POLYGON) {
+      if (item.annotationMode === AnnotaionMode.POLYGON
+        && item.image.id === this.activeRawImage.id) {
         this.drawPointsOfPolygonAnnoation(canvasEl, item);
       }
     }
@@ -237,7 +252,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   fillExistingPolygonAnnotations(canvasEl: HTMLCanvasElement) {
     for (const item of this.currentImageAnnotations) {
-      if (item.annotationMode === AnnotaionMode.POLYGON) {
+      if (item.annotationMode === AnnotaionMode.POLYGON
+        && item.image.id === this.activeRawImage.id) {
         this.fillShape(canvasEl, item);
       }
     }
@@ -249,22 +265,23 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     console.log(this.currentImageAnnotations.length);
 
     for (const item of elements) {
-      if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+      if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES
+        && item.image.id === this.activeRawImage.id) {
         this.ctx.strokeStyle = item.categoryLabel.colorCode;
         this.ctx.fillStyle = this.hexToRGB(item.categoryLabel.colorCode, this.opacity);
 
         this.ctx.beginPath();
         this.ctx.fillRect(
-          item.boundingBox.xCoordinate / this.file.width * canvasEl.width,
-          item.boundingBox.yCoordinate / this.file.height * canvasEl.height,
-          item.boundingBox.width / this.file.width * canvasEl.width,
-          item.boundingBox.height / this.file.height * canvasEl.height
+          item.boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width,
+          item.boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height,
+          item.boundingBox.width / this.activeRawImage.width * canvasEl.width,
+          item.boundingBox.height / this.activeRawImage.height * canvasEl.height
         );
         this.ctx.rect(
-          item.boundingBox.xCoordinate / this.file.width * canvasEl.width,
-          item.boundingBox.yCoordinate / this.file.height * canvasEl.height,
-          item.boundingBox.width / this.file.width * canvasEl.width,
-          item.boundingBox.height / this.file.height * canvasEl.height
+          item.boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width,
+          item.boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height,
+          item.boundingBox.width / this.activeRawImage.width * canvasEl.width,
+          item.boundingBox.height / this.activeRawImage.height * canvasEl.height
         );
         this.ctx.stroke();
       }
