@@ -37,6 +37,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   private nextAnnotationId: number;
   private opacity = 0.25;
+  dragable = true;
 
   @ViewChild('canvas') canvas: ElementRef;
   ctx: CanvasRenderingContext2D;
@@ -320,10 +321,17 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     }
   }
 
+  canvasKeyUp(event: KeyboardEvent) {
+    this.dragable = !event.ctrlKey;
+  }
+
+  canvasKeyDown(event: KeyboardEvent) {
+    this.dragable = !event.ctrlKey;
+  }
+
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
+  keyUpEvent(event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      console.log(event);
       if (this.activePolygonAnnotation !== undefined) {
         this.annotationFacade.addImageAnnotation(this.activePolygonAnnotation);
       }

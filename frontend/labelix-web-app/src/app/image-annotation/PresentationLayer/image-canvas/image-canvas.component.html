@@ -5,8 +5,9 @@
 
 <div style="display: flex; flex-direction: row;">
 
-  <div>
-    <canvas style="margin-top: 1em; margin-left: 5em;" #canvas id="canvas" [style.width]="imgWidth + 'px'"
+  <div cdkDrag [cdkDragDisabled]="dragable" class="example-box" style="margin-top: 1em; margin-left: 5em;"
+       (keydown)="canvasKeyDown($event)" (keyup)="canvasKeyUp($event)" tabindex="0">
+    <canvas #canvas id="canvas" [style.width]="imgWidth + 'px'"
             [style.height]="imgWidth * 9 / 16 + 'px'" appMouseWheel
             [ngStyle]="{backgroundImage: activeRawImage != undefined
                         ? 'url('+activeRawImage.base64Url+')'
