@@ -51,8 +51,9 @@ export class CocoFormatter {
     const result: ICocoAnnotation[] = [];
     input.forEach(value => {
       if (value.categoryLabel !== undefined) {
+        const realPositions: number[] = this.getRealPositions(value.segmentations, value.image);
         result.push({
-          area: value.area,
+          area: this.calcSurfaceOfPolygon(realPositions),
           bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
             value.boundingBox.yCoordinate,
             value.boundingBox.height,
@@ -61,11 +62,23 @@ export class CocoFormatter {
           id: value.id,
           imageId: value.image.id,
           iscrowd: value.isCrowd,
-          segmentation: this.getRealPositions(value.segmentations, value.image)
+          segmentation: realPositions
         });
       }
     });
     return result;
+  }
+
+  private calcSurfaceOfPolygon(points: number[]): number {
+    let sum1 = 0;
+    let sum2 = 0;
+
+    for (let i = 2; i < points.length; i += 2) {
+      sum1 += points[i - 2] * points[i + 1];
+      sum2 += points[i] * points[i - 1];
+    }
+
+    return (sum1 - sum2) / 2;
   }
 
   private getRealPositions(percentagePositions: number[], image: IFile): number[] {
