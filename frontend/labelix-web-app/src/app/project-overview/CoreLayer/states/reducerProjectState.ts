@@ -2,11 +2,11 @@ import {IProject} from '../../../utility/contracts/IProject';
 import {ActionTypes, ProjectActions} from '../actions/project.actions';
 
 export interface ReducerProjectState{
-  project: IProject[];
+  projects: IProject[];
 }
 
 export const initialProjectState: ReducerProjectState = {
-  project: [],
+  projects: [],
 };
 
 export function projectReducer(
@@ -16,12 +16,26 @@ export function projectReducer(
       case ActionTypes.AddProject: {
         const tempActions: IProject[] = [];
 
-        state.project.forEach(value => tempActions.push(value));
+        state.projects.forEach(value => tempActions.push(value));
         action.payload.forEach(value => tempActions.push(value));
 
         return{
-          project: tempActions
+          projects: tempActions
         };
       }
+      case ActionTypes.DeleteProject: {
+        const tempActions: IProject[] = [];
+
+        state.projects.forEach(value => {
+          if (value.id !== action.payload.id){
+            tempActions.push(value);
+          }
+        });
+        return {
+          projects: tempActions
+        };
+      }
+      default:
+        return state;
     }
 }
