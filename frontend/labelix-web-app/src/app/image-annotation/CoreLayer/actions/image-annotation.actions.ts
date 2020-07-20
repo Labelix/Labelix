@@ -12,7 +12,11 @@ export enum ActionTypes {
   AddImageAnnotation = '[ImageAnnotation] Add Annotation to CurrentImageAnnotations',
   ChangeCategoryOfCurrentImageAnnotation = '[ImageAnnoation] Change Category Of Current Image Annotation',
   UpdateRawImage = '[ImageAnnotation] UpdateRawImage',
-  ChangeActiveLabel = '[ImageAnnotation] Change Active Label'
+  ChangeActiveLabel = '[ImageAnnotation] Change Active Label',
+  DeleteImageAnnotation = '[ImageAnnotation] Delete Image Annotation',
+  IncrementAnnotationCount = '[ImageAnnotation] Increment Annotation Count',
+  SetActivePolygonAnnotation = '[ImageAnnotation] Set active Polygon Annotation',
+  AddPositionToActivePolygonAnnotation = '[ImageAnnotation]Add Position to active Polygon Annotation'
 }
 
 export class AddRawImagesAction implements Action {
@@ -71,6 +75,34 @@ export class ChangeActiveLabel implements Action {
   }
 }
 
+export class DeleteImageAnnoation implements Action {
+  readonly type = ActionTypes.DeleteImageAnnotation;
+
+  constructor(public payload: IImageAnnotation) {
+  }
+}
+
+export class IncrementAnnotationCount implements Action {
+  readonly type = ActionTypes.IncrementAnnotationCount;
+
+  constructor() {
+  }
+}
+
+export class AddPositionToActivePolygonAnnotation implements Action {
+  readonly type = ActionTypes.AddPositionToActivePolygonAnnotation;
+
+  constructor(public payload: {x: number, y: number}) {
+  }
+}
+
+export class SetActivePolygonAnnotation implements Action {
+  readonly type = ActionTypes.SetActivePolygonAnnotation;
+
+  constructor(public payload: IImageAnnotation) {
+  }
+}
+
 export type ImageAnnotationActions =
   | AddRawImagesAction
   | AddAnnotationLabel
@@ -79,4 +111,8 @@ export type ImageAnnotationActions =
   | AddImageAnnotation
   | ChangeCategoryOfCurrentImageAnnoation
   | UpdateRawImage
-  | ChangeActiveLabel;
+  | ChangeActiveLabel
+  | DeleteImageAnnoation
+  | IncrementAnnotationCount
+  | AddPositionToActivePolygonAnnotation
+  | SetActivePolygonAnnotation;
