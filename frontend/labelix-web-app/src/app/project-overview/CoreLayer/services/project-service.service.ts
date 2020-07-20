@@ -10,6 +10,6 @@ export class ProjectServiceService extends GenericApiService<IProject>{
 
   constructor(protected  httpClient: HttpClient) {
     super(httpClient);
-    this.urlRoot = 'http://localhost:3400/projects';
+    this.urlRoot = 'api/projects';
   }
 }
