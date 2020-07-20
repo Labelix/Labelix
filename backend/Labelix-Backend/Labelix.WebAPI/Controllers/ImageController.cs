@@ -59,9 +59,11 @@ namespace Labelix.WebAPI.Controllers
             return entities.Where(i => i.ProjectId == projectId);
         }
         [HttpPost("create")]
-        public Task<Model> PostAsync(Model model)
+        public async Task<IActionResult> PostAsync(Data data)
         {
-            return InsertModelAsync(model);
+            await InsertModelAsync(await Base64Controller.ImageUploadAsync(data));
+
+            return Ok();
         }
         [HttpPut("update")]
         public Task<Model> PutAsync(Model model)
