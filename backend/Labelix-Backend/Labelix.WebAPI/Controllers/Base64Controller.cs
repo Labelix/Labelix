@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class Base64Controller : ControllerBase
+    public static class Base64Controller
     {
-        private readonly ImageController imageController = new ImageController();
-        private readonly ProjectController projectController = new ProjectController();
-
-        [HttpPost("UploadImage")]
-        [DisableRequestSizeLimit]
-        public async Task<IActionResult> ImageUploadAsync(Data data)
+        
+        public static async Task<Image> ImageUploadAsync(Data data)
         {
             try
             {
+                ProjectController projectController = new ProjectController();
+                ImageController imageController = new ImageController();
                 data = GetBase64OutOfXML(data);
                 var bytes = data.Base64.Base64ToByte();
                 Project project = await projectController.GetAsyncOnlyProject(data.ProjectId);
@@ -40,34 +36,30 @@ namespace Labelix.WebAPI.Controllers
                 {
                     image.ImagePath = img_path;
                     image.ProjectId = data.ProjectId;
-                    await imageController.PostAsync(image);
                 }
-
+                
                 //the image is saved
                 System.IO.File.WriteAllBytes(img_path, bytes);
-                return Ok();
+                return image;
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
-                return BadRequest();
+                return null;
             }
         }
 
-        [HttpPost("MultipleImageUpload")]
-        [DisableRequestSizeLimit]
-        public async Task<IActionResult> MultipleImageUpload(MultipleData datas)
+        public static async Task MultipleImageUpload(MultipleData datas)
         {
             foreach (var item in datas.Data)
             {
                 await ImageUploadAsync(item);
             }
 
-            return Ok();
         }
-
+        
         //Reads Base64Code and Image Format out of XML
-        private Data GetBase64OutOfXML(Data data)
+        private static Data GetBase64OutOfXML(Data data)
         {
             string[] text = data.Base64.Split(';');
             data.Base64 = text[1].Split(',')[1];
@@ -75,11 +67,9 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
-
-
-        [HttpPost("UploadCoco")]
-        public async Task<IActionResult> CocoUploadAsync(Data data)
+        public static async Task CocoUploadAsync(Data data)
         {
+            ProjectController projectController = new ProjectController();
             try
             {
                 Project project = await projectController.GetAsync(data.ProjectId);
@@ -106,15 +96,13 @@ namespace Labelix.WebAPI.Controllers
                 if (!System.IO.File.Exists(label_path))
                 {
                     project.LabeledPath = label_path;
-                    await projectController.PutAsync(project);
+                    //await projectController.PutAsync(project);
                 }
                 System.IO.File.WriteAllText(label_path, data.Base64);
-                return Ok();
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
-                return BadRequest();
             }
         }
     }
