@@ -55,9 +55,10 @@ export class LabelWidgetComponent implements OnInit {
 
   onLabelClick(item: ICategory) {
     this.annotationFacade.changeActiveLabel(item);
-    // wenn nur das ganze Bild annotiert werden soll, kann sofort die Kategorie aktualisiert werden
+    // wenn nur das ganze Bild annotiert werden soll, kann sofort eine Annotierung für das gesamte Bild gespeichert
+    // werden
     if (this.currentAnnotationMode === AnnotaionMode.WHOLE_IMAGE) {
-      this.annotationFacade.changeCurrentAnnotationCategory(item);
+      this.annotationFacade.addWholeImageAnnotation(this.selectedCategoryLabel);
     }
     this.openSnackBar(item.name);
   }

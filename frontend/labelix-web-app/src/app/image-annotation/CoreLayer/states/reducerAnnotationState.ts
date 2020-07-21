@@ -160,6 +160,47 @@ export function annotationReducer(state = initalAnnotationState,
         }
       };
     }
+    case ActionTypes.AddWholeImageAnnotation: {
+      const tmpAnnotations: IImageAnnotation[] = [];
+      let foundWholeImage = false;
+      state.currentImageAnnotations.forEach(value => {
+        if (value.annotationMode === AnnotaionMode.WHOLE_IMAGE) {
+          tmpAnnotations.push({
+            image: value.image,
+            annotationMode: AnnotaionMode.WHOLE_IMAGE,
+            categoryLabel: action.payload,
+            segmentations: [],
+            id: value.id,
+            boundingBox: undefined,
+            area: -1,
+            isCrowd: false
+          });
+          foundWholeImage = true;
+        } else {
+          tmpAnnotations.push(value);
+        }
+      });
+      if (!foundWholeImage) {
+        tmpAnnotations.push({
+          image: state.currentAnnotatingImage,
+          annotationMode: AnnotaionMode.WHOLE_IMAGE,
+          categoryLabel: action.payload,
+          segmentations: [],
+          id: state.annotationCount,
+          boundingBox: undefined,
+          area: -1,
+          isCrowd: false
+        });
+      }
+      return {
+        activeLabel: state.activeLabel,
+        currentImageAnnotations: tmpAnnotations,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        annotationCount: state.annotationCount + 1,
+        activePolygonAnnotation: state.activePolygonAnnotation
+      };
+    }
     default:
       return state;
   }

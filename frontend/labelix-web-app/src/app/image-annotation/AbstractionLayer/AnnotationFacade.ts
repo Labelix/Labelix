@@ -8,13 +8,21 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {IFile} from '../../utility/contracts/IFile';
 import {
-  AddImageAnnotation, AddPositionToActivePolygonAnnotation, ChangeActiveLabel, ChangeCategoryOfCurrentImageAnnoation,
-  ChangeCurrentAnnotationMode, DeleteImageAnnoation, IncrementAnnotationCount, SetActivePolygonAnnotation,
+  AddImageAnnotation,
+  AddPositionToActivePolygonAnnotation,
+  AddWholeImageAnnotation,
+  ChangeActiveLabel,
+  ChangeCategoryOfCurrentImageAnnoation,
+  ChangeCurrentAnnotationMode,
+  DeleteImageAnnoation,
+  IncrementAnnotationCount,
+  SetActivePolygonAnnotation,
   SetCurrentAnnotationPicture
 } from '../CoreLayer/actions/image-annotation.actions';
 import {AnnotaionMode} from '../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
 import {ICategory} from '../../utility/contracts/ICategory';
+import {WholeImageAnnotationWidgetComponent} from "../PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component";
 
 @Injectable()
 export class AnnotationFacade {
@@ -64,7 +72,11 @@ export class AnnotationFacade {
     this.store.dispatch(new SetActivePolygonAnnotation(input));
   }
 
-  addPointsToActivePolygonAnnotation(input: {x: number, y: number}) {
+  addPointsToActivePolygonAnnotation(input: { x: number, y: number }) {
     this.store.dispatch(new AddPositionToActivePolygonAnnotation(input));
+  }
+
+  addWholeImageAnnotation(input: ICategory) {
+    this.store.dispatch(new AddWholeImageAnnotation(input));
   }
 }
