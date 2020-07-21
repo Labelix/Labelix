@@ -13,6 +13,7 @@ import {fromEvent} from 'rxjs';
 import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
+import {IBoundingBox} from '../../../utility/contracts/IBoundingBox';
 
 @Component({
   selector: 'app-image-canvas',
@@ -159,6 +160,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     const width = ((value.clientX - canvasEl.getBoundingClientRect().left) - lastPos.x);
     const height = ((value.clientY - canvasEl.getBoundingClientRect().top) - lastPos.y);
+
     this.ctx.beginPath();
     this.ctx.fillRect(lastPos.x, lastPos.y, width, height);
     this.ctx.rect(lastPos.x, lastPos.y, width, height);
@@ -214,13 +216,16 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     if (this.activePolygonAnnotation !== undefined) {
       this.drawPointsOfPolygonAnnoation(canvasEl, this.activePolygonAnnotation);
+
       this.ctx.beginPath();
+
       this.ctx.moveTo(this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 2]
         * canvasEl.width,
         this.activePolygonAnnotation.segmentations[this.activePolygonAnnotation.segmentations.length - 1]
         * canvasEl.height);
       this.ctx.lineTo((value.clientX - canvasEl.getBoundingClientRect().left),
         (value.clientY - canvasEl.getBoundingClientRect().top));
+
       this.ctx.stroke();
     }
   }
@@ -262,31 +267,47 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   drawExistingAnnotationsBoundingBoxes(canvasEl: HTMLCanvasElement, elements) {
     this.setCanvasDimensions(canvasEl);
-
-    console.log(this.currentImageAnnotations.length);
-
     for (const item of elements) {
       if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES
         && item.image.id === this.activeRawImage.id) {
         this.ctx.strokeStyle = item.categoryLabel.colorCode;
         this.ctx.fillStyle = this.hexToRGB(item.categoryLabel.colorCode, this.opacity);
-
-        this.ctx.beginPath();
-        this.ctx.fillRect(
-          item.boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width,
-          item.boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height,
-          item.boundingBox.width / this.activeRawImage.width * canvasEl.width,
-          item.boundingBox.height / this.activeRawImage.height * canvasEl.height
-        );
-        this.ctx.rect(
-          item.boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width,
-          item.boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height,
-          item.boundingBox.width / this.activeRawImage.width * canvasEl.width,
-          item.boundingBox.height / this.activeRawImage.height * canvasEl.height
-        );
-        this.ctx.stroke();
+        this.drawBoundingBox(item.boundingBox, canvasEl);
       }
     }
+  }
+
+  drawBoundingBox(boundingBox: IBoundingBox, canvasEl: HTMLCanvasElement) {
+    this.ctx.beginPath();
+    this.ctx.fillRect(
+      boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width,
+      boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height,
+      boundingBox.width / this.activeRawImage.width * canvasEl.width,
+      boundingBox.height / this.activeRawImage.height * canvasEl.height
+    );
+    this.ctx.rect(
+      boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width,
+      boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height,
+      boundingBox.width / this.activeRawImage.width * canvasEl.width,
+      boundingBox.height / this.activeRawImage.height * canvasEl.height
+    );
+    this.ctx.stroke();
+
+    this.drawHandle(
+      boundingBox.xCoordinate / this.activeRawImage.width * canvasEl.width
+            + boundingBox.width / this.activeRawImage.width * canvasEl.width / 2,
+      boundingBox.yCoordinate / this.activeRawImage.height * canvasEl.height
+            + boundingBox.height / this.activeRawImage.height * canvasEl.height / 2
+    );
+  }
+
+  drawHandle(x: number, y: number) {
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 'white';
+    this.ctx.rect(x - 4,
+      y - 4,
+      8, 8);
+    this.ctx.stroke();
   }
 
   fillShape(canvasEl: HTMLCanvasElement, annotation: IImageAnnotation) {
@@ -351,6 +372,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // for canvas zooming
   mouseWheelUpFunc() {
     this.imgWidth = this.imgWidth + 20;
   }

@@ -22,7 +22,6 @@ import {
 import {AnnotaionMode} from '../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
 import {ICategory} from '../../utility/contracts/ICategory';
-import {WholeImageAnnotationWidgetComponent} from "../PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component";
 
 @Injectable()
 export class AnnotationFacade {
