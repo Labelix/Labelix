@@ -10,5 +10,6 @@ namespace Labelix.Contracts.Persistence
         public string Parameter { get; set; }
         public string InputDirectory { get; set; }
         public string OutputDirectory { get; set; }
+        public string Options { get; set; }
     }
 }

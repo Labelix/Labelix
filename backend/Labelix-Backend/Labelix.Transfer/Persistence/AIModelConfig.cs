@@ -16,6 +16,8 @@ namespace Labelix.Transfer.Persistence
         [JsonPropertyName("OutputDirectory")]
         public string OutputDirectory { get; set; }
 
+        public string Options { get; set; }
+
         public void CopyProperties(IAIModelConfig other)
         {
             Id = other.Id;
@@ -24,6 +26,7 @@ namespace Labelix.Transfer.Persistence
             Parameter = other.Parameter;
             InputDirectory = other.InputDirectory;
             OutputDirectory = other.OutputDirectory;
+            Options = other.Options;
         }
     }
 }

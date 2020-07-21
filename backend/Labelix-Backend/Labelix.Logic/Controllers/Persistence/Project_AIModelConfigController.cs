@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Labelix.Logic.Controllers.Persistence
 {
-    class Project_AIConfigController : GenericController<Contracts.Persistence.IProject_AIModelConfig, Entities.Persistence.Project_AIConfig>
+    class Project_AIModelConfigController : GenericController<Contracts.Persistence.IProject_AIModelConfig, Entities.Persistence.Project_AIModelConfig>
     {
-        public Project_AIConfigController(ControllerObject controller) : base(controller)
+        public Project_AIModelConfigController(ControllerObject controller) : base(controller)
         {
         }
 
-        public Project_AIConfigController(DataContext.IContext context) : base(context)
+        public Project_AIModelConfigController(DataContext.IContext context) : base(context)
         {
         }
     }

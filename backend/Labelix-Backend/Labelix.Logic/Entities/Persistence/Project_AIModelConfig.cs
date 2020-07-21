@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Labelix.Logic.Entities.Persistence
 {
-    class Project_AIConfig : IdentityObject, IProject_AIModelConfig
+    class Project_AIModelConfig : IdentityObject, IProject_AIModelConfig
     {
         public int ProjectKey { get; set; }
         public int AIConfigKey { get; set; }
