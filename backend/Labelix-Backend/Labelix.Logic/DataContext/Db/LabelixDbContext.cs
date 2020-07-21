@@ -64,6 +64,7 @@ namespace Labelix.Logic.DataContext.Db
             ConfigureEntityType(modelBuilder.Entity<Label>());
             ConfigureEntityType(modelBuilder.Entity<Project>());
             ConfigureEntityType(modelBuilder.Entity<AIModelConfig>());
+            ConfigureEntityType(modelBuilder.Entity<Project_AIModelConfig>());
         }
 
         private void ConfigureEntityType(EntityTypeBuilder<Image> entityTypeBuilder)
@@ -86,11 +87,16 @@ namespace Labelix.Logic.DataContext.Db
         }
         private void ConfigureEntityType(EntityTypeBuilder<AIModelConfig> entityTypeBuilder)
         {
-            entityTypeBuilder.ToTable("ai_configs");
+            entityTypeBuilder.ToTable("ai_model_configs");
             entityTypeBuilder
                 .HasMany<Project_AIModelConfig>(e => e.Projects)
                 .WithOne()
                 .HasForeignKey(i => i.AIConfigKey);
+        }
+
+        private void ConfigureEntityType(EntityTypeBuilder<Project_AIModelConfig> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("project_ai_model_configs");
         }
     }
 }
