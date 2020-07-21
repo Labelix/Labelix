@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using Contract = Labelix.Contracts.Persistence.IAIConfig;
-using Model = Labelix.Transfer.Persistence.AIConfig;
+using Contract = Labelix.Contracts.Persistence.IAIModelConfig;
+using Model = Labelix.Transfer.Persistence.AIModelConfig;
 
 namespace Labelix.WebAPI.Controllers
 {
@@ -48,8 +48,8 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("ByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
-            Project_AIConfig configIdss = await project_AIConfig.GetAsync(1);
-            IEnumerable<Project_AIConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
+            Project_AIModelConfig configIdss = await project_AIConfig.GetAsync(1);
+            IEnumerable<Project_AIModelConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
             List<int> ids = new List<int>();
             configIds.ToList().ForEach(e => ids.Add(e.AIConfigKey));
             IEnumerable<Model> configs = await GetAllAsync();

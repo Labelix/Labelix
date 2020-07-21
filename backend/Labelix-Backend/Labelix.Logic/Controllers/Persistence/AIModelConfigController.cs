@@ -1,6 +1,6 @@
 ﻿namespace Labelix.Logic.Controllers.Persistence
 {
-    sealed class AIConfigController : GenericController<Contracts.Persistence.IAIConfig, Entities.Persistence.AIConfig>
+    sealed class AIConfigController : GenericController<Contracts.Persistence.IAIModelConfig, Entities.Persistence.AIConfig>
     {
         public AIConfigController(ControllerObject controller) : base(controller)
         {

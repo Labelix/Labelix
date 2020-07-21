@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Labelix.Contracts.Persistence
 {
-    public interface IAIConfig : IIdentifiable, ICopyable<IAIConfig>
+    public interface IAIModelConfig : IIdentifiable, ICopyable<IAIModelConfig>
     {
         public string Name { get; set; }
         public string DockerImageName { get; set; }

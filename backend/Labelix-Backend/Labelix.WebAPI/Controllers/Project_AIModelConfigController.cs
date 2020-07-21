@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Contract = Labelix.Contracts.Persistence.IProject_AIConfig;
-using Model = Labelix.Transfer.Persistence.Project_AIConfig;
+using Contract = Labelix.Contracts.Persistence.IProject_AIModelConfig;
+using Model = Labelix.Transfer.Persistence.Project_AIModelConfig;
 
 namespace Labelix.WebAPI.Controllers
 {

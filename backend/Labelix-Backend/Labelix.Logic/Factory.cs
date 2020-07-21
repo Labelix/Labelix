@@ -43,13 +43,13 @@ namespace Labelix.Logic
             {
                 result = new Controllers.Persistence.ProjectController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIModelConfig))
             {
-                result = new Controllers.Persistence.AIConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
+                result = new Controllers.Persistence.AIModelConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIConfig))
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIModelConfig))
             {
-                result = new Controllers.Persistence.Project_AIConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
+                result = new Controllers.Persistence.Project_AIModelConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
             }
 
             return result;
