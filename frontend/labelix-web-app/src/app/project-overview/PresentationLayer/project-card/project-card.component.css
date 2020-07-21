@@ -2,6 +2,8 @@
   width: 30em;
   max-width: 600px;
   height: 12em;
+  cursor:pointer;
+  user-select: none;
 }
 
 .icon-footer {

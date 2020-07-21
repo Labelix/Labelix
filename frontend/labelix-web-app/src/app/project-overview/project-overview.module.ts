@@ -13,6 +13,8 @@ import {ProjectsFacade} from './AbstractionLayer/ProjectsFacade';
 import {MaterialModule} from '../material.module';
 import {StoreModule} from '@ngrx/store';
 import {featureStateName, projectReducers} from './CoreLayer/states/projectState';
+import { AddProjectCardComponent } from './PresentationLayer/add-project-card/add-project-card.component';
+import { ProjectCreationDialogComponent } from './PresentationLayer/project-creation-dialog/project-creation-dialog.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {featureStateName, projectReducers} from './CoreLayer/states/projectState
     ProjectOverviewBaseComponent,
     ProjectGridViewComponent,
     ProjectCardComponent,
+    AddProjectCardComponent,
+    ProjectCreationDialogComponent,
   ],
   imports: [
     CommonModule,
