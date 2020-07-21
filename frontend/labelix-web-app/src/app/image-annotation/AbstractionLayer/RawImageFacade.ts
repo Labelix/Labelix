@@ -3,7 +3,7 @@ import {FileApiService} from '../CoreLayer/services/file-api.service';
 import {select, Store} from '@ngrx/store';
 import {getAllRawImages, getNumberOfExistingImages, RawImageState} from '../CoreLayer/states/rawImageState';
 import {IFile} from '../../utility/contracts/IFile';
-import {AddRawImagesAction, UpdateRawImage} from '../CoreLayer/actions/image-annotation.actions';
+import {AddBase64CodeToIFile, AddRawImagesAction, UpdateRawImage} from '../CoreLayer/actions/image-annotation.actions';
 import {Observable} from 'rxjs';
 
 @Injectable()
@@ -17,13 +17,17 @@ export class RawImageFacade {
   numberOfImages$: Observable<number>;
   files$: Observable<IFile[]>;
 
-  uploadRawImages(importImages: IFile[]){
+  uploadRawImages(importImages: IFile[]) {
     this.fileApi.postListOfRawImages(importImages);
     this.store.dispatch(new AddRawImagesAction(importImages));
   }
 
-  updateRawImage(input: IFile){
+  updateRawImage(input: IFile) {
     this.store.dispatch(new UpdateRawImage(input));
+  }
+
+  addBase64CodeToIFile(input: { id: number, baseCode: string }) {
+    this.store.dispatch(new AddBase64CodeToIFile({id: input.id, baseCode: input.baseCode}));
   }
 
 }
