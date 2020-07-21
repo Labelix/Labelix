@@ -17,7 +17,8 @@ export enum ActionTypes {
   IncrementAnnotationCount = '[ImageAnnotation] Increment Annotation Count',
   SetActivePolygonAnnotation = '[ImageAnnotation] Set active Polygon Annotation',
   AddPositionToActivePolygonAnnotation = '[ImageAnnotation]Add Position to active Polygon Annotation',
-  AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile'
+  AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
+  AddWholeImageAnnotation = '[ImageAnnotation] Add whole image annotation',
 }
 
 export class AddRawImagesAction implements Action {
@@ -111,6 +112,13 @@ export class AddBase64CodeToIFile implements Action {
   }
 }
 
+export class AddWholeImageAnnotation implements Action {
+  readonly type = ActionTypes.AddWholeImageAnnotation;
+
+  constructor(public payload: ICategory) {
+  }
+}
+
 export type ImageAnnotationActions =
   | AddRawImagesAction
   | AddAnnotationLabel
@@ -124,4 +132,5 @@ export type ImageAnnotationActions =
   | IncrementAnnotationCount
   | AddPositionToActivePolygonAnnotation
   | SetActivePolygonAnnotation
-  | AddBase64CodeToIFile;
+  | AddBase64CodeToIFile
+  | AddWholeImageAnnotation;
