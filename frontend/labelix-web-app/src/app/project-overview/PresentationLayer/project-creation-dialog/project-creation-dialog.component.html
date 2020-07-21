@@ -1,0 +1,16 @@
+<form class="example-form">
+    <td><mat-form-field class="example-full-width">
+      <mat-label>ProjectName</mat-label>
+      <input matInput #projectName maxlength="25">
+      <mat-hint align="end">{{projectName.value.length}} / 25 </mat-hint>
+    </mat-form-field></td>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput #projectDescription maxlength="200"></textarea>
+      <mat-hint align="end">{{projectDescription.value.length}} / 200 </mat-hint>
+    </mat-form-field>
+
+</form>
+
+<button (click)="onOkSubmit()">Test</button>

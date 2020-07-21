@@ -25,7 +25,6 @@ export class ProjectsFacade {
   }
 
   addProject(importProject: IProject) {
-    this.projectApi.postItem(importProject);
-    this.store.dispatch(new AddProjectAction(importProject));
+    this.projectApi.postItem(importProject).subscribe(value => this.store.dispatch(new AddProjectAction(value)));
   }
 }
