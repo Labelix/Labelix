@@ -19,6 +19,7 @@ export class ProjectGridViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.changeRelation(window.innerWidth);
+    this.projectsFacade.getProjects();
   }
 
   onResize(event) {

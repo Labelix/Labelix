@@ -11,6 +11,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ProjectsFacade} from './AbstractionLayer/ProjectsFacade';
 import {MaterialModule} from '../material.module';
+import {StoreModule} from '@ngrx/store';
+import {featureStateName, projectReducers} from './CoreLayer/states/projectState';
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import {MaterialModule} from '../material.module';
     ProjectOverviewRoutingModule,
     MatGridListModule,
     MatCardModule,
+    StoreModule.forFeature(featureStateName, projectReducers),
     MatButtonModule,
     MatProgressSpinnerModule,
     MaterialModule

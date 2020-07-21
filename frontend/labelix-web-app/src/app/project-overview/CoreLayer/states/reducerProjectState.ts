@@ -1,6 +1,5 @@
 import {IProject} from '../../../utility/contracts/IProject';
 import {ActionTypes, ProjectActions} from '../actions/project.actions';
-import {act} from '@ngrx/effects';
 
 export interface ReducerProjectState{
   projects: IProject[];
