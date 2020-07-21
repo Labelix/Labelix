@@ -9,7 +9,7 @@ namespace Labelix.Transfer.Modules
     public class AILabelingInfo : TransferObject
     {
         [JsonPropertyName("config")]
-        public AIConfig config { get; set; }
+        public AIModelConfig config { get; set; }
 
         [JsonPropertyName("images")]
         public List<Data> data { get; set; }

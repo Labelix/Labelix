@@ -11,9 +11,9 @@ namespace Labelix.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AIConfigController : GenericController<Contract, Model>
+    public class AIModelConfigController : GenericController<Contract, Model>
     {
-        readonly Project_AIConfigController project_AIConfig = new Project_AIConfigController();
+        readonly Project_AIModelConfigController project_AIConfig = new Project_AIModelConfigController();
 
         [HttpGet("{id}")]
         public Task<Model> GetAsync(int id)

@@ -10,7 +10,7 @@ using Model = Labelix.Transfer.Persistence.Project_AIModelConfig;
 
 namespace Labelix.WebAPI.Controllers
 {
-    public class Project_AIConfigController : GenericController<Contract, Model>
+    public class Project_AIModelConfigController : GenericController<Contract, Model>
     {
         public Task<Model> GetAsync(int id)
         {

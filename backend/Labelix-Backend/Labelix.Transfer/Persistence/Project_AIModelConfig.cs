@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Labelix.Transfer.Persistence
 {
-    public class Project_AIConfig : TransferObject, IProject_AIModelConfig
+    public class Project_AIModelConfig : TransferObject, IProject_AIModelConfig
     {
         public int ProjectKey { get; set; }
         public int AIConfigKey { get; set; }
