@@ -49,18 +49,46 @@ export class CocoFormatter {
 
   getCocoAnnotations(input: IImageAnnotation[]): ICocoAnnotation[] {
     const result: ICocoAnnotation[] = [];
-    input.forEach(value => result.push({
-      area: value.area,
-      bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
-        value.boundingBox.yCoordinate,
-        value.boundingBox.height,
-        value.boundingBox.width] : [0, 0, 0, 0],
-      categoryId: value.categoryLabel.id,
-      id: value.id,
-      imageId: value.image.id,
-      iscrowd: value.isCrowd,
-      segmentation: value.segmentations
-    }));
+    input.forEach(value => {
+      if (value.categoryLabel !== undefined) {
+        const realPositions: number[] = this.getRealPositions(value.segmentations, value.image);
+        result.push({
+          area: this.calcSurfaceOfPolygon(realPositions),
+          bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
+            value.boundingBox.yCoordinate,
+            value.boundingBox.height,
+            value.boundingBox.width] : [0, 0, 0, 0],
+          categoryId: value.categoryLabel.id,
+          id: value.id,
+          imageId: value.image.id,
+          iscrowd: value.isCrowd,
+          segmentation: realPositions
+        });
+      }
+    });
+    return result;
+  }
+
+  private calcSurfaceOfPolygon(points: number[]): number {
+    let sum1 = 0;
+    let sum2 = 0;
+
+    for (let i = 2; i < points.length; i += 2) {
+      sum1 += points[i - 2] * points[i + 1];
+      sum2 += points[i] * points[i - 1];
+    }
+
+    return (sum1 - sum2) / 2;
+  }
+
+  private getRealPositions(percentagePositions: number[], image: IFile): number[] {
+    const result: number[] = [];
+
+    for (let i = 2; i <= percentagePositions.length; i += 2) {
+      result.push(percentagePositions[i - 2] * image.width);
+      result.push(percentagePositions[i - 1] * image.height);
+    }
+
     return result;
   }
 

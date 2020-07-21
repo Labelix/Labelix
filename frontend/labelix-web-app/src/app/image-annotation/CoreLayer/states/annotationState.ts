@@ -32,12 +32,17 @@ export const getCurrentImageAnnotations = createSelector(
   (state: AnnotationState) => state.annotation.currentImageAnnotations
 );
 
-export const getNumberOfImageAnnotations = createSelector(
-  getAnnotationFeatureState,
-  (state: AnnotationState) => state.annotation.currentImageAnnotations.length
-);
-
 export const getActiveLabel = createSelector(
   getAnnotationFeatureState,
   (state: AnnotationState) => state.annotation.activeLabel
+);
+
+export const getNextAnnotationId = createSelector(
+  getAnnotationFeatureState,
+  (state: AnnotationState) => state.annotation.annotationCount
+);
+
+export const getActivePolygonAnnotation = createSelector(
+  getAnnotationFeatureState,
+  (state: AnnotationState) => state.annotation.activePolygonAnnotation
 );
