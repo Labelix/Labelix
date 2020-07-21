@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommonBase.Extensions;
 using Contract = Labelix.Contracts.Persistence.IProject;
 using Model = Labelix.Transfer.Persistence.Project;
 
@@ -14,11 +15,13 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
-        readonly ImageController imageController = new ImageController();
+
+        
 
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
         {
+            ImageController imageController = new ImageController();
             Project project = await GetModelByIdAsync(id);
             List<Image> images = (await imageController.GetByProjectId(project.Id)).ToList();
             List<Data> projectImages = new List<Data>();
@@ -26,6 +29,7 @@ namespace Labelix.WebAPI.Controllers
             {
                 projectImages.Add(await imageController.GetAsyncPicture(item.Id));
             }
+            if (!project.LabeledPath.IsNullOrEmpty()) project.LabeledPath = System.IO.File.ReadAllText(project.LabeledPath);
             project.Images = projectImages;
             return project;
         }
@@ -50,9 +54,39 @@ namespace Labelix.WebAPI.Controllers
             return InsertModelAsync(model);
         }
         [HttpPut("update")]
-        public Task<Model> PutAsync(Model model)
+        public async Task<Model> PutAsync(Model model)
         {
-            return UpdateModelAsync(model); 
+            ImageController imageController = new ImageController();
+            Model oldProject = await GetAsyncOnlyProject(model.Id);
+            Model oldProjectConverted = await GetAsync(model.Id);
+            if (oldProjectConverted.LabeledPath != model.LabeledPath)
+            {
+                if(!oldProject.LabeledPath.IsNullOrEmpty()) System.IO.File.Delete(oldProject.LabeledPath);
+                await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
+            }
+
+            if (oldProjectConverted.Images != model.Images)
+            {
+                await imageController.DeleteByProjectId(oldProjectConverted.Id);
+                var images = new MultipleData()
+                {
+                    Data = model.Images
+                };
+                await Base64Controller.MultipleImageUpload(images);
+            }
+            Model newModel = new Project()
+            {
+                CreationDate = model.CreationDate,
+                Description = model.Description,
+                FinishedAnnotation = model.FinishedAnnotation,
+                LabeledPath = $"./Ressources/Labels/{model.Id}_{model.Name}",
+                Name = model.Name,
+                Timestamp = model.Timestamp,
+                Id = model.Id
+            };
+            await UpdateModelAsync(newModel);
+            newModel.LabeledPath = System.IO.File.ReadAllText(newModel.LabeledPath);
+            return newModel;
         }
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
