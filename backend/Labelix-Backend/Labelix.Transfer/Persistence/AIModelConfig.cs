@@ -5,17 +5,17 @@ namespace Labelix.Transfer.Persistence
 {
     public class AIModelConfig : TransferObject, IAIModelConfig
     {
-        [JsonPropertyName("Name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonPropertyName("DockerImageName")]
+        [JsonPropertyName("dockerImageName")]
         public string DockerImageName { get; set; }
-        [JsonPropertyName("Parameter")]
+        [JsonPropertyName("parameter")]
         public string Parameter { get; set; }
-        [JsonPropertyName("InputDirectory")]
+        [JsonPropertyName("inputDirectory")]
         public string InputDirectory { get; set; }
-        [JsonPropertyName("OutputDirectory")]
+        [JsonPropertyName("outputDirectory")]
         public string OutputDirectory { get; set; }
-
+        [JsonPropertyName("options")]
         public string Options { get; set; }
 
         public void CopyProperties(IAIModelConfig other)
