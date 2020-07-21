@@ -17,8 +17,11 @@ export class ProjectsFacade {
     this.numberOfProjects$ = this.store.pipe(select(getNumberOfExistingProjects));
   }
 
-  getProjects() {
-    this.projectApi.getItems().subscribe((value: IProject[]) => this.store.dispatch(new GetProjectsAction(value)));
+  async getProjects() {
+    this.projectApi.getItems().subscribe((value: IProject[]) => {
+      value.forEach(item => console.log(item.name));
+      this.store.dispatch(new GetProjectsAction(value));
+    });
   }
 
   addProject(importProject: IProject) {
