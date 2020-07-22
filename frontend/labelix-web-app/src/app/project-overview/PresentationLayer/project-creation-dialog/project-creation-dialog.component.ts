@@ -6,6 +6,7 @@ import {IProject} from '../../../utility/contracts/IProject';
 import {ProjectServiceService} from '../../CoreLayer/services/project-service.service';
 import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
 import {FormControl} from '@angular/forms';
+import {AiModelConfigFacade} from '../../AbstractionLayer/AiModelConfigFacade';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -14,13 +15,25 @@ import {FormControl} from '@angular/forms';
 })
 export class ProjectCreationDialogComponent implements OnInit {
 
-  constructor(private projectFacade: ProjectsFacade) { }
+  aiModelNames: string[];
+  aiIds: number[] = [1, 2, 3]; //todo set to Config ID wich is seleted
+
+  constructor(private projectFacade: ProjectsFacade, private aiModelConfigFacade: AiModelConfigFacade) { }
   project: IProject;
   newProjectName: string;
   newProjectDescription: string;
   aiModels = new FormControl();
-  aiModelList: string[] = ['Giraffenerkennung'];
+
   ngOnInit(): void {
+    this.aiModelConfigFacade.getConfigs();
+    this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
+      const names: string[] = [];
+      value.forEach(value1 => {
+        names.push(value1.name);
+        console.log(value1.name);
+      });
+      this.aiModelNames = names;
+    });
   }
   onOkSubmit() {
     this.project = {
@@ -31,7 +44,8 @@ export class ProjectCreationDialogComponent implements OnInit {
       finishedAnnotation: false,
       images: [],
       label: '',
-      timestamp: undefined
+      timestamp: undefined,
+      AIModelConfig: this.aiIds
     };
     console.log(this.newProjectName);
     this.projectFacade.addProject(this.project);

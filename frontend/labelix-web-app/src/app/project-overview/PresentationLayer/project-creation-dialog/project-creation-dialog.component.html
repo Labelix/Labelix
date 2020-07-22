@@ -15,12 +15,12 @@
       <mat-label>possible AI-Models's</mat-label>
       <mat-select [formControl]="aiModels" multiple>
         <mat-select-trigger>
-          {{aiModels.value ? aiModels.value[0] : ''}}
-          <span *ngIf="aiModels.value?.length > 1" class="example-additional-selection">
-            (+{{aiModels.value.length - 1}} {{aiModels.value?.length === 2 ? 'other' : 'others'}})
+          {{aiModels.value ? aiModels.value[0] : ''}}, {{aiModels.value ? aiModels.value[1] : ''}}, {{aiModels.value ? aiModels.value[2] : ''}}
+          <span *ngIf="aiModels.value?.length > 3" class="example-additional-selection">
+            (+{{aiModels.value.length - 3}} {{aiModels.value?.length === 2 ? 'other' : 'others'}})
           </span>
         </mat-select-trigger>
-        <mat-option *ngFor="let aiModel of aiModelList" [value]="aiModel">{{aiModel}}</mat-option>
+        <mat-option *ngFor="let aiModel of aiModelNames" [value]="aiModel">{{aiModel}}</mat-option>
       </mat-select>
     </mat-form-field>
 </form>

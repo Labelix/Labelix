@@ -10,4 +10,5 @@ export interface IProject extends IIdentifiable{
   label: string;
   images: IImage[];
   timestamp: Date;
+  AIModelConfig: number[];
 }

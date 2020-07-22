@@ -15,5 +15,11 @@ namespace Labelix.Transfer.Persistence
             this.ProjectKey = other.ProjectKey;
             this.AIConfigKey = other.AIConfigKey;
         }
+        public Project_AIModelConfig(){}
+        public Project_AIModelConfig(int aiConfigKey, int projectKey)
+        {
+            ProjectKey = projectKey;
+            AIConfigKey = aiConfigKey;
+        }
     }
 }

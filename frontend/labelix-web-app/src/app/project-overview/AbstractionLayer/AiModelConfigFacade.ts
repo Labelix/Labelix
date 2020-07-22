@@ -8,15 +8,18 @@ import {AddConfigs} from '../CoreLayer/actions/aiModelConfig.actions';
 
 @Injectable()
 export class AiModelConfigFacade {
-  aiModelConfigs$: Observable<IAIModelConfig>;
+  aiModelConfigs$: Observable<IAIModelConfig[]>;
+
 
   constructor(private aiModelConfigApi: AiModelConfigServiceService, private store: Store<AiModelConfigState>) {
     this.aiModelConfigs$ = this.store.pipe(select(GetConfigs));
   }
-  async getConfigs(){
+
+  getConfigs() {
     this.aiModelConfigApi.getItems().subscribe((value: IAIModelConfig[]) => {
+      value.forEach(value1 => console.log(value1.name));
       this.store.dispatch(new AddConfigs(value));
-    } );
+    });
   }
 
 }

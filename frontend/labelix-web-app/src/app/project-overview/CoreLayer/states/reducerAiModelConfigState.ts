@@ -7,7 +7,7 @@ export interface ReducerAiModelConfigState {
 }
 
 export const initialAiModelConfigState: ReducerAiModelConfigState = {
-  aiModelConfigs: [],
+  aiModelConfigs: [] = [],
 };
 
 export function aiModelConfigReducer(
@@ -15,6 +15,7 @@ export function aiModelConfigReducer(
   action: AiModelConfigActions): ReducerAiModelConfigState {
     switch (action.type) {
       case ActionTypes.GetConfigNames: {
+
         const tempActions: IAIModelConfig[] = [];
 
         state.aiModelConfigs.forEach(value => tempActions.push(value));
@@ -25,11 +26,13 @@ export function aiModelConfigReducer(
       case ActionTypes.AddConfigs: {
         const tempActions: IAIModelConfig[] = [];
 
-        state.aiModelConfigs.forEach(value => tempActions.push(value));
+       // state.aiModelConfigs.forEach(value => tempActions.push(value));
         action.payload.forEach(value => tempActions.push(value));
         return{
           aiModelConfigs: tempActions
         };
       }
+      default:
+        return state;
     }
 }
