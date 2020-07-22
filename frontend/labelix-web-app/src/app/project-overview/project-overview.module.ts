@@ -15,6 +15,7 @@ import {StoreModule} from '@ngrx/store';
 import {featureStateName, projectReducers} from './CoreLayer/states/projectState';
 import { AddProjectCardComponent } from './PresentationLayer/add-project-card/add-project-card.component';
 import { ProjectCreationDialogComponent } from './PresentationLayer/project-creation-dialog/project-creation-dialog.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -25,16 +26,18 @@ import { ProjectCreationDialogComponent } from './PresentationLayer/project-crea
     AddProjectCardComponent,
     ProjectCreationDialogComponent,
   ],
-  imports: [
-    CommonModule,
-    ProjectOverviewRoutingModule,
-    MatGridListModule,
-    MatCardModule,
-    StoreModule.forFeature(featureStateName, projectReducers),
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MaterialModule
-  ],
+    imports: [
+        CommonModule,
+        ProjectOverviewRoutingModule,
+        MatGridListModule,
+        MatCardModule,
+        StoreModule.forFeature(featureStateName, projectReducers),
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
   providers: [
     ProjectsFacade
   ]
