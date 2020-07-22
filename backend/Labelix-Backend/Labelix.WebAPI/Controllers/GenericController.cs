@@ -61,6 +61,7 @@ namespace Labelix.WebApi.Controllers
         }
         protected async Task<M> InsertModelAsync(M model)
         {
+            if (model.Id != 0) model.Id = 0;
             using var ctrl = CreateController();
 
             var entity = await ctrl.InsertAsync(model);
