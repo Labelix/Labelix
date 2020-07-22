@@ -10,6 +10,6 @@ export class AiModelConfigServiceService extends GenericApiService<IAIModelConfi
 
   constructor(protected  httpClient: HttpClient) {
     super(httpClient);
-    this.urlRoot = 'api/aiModelConfig';
+    this.urlRoot = 'api/AIModelConfig';
   }
 }

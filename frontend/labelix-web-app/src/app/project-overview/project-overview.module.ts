@@ -16,6 +16,7 @@ import {featureStateName, projectReducers} from './CoreLayer/states/projectState
 import { AddProjectCardComponent } from './PresentationLayer/add-project-card/add-project-card.component';
 import { ProjectCreationDialogComponent } from './PresentationLayer/project-creation-dialog/project-creation-dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AiModelConfigFacade} from './AbstractionLayer/AiModelConfigFacade';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         ReactiveFormsModule
     ],
   providers: [
-    ProjectsFacade
+    ProjectsFacade,
+    AiModelConfigFacade
   ]
 })
 export class ProjectOverviewModule { }
