@@ -1,3 +1,5 @@
+import {IIdentifiable} from './IIdentifiable';
+
 export interface IAIModelConfig extends IIdentifiable{
   name: string;
   dockerImageName: string;

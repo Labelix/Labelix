@@ -17,7 +17,7 @@ import { AddProjectCardComponent } from './PresentationLayer/add-project-card/ad
 import { ProjectCreationDialogComponent } from './PresentationLayer/project-creation-dialog/project-creation-dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AiModelConfigFacade} from './AbstractionLayer/AiModelConfigFacade';
-
+import {aiModelConfigReducers, featureAiModelConfigStateName} from './CoreLayer/states/aiModelConfigState';
 
 @NgModule({
   declarations: [
@@ -33,6 +33,7 @@ import {AiModelConfigFacade} from './AbstractionLayer/AiModelConfigFacade';
         MatGridListModule,
         MatCardModule,
         StoreModule.forFeature(featureStateName, projectReducers),
+        StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
         MatButtonModule,
         MatProgressSpinnerModule,
         MaterialModule,

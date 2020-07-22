@@ -1,4 +1,5 @@
-﻿using Labelix.Transfer.Modules;
+﻿using System;
+using Labelix.Transfer.Modules;
 using Labelix.Transfer.Persistence;
 using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -49,9 +50,26 @@ namespace Labelix.WebAPI.Controllers
             return CountAsync();
         }
         [HttpPost("create")]
-        public Task<Model> PostAsync(Model model)
+        public async Task<IActionResult> PostAsync(ProjectInsert model)
         {
-            return InsertModelAsync(model);
+            try
+            {
+                Project_AIModelConfigController aiModelConfigController = new Project_AIModelConfigController();
+                Project project = new Project();
+                project.CopyProperties(model);
+                project = await InsertModelAsync(project);
+                foreach (var item in model.AiModelConfigIds)
+                {
+                    await aiModelConfigController.PostAsync(new Project_AIModelConfig(item, project.Id));
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500);
+            }
+            
         }
         [HttpPut("update")]
         public async Task<Model> PutAsync(Model model)
