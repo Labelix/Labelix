@@ -16,8 +16,8 @@ import {
   ChangeCurrentAnnotationMode,
   DeleteImageAnnoation,
   IncrementAnnotationCount,
-  SetActivePolygonAnnotation,
-  SetCurrentAnnotationPicture
+  SetActiveAnnotation,
+  SetCurrentAnnotationPicture, UpdateImageAnnotation
 } from '../CoreLayer/actions/image-annotation.actions';
 import {AnnotaionMode} from '../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
@@ -68,7 +68,7 @@ export class AnnotationFacade {
   }
 
   setActivePolygonAnnotation(input: IImageAnnotation) {
-    this.store.dispatch(new SetActivePolygonAnnotation(input));
+    this.store.dispatch(new SetActiveAnnotation(input));
   }
 
   addPointsToActivePolygonAnnotation(input: { x: number, y: number }) {
@@ -77,5 +77,9 @@ export class AnnotationFacade {
 
   addWholeImageAnnotation(input: ICategory) {
     this.store.dispatch(new AddWholeImageAnnotation(input));
+  }
+
+  updateImageAnnotation(input: IImageAnnotation) {
+    this.store.dispatch(new UpdateImageAnnotation(input));
   }
 }
