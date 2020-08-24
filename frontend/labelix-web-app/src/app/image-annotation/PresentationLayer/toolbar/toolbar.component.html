@@ -18,4 +18,10 @@
       <mat-icon>create</mat-icon>
     </button>
   </mat-list>
+  <mat-list>
+    <button mat-icon-button class="side-icon-button" [ngClass]="{'selected-icon': currentAnnotationMode === 3}"
+            (click)="clickToolbarItem(3)">
+      <mat-icon>zoom_out_map</mat-icon>
+    </button>
+  </mat-list>
 </div>
