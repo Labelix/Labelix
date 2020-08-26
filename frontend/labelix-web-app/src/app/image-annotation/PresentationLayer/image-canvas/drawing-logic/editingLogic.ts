@@ -12,50 +12,40 @@ export function onMouseDownSizingTool(value: MouseEvent,
                                       editingOptions: EditingOption) {
   for (const item of currentImageAnnotations) {
     if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+      const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
+      const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
       // check if the bounding box can be dragged arround based on the mouse position
-      if ((item.boundingBox.xCoordinate + item.boundingBox.width * 0.1) / activeRawImage.width * canvasEl.width <= value.clientX
-        - canvasEl.getBoundingClientRect().left
+      if ((item.boundingBox.xCoordinate + item.boundingBox.width * 0.1) / activeRawImage.width * canvasEl.width <= xMousePos
         && (item.boundingBox.xCoordinate - item.boundingBox.width * 0.1) / activeRawImage.width * canvasEl.width
-        + item.boundingBox.width / activeRawImage.width * canvasEl.width > value.clientX
-        - canvasEl.getBoundingClientRect().left
-        && (item.boundingBox.yCoordinate + item.boundingBox.height * 0.1) / activeRawImage.height * canvasEl.height <= value.clientY
-        - canvasEl.getBoundingClientRect().top
+        + item.boundingBox.width / activeRawImage.width * canvasEl.width > xMousePos
+        && (item.boundingBox.yCoordinate + item.boundingBox.height * 0.1) / activeRawImage.height * canvasEl.height <= yMousePos
         && (item.boundingBox.yCoordinate - item.boundingBox.height * 0.1) / activeRawImage.height * canvasEl.height
-        + item.boundingBox.height / activeRawImage.height * canvasEl.height > value.clientY
-        - canvasEl.getBoundingClientRect().top) {
+        + item.boundingBox.height / activeRawImage.height * canvasEl.height > yMousePos) {
         annotationFacade.setActivePolygonAnnotation(item);
         editingOptions.annotationDragging = true;
       }
 
-      if (item.boundingBox.xCoordinate / activeRawImage.width * canvasEl.width <= value.clientX
-        - canvasEl.getBoundingClientRect().left
-        && (item.boundingBox.xCoordinate + item.boundingBox.width * 0.1) / activeRawImage.width * canvasEl.width > value.clientX
-        - canvasEl.getBoundingClientRect().left) {
+      if (item.boundingBox.xCoordinate / activeRawImage.width * canvasEl.width <= xMousePos
+        && (item.boundingBox.xCoordinate + item.boundingBox.width * 0.1) / activeRawImage.width * canvasEl.width > xMousePos) {
         annotationFacade.setActivePolygonAnnotation(item);
         editingOptions.addLeft = true;
       }
       if ((item.boundingBox.xCoordinate / activeRawImage.width * canvasEl.width)
-        + (item.boundingBox.width / activeRawImage.width * canvasEl.width) > value.clientX
-        - canvasEl.getBoundingClientRect().left
+        + (item.boundingBox.width / activeRawImage.width * canvasEl.width) > xMousePos
         && (item.boundingBox.xCoordinate - item.boundingBox.width * 0.1) / activeRawImage.width * canvasEl.width
-        + (item.boundingBox.width / activeRawImage.width * canvasEl.width) <= value.clientX
-        - canvasEl.getBoundingClientRect().left) {
+        + (item.boundingBox.width / activeRawImage.width * canvasEl.width) <= xMousePos) {
         annotationFacade.setActivePolygonAnnotation(item);
         editingOptions.addRight = true;
       }
-      if (item.boundingBox.yCoordinate / activeRawImage.height * canvasEl.height < value.clientY
-        - canvasEl.getBoundingClientRect().top
-        && (item.boundingBox.yCoordinate + item.boundingBox.height * 0.1) / activeRawImage.height * canvasEl.height >= value.clientY
-        - canvasEl.getBoundingClientRect().top) {
+      if (item.boundingBox.yCoordinate / activeRawImage.height * canvasEl.height < yMousePos
+        && (item.boundingBox.yCoordinate + item.boundingBox.height * 0.1) / activeRawImage.height * canvasEl.height >= yMousePos) {
         annotationFacade.setActivePolygonAnnotation(item);
         editingOptions.addTop = true;
       }
       if (item.boundingBox.yCoordinate / activeRawImage.height * canvasEl.height
-        + (item.boundingBox.height / activeRawImage.height * canvasEl.height) >= value.clientY
-        - canvasEl.getBoundingClientRect().top
+        + (item.boundingBox.height / activeRawImage.height * canvasEl.height) >= yMousePos
         && (item.boundingBox.yCoordinate - item.boundingBox.height * 0.1) / activeRawImage.height * canvasEl.height
-        + (item.boundingBox.height / activeRawImage.height * canvasEl.height) < value.clientY
-        - canvasEl.getBoundingClientRect().top) {
+        + (item.boundingBox.height / activeRawImage.height * canvasEl.height) < yMousePos) {
         annotationFacade.setActivePolygonAnnotation(item);
         editingOptions.addBottom = true;
       }
