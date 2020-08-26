@@ -170,6 +170,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
             this.editingOptions, this.mousePositions,
             this.annotationFacade, this.activeAnnotation,
             this.activeRawImage);
+          this.redrawCanvas();
         }
       }
     });
@@ -186,7 +187,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
           onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
           this.redrawCanvas();
-
         } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
           this.editingOptions.annotationDragging = false;
           this.editingOptions.addTop = false;
@@ -194,6 +194,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           this.editingOptions.addBottom = false;
           this.editingOptions.addLeft = false;
           this.mousePositions = [];
+          this.redrawCanvas();
         }
       }
     });
