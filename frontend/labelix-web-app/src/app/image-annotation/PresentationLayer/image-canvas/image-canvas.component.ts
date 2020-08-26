@@ -47,6 +47,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   activeLabel: ICategory;
   activeRawImage: IFile;
   activeAnnotation: IImageAnnotation;
+  // specifies the several different modes, when the resizing tool is used
   editingOptions: EditingOption = {
     addBottom: false,
     addLeft: false,
@@ -64,17 +65,16 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       this.readDataFromRawImage();
       this.redrawCanvas();
     });
-    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
+
     this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
     this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activeAnnotation = value);
-    this.annotationFacade.currentImageAnnotations.subscribe(value => {
-      this.currentImageAnnotations = value;
-    });
+    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
+    this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
+    this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
     this.annotationFacade.currentImageAnnotations.subscribe(value => {
       this.readDataFromRawImage();
       this.redrawCanvas();
     });
-    this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
     this.readDataFromRawImage();
   }
 
