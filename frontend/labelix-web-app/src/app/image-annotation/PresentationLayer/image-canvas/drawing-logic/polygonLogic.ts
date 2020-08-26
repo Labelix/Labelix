@@ -6,7 +6,6 @@ import {ICategory} from '../../../../utility/contracts/ICategory';
 import {hexToRGB} from './drawingUtilLogic';
 
 export function onMouseDownPolygon(
-  lasPos,
   value: MouseEvent,
   canvasEl: HTMLCanvasElement,
   activeAnnotation: IImageAnnotation,
@@ -32,7 +31,6 @@ export function onMouseDownPolygon(
 }
 
 export function onMouseMovePolygon(
-  lastPos,
   value: MouseEvent,
   canvasEl: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,

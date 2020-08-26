@@ -12,11 +12,15 @@ import {
   onMouseMoveBoundingBoxen,
   onMouseUpBoundingBoxen
 } from './drawing-logic/boundingBoxLogic';
-import {hexToRGB, setCanvasDimensions} from './drawing-logic/drawingUtilLogic';
+import {setCanvasDimensions} from './drawing-logic/drawingUtilLogic';
 import {
   drawExistingPolygonAnnotations,
-  drawPointsOfPolygonAnnotation, fillExistingPolygonAnnotations, fillShape,
-  onMouseDownPolygon, onMouseMovePolygon, onMouseUpPolygon
+  drawPointsOfPolygonAnnotation,
+  fillExistingPolygonAnnotations,
+  fillShape,
+  onMouseDownPolygon,
+  onMouseMovePolygon,
+  onMouseUpPolygon
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 
@@ -109,6 +113,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations, this.ctx, this.activeRawImage, this.opacity);
       drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
       fillExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.ctx, this.opacity);
+      drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing);
+      fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
     }
   }
 
@@ -134,7 +140,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
           onMouseDownBoundingBoxen(lastPos, value, canvasEl);
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
-          onMouseDownPolygon(lastPos, value, canvasEl, this.activeAnnotation,
+          onMouseDownPolygon(value, canvasEl, this.activeAnnotation,
             this.annotationFacade, this.activeRawImage, this.nextAnnotationId, this.activeLabel);
         } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
           onMouseDownSizingTool(value, canvasEl,
@@ -156,7 +162,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
           onMouseMoveBoundingBoxen(lastPos, value, canvasEl, this.ctx, this.activeLabel, this.opacity);
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
-          onMouseMovePolygon(lastPos, value, canvasEl,
+          onMouseMovePolygon(value, canvasEl,
             this.ctx, this.activeAnnotation, this.currentImageAnnotations,
             this.activeRawImage, this.activeLabel, this.currentlyDrawing);
         } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
@@ -179,11 +185,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
           onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
-          drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
-          fillExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.ctx, this.opacity);
-
-          drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing);
-          fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
+          this.redrawCanvas();
 
         } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
           this.editingOptions.annotationDragging = false;
@@ -213,6 +215,25 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         this.annotationFacade.addImageAnnotation(this.activeAnnotation);
       }
       this.annotationFacade.setActivePolygonAnnotation(undefined);
+    } else if (event.key === 'Escape' && this.currentAnnotationMode === AnnotaionMode.POLYGON && this.activeAnnotation !== null) {
+      const tmpSegs = [];
+      for (const anno of this.activeAnnotation.segmentations) {
+        tmpSegs.push(anno);
+      }
+      tmpSegs.pop();
+      tmpSegs.pop();
+      this.annotationFacade.updateImageAnnotation({
+        segmentations: tmpSegs,
+        boundingBox: this.activeAnnotation.boundingBox,
+        annotationMode: this.activeAnnotation.annotationMode,
+        area: this.activeAnnotation.area,
+        categoryLabel: this.activeAnnotation.categoryLabel,
+        id: this.activeAnnotation.id,
+        image: this.activeAnnotation.image,
+        isCrowd: this.activeAnnotation.isCrowd
+      });
+      this.redrawCanvas();
+      console.log('test');
     }
   }
 
