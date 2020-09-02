@@ -1,22 +1,25 @@
 <mat-card class="example-card">
-  <mat-card-header>
-    <mat-card-title>{{ myProject.name }}</mat-card-title>
-    <!--<mat-card-subtitle>{{ myProject.creator }}</mat-card-subtitle> -->
-    <mat-card-subtitle>{{ myProject.creationDate }}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-footer class="icon-footer" style="alignment: right">
-    <div class="content">
-      <div class="column">
+  <div (click)="onStartAnnotating()">
+    <mat-card-header>
+      <mat-card-title>{{ myProject.name }}</mat-card-title>
+      <!--<mat-card-subtitle>{{ myProject.creator }}</mat-card-subtitle> -->
+      <mat-card-subtitle>{{ myProject.creationDate }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-footer class="icon-footer" style="alignment: right">
+      <div class="content">
+        <div class="column">
 
+        </div>
+        <div class="column">
+          <mat-icon class="check-icon" *ngIf="myProject.finishedAnnotation === true" style="">
+            done
+          </mat-icon>
+          <mat-icon class="not-finished-icon" *ngIf="myProject.finishedAnnotation === false">
+            priority_high
+          </mat-icon>
+          <button mat-flat-button color="primary" (click)="onStartAnnotating()">Start Annotating</button>
+        </div>
       </div>
-      <div class="column">
-        <mat-icon class="check-icon" *ngIf="myProject.finishedAnnotation === true" style="">
-          done
-        </mat-icon>
-        <mat-icon class="not-finished-icon" *ngIf="myProject.finishedAnnotation === false">
-          priority_high
-        </mat-icon>
-      </div>
-    </div>
-  </mat-card-footer>
+    </mat-card-footer>
+  </div>
 </mat-card>

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IProject} from '../../../utility/contracts/IProject';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-project-card',
@@ -11,10 +12,15 @@ export class ProjectCardComponent implements OnInit {
   @Input()
   myProject: IProject;
 
-  constructor() { }
+  constructor(public router: Router) { }
 
   ngOnInit(): void {
     console.log(this.myProject.finishedAnnotation);
+  }
+
+  onStartAnnotating(): void {
+    console.log('test');
+    this.router.navigate(['/image-annotation/image-view']);
   }
 
 }
