@@ -113,8 +113,10 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations, this.ctx, this.activeRawImage, this.opacity);
       drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
       fillExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.ctx, this.opacity);
-      drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing);
-      fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
+      if (this.activeAnnotation !== undefined) {
+        drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing);
+        fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
+      }
     }
   }
 

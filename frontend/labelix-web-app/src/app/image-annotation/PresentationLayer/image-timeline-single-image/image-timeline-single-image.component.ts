@@ -9,7 +9,8 @@ import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 })
 export class ImageTimelineSingleImageComponent implements OnInit {
 
-  constructor(private annotationFacade: AnnotationFacade) { }
+  constructor(private annotationFacade: AnnotationFacade) {
+  }
 
   @Input()
   myImage: IFile;
@@ -17,7 +18,8 @@ export class ImageTimelineSingleImageComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onImageClick(){
-   this.annotationFacade.changeCurrentAnnotationImage(this.myImage);
+  onImageClick() {
+    console.log('test');
+    this.annotationFacade.changeCurrentAnnotationImage(this.myImage);
   }
 }
