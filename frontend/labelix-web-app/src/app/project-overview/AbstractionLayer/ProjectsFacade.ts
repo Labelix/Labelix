@@ -3,8 +3,7 @@ import {ProjectServiceService} from '../CoreLayer/services/project-service.servi
 import {select, Store} from '@ngrx/store';
 import {getAllProjects, getNumberOfExistingProjects, ProjectState} from '../CoreLayer/states/projectState';
 import {IProject} from '../../utility/contracts/IProject';
-import {AddProjectAction, DeleteProjectAction, GetProjectsAction} from '../CoreLayer/actions/project.actions';
-import {shareReplay} from 'rxjs/operators';
+import {AddProjectAction, GetProjectsAction} from '../CoreLayer/actions/project.actions';
 import {Observable} from 'rxjs';
 
 @Injectable()
@@ -26,5 +25,9 @@ export class ProjectsFacade {
 
   addProject(importProject: IProject) {
     this.projectApi.postItem(importProject).subscribe(value => this.store.dispatch(new AddProjectAction(value)));
+  }
+
+  getProjectObservableNyId(id: number): Observable<IProject> {
+    return this.projectApi.getItemById(id);
   }
 }

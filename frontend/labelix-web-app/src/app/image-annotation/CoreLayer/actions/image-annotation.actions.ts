@@ -3,6 +3,7 @@ import {IFile} from '../../../utility/contracts/IFile';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {AnnotaionMode} from '../annotaionModeEnum';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
+import {IProject} from '../../../utility/contracts/IProject';
 
 export enum ActionTypes {
   AddRawImages = '[ImageAnnotation] Add RawImages',
@@ -20,6 +21,8 @@ export enum ActionTypes {
   AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
   AddWholeImageAnnotation = '[ImageAnnotation] Add whole image annotation',
   UpdateImageAnnotation = '[ImageAnnotation] Update Image Annotation',
+  ReplaceActiveProject = '[ImageAnnotation] Replace active project',
+  ClearRawImages = '[ImageAnnotation] Clear Raw Images'
 }
 
 export class AddRawImagesAction implements Action {
@@ -95,7 +98,7 @@ export class IncrementAnnotationCount implements Action {
 export class AddPositionToActivePolygonAnnotation implements Action {
   readonly type = ActionTypes.AddPositionToActivePolygonAnnotation;
 
-  constructor(public payload: {x: number, y: number}) {
+  constructor(public payload: { x: number, y: number }) {
   }
 }
 
@@ -109,7 +112,7 @@ export class SetActiveAnnotation implements Action {
 export class AddBase64CodeToIFile implements Action {
   readonly type = ActionTypes.AddBase64CodeToIFile;
 
-  constructor(public payload: {id: number, baseCode: string}) {
+  constructor(public payload: { id: number, baseCode: string }) {
   }
 }
 
@@ -127,6 +130,19 @@ export class UpdateImageAnnotation implements Action {
   }
 }
 
+export class ReplaceActiveProject implements Action {
+  readonly type = ActionTypes.ReplaceActiveProject;
+
+  constructor(public payload: IProject) {
+  }
+}
+
+export class ClearRawImages implements Action {
+  readonly type = ActionTypes.ClearRawImages;
+
+}
+
+
 export type ImageAnnotationActions =
   | AddRawImagesAction
   | AddAnnotationLabel
@@ -142,4 +158,6 @@ export type ImageAnnotationActions =
   | SetActiveAnnotation
   | AddBase64CodeToIFile
   | AddWholeImageAnnotation
-  | UpdateImageAnnotation;
+  | UpdateImageAnnotation
+  | ReplaceActiveProject
+  | ClearRawImages;

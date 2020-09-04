@@ -17,7 +17,7 @@
           <mat-icon class="not-finished-icon" *ngIf="myProject.finishedAnnotation === false">
             priority_high
           </mat-icon>
-          <button mat-flat-button color="primary" (click)="onStartAnnotating()">Start Annotating</button>
+          <button mat-flat-button color="primary" (click)="onStartAnnotating($event)">Start Annotating</button>
         </div>
       </div>
     </mat-card-footer>

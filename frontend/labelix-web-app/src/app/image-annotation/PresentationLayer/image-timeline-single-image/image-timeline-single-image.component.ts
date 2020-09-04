@@ -19,7 +19,6 @@ export class ImageTimelineSingleImageComponent implements OnInit {
   }
 
   onImageClick() {
-    console.log('test');
     this.annotationFacade.changeCurrentAnnotationImage(this.myImage);
   }
 }
