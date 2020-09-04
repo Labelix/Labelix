@@ -15,13 +15,14 @@ import {
   ChangeCategoryOfCurrentImageAnnoation,
   ChangeCurrentAnnotationMode,
   DeleteImageAnnoation,
-  IncrementAnnotationCount,
+  IncrementAnnotationCount, ReplaceActiveProject,
   SetActiveAnnotation,
   SetCurrentAnnotationPicture, UpdateImageAnnotation
 } from '../CoreLayer/actions/image-annotation.actions';
 import {AnnotaionMode} from '../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
 import {ICategory} from '../../utility/contracts/ICategory';
+import {IProject} from '../../utility/contracts/IProject';
 
 @Injectable()
 export class AnnotationFacade {
@@ -81,5 +82,9 @@ export class AnnotationFacade {
 
   updateImageAnnotation(input: IImageAnnotation) {
     this.store.dispatch(new UpdateImageAnnotation(input));
+  }
+
+  replaceActiveProject(input: IProject) {
+    this.store.dispatch(new ReplaceActiveProject(input));
   }
 }

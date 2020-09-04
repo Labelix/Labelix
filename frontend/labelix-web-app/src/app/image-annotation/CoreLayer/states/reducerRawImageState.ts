@@ -57,6 +57,11 @@ export function rawImageReducer(
         rawImages: tempImages
       };
     }
+    case ActionTypes.ClearRawImages: {
+      return {
+        rawImages: []
+      };
+    }
     default:
       return state;
   }

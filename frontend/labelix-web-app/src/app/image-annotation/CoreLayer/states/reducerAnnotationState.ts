@@ -3,6 +3,7 @@ import {AnnotaionMode} from '../annotaionModeEnum';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
 import {ICategory} from '../../../utility/contracts/ICategory';
+import {IProject} from '../../../utility/contracts/IProject';
 
 export interface ReducerAnnotationState {
   currentAnnotatingImage: IFile;
@@ -11,6 +12,7 @@ export interface ReducerAnnotationState {
   activeLabel: ICategory;
   annotationCount: number;
   activeAnnotation: IImageAnnotation;
+  activeProject: IProject;
 }
 
 export const initalAnnotationState: ReducerAnnotationState = {
@@ -19,7 +21,8 @@ export const initalAnnotationState: ReducerAnnotationState = {
   currentImageAnnotations: [],
   activeLabel: undefined,
   annotationCount: 1,
-  activeAnnotation: undefined
+  activeAnnotation: undefined,
+  activeProject: undefined
 };
 
 export function annotationReducer(state = initalAnnotationState,
@@ -32,7 +35,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: action.payload,
         activeLabel: state.activeLabel,
         annotationCount: state.annotationCount,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
     case ActionTypes.ChangeCurrentAnnotationMode: {
@@ -42,7 +46,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentImageAnnotations: state.currentImageAnnotations,
         activeLabel: state.activeLabel,
         annotationCount: state.annotationCount,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
     case ActionTypes.AddImageAnnotation: {
@@ -55,7 +60,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotationMode: state.currentAnnotationMode,
         activeLabel: state.activeLabel,
         annotationCount: state.annotationCount,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
     case ActionTypes.ChangeCategoryOfCurrentImageAnnotation: {
@@ -83,7 +89,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotationMode: state.currentAnnotationMode,
         activeLabel: state.activeLabel,
         annotationCount: state.annotationCount,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
     case ActionTypes.ChangeActiveLabel: {
@@ -93,7 +100,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
 
@@ -111,7 +119,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
 
@@ -122,7 +131,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: (state.annotationCount + 1),
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
 
@@ -133,7 +143,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount,
-        activeAnnotation: action.payload
+        activeAnnotation: action.payload,
+        activeProject: state.activeProject
       };
     }
 
@@ -157,7 +168,8 @@ export function annotationReducer(state = initalAnnotationState,
           area: state.activeAnnotation.area,
           image: state.activeAnnotation.image,
           isCrowd: state.activeAnnotation.isCrowd
-        }
+        },
+        activeProject: state.activeProject
       };
     }
     case ActionTypes.AddWholeImageAnnotation: {
@@ -198,7 +210,8 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount + 1,
-        activeAnnotation: state.activeAnnotation
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
       };
     }
     case ActionTypes.UpdateImageAnnotation: {
@@ -218,7 +231,19 @@ export function annotationReducer(state = initalAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount + 1,
-        activeAnnotation: state.activeAnnotation.id === action.payload.id ? action.payload : state.activeAnnotation
+        activeAnnotation: state.activeAnnotation.id === action.payload.id ? action.payload : state.activeAnnotation,
+        activeProject: state.activeProject
+      };
+    }
+    case ActionTypes.ReplaceActiveProject: {
+      return {
+        activeLabel: state.activeLabel,
+        currentImageAnnotations: state.currentImageAnnotations,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        annotationCount: state.annotationCount,
+        activeAnnotation: state.activeAnnotation,
+        activeProject: action.payload
       };
     }
     default:

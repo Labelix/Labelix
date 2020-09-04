@@ -65,9 +65,11 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.annotationFacade.currentAnnotationImage.subscribe(value => {
-      this.activeRawImage = value;
-      this.readDataFromRawImage();
-      this.redrawCanvas();
+      if (value !== undefined) {
+        this.activeRawImage = value;
+        this.readDataFromRawImage();
+        this.redrawCanvas();
+      }
     });
 
     this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
@@ -83,26 +85,28 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   readDataFromRawImage() {
-    if (this.activeRawImage.height === -1
-      || this.activeRawImage.width === -1
-      || this.activeRawImage.base64Url === '') {
-      const reader = new FileReader();
-      const image = new Image();
-      reader.addEventListener('load', (event: any) => {
-        image.src = event.target.result;
-        image.onload = () => {
-          const newRawImage = {
-            id: this.activeRawImage.id,
-            file: this.activeRawImage.file,
-            width: image.width,
-            height: image.height,
-            base64Url: image.src
+    if (this.activeRawImage !== undefined) {
+      if ((this.activeRawImage.height === -1
+        || this.activeRawImage.width === -1)
+        && this.activeRawImage.base64Url === '') {
+        const reader = new FileReader();
+        const image = new Image();
+        reader.addEventListener('load', (event: any) => {
+          image.src = event.target.result;
+          image.onload = () => {
+            const newRawImage = {
+              id: this.activeRawImage.id,
+              file: this.activeRawImage.file,
+              width: image.width,
+              height: image.height,
+              base64Url: image.src
+            };
+            this.rawImageFacade.updateRawImage(newRawImage);
+            this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
           };
-          this.rawImageFacade.updateRawImage(newRawImage);
-          this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
-        };
-      });
-      reader.readAsDataURL(this.activeRawImage.file);
+        });
+        reader.readAsDataURL(this.activeRawImage.file);
+      }
     }
   }
 

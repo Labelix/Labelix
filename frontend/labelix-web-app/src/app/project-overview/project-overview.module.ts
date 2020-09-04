@@ -18,6 +18,8 @@ import { ProjectCreationDialogComponent } from './PresentationLayer/project-crea
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AiModelConfigFacade} from './AbstractionLayer/AiModelConfigFacade';
 import {aiModelConfigReducers, featureAiModelConfigStateName} from './CoreLayer/states/aiModelConfigState';
+import {AnnotationFacade} from '../image-annotation/AbstractionLayer/AnnotationFacade';
+import {RawImageFacade} from '../image-annotation/AbstractionLayer/RawImageFacade';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import {aiModelConfigReducers, featureAiModelConfigStateName} from './CoreLayer/
     ],
   providers: [
     ProjectsFacade,
-    AiModelConfigFacade
+    AiModelConfigFacade,
+    AnnotationFacade,
+    RawImageFacade
   ]
 })
 export class ProjectOverviewModule { }
