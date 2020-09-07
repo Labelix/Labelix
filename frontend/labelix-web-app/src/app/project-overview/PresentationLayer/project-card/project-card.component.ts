@@ -24,30 +24,36 @@ export class ProjectCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onStartAnnotating(event): void {
+  onStartAnnotating(): void {
+    this.annotationFacade.changeCurrentAnnotationImage(undefined);
+    this.router.navigate(['/image-annotation/image-view']);
     this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
-      this.rawImageFacade.clearRawImages();
-      let imageIdCounter = 0;
-      this.rawImageFacade.addRawImagesToState(value.images.map(entry => {
-        imageIdCounter++;
-        return {
-          id: imageIdCounter,
-          base64Url: entry.Data,
-          width: -1,
-          height: -1,
-          file: undefined
-        };
-      }));
-      this.annotationFacade.replaceActiveProject(value);
-      this.annotationFacade.changeCurrentAnnotationImage({
-        id: value.images[0].id,
-        base64Url: value.images[0].Data,
+      // sorry for that ugly thing but it works for now, I guess
+      setTimeout(() => this.test(value), 10);
+    });
+  }
+
+  test(value) {
+    this.rawImageFacade.clearRawImages();
+    let imageIdCounter = 0;
+    this.rawImageFacade.addRawImagesToState(value.images.map(entry => {
+      imageIdCounter++;
+      return {
+        id: imageIdCounter,
+        base64Url: entry.Data,
         width: -1,
         height: -1,
         file: undefined
-      });
+      };
+    }));
+    this.annotationFacade.replaceActiveProject(value);
+    this.annotationFacade.changeCurrentAnnotationImage({
+      id: 1,
+      base64Url: value.images[0].Data,
+      width: -1,
+      height: -1,
+      file: undefined
     });
-    this.router.navigate(['/image-annotation/image-view']);
   }
 
 }
