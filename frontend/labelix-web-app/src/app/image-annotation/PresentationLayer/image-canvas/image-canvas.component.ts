@@ -81,7 +81,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       this.readDataFromRawImage();
       this.redrawCanvas();
     });
-    this.readDataFromRawImage();
   }
 
   readDataFromRawImage() {
