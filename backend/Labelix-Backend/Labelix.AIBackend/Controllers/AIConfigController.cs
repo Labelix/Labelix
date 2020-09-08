@@ -22,6 +22,7 @@ namespace Labelix.AIBackend.Controllers
     {
 
         #region CRUD
+
         [HttpGet]
         public async Task<string> Get()
         {
@@ -37,17 +38,18 @@ namespace Labelix.AIBackend.Controllers
 
             // Remove Base64 header that might be added by the fronted creating the Base64 code         
             info.data.ForEach((x) => x.Base64 = x.Base64.Replace("data:image/png;base64,", ""));
-            
-            
+
+
             tempDir = PathHelper.GetRandomFileNameSecure(tempPath);
             var (inDir, outDir) = CreateFolders(tempDir);
-            
-            
-            info.data.ForEach((x) => {
+
+
+            info.data.ForEach((x) =>
+            {
                 var bytes = x.Base64.Base64ToByte();
                 System.IO.File.WriteAllBytes(Path.Combine(inDir, x.Name), bytes);
             });
-            
+
             // Combine options
             List<string> options;
 
@@ -62,17 +64,22 @@ namespace Labelix.AIBackend.Controllers
 
             IActionResult actionResult;
 
-            if ((ErrorCodes)res == ErrorCodes.Success)
+            if ((ErrorCodes) res == ErrorCodes.Success)
             {
                 var filePaths = Directory.GetFiles(outDir);
-                var files = filePaths.Select( x => System.IO.File.ReadAllBytes(x).ImageToBase64());
-                actionResult = Ok(files);
-            }
-            else if (Enum.IsDefined(typeof(ErrorCodes), res)) {
 
-                actionResult = BadRequest($"DockerError[{res}]: {(ErrorCodes)res}");
+                var projectId = info.data.First().ProjectId;
+                
+                var files = filePaths.Select(path => EncodeImage(projectId, path));
+                
+                actionResult = Ok(await Task.WhenAll(files));
             }
-            else 
+            else if (Enum.IsDefined(typeof(ErrorCodes), res))
+            {
+
+                actionResult = BadRequest($"DockerError[{res}]: {(ErrorCodes) res}");
+            }
+            else
             {
                 actionResult = BadRequest($"Process-Error: {res}");
             }
@@ -80,10 +87,12 @@ namespace Labelix.AIBackend.Controllers
             // Delete temporaryDirectory and return
             Directory.Delete(tempDir, true);
             return actionResult;
-        } 
+        }
+
         #endregion
 
         #region Static Methods
+
         private static (string, string) CreateFolders(string tempDir)
         {
             string inDir, outDir;
@@ -95,7 +104,15 @@ namespace Labelix.AIBackend.Controllers
             Directory.CreateDirectory(outDir);
 
             return (inDir, outDir);
-        } 
+        }
+
+        private static async Task<Data> EncodeImage(int projectId, string fileName)
+        {
+            var file = (await System.IO.File.ReadAllBytesAsync(fileName)).ImageToBase64();
+            var data = new Data(projectId, Path.GetFileName(fileName), Path.GetExtension(fileName), file);
+            return data;
+        }
+
         #endregion
     }
 }
