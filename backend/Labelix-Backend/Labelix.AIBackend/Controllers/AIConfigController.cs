@@ -9,7 +9,9 @@ using CommonBase.Extensions;
 using DockerAccess;
 using System.Web.Http.Results;
 using System;
+using System.Buffers.Text;
 using System.Linq;
+using System.Net;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -33,19 +35,21 @@ namespace Labelix.AIBackend.Controllers
             string tempPath, tempDir;
             tempPath = Path.GetTempPath();
 
+            // Remove Base64 header that might be added by the fronted creating the Base64 code         
             info.data.ForEach((x) => x.Base64 = x.Base64.Replace("data:image/png;base64,", ""));
-
+            
+            
             tempDir = PathHelper.GetRandomFileNameSecure(tempPath);
-
             var (inDir, outDir) = CreateFolders(tempDir);
-
-            List<string> options;
-
+            
+            
             info.data.ForEach((x) => {
                 var bytes = x.Base64.Base64ToByte();
                 System.IO.File.WriteAllBytes(Path.Combine(inDir, x.Name), bytes);
             });
-
+            
+            // Combine options
+            List<string> options;
 
             options = new List<string>();
             options.Add("--rm");
@@ -56,15 +60,13 @@ namespace Labelix.AIBackend.Controllers
 
             var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
 
-
-
             IActionResult actionResult;
 
             if ((ErrorCodes)res == ErrorCodes.Success)
             {
-                var file = Directory.GetFiles(outDir, "*.json").First();
-                var coco = System.IO.File.ReadAllText(file);
-                actionResult = Ok(coco);
+                var filePaths = Directory.GetFiles(outDir);
+                var files = filePaths.Select( x => System.IO.File.ReadAllBytes(x).ImageToBase64());
+                actionResult = Ok(files);
             }
             else if (Enum.IsDefined(typeof(ErrorCodes), res)) {
 
@@ -75,6 +77,7 @@ namespace Labelix.AIBackend.Controllers
                 actionResult = BadRequest($"Process-Error: {res}");
             }
 
+            // Delete temporaryDirectory and return
             Directory.Delete(tempDir, true);
             return actionResult;
         } 
