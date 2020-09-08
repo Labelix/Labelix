@@ -3,7 +3,6 @@ import {IFile} from '../../../utility/contracts/IFile';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
-import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
 
 @Component({
   selector: 'app-image-upload',
@@ -30,23 +29,15 @@ export class ImageUploadComponent implements OnInit {
   onFileDropped($event) {
     const tmp: IFile[] = [];
 
+    let count = 1;
     for (const item of $event) {
-      console.log(item.name);
-      tmp.push({id: this.nums, file: item, height: -1, width: -1});
+      // base 64 encoding wird später hinzugefügt
+      tmp.push({id: count, file: item, height: -1, width: -1, base64Url: ''});
+      count++;
     }
 
     this.facade.uploadRawImages(tmp);
     this.annotationFacade.changeCurrentAnnotationImage(tmp[0]);
-    this.annotationFacade.addImageAnnotation({
-      id: -1,
-      annotationMode: AnnotaionMode.WHOLE_IMAGE,
-      area: -1,
-      boundingBox: undefined,
-      categoryLabel: undefined,
-      image: tmp[0],
-      isCrowd: false,
-      segmentations: []
-    });
 
     this.router.navigate(['image-annotation/image-view']);
   }

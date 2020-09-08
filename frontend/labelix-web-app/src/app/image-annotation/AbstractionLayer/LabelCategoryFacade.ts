@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {
-  getAllCurrentCategoryLabels,
+  getAllCurrentCategoryLabels, getNextLabelId,
   getNumberOfExistingLabels,
   LabelCategoryState
 } from '../CoreLayer/states/labelCategoryState';
@@ -14,10 +14,12 @@ export class LabelCategoryFacade {
 
   labelCategories$: Observable<ICategory[]>;
   numberOfExistingLabels$: Observable<number>;
+  nextLabelId$: Observable<number>;
 
   constructor(private store: Store<LabelCategoryState>) {
     this.labelCategories$ = this.store.pipe(select(getAllCurrentCategoryLabels));
     this.numberOfExistingLabels$ = this.store.pipe(select(getNumberOfExistingLabels));
+    this.nextLabelId$ = this.store.pipe(select(getNextLabelId));
   }
 
   addLabelCategory(input: ICategory){

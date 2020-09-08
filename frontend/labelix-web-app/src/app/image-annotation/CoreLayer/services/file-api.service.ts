@@ -19,7 +19,6 @@ export class FileApiService extends GenericApiService<IFile>{
       const reader = new FileReader();
       reader.readAsDataURL(item.file);
       reader.onload = () => {
-        console.log(reader.result);
         this.postBase64Code(reader.result, item).subscribe(value => console.log(value));
       };
     }

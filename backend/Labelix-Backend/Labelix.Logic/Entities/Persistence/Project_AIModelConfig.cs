@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Labelix.Logic.Entities.Persistence
 {
-    class Project_AIConfig : IdentityObject, IProject_AIConfig
+    class Project_AIModelConfig : IdentityObject, IProject_AIModelConfig
     {
         public int ProjectKey { get; set; }
         public int AIConfigKey { get; set; }
 
-        public void CopyProperties(IProject_AIConfig other)
+        public void CopyProperties(IProject_AIModelConfig other)
         {
             this.ProjectKey = other.ProjectKey;
             this.AIConfigKey = other.AIConfigKey;
