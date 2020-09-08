@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using Contract = Labelix.Contracts.Persistence.IAIConfig;
-using Model = Labelix.Transfer.Persistence.AIConfig;
+using Contract = Labelix.Contracts.Persistence.IAIModelConfig;
+using Model = Labelix.Transfer.Persistence.AIModelConfig;
 
 namespace Labelix.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AIConfigController : GenericController<Contract, Model>
+    public class AIModelConfigController : GenericController<Contract, Model>
     {
-        readonly Project_AIConfigController project_AIConfig = new Project_AIConfigController();
+        readonly Project_AIModelConfigController project_AIConfig = new Project_AIModelConfigController();
 
         [HttpGet("{id}")]
         public Task<Model> GetAsync(int id)
@@ -48,8 +48,8 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("ByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
-            Project_AIConfig configIdss = await project_AIConfig.GetAsync(1);
-            IEnumerable<Project_AIConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
+            Project_AIModelConfig configIdss = await project_AIConfig.GetAsync(1);
+            IEnumerable<Project_AIModelConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
             List<int> ids = new List<int>();
             configIds.ToList().ForEach(e => ids.Add(e.AIConfigKey));
             IEnumerable<Model> configs = await GetAllAsync();

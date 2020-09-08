@@ -1,18 +1,24 @@
 ﻿using Labelix.Contracts.Persistence;
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace Labelix.Logic.Entities.Persistence
+namespace Labelix.Transfer.Persistence
 {
-    class AIConfig : IdentityObject, IAIConfig
+    public class AIModelConfig : TransferObject, IAIModelConfig
     {
+        [JsonPropertyName("name")]
         public string Name { get; set; }
+        [JsonPropertyName("dockerImageName")]
         public string DockerImageName { get; set; }
+        [JsonPropertyName("parameter")]
         public string Parameter { get; set; }
+        [JsonPropertyName("inputDirectory")]
         public string InputDirectory { get; set; }
+        [JsonPropertyName("outputDirectory")]
         public string OutputDirectory { get; set; }
-        public ICollection<Project_AIConfig> Projects { get; set; }
+        [JsonPropertyName("options")]
+        public string Options { get; set; }
 
-        public void CopyProperties(IAIConfig other)
+        public void CopyProperties(IAIModelConfig other)
         {
             Id = other.Id;
             Name = other.Name;
@@ -20,6 +26,7 @@ namespace Labelix.Logic.Entities.Persistence
             Parameter = other.Parameter;
             InputDirectory = other.InputDirectory;
             OutputDirectory = other.OutputDirectory;
+            Options = other.Options;
         }
     }
 }

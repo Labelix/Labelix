@@ -1,0 +1,3 @@
+INSERT INTO public.ai_model_configs ("Id", "Name", "DockerImageName", "Parameter", "InputDirectory", "OutputDirectory", "Options") VALUES (3, 'Zebraerkennung', 'Nvidea/Zebraerkennung', '--gpu all --output-format coco', '/input', '/output', '-p 80:80');
+INSERT INTO public.ai_model_configs ("Id", "Name", "DockerImageName", "Parameter", "InputDirectory", "OutputDirectory", "Options") VALUES (1, 'Affenerkennung', 'Nvidea/Affenerkennung', '--gpu all --output-format coco', '/input', '/output', '-p 80:80');
+INSERT INTO public.ai_model_configs ("Id", "Name", "DockerImageName", "Parameter", "InputDirectory", "OutputDirectory", "Options") VALUES (2, 'Giraffenerkennung', 'Nvidea/Giraffenerkennung', '--gpu all --output-format coco', '/input', '/output', '-p 80:80');
