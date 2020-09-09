@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {AnnotaionMode} from '../annotaionModeEnum';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
@@ -28,7 +28,7 @@ export enum ActionTypes {
 export class AddRawImagesAction implements Action {
   readonly type = ActionTypes.AddRawImages;
 
-  constructor(public payload: IFile[]) {
+  constructor(public payload: IRawImage[]) {
   }
 }
 
@@ -42,7 +42,7 @@ export class AddAnnotationLabel implements Action {
 export class SetCurrentAnnotationPicture implements Action {
   readonly type = ActionTypes.SetCurrentAnnotationPicture;
 
-  constructor(public payload: IFile) {
+  constructor(public payload: IRawImage) {
   }
 }
 
@@ -70,7 +70,7 @@ export class ChangeCategoryOfCurrentImageAnnoation implements Action {
 export class UpdateRawImage implements Action {
   readonly type = ActionTypes.UpdateRawImage;
 
-  constructor(public payload: IFile) {
+  constructor(public payload: IRawImage) {
   }
 }
 

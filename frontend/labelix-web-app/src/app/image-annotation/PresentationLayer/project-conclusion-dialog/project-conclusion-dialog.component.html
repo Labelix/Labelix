@@ -1,0 +1,16 @@
+
+<div style="width: 50em; height: 30em">
+  <mat-tab-group>
+    <mat-tab label="General">
+      <br>
+      <p style="font-size: 2em">{{activeProject.name}}</p>
+      <mat-divider></mat-divider>
+      <br>
+      <p>{{activeProject.creationDate | date: 'dd/MM/yyyy:hh:mm'}}</p>
+      <br>
+      <p>{{activeProject.description}}</p>
+      <button mat-flat-button (click)="onSaveWork()">Save Work</button>
+    </mat-tab>
+    <mat-tab label="Coco-Export"><app-single-annotation-export-form></app-single-annotation-export-form></mat-tab>
+  </mat-tab-group>
+</div>

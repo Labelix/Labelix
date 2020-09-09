@@ -1,6 +1,6 @@
 import {IImageAnnotation} from '../../../../utility/contracts/IImageAnnotation';
 import {AnnotationFacade} from '../../../AbstractionLayer/AnnotationFacade';
-import {IFile} from '../../../../utility/contracts/IFile';
+import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../../utility/contracts/ICategory';
 import {hexToRGB} from './drawingUtilLogic';
@@ -10,7 +10,7 @@ export function onMouseDownPolygon(
   canvasEl: HTMLCanvasElement,
   activeAnnotation: IImageAnnotation,
   annotationFacade: AnnotationFacade,
-  activeRawImage: IFile,
+  activeRawImage: IRawImage,
   nextAnnotationId: number,
   activeLabel: ICategory) {
   if (activeAnnotation === undefined) {
@@ -36,7 +36,7 @@ export function onMouseMovePolygon(
   ctx: CanvasRenderingContext2D,
   activeAnnotation: IImageAnnotation,
   currentImageAnnotations: IImageAnnotation[],
-  activeRawImage: IFile,
+  activeRawImage: IRawImage,
   activeLabel: ICategory,
   currentlyDrawing: boolean) {
 
@@ -96,7 +96,7 @@ export function drawPointsOfPolygonAnnotation(
 export function fillExistingPolygonAnnotations(
   canvasEl: HTMLCanvasElement,
   currentImageAnnotations: IImageAnnotation[],
-  activeRawImage: IFile,
+  activeRawImage: IRawImage,
   ctx: CanvasRenderingContext2D,
   opacity: number) {
   for (const item of currentImageAnnotations) {
@@ -110,7 +110,7 @@ export function fillExistingPolygonAnnotations(
 export function drawExistingPolygonAnnotations(
   canvasEl: HTMLCanvasElement,
   currentImageAnnotations: IImageAnnotation[],
-  activeRawImage: IFile,
+  activeRawImage: IRawImage,
   currentlyDrawing: boolean,
   ctx: CanvasRenderingContext2D) {
 

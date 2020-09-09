@@ -1,8 +1,8 @@
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
 
 export interface ReducerRawImageState {
-  rawImages: IFile[];
+  rawImages: IRawImage[];
 }
 
 export const initialRawImageState: ReducerRawImageState = {
@@ -14,7 +14,7 @@ export function rawImageReducer(
   action: ImageAnnotationActions): ReducerRawImageState {
   switch (action.type) {
     case ActionTypes.AddRawImages: {
-      const tempActions: IFile[] = [];
+      const tempActions: IRawImage[] = [];
 
       state.rawImages.forEach(value => tempActions.push(value));
       action.payload.forEach(value => tempActions.push(value));
@@ -24,7 +24,7 @@ export function rawImageReducer(
       };
     }
     case ActionTypes.UpdateRawImage: {
-      const tempActions: IFile[] = [];
+      const tempActions: IRawImage[] = [];
 
       state.rawImages.forEach(value => {
         if (value.id === action.payload.id) {
@@ -39,7 +39,7 @@ export function rawImageReducer(
       };
     }
     case ActionTypes.AddBase64CodeToIFile: {
-      const tempImages: IFile[] = [];
+      const tempImages: IRawImage[] = [];
       state.rawImages.forEach(value => {
         if (value.id === action.payload.id) {
           tempImages.push({
@@ -47,7 +47,8 @@ export function rawImageReducer(
             file: value.file,
             base64Url: action.payload.baseCode,
             height: value.height,
-            width: value.width
+            width: value.width,
+            name: value.name
           });
         } else {
           tempImages.push(value);

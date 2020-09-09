@@ -2,7 +2,7 @@ import {AnnotationFacade} from '../../../AbstractionLayer/AnnotationFacade';
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../../utility/contracts/ICategory';
 import {drawHandle, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
-import {IFile} from '../../../../utility/contracts/IFile';
+import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {IBoundingBox} from '../../../../utility/contracts/IBoundingBox';
 
 export function onMouseDownBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
@@ -35,7 +35,7 @@ export function onMouseUpBoundingBoxen(
   value: MouseEvent,
   canvasEl: HTMLCanvasElement,
   annotationFacade: AnnotationFacade,
-  activeRawImage: IFile,
+  activeRawImage: IRawImage,
   nextAnnotationId: number,
   activeLabel: ICategory) {
 
@@ -67,7 +67,7 @@ export function drawBoundingBox(
   boundingBox: IBoundingBox,
   canvasEl: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  activeRawImage: IFile) {
+  activeRawImage: IRawImage) {
 
   ctx.beginPath();
   ctx.fillRect(
@@ -89,7 +89,7 @@ export function drawExistingAnnotationsBoundingBoxes(
   canvasEl: HTMLCanvasElement,
   elements,
   ctx: CanvasRenderingContext2D,
-  activeRawImage: IFile,
+  activeRawImage: IRawImage,
   opacity: number) {
   setCanvasDimensions(canvasEl);
   for (const item of elements) {

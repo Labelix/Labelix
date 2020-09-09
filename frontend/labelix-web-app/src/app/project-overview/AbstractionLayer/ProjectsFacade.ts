@@ -18,16 +18,19 @@ export class ProjectsFacade {
 
   async getProjects() {
     this.projectApi.getItems().subscribe((value: IProject[]) => {
-      value.forEach(item => console.log(item.name));
       this.store.dispatch(new GetProjectsAction(value));
     });
   }
 
-  addProject(importProject: IProject) {
+  postProject(importProject: IProject) {
     this.projectApi.postItem(importProject).subscribe(value => this.store.dispatch(new AddProjectAction(value)));
   }
 
   getProjectObservableNyId(id: number): Observable<IProject> {
     return this.projectApi.getItemById(id);
+  }
+
+  putProject(data: IProject) {
+    this.projectApi.putItem(data).subscribe(value => console.log(value));
   }
 }

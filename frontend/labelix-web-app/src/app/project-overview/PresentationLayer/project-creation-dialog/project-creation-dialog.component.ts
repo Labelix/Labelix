@@ -48,6 +48,6 @@ export class ProjectCreationDialogComponent implements OnInit {
       AIModelConfig: this.aiIds
     };
     console.log(this.newProjectName);
-    this.projectFacade.addProject(this.project);
+    this.projectFacade.postProject(this.project);
   }
 }

@@ -20,6 +20,8 @@ import {AiModelConfigFacade} from './AbstractionLayer/AiModelConfigFacade';
 import {aiModelConfigReducers, featureAiModelConfigStateName} from './CoreLayer/states/aiModelConfigState';
 import {AnnotationFacade} from '../image-annotation/AbstractionLayer/AnnotationFacade';
 import {RawImageFacade} from '../image-annotation/AbstractionLayer/RawImageFacade';
+import { ProjectConclusionDialogComponent } from '../image-annotation/PresentationLayer/project-conclusion-dialog/project-conclusion-dialog.component';
+import {ImageAnnotationModule} from '../image-annotation/image-annotation.module';
 
 @NgModule({
   declarations: [
@@ -28,20 +30,22 @@ import {RawImageFacade} from '../image-annotation/AbstractionLayer/RawImageFacad
     ProjectCardComponent,
     AddProjectCardComponent,
     ProjectCreationDialogComponent,
+    ProjectConclusionDialogComponent,
   ],
-    imports: [
-        CommonModule,
-        ProjectOverviewRoutingModule,
-        MatGridListModule,
-        MatCardModule,
-        StoreModule.forFeature(featureStateName, projectReducers),
-        StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MaterialModule,
-        FormsModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    CommonModule,
+    ProjectOverviewRoutingModule,
+    MatGridListModule,
+    MatCardModule,
+    StoreModule.forFeature(featureStateName, projectReducers),
+    StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ImageAnnotationModule
+  ],
   providers: [
     ProjectsFacade,
     AiModelConfigFacade,
