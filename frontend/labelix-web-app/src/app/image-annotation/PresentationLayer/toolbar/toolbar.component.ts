@@ -16,7 +16,6 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
-    this.annotationFacade.currentAnnotationMode.subscribe(value => console.log(value));
   }
 
   clickToolbarItem(input: number) {

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 import {fromEvent} from 'rxjs';
 import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
@@ -49,7 +49,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   currentImageAnnotations: IImageAnnotation[];
   currentAnnotationMode: AnnotaionMode;
   activeLabel: ICategory;
-  activeRawImage: IFile;
+  activeRawImage: IRawImage;
   activeAnnotation: IImageAnnotation;
   // specifies the several different modes, when the resizing tool is used
   editingOptions: EditingOption = {
@@ -98,7 +98,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
               file: this.activeRawImage.file,
               width: image.width,
               height: image.height,
-              base64Url: image.src
+              base64Url: image.src,
+              name: image.name
             };
             this.rawImageFacade.updateRawImage(newRawImage);
             this.annotationFacade.changeCurrentAnnotationImage(newRawImage);

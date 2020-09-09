@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {
-  AnnotationState, getActiveLabel, getActivePolygonAnnotation,
+  AnnotationState, getActiveLabel, getActivePolygonAnnotation, getActiveProject,
   getCurrentAnnotatingImage,
   getCurrentAnnotationMode, getCurrentImageAnnotations, getNextAnnotationId
 } from '../CoreLayer/states/annotationState';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {IFile} from '../../utility/contracts/IFile';
+import {IRawImage} from '../../utility/contracts/IRawImage';
 import {
   AddImageAnnotation,
   AddPositionToActivePolygonAnnotation,
@@ -27,12 +27,13 @@ import {IProject} from '../../utility/contracts/IProject';
 @Injectable()
 export class AnnotationFacade {
 
-  currentAnnotationImage: Observable<IFile>;
+  currentAnnotationImage: Observable<IRawImage>;
   currentAnnotationMode: Observable<AnnotaionMode>;
   currentImageAnnotations: Observable<IImageAnnotation[]>;
   activeLabel: Observable<ICategory>;
   numberOfCurrentImageAnnotations: Observable<number>;
   activePolygonAnnotation: Observable<IImageAnnotation>;
+  activeProject: Observable<IProject>;
 
   constructor(private store: Store<AnnotationState>) {
     this.currentAnnotationImage = this.store.pipe(select(getCurrentAnnotatingImage));
@@ -41,9 +42,10 @@ export class AnnotationFacade {
     this.activeLabel = this.store.pipe(select(getActiveLabel));
     this.numberOfCurrentImageAnnotations = this.store.pipe(select(getNextAnnotationId));
     this.activePolygonAnnotation = this.store.pipe(select(getActivePolygonAnnotation));
+    this.activeProject = this.store.pipe(select(getActiveProject));
   }
 
-  changeCurrentAnnotationImage(input: IFile) {
+  changeCurrentAnnotationImage(input: IRawImage) {
     this.store.dispatch(new SetCurrentAnnotationPicture(input));
   }
 

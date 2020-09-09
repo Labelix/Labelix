@@ -1,13 +1,13 @@
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../../../utility/contracts/IImageAnnotation';
-import {IFile} from '../../../../utility/contracts/IFile';
+import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {AnnotationFacade} from '../../../AbstractionLayer/AnnotationFacade';
 import {EditingOption} from '../image-canvas.component';
 
 export function onMouseDownSizingTool(value: MouseEvent,
                                       canvasEl: HTMLCanvasElement,
                                       currentImageAnnotations: IImageAnnotation[],
-                                      activeRawImage: IFile,
+                                      activeRawImage: IRawImage,
                                       annotationFacade: AnnotationFacade,
                                       editingOptions: EditingOption) {
   for (const item of currentImageAnnotations) {
@@ -59,7 +59,7 @@ export function onMouseMoveSizingTool(value: MouseEvent,
                                       mousePositions: { x: number, y: number }[],
                                       annotationFacade: AnnotationFacade,
                                       activeAnnotation: IImageAnnotation,
-                                      activeRawImage: IFile) {
+                                      activeRawImage: IRawImage) {
   if (editingOptions.annotationDragging) {
     const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
     const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;

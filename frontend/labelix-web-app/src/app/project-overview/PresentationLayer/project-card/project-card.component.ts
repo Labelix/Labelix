@@ -43,7 +43,8 @@ export class ProjectCardComponent implements OnInit {
         base64Url: entry.Data,
         width: -1,
         height: -1,
-        file: undefined
+        file: undefined,
+        name: entry.Name
       };
     }));
     this.annotationFacade.replaceActiveProject(value);
@@ -52,7 +53,8 @@ export class ProjectCardComponent implements OnInit {
       base64Url: value.images[0].Data,
       width: -1,
       height: -1,
-      file: undefined
+      file: undefined,
+      name: value.images[0].Name
     });
   }
 

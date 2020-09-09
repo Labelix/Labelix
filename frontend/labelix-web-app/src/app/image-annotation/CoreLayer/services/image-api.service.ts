@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {GenericApiService} from '../../../utility/logic/generic-api.service';
 import {IImage} from '../../../utility/contracts/IImage';
 import {HttpClient} from '@angular/common/http';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {Observable} from 'rxjs';
 
 @Injectable({
