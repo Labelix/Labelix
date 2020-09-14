@@ -48,6 +48,7 @@ export class ProjectConclusionDialogComponent implements OnInit {
         version: '1.0',
         url: 'testurl',
         dateCreated: new Date(Date.now()),
+        // TODO implement this when users are finished
         contributor: 'yet to come'
       }
     });
