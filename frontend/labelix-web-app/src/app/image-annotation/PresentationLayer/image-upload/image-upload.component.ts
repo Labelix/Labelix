@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
@@ -18,7 +18,7 @@ export class ImageUploadComponent implements OnInit {
 
   @ViewChild('fileDropRef', {static: false}) fileDropEl: ElementRef;
 
-  listOfFiles: IFile[];
+  listOfFiles: IRawImage[];
   nums: number;
 
   ngOnInit(): void {
@@ -27,12 +27,12 @@ export class ImageUploadComponent implements OnInit {
   }
 
   onFileDropped($event) {
-    const tmp: IFile[] = [];
+    const tmp: IRawImage[] = [];
 
     let count = 1;
     for (const item of $event) {
       // base 64 encoding wird später hinzugefügt
-      tmp.push({id: count, file: item, height: -1, width: -1, base64Url: ''});
+      tmp.push({id: count, file: item, height: -1, width: -1, base64Url: '', name: item.name});
       count++;
     }
 

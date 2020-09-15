@@ -5,12 +5,12 @@
 }
 
 .side-location{
-  margin-top: 3.35%;
+  margin-top: 4.5em;
   position: fixed;
   left: 0;
   top: 0;
   height: 100%;
-  width: 3%;
+  width: 60px;
   background-color: #ebe9e7;
   overflow: hidden;
   z-index: 1999;

@@ -55,5 +55,6 @@ namespace Labelix.WebAPI.Controllers
             IEnumerable<Model> configs = await GetAllAsync();
             return configs.Where(c => ids.Contains(c.Id));
         }
+
     }
 }
