@@ -85,6 +85,10 @@ namespace Labelix.WebAPI.Controllers
 
             if (oldProjectConverted.Images != model.Images)
             {
+                foreach (var modelImage in model.Images)
+                {
+                    modelImage.ProjectId = model.Id;
+                }
                 await imageController.DeleteByProjectId(oldProjectConverted.Id);
                 var images = new MultipleData()
                 {
@@ -97,14 +101,15 @@ namespace Labelix.WebAPI.Controllers
                 CreationDate = model.CreationDate,
                 Description = model.Description,
                 FinishedAnnotation = model.FinishedAnnotation,
-                LabeledPath = $"./Ressources/Labels/{model.Id}_{model.Name}",
+                LabeledPath = oldProject.LabeledPath,
                 Name = model.Name,
                 Timestamp = model.Timestamp,
                 Id = model.Id
             };
-            await UpdateModelAsync(newModel);
-            newModel.LabeledPath = System.IO.File.ReadAllText(newModel.LabeledPath);
-            return newModel;
+            Model respondModel = await UpdateModelAsync(newModel);
+            string dir_path = $"./Ressources/Labels/{newModel.Id}_{newModel.Name}";
+            if (System.IO.File.Exists(dir_path)) respondModel.LabeledPath = System.IO.File.ReadAllText(dir_path);
+            return respondModel;
         }
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
