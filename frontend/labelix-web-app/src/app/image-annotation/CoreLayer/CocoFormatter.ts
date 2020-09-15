@@ -3,7 +3,7 @@ import {ICocoInfo} from '../../utility/contracts/cocoFormat/ICocoInfo';
 import {ICocoCategory} from '../../utility/contracts/cocoFormat/ICocoCategory';
 import {ICategory} from '../../utility/contracts/ICategory';
 import {ICocoImage} from '../../utility/contracts/cocoFormat/ICocoImage';
-import {IFile} from '../../utility/contracts/IFile';
+import {IRawImage} from '../../utility/contracts/IRawImage';
 import {ICocoLicense} from '../../utility/contracts/cocoFormat/ICocoLicense';
 import {ICocoAnnotation} from '../../utility/contracts/cocoFormat/ICocoAnnotation';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
@@ -34,11 +34,11 @@ export class CocoFormatter {
     return result;
   }
 
-  createListOfICocoImages(input: IFile[]): ICocoImage[] {
+  createListOfICocoImages(input: IRawImage[]): ICocoImage[] {
     const result: ICocoImage[] = [];
     input.forEach(value => result.push({
-      dateCaptured: new Date(value.file.lastModified * 1000),
-      fileName: value.file.name,
+      dateCaptured: value.file !== undefined ? new Date(value.file.lastModified * 1000) : new Date(Date.now()),
+      fileName: value.name,
       heigth: value.height,
       width: value.width,
       id: value.id,
@@ -81,7 +81,7 @@ export class CocoFormatter {
     return (sum1 - sum2) / 2;
   }
 
-  private getRealPositions(percentagePositions: number[], image: IFile): number[] {
+  private getRealPositions(percentagePositions: number[], image: IRawImage): number[] {
     const result: number[] = [];
 
     for (let i = 2; i <= percentagePositions.length; i += 2) {
