@@ -16,7 +16,6 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
-    this.annotationFacade.currentAnnotationMode.subscribe(value => console.log(value));
   }
 
   clickToolbarItem(input: number) {
@@ -24,8 +23,10 @@ export class ToolbarComponent implements OnInit {
       this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.WHOLE_IMAGE);
     } else if (input === 1) {
       this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.BOUNDING_BOXES);
-    } else{
+    } else if (input === 2){
       this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.POLYGON);
+    } else {
+      this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.SIZING_TOOL);
     }
   }
 }

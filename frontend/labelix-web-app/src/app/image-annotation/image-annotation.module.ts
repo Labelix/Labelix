@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 
 import {ImageAnnotationRoutingModule} from './image-annotation-routing.module';
 import {ImageUploadComponent} from './PresentationLayer/image-upload/image-upload.component';
-import {TestCanvasComponent} from './PresentationLayer/test-canvas/test-canvas.component';
 import {FormsModule} from '@angular/forms';
 import {DragNDropDirective} from './PresentationLayer/directives/drag-ndrop.directive';
 import {RawImageFacade} from './AbstractionLayer/RawImageFacade';
@@ -29,11 +28,11 @@ import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-
 import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import { ImageTimelineComponent } from './PresentationLayer/image-timeline/image-timeline.component';
 import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-timeline-single-image/image-timeline-single-image.component';
+import {ProjectsFacade} from '../project-overview/AbstractionLayer/ProjectsFacade';
 
 @NgModule({
   declarations: [
     ImageUploadComponent,
-    TestCanvasComponent,
     DragNDropDirective,
     ImageCanvasComponent,
     ToolbarComponent,
@@ -52,7 +51,11 @@ import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-tim
     ImageFacade,
     RawImageEffects,
     LabelCategoryFacade,
-    AnnotationFacade
+    AnnotationFacade,
+    ProjectsFacade
+  ],
+  exports: [
+    SingleAnnotationExportFormComponent
   ],
   imports: [
     CommonModule,
