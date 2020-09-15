@@ -44,5 +44,10 @@ export const getNextAnnotationId = createSelector(
 
 export const getActivePolygonAnnotation = createSelector(
   getAnnotationFeatureState,
-  (state: AnnotationState) => state.annotation.activePolygonAnnotation
+  (state: AnnotationState) => state.annotation.activeAnnotation
+);
+
+export const getActiveProject = createSelector(
+  getAnnotationFeatureState,
+  (state: AnnotationState) => state.annotation.activeProject
 );

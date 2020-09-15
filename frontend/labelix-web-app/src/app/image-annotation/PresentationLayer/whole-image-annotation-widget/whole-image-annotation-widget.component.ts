@@ -4,7 +4,7 @@ import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
 import {DeleteImageAnnotationDialogComponent} from '../delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 
 @Component({
   selector: 'app-whole-image-annotation-widget',
@@ -17,7 +17,7 @@ export class WholeImageAnnotationWidgetComponent implements OnInit {
   }
 
   currentImageAnnotations: IImageAnnotation[];
-  activeImage: IFile;
+  activeImage: IRawImage;
 
   ngOnInit(): void {
     this.facade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 
 @Component({
@@ -9,15 +9,16 @@ import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 })
 export class ImageTimelineSingleImageComponent implements OnInit {
 
-  constructor(private annotationFacade: AnnotationFacade) { }
+  constructor(private annotationFacade: AnnotationFacade) {
+  }
 
   @Input()
-  myImage: IFile;
+  myImage: IRawImage;
 
   ngOnInit(): void {
   }
 
-  onImageClick(){
-   this.annotationFacade.changeCurrentAnnotationImage(this.myImage);
+  onImageClick() {
+    this.annotationFacade.changeCurrentAnnotationImage(this.myImage);
   }
 }
