@@ -67,7 +67,7 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
-        public static async Task CocoUploadAsync(Data data)
+        public static async Task<string> CocoUploadAsync(Data data)
         {
             ProjectController projectController = new ProjectController();
             try
@@ -99,10 +99,12 @@ namespace Labelix.WebAPI.Controllers
                     //await projectController.PutAsync(project);
                 }
                 System.IO.File.WriteAllText(label_path, data.Base64);
+                return project.LabeledPath;
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
+                return "";
             }
         }
     }

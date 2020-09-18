@@ -77,10 +77,11 @@ namespace Labelix.WebAPI.Controllers
             ImageController imageController = new ImageController();
             Model oldProject = await GetAsyncOnlyProject(model.Id);
             Model oldProjectConverted = await GetAsync(model.Id);
+            string labelPath= oldProject.LabeledPath;
             if (oldProjectConverted.LabeledPath != model.LabeledPath)
             {
                 if(!oldProject.LabeledPath.IsNullOrEmpty()) System.IO.File.Delete(oldProject.LabeledPath);
-                await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
+                labelPath = await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
             }
 
             if (oldProjectConverted.Images != model.Images)
@@ -101,7 +102,7 @@ namespace Labelix.WebAPI.Controllers
                 CreationDate = model.CreationDate,
                 Description = model.Description,
                 FinishedAnnotation = model.FinishedAnnotation,
-                LabeledPath = oldProject.LabeledPath,
+                LabeledPath = labelPath,
                 Name = model.Name,
                 Timestamp = model.Timestamp,
                 Id = model.Id
