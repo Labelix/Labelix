@@ -35,7 +35,7 @@ export class ImageUploadComponent implements OnInit {
       tmp.push({id: count, file: item, height: -1, width: -1, base64Url: '', name: item.name});
       count++;
     }
-
+    this.annotationFacade.resetAnnotationState();
     this.facade.uploadRawImages(tmp);
     this.annotationFacade.changeCurrentAnnotationImage(tmp[0]);
 

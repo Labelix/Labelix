@@ -15,7 +15,7 @@ import {
   ChangeCategoryOfCurrentImageAnnoation,
   ChangeCurrentAnnotationMode,
   DeleteImageAnnoation,
-  IncrementAnnotationCount, ReplaceActiveProject,
+  IncrementAnnotationCount, ReplaceActiveProject, ResetAnnotationState,
   SetActiveAnnotation,
   SetCurrentAnnotationPicture, UpdateImageAnnotation
 } from '../CoreLayer/actions/image-annotation.actions';
@@ -88,5 +88,9 @@ export class AnnotationFacade {
 
   replaceActiveProject(input: IProject) {
     this.store.dispatch(new ReplaceActiveProject(input));
+  }
+
+  resetAnnotationState() {
+    this.store.dispatch(new ResetAnnotationState());
   }
 }

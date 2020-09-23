@@ -1,9 +1,11 @@
-.image-card{
+.image-card {
   text-align: center;
   margin: 0 auto;
 }
 
-* {box-sizing: border-box;}
+* {
+  box-sizing: border-box;
+}
 
 .img-zoom-container {
   position: relative;
@@ -31,6 +33,8 @@
   align-items: center;
   text-align: center;
   border-radius: 4px;
+  margin-top: 1em;
+  margin-left: 5em;
   position: relative;
 }
 

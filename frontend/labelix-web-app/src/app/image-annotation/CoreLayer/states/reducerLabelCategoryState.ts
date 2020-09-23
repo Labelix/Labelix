@@ -24,6 +24,12 @@ export function labelCategoryReducer(state = initialLabelCategoryState, action: 
         labelCount: newLabelCount
       };
     }
+    case ActionTypes.ResetCategoryLabelState: {
+      return {
+        labelCategories: [],
+        labelCount: 1
+      };
+    }
     default:
       return state;
   }

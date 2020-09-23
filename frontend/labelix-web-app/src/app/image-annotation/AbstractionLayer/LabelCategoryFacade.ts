@@ -7,7 +7,7 @@ import {
 } from '../CoreLayer/states/labelCategoryState';
 import {Observable} from 'rxjs';
 import {ICategory} from '../../utility/contracts/ICategory';
-import {AddAnnotationLabel} from '../CoreLayer/actions/image-annotation.actions';
+import {AddAnnotationLabel, ResetCategoryLabelState} from '../CoreLayer/actions/image-annotation.actions';
 
 @Injectable()
 export class LabelCategoryFacade {
@@ -22,7 +22,11 @@ export class LabelCategoryFacade {
     this.nextLabelId$ = this.store.pipe(select(getNextLabelId));
   }
 
-  addLabelCategory(input: ICategory){
+  addLabelCategory(input: ICategory) {
     this.store.dispatch(new AddAnnotationLabel(input));
+  }
+
+  resetCategoryLabelState() {
+    this.store.dispatch(new ResetCategoryLabelState());
   }
 }
