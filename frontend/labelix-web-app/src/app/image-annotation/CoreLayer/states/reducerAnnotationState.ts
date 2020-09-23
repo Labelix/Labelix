@@ -246,6 +246,17 @@ export function annotationReducer(state = initalAnnotationState,
         activeProject: action.payload
       };
     }
+    case ActionTypes.ResetAnnotationState: {
+      return {
+        currentAnnotatingImage: undefined,
+        currentAnnotationMode: AnnotaionMode.WHOLE_IMAGE,
+        currentImageAnnotations: [],
+        activeLabel: undefined,
+        annotationCount: 1,
+        activeAnnotation: undefined,
+        activeProject: undefined
+      };
+    }
     default:
       return state;
   }

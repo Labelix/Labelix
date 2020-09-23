@@ -23,6 +23,7 @@ import {
   onMouseUpPolygon
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
+import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 
 @Component({
   selector: 'app-image-canvas',
@@ -33,7 +34,8 @@ import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/edit
 export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   constructor(private annotationFacade: AnnotationFacade,
-              private rawImageFacade: RawImageFacade) {
+              private rawImageFacade: RawImageFacade,
+              private categoryLabelFacade: LabelCategoryFacade) {
   }
 
 
@@ -64,6 +66,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
+    this.categoryLabelFacade.resetCategoryLabelState();
     this.annotationFacade.currentAnnotationImage.subscribe(value => {
       if (value !== undefined) {
         this.activeRawImage = value;

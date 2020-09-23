@@ -34,6 +34,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   test(value) {
+    this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImages();
     let imageIdCounter = 0;
     this.rawImageFacade.addRawImagesToState(value.images.map(entry => {

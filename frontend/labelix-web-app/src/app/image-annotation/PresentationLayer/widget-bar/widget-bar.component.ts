@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {SingleAnnotationExportFormComponent} from '../single-annotation-export-form/single-annotation-export-form.component';
 import {IProject} from '../../../utility/contracts/IProject';
 import {ProjectConclusionDialogComponent} from '../project-conclusion-dialog/project-conclusion-dialog.component';
+import {ICategory} from '../../../utility/contracts/ICategory';
 
 @Component({
   selector: 'app-widget-bar',
@@ -18,10 +19,12 @@ export class WidgetBarComponent implements OnInit {
 
   currentAnnotationMode: AnnotaionMode;
   activeProject: IProject;
+  activeLabel: ICategory;
 
   ngOnInit(): void {
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
     this.annotationFacade.activeProject.subscribe(value => this.activeProject = value);
+    this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
   }
 
   openExportDialog() {
