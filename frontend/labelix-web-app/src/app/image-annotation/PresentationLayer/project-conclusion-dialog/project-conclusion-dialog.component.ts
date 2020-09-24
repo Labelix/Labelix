@@ -7,7 +7,7 @@ import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
-import {CocoFormatter} from '../../CoreLayer/CocoFormatter';
+import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
 
 @Component({
   selector: 'app-project-conclusion-dialog',
@@ -20,7 +20,7 @@ export class ProjectConclusionDialogComponent implements OnInit {
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
-  private cocoFormatter: CocoFormatter = new CocoFormatter();
+  private cocoFormatter: CocoFormatController = new CocoFormatController();
 
   constructor(private annotationFacade: AnnotationFacade,
               private projectFacade: ProjectsFacade,
