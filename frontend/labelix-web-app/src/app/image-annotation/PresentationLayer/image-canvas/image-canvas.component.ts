@@ -24,6 +24,7 @@ import {
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
+import {BitMapController} from '../../CoreLayer/controller/BitMapController';
 
 @Component({
   selector: 'app-image-canvas',
@@ -117,6 +118,10 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   getDimensionsOfBase64() {
+    // this is a test
+    const bitMapController = new BitMapController();
+    // bitMapController.base64ToCoco('test', this.activeRawImage.base64Url);
+    // till here
     const image = new Image();
     image.src = this.activeRawImage.base64Url;
     image.addEventListener('load', ev => {
