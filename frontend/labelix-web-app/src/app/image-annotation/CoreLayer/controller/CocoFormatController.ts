@@ -1,14 +1,14 @@
-import {ICocoFormat} from '../../utility/contracts/cocoFormat/ICocoFormat';
-import {ICocoInfo} from '../../utility/contracts/cocoFormat/ICocoInfo';
-import {ICocoCategory} from '../../utility/contracts/cocoFormat/ICocoCategory';
-import {ICategory} from '../../utility/contracts/ICategory';
-import {ICocoImage} from '../../utility/contracts/cocoFormat/ICocoImage';
-import {IRawImage} from '../../utility/contracts/IRawImage';
-import {ICocoLicense} from '../../utility/contracts/cocoFormat/ICocoLicense';
-import {ICocoAnnotation} from '../../utility/contracts/cocoFormat/ICocoAnnotation';
-import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
+import {ICocoFormat} from '../../../utility/contracts/cocoFormat/ICocoFormat';
+import {ICocoInfo} from '../../../utility/contracts/cocoFormat/ICocoInfo';
+import {ICocoCategory} from '../../../utility/contracts/cocoFormat/ICocoCategory';
+import {ICategory} from '../../../utility/contracts/ICategory';
+import {ICocoImage} from '../../../utility/contracts/cocoFormat/ICocoImage';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
+import {ICocoLicense} from '../../../utility/contracts/cocoFormat/ICocoLicense';
+import {ICocoAnnotation} from '../../../utility/contracts/cocoFormat/ICocoAnnotation';
+import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 
-export class CocoFormatter {
+export class CocoFormatController {
 
   createICocoInfo(
     contributor: string,
