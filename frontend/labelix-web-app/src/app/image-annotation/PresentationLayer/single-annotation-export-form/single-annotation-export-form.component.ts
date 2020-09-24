@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CocoFormatter} from '../../CoreLayer/CocoFormatter';
+import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
@@ -32,7 +32,7 @@ export class SingleAnnotationExportFormComponent implements OnInit {
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
 
-  private cocoFormatter: CocoFormatter = new CocoFormatter();
+  private cocoFormatter: CocoFormatController = new CocoFormatController();
 
   ngOnInit(): void {
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);

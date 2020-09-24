@@ -37,22 +37,11 @@ export function projectReducer(
     case ActionTypes.GetProjects: {
       const tempActions: IProject[] = [];
 
-<<<<<<< HEAD
       // state.projects.forEach(value => tempActions.push(value));
       action.payload.forEach(value => tempActions.push(value));
       return {
         projects: tempActions
       };
-=======
-        //state.projects.forEach(value => tempActions.push(value));
-        action.payload.forEach(value => tempActions.push(value));
-        return {
-          projects: tempActions
-        };
-      }
-      default:
-        return state;
->>>>>>> a7e77e690eb8e57c7f14315f5b23c34b100cb500
     }
     default:
       return state;

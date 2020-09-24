@@ -29,11 +29,11 @@ export class ProjectCardComponent implements OnInit {
     this.router.navigate(['/image-annotation/image-view']);
     this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
       // sorry for that ugly thing but it works for now, I guess
-      setTimeout(() => this.test(value), 10);
+      setTimeout(() => this.onProjectLoad(value), 10);
     });
   }
 
-  test(value) {
+  onProjectLoad(value) {
     this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImages();
     let imageIdCounter = 0;
