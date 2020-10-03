@@ -4,6 +4,7 @@ import {ICategory} from '../../../utility/contracts/ICategory';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ImageAnnotationHelper} from '../../CoreLayer/helper/image-annotation-helper';
 
 @Component({
   selector: 'app-label-widget',
@@ -46,7 +47,7 @@ export class LabelWidgetComponent implements OnInit {
       name: this.newLabelName,
       supercategory: this.newSupercategory,
       id: this.nextLabelId,
-      colorCode: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6)
+      colorCode: ImageAnnotationHelper.getRandomColor()
     });
     this.newLabelName = '';
     this.newSupercategory = '';

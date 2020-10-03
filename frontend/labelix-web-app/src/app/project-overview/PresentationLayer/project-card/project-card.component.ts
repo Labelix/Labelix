@@ -49,14 +49,16 @@ export class ProjectCardComponent implements OnInit {
       };
     }));
     this.annotationFacade.replaceActiveProject(value);
-    this.annotationFacade.changeCurrentAnnotationImage({
-      id: 1,
-      base64Url: value.images[0].Data,
-      width: -1,
-      height: -1,
-      file: undefined,
-      name: value.images[0].Name
-    });
+    if (value.images.length > 0) {
+      this.annotationFacade.changeCurrentAnnotationImage({
+        id: 1,
+        base64Url: value.images[0].Data,
+        width: -1,
+        height: -1,
+        file: undefined,
+        name: value.images[0].Name
+      });
+    }
   }
 
 }
