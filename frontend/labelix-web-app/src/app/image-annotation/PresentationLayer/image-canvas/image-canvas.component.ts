@@ -23,6 +23,8 @@ import {
   onMouseUpPolygon
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
+import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
+import {BitMapController} from '../../CoreLayer/controller/BitMapController';
 
 @Component({
   selector: 'app-image-canvas',
@@ -33,7 +35,8 @@ import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/edit
 export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   constructor(private annotationFacade: AnnotationFacade,
-              private rawImageFacade: RawImageFacade) {
+              private rawImageFacade: RawImageFacade,
+              private categoryLabelFacade: LabelCategoryFacade) {
   }
 
 
@@ -64,6 +67,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
+    this.categoryLabelFacade.resetCategoryLabelState();
+
     this.annotationFacade.currentAnnotationImage.subscribe(value => {
       if (value !== undefined) {
         this.activeRawImage = value;
@@ -71,43 +76,66 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         this.redrawCanvas();
       }
     });
+    this.annotationFacade.currentImageAnnotations.subscribe(value => {
+      this.currentImageAnnotations = value;
+      this.readDataFromRawImage();
+      this.redrawCanvas();
+    });
 
     this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
     this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activeAnnotation = value);
     this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
-    this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
     this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
-    this.annotationFacade.currentImageAnnotations.subscribe(value => {
-      this.readDataFromRawImage();
-      this.redrawCanvas();
-    });
   }
 
   readDataFromRawImage() {
     if (this.activeRawImage !== undefined) {
-      if ((this.activeRawImage.height === -1
-        || this.activeRawImage.width === -1)
-        && this.activeRawImage.base64Url === '') {
-        const reader = new FileReader();
-        const image = new Image();
-        reader.addEventListener('load', (event: any) => {
-          image.src = event.target.result;
-          image.onload = () => {
-            const newRawImage = {
-              id: this.activeRawImage.id,
-              file: this.activeRawImage.file,
-              width: image.width,
-              height: image.height,
-              base64Url: image.src,
-              name: image.name
-            };
-            this.rawImageFacade.updateRawImage(newRawImage);
-            this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
-          };
-        });
-        reader.readAsDataURL(this.activeRawImage.file);
+      if (this.activeRawImage.height === -1 || this.activeRawImage.width === -1){
+        this.activeRawImage.file !== undefined ? this.getDimensionsOfUploadedImage() : this.getDimensionsOfBase64();
       }
     }
+  }
+
+  getDimensionsOfUploadedImage(){
+    const reader = new FileReader();
+    const image = new Image();
+    reader.addEventListener('load', (event: any) => {
+      image.src = event.target.result;
+      image.onload = () => {
+        const newRawImage = {
+          id: this.activeRawImage.id,
+          file: this.activeRawImage.file,
+          width: image.width,
+          height: image.height,
+          base64Url: image.src,
+          name: this.activeRawImage.file.name
+        };
+        this.rawImageFacade.updateRawImage(newRawImage);
+        this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
+      };
+    });
+    reader.readAsDataURL(this.activeRawImage.file);
+  }
+
+  getDimensionsOfBase64() {
+    // this is a test
+    const bitMapController = new BitMapController();
+    // bitMapController.base64ToCoco('test', this.activeRawImage.base64Url);
+    // till here
+    const image = new Image();
+    image.src = this.activeRawImage.base64Url;
+    image.addEventListener('load', ev => {
+      const newRawImage = {
+        id: this.activeRawImage.id,
+        file: this.activeRawImage.file,
+        width: image.width,
+        height: image.height,
+        base64Url: image.src,
+        name: this.activeRawImage.name
+      };
+      this.rawImageFacade.updateRawImage(newRawImage);
+      this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
+    });
   }
 
   private redrawCanvas() {
@@ -240,7 +268,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         isCrowd: this.activeAnnotation.isCrowd
       });
       this.redrawCanvas();
-      console.log('test');
     }
   }
 

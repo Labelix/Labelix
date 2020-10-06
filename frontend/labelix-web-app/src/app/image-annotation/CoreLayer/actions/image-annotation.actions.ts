@@ -22,7 +22,9 @@ export enum ActionTypes {
   AddWholeImageAnnotation = '[ImageAnnotation] Add whole image annotation',
   UpdateImageAnnotation = '[ImageAnnotation] Update Image Annotation',
   ReplaceActiveProject = '[ImageAnnotation] Replace active project',
-  ClearRawImages = '[ImageAnnotation] Clear Raw Images'
+  ClearRawImages = '[ImageAnnotation] Clear Raw Images',
+  ResetAnnotationState = '[ImageAnnotation] ResetAnnotationState',
+  ResetCategoryLabelState = '[ImageAnnotation] ResetCategoryLabelState'
 }
 
 export class AddRawImagesAction implements Action {
@@ -139,7 +141,14 @@ export class ReplaceActiveProject implements Action {
 
 export class ClearRawImages implements Action {
   readonly type = ActionTypes.ClearRawImages;
+}
 
+export class ResetAnnotationState implements Action {
+  readonly type = ActionTypes.ResetAnnotationState;
+}
+
+export class ResetCategoryLabelState implements Action {
+  readonly type = ActionTypes.ResetCategoryLabelState;
 }
 
 
@@ -160,4 +169,6 @@ export type ImageAnnotationActions =
   | AddWholeImageAnnotation
   | UpdateImageAnnotation
   | ReplaceActiveProject
-  | ClearRawImages;
+  | ClearRawImages
+  | ResetAnnotationState
+  | ResetCategoryLabelState;

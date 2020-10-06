@@ -29,11 +29,12 @@ export class ProjectCardComponent implements OnInit {
     this.router.navigate(['/image-annotation/image-view']);
     this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
       // sorry for that ugly thing but it works for now, I guess
-      setTimeout(() => this.test(value), 10);
+      setTimeout(() => this.onProjectLoad(value), 10);
     });
   }
 
-  test(value) {
+  onProjectLoad(value) {
+    this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImages();
     let imageIdCounter = 0;
     this.rawImageFacade.addRawImagesToState(value.images.map(entry => {
@@ -48,14 +49,16 @@ export class ProjectCardComponent implements OnInit {
       };
     }));
     this.annotationFacade.replaceActiveProject(value);
-    this.annotationFacade.changeCurrentAnnotationImage({
-      id: 1,
-      base64Url: value.images[0].Data,
-      width: -1,
-      height: -1,
-      file: undefined,
-      name: value.images[0].Name
-    });
+    if (value.images.length > 0) {
+      this.annotationFacade.changeCurrentAnnotationImage({
+        id: 1,
+        base64Url: value.images[0].Data,
+        width: -1,
+        height: -1,
+        file: undefined,
+        name: value.images[0].Name
+      });
+    }
   }
 
 }

@@ -31,6 +31,6 @@ export class ProjectsFacade {
   }
 
   putProject(data: IProject) {
-    this.projectApi.putItem(data).subscribe(value => console.log(value));
+    this.projectApi.updateProject(data).subscribe(value => console.log(value));
   }
 }
