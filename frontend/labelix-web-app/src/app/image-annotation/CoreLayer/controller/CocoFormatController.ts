@@ -1,14 +1,16 @@
-import {ICocoFormat} from '../../utility/contracts/cocoFormat/ICocoFormat';
-import {ICocoInfo} from '../../utility/contracts/cocoFormat/ICocoInfo';
-import {ICocoCategory} from '../../utility/contracts/cocoFormat/ICocoCategory';
-import {ICategory} from '../../utility/contracts/ICategory';
-import {ICocoImage} from '../../utility/contracts/cocoFormat/ICocoImage';
-import {IRawImage} from '../../utility/contracts/IRawImage';
-import {ICocoLicense} from '../../utility/contracts/cocoFormat/ICocoLicense';
-import {ICocoAnnotation} from '../../utility/contracts/cocoFormat/ICocoAnnotation';
-import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
+import {ICocoFormat} from '../../../utility/contracts/cocoFormat/ICocoFormat';
+import {ICocoInfo} from '../../../utility/contracts/cocoFormat/ICocoInfo';
+import {ICocoCategory} from '../../../utility/contracts/cocoFormat/ICocoCategory';
+import {ICategory} from '../../../utility/contracts/ICategory';
+import {ICocoImage} from '../../../utility/contracts/cocoFormat/ICocoImage';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
+import {ICocoLicense} from '../../../utility/contracts/cocoFormat/ICocoLicense';
+import {ICocoAnnotation} from '../../../utility/contracts/cocoFormat/ICocoAnnotation';
+import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
+import {IBoundingBox} from '../../../utility/contracts/IBoundingBox';
+import {ImageAnnotationHelper} from '../helper/image-annotation-helper';
 
-export class CocoFormatter {
+export class CocoFormatController {
 
   createICocoInfo(
     contributor: string,
@@ -53,7 +55,9 @@ export class CocoFormatter {
       if (value.categoryLabel !== undefined) {
         const realPositions: number[] = this.getRealPositions(value.segmentations, value.image);
         result.push({
-          area: this.calcSurfaceOfPolygon(realPositions),
+          area: value.boundingBox !== undefined ?
+            value.boundingBox.height * value.boundingBox.width
+            : this.calcSurfaceOfPolygon(realPositions),
           bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
             value.boundingBox.yCoordinate,
             value.boundingBox.height,
@@ -92,11 +96,56 @@ export class CocoFormatter {
     return result;
   }
 
+  // spöter soll hier die Liezens vom Projekt zurückgegeben werden
   getTestLicense(): ICocoLicense {
     return {
       url: 'testurl',
       name: 'testlicense',
       id: 1
+    };
+  }
+
+  getCategoriesFromCocoFormat(input: ICocoFormat): ICategory[] {
+    const result: ICategory[] = [];
+
+    for (const current of input.categories) {
+      result.push({
+        name: current.name,
+        id: current.id,
+        colorCode: ImageAnnotationHelper.getRandomColor(),
+        supercategory: current.supercategory
+      });
+    }
+
+    return result;
+  }
+
+  // für jedes null muss noch eine Lösung gefunden werden
+  getAnnotationsFromCocoFormat(input: ICocoFormat): IImageAnnotation[] {
+    const result: IImageAnnotation[] = [];
+
+    for (const current of input.annotations) {
+      result.push({
+        id: current.id,
+        segmentations: current.segmentation,
+        boundingBox: this.getBoundingBoxFromNumberArray(current.bbox),
+        isCrowd: current.iscrowd,
+        annotationMode: null,
+        image: null,
+        categoryLabel: null,
+        area: current.id
+      });
+    }
+
+    return result;
+  }
+
+  getBoundingBoxFromNumberArray(input: number[]): IBoundingBox {
+    return {
+      xCoordinate: input[0],
+      yCoordinate: input[1],
+      width: input[2],
+      height: input[3]
     };
   }
 

@@ -17,7 +17,6 @@ import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component'
 import {MaterialModule} from '../material.module';
 import { MouseWheelDirective } from './PresentationLayer/directives/mouse-wheel.directive';
 import { LabelWidgetComponent } from './PresentationLayer/label-widget/label-widget.component';
-import { SinleLabelPresentationComponent } from './PresentationLayer/label-widget/sub-components/sinle-label-presentation/sinle-label-presentation.component';
 import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
 import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
@@ -29,6 +28,7 @@ import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete
 import { ImageTimelineComponent } from './PresentationLayer/image-timeline/image-timeline.component';
 import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-timeline-single-image/image-timeline-single-image.component';
 import {ProjectsFacade} from '../project-overview/AbstractionLayer/ProjectsFacade';
+import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label-widget/selected-label-widget.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +38,13 @@ import {ProjectsFacade} from '../project-overview/AbstractionLayer/ProjectsFacad
     ToolbarComponent,
     MouseWheelDirective,
     LabelWidgetComponent,
-    SinleLabelPresentationComponent,
     WidgetBarComponent,
     WholeImageAnnotationWidgetComponent,
     SingleAnnotationExportFormComponent,
     DeleteImageAnnotationDialogComponent,
     ImageTimelineComponent,
-    ImageTimelineSingleImageComponent
+    ImageTimelineSingleImageComponent,
+    SelectedLabelWidgetComponent
   ],
   providers: [
     RawImageFacade,

@@ -1,0 +1,12 @@
+.export-button {
+  width: 100%;
+  background-color: #3f51b5;
+  color: white;
+}
+
+.download-position {
+  margin-top: 1em;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

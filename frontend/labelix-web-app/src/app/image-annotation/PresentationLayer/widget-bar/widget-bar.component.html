@@ -1,4 +1,8 @@
 <div class="side-location">
+  <div *ngIf="activeLabel !== undefined">
+    <app-selected-label-widget></app-selected-label-widget>
+  </div>
+
   <mat-list>
     <div>
       <app-label-widget></app-label-widget>
