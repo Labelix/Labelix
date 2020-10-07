@@ -27,6 +27,7 @@ namespace Labelix.WebAPI.Controllers
             string[] pathParts = image.ImagePath.Split('/');
             Data data = new Data
             {
+                Id = id,
                 Base64 = base64,
                 Name = pathParts[^1],
                 ProjectId = image.ProjectId
