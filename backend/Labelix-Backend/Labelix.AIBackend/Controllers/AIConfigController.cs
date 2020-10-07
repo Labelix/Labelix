@@ -55,6 +55,7 @@ namespace Labelix.AIBackend.Controllers
 
             options = new List<string>();
             options.Add("--rm");
+            options.Add(info.config.Options);
             options.Add($"-v {inDir}:{info.config.InputDirectory}");
             options.Add($"-v {outDir}:{info.config.OutputDirectory}");
             var optionsString = string.Join(" ", options.ToArray());
@@ -64,7 +65,7 @@ namespace Labelix.AIBackend.Controllers
 
             IActionResult actionResult;
 
-            if ((ErrorCodes) res == ErrorCodes.Success)
+            try
             {
                 var filePaths = Directory.GetFiles(outDir);
 
@@ -73,16 +74,13 @@ namespace Labelix.AIBackend.Controllers
                 var files = filePaths.Select(path => EncodeImage(projectId, path));
                 
                 actionResult = Ok(await Task.WhenAll(files));
-            }
-            else if (Enum.IsDefined(typeof(ErrorCodes), res))
-            {
 
-                actionResult = BadRequest($"DockerError[{res}]: {(ErrorCodes) res}");
             }
-            else
+            catch (Exception e)
             {
-                actionResult = BadRequest($"Process-Error: {res}");
+                actionResult = BadRequest(e.Message);
             }
+
 
             // Delete temporaryDirectory and return
             Directory.Delete(tempDir, true);
@@ -94,6 +92,7 @@ namespace Labelix.AIBackend.Controllers
         #region Static Methods
 
         private static (string, string) CreateFolders(string tempDir)
+
         {
             string inDir, outDir;
 
