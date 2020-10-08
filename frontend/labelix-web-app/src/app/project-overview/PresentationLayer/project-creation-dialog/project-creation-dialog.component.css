@@ -8,6 +8,14 @@
   width: 100%;
 }
 
+.create-button{
+  position: center;
+  align-content: center;
+
+  width: 50%;
+  margin-bottom: 2em;
+}
+
 td {
   padding-right: 8px;
 }
