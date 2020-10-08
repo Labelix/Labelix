@@ -145,7 +145,7 @@ export class CocoFormatController {
 
   getRawImageById(id: number, rawImages: IRawImage[]): IRawImage {
     for (const current of rawImages) {
-      if (current.id === id + 1) {
+      if (current.id === id) {
         return current;
       }
     }

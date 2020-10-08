@@ -52,8 +52,16 @@ export function annotationReducer(state = initalAnnotationState,
     }
     case ActionTypes.AddImageAnnotation: {
       const tmpImages: IImageAnnotation[] = [];
-      state.currentImageAnnotations.forEach(value => tmpImages.push(value));
-      tmpImages.push(action.payload);
+      let existsYet = false;
+      state.currentImageAnnotations.forEach(value => {
+        tmpImages.push(value);
+        if (value.id === action.payload.id) {
+          existsYet = true;
+        }
+      });
+      if (!existsYet) {
+        tmpImages.push(action.payload);
+      }
       return {
         currentImageAnnotations: tmpImages,
         currentAnnotatingImage: state.currentAnnotatingImage,
