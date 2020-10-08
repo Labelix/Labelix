@@ -66,6 +66,10 @@ namespace Labelix.WebAPI.Controllers
                 {
                     Data = model.Images
                 };
+                foreach (var data in images.Data)
+                {
+                    data.ProjectId = project.Id;
+                }
                 await Base64Controller.MultipleImageUpload(images);
                 return Ok();
             }
