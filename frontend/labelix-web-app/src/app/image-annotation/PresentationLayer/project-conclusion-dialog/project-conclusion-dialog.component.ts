@@ -20,12 +20,12 @@ export class ProjectConclusionDialogComponent implements OnInit {
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
-  private cocoFormatter: CocoFormatController = new CocoFormatController();
 
   constructor(private annotationFacade: AnnotationFacade,
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
-              private labelCategoryFacade: LabelCategoryFacade) {
+              private labelCategoryFacade: LabelCategoryFacade,
+              private cocoFormatter: CocoFormatController) {
 
     annotationFacade.activeProject.subscribe(value => this.activeProject = value);
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
@@ -62,7 +62,8 @@ export class ProjectConclusionDialogComponent implements OnInit {
       id: this.activeProject.id,
       images: this.activeProject.images,
       label: jsonObject,
-      timestamp: this.activeProject.timestamp
+      timestamp: this.activeProject.timestamp,
+      cocoExport: undefined
     });
 
     this.projectFacade.putProject(this.activeProject);
