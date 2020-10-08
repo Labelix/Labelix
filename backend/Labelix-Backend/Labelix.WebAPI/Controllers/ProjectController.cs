@@ -62,6 +62,11 @@ namespace Labelix.WebAPI.Controllers
                 {
                     await aiModelConfigController.PostAsync(new Project_AIModelConfig(item, project.Id));
                 }
+                var images = new MultipleData()
+                {
+                    Data = model.Images
+                };
+                await Base64Controller.MultipleImageUpload(images);
                 return Ok();
             }
             catch (Exception e)
