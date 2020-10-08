@@ -4,6 +4,9 @@ import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../../image-annotation/AbstractionLayer/AnnotationFacade';
 import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
 import {RawImageFacade} from '../../../image-annotation/AbstractionLayer/RawImageFacade';
+import {LabelCategoryFacade} from '../../../image-annotation/AbstractionLayer/LabelCategoryFacade';
+import {ImageAnnotationHelper} from '../../../image-annotation/CoreLayer/helper/image-annotation-helper';
+import {CocoFormatController} from '../../../image-annotation/CoreLayer/controller/CocoFormatController';
 
 @Component({
   selector: 'app-project-card',
@@ -17,8 +20,10 @@ export class ProjectCardComponent implements OnInit {
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
+              private categoryFacade: LabelCategoryFacade,
               private projectFacade: ProjectsFacade,
-              private rawImageFacade: RawImageFacade) {
+              private rawImageFacade: RawImageFacade,
+              private cocoController: CocoFormatController) {
   }
 
   ngOnInit(): void {
@@ -33,14 +38,35 @@ export class ProjectCardComponent implements OnInit {
     });
   }
 
-  onProjectLoad(value) {
+  onProjectLoad(input) {
     this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImages();
-    let imageIdCounter = 0;
-    this.rawImageFacade.addRawImagesToState(value.images.map(entry => {
-      imageIdCounter++;
+    this.addRawImages(input);
+    let coco;
+    if (input.label !== null && input.label !== '') {
+      coco = JSON.parse(input.label);
+      this.cocoController.getCategoriesFromCocoFormat(coco).forEach(value => this.categoryFacade.addLabelCategory(value));
+    }
+    this.annotationFacade.replaceActiveProject({
+      label: input.label,
+      cocoExport: input.label !== '' && input.label !== null ? coco : undefined,
+      id: input.id,
+      timestamp: input.timestamp,
+      images: input.images,
+      AIModelConfig: input.AIModelConfig,
+      finishedAnnotation: input.finishedAnnotation,
+      name: input.name,
+      creationDate: input.creationDate,
+      description: input.description
+    });
+    this.setCurrentAnnotationImage(input);
+    // this.cocoController.getAnnotationsFromCocoFormat(coco).forEach(value => this.annotationFacade.addImageAnnotation(value));
+  }
+
+  addRawImages(input) {
+    this.rawImageFacade.addRawImagesToState(input.images.map(entry => {
       return {
-        id: imageIdCounter,
+        id: entry.id,
         base64Url: entry.Data,
         width: -1,
         height: -1,
@@ -48,15 +74,17 @@ export class ProjectCardComponent implements OnInit {
         name: entry.Name
       };
     }));
-    this.annotationFacade.replaceActiveProject(value);
-    if (value.images.length > 0) {
+  }
+
+  setCurrentAnnotationImage(input) {
+    if (input.images.length > 0) {
       this.annotationFacade.changeCurrentAnnotationImage({
-        id: 1,
-        base64Url: value.images[0].Data,
+        id: input.images[0].id,
+        base64Url: input.images[0].Data,
         width: -1,
         height: -1,
         file: undefined,
-        name: value.images[0].Name
+        name: input.images[0].Name
       });
     }
   }
