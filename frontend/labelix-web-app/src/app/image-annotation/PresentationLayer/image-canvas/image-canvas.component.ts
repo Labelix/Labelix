@@ -25,6 +25,8 @@ import {
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 import {BitMapController} from '../../CoreLayer/controller/BitMapController';
+import {IProject} from '../../../utility/contracts/IProject';
+import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
 
 @Component({
   selector: 'app-image-canvas',
@@ -36,7 +38,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
-              private categoryLabelFacade: LabelCategoryFacade) {
+              private categoryLabelFacade: LabelCategoryFacade,
+              private cocoController: CocoFormatController) {
   }
 
 
@@ -52,8 +55,11 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   currentImageAnnotations: IImageAnnotation[];
   currentAnnotationMode: AnnotaionMode;
   activeLabel: ICategory;
+  rawImages: IRawImage[];
+  categories: ICategory[];
   activeRawImage: IRawImage;
   activeAnnotation: IImageAnnotation;
+  activeProject: IProject;
   // specifies the several different modes, when the resizing tool is used
   editingOptions: EditingOption = {
     addBottom: false,
@@ -68,6 +74,16 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.categoryLabelFacade.resetCategoryLabelState();
+
+    this.rawImageFacade.files$.subscribe(value => {
+      this.rawImages = value;
+      this.setAnnotationsFromCoco();
+    });
+    this.annotationFacade.activeProject.subscribe(value => {
+      this.activeProject = value;
+      this.setAnnotationsFromCoco();
+    });
+    this.categoryLabelFacade.labelCategories$.subscribe(value => this.categories = value);
 
     this.annotationFacade.currentAnnotationImage.subscribe(value => {
       if (value !== undefined) {
@@ -90,13 +106,23 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   readDataFromRawImage() {
     if (this.activeRawImage !== undefined) {
-      if (this.activeRawImage.height === -1 || this.activeRawImage.width === -1){
+      if (this.activeRawImage.height === -1 || this.activeRawImage.width === -1) {
         this.activeRawImage.file !== undefined ? this.getDimensionsOfUploadedImage() : this.getDimensionsOfBase64();
       }
     }
   }
 
-  getDimensionsOfUploadedImage(){
+  setAnnotationsFromCoco() {
+    if (this.activeProject !== undefined
+      && this.activeProject.cocoExport !== undefined
+      && this.categories.length > 0
+      && this.rawImages.length > 0) {
+      this.cocoController.getAnnotationsFromCocoFormat(this.activeProject.cocoExport, this.rawImages, this.categories)
+        .forEach(annotation => this.annotationFacade.addImageAnnotation(annotation));
+    }
+  }
+
+  getDimensionsOfUploadedImage() {
     const reader = new FileReader();
     const image = new Image();
     reader.addEventListener('load', (event: any) => {

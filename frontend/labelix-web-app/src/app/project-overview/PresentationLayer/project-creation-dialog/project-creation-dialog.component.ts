@@ -45,7 +45,8 @@ export class ProjectCreationDialogComponent implements OnInit {
       images: [],
       label: '',
       timestamp: undefined,
-      AIModelConfig: this.aiIds
+      AIModelConfig: this.aiIds,
+      cocoExport: undefined
     };
     console.log(this.newProjectName);
     this.projectFacade.postProject(this.project);

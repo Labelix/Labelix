@@ -94,6 +94,7 @@ export function drawExistingAnnotationsBoundingBoxes(
   setCanvasDimensions(canvasEl);
   for (const item of elements) {
     if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES
+      && item.image !== undefined
       && item.image.id === activeRawImage.id) {
       ctx.strokeStyle = item.categoryLabel.colorCode;
       ctx.fillStyle = hexToRGB(item.categoryLabel.colorCode, opacity);
