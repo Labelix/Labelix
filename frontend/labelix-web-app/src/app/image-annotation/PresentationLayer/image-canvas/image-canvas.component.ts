@@ -44,22 +44,27 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
-  imgWidth = 1400;
+  private imgWidth = 1400;
 
   // specifies if the image can be dragged arround on the screen (by pressing ctrl)
-  dragable = true;
-  currentlyDrawing = false;
+  private dragable = true;
+
+  // drawing helper variables
+  private currentlyDrawing = false;
   private nextAnnotationId: number;
   private opacity = 0.25;
-  mousePositions: { x: number, y: number }[] = [];
-  currentImageAnnotations: IImageAnnotation[];
-  currentAnnotationMode: AnnotaionMode;
-  activeLabel: ICategory;
-  rawImages: IRawImage[];
-  categories: ICategory[];
-  activeRawImage: IRawImage;
-  activeAnnotation: IImageAnnotation;
-  activeProject: IProject;
+  private mousePositions: { x: number, y: number }[] = [];
+
+  // state data placeholders
+  private currentImageAnnotations: IImageAnnotation[];
+  private currentAnnotationMode: AnnotaionMode;
+  private activeLabel: ICategory;
+  private rawImages: IRawImage[];
+  private categories: ICategory[];
+  private activeRawImage: IRawImage;
+  private activeAnnotation: IImageAnnotation;
+  private activeProject: IProject;
+
   // specifies the several different modes, when the resizing tool is used
   editingOptions: EditingOption = {
     addBottom: false,
@@ -144,10 +149,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   getDimensionsOfBase64() {
-    // this is a test
-    const bitMapController = new BitMapController();
-    // bitMapController.base64ToCoco('test', this.activeRawImage.base64Url);
-    // till here
     const image = new Image();
     image.src = this.activeRawImage.base64Url;
     image.addEventListener('load', ev => {
@@ -248,16 +249,20 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
           this.redrawCanvas();
         } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
-          this.editingOptions.annotationDragging = false;
-          this.editingOptions.addTop = false;
-          this.editingOptions.addRight = false;
-          this.editingOptions.addBottom = false;
-          this.editingOptions.addLeft = false;
-          this.mousePositions = [];
+          this.onMouseUpSizingTool();
           this.redrawCanvas();
         }
       }
     });
+  }
+
+  onMouseUpSizingTool() {
+    this.editingOptions.annotationDragging = false;
+    this.editingOptions.addTop = false;
+    this.editingOptions.addRight = false;
+    this.editingOptions.addBottom = false;
+    this.editingOptions.addLeft = false;
+    this.mousePositions = [];
   }
 
 
@@ -277,24 +282,29 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       }
       this.annotationFacade.setActivePolygonAnnotation(undefined);
     } else if (event.key === 'Escape' && this.currentAnnotationMode === AnnotaionMode.POLYGON && this.activeAnnotation !== null) {
-      const tmpSegs = [];
-      for (const anno of this.activeAnnotation.segmentations) {
-        tmpSegs.push(anno);
-      }
-      tmpSegs.pop();
-      tmpSegs.pop();
-      this.annotationFacade.updateImageAnnotation({
-        segmentations: tmpSegs,
-        boundingBox: this.activeAnnotation.boundingBox,
-        annotationMode: this.activeAnnotation.annotationMode,
-        area: this.activeAnnotation.area,
-        categoryLabel: this.activeAnnotation.categoryLabel,
-        id: this.activeAnnotation.id,
-        image: this.activeAnnotation.image,
-        isCrowd: this.activeAnnotation.isCrowd
-      });
+      this.onEscapeWhenDrawingPolygon();
       this.redrawCanvas();
     }
+  }
+
+  onEscapeWhenDrawingPolygon() {
+    const tmpSegs = [];
+    for (const anno of this.activeAnnotation.segmentations) {
+      tmpSegs.push(anno);
+    }
+    // pop twice so the last line is  deleted
+    tmpSegs.pop();
+    tmpSegs.pop();
+    this.annotationFacade.updateImageAnnotation({
+      segmentations: tmpSegs,
+      boundingBox: this.activeAnnotation.boundingBox,
+      annotationMode: this.activeAnnotation.annotationMode,
+      area: this.activeAnnotation.area,
+      categoryLabel: this.activeAnnotation.categoryLabel,
+      id: this.activeAnnotation.id,
+      image: this.activeAnnotation.image,
+      isCrowd: this.activeAnnotation.isCrowd
+    });
   }
 
   // for canvas zooming
@@ -308,7 +318,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 }
 
 export class EditingOption {
-  // is for the risizing tool an specifies if a whole annotation can be dragged arround the image
+  // is for the resizing tool an specifies if a whole annotation can be dragged arround the image
   annotationDragging = false;
   addTop = false;
   addRight = false;
