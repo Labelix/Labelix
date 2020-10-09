@@ -195,9 +195,11 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
       if (this.activeLabel !== undefined) {
         this.currentlyDrawing = true;
+
         setCanvasDimensions(canvasEl);
         drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations, this.ctx, this.activeRawImage, this.opacity);
         drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
+
         if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
           onMouseDownBoundingBoxen(lastPos, value, canvasEl);
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
@@ -280,7 +282,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       if (this.activeAnnotation !== undefined && this.currentAnnotationMode === AnnotaionMode.POLYGON) {
         this.annotationFacade.addImageAnnotation(this.activeAnnotation);
       }
-      this.annotationFacade.setActivePolygonAnnotation(undefined);
+      this.annotationFacade.setActiveAnnotation(undefined);
     } else if (event.key === 'Escape' && this.currentAnnotationMode === AnnotaionMode.POLYGON && this.activeAnnotation !== null) {
       this.onEscapeWhenDrawingPolygon();
       this.redrawCanvas();
