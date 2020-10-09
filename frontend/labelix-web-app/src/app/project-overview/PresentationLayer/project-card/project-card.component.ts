@@ -47,20 +47,8 @@ export class ProjectCardComponent implements OnInit {
       coco = JSON.parse(input.label);
       this.cocoController.getCategoriesFromCocoFormat(coco).forEach(value => this.categoryFacade.addLabelCategory(value));
     }
-    this.annotationFacade.replaceActiveProject({
-      label: input.label,
-      cocoExport: input.label !== '' && input.label !== null ? coco : undefined,
-      id: input.id,
-      timestamp: input.timestamp,
-      images: input.images,
-      AIModelConfig: input.AIModelConfig,
-      finishedAnnotation: input.finishedAnnotation,
-      name: input.name,
-      creationDate: input.creationDate,
-      description: input.description
-    });
+    this.setActiveProject(input, coco);
     this.setCurrentAnnotationImage(input);
-    // this.cocoController.getAnnotationsFromCocoFormat(coco).forEach(value => this.annotationFacade.addImageAnnotation(value));
   }
 
   addRawImages(input) {
@@ -87,6 +75,21 @@ export class ProjectCardComponent implements OnInit {
         name: input.images[0].Name
       });
     }
+  }
+
+  setActiveProject(input, coco) {
+    this.annotationFacade.replaceActiveProject({
+      label: input.label,
+      cocoExport: input.label !== '' && input.label !== null ? coco : undefined,
+      id: input.id,
+      timestamp: input.timestamp,
+      images: input.images,
+      AIModelConfig: input.AIModelConfig,
+      finishedAnnotation: input.finishedAnnotation,
+      name: input.name,
+      creationDate: input.creationDate,
+      description: input.description
+    });
   }
 
 }
