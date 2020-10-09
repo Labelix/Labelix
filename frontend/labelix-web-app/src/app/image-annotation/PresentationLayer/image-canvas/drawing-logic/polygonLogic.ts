@@ -14,7 +14,7 @@ export function onMouseDownPolygon(
   nextAnnotationId: number,
   activeLabel: ICategory) {
   if (activeAnnotation === undefined) {
-    annotationFacade.setActivePolygonAnnotation({
+    annotationFacade.setActiveAnnotation({
       annotationMode: AnnotaionMode.POLYGON,
       segmentations: [
         (value.clientX - canvasEl.getBoundingClientRect().left) / canvasEl.width,
