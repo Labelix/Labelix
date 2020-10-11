@@ -99,9 +99,10 @@ export function onMouseMoveSizingTool(value: MouseEvent,
                                       annotationFacade: AnnotationFacade,
                                       activeAnnotation: IImageAnnotation,
                                       activeRawImage: IRawImage) {
+  const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
+  const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
+
   if (editingOptions.annotationDragging) {
-    const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
-    const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
     if (mousePositions.length === 0) {
       mousePositions.push({
         x: currentMousePositionX,
@@ -125,8 +126,6 @@ export function onMouseMoveSizingTool(value: MouseEvent,
     }
   }
   if (editingOptions.addTop) {
-    const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
-    const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
     if (mousePositions.length === 0) {
       mousePositions.push({
         x: currentMousePositionX,
@@ -150,8 +149,6 @@ export function onMouseMoveSizingTool(value: MouseEvent,
     }
   }
   if (editingOptions.addBottom) {
-    const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
-    const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
     if (mousePositions.length === 0) {
       mousePositions.push({
         x: currentMousePositionX,
@@ -173,8 +170,6 @@ export function onMouseMoveSizingTool(value: MouseEvent,
     }
   }
   if (editingOptions.addLeft) {
-    const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
-    const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
     if (mousePositions.length === 0) {
       mousePositions.push({
         x: currentMousePositionX,
@@ -198,8 +193,6 @@ export function onMouseMoveSizingTool(value: MouseEvent,
     }
   }
   if (editingOptions.addRight) {
-    const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
-    const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
     if (mousePositions.length === 0) {
       mousePositions.push({
         x: currentMousePositionX,
