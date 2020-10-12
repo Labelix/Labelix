@@ -44,10 +44,9 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
-  private imgWidth = 1400;
-
+  imgWidth = 1400;
   // specifies if the image can be dragged arround on the screen (by pressing ctrl)
-  private dragable = true;
+  dragable = true;
 
   // drawing helper variables
   private currentlyDrawing = false;
@@ -61,7 +60,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   private activeLabel: ICategory;
   private rawImages: IRawImage[];
   private categories: ICategory[];
-  private activeRawImage: IRawImage;
+  activeRawImage: IRawImage;
   private activeAnnotation: IImageAnnotation;
   private activeProject: IProject;
 
