@@ -37,6 +37,7 @@ export function onMouseDownSizingTool(value: MouseEvent,
       if (topBoxBoundary <= yMousePos
         && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
         && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+        console.log('top');
         annotationFacade.setActiveAnnotation(item);
         editingOptions.addTop = true;
       }
@@ -45,6 +46,7 @@ export function onMouseDownSizingTool(value: MouseEvent,
       if (leftBoxBoundary <= xMousePos
         && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
         && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+        console.log('left');
         annotationFacade.setActiveAnnotation(item);
         editingOptions.addLeft = true;
       }
@@ -53,6 +55,7 @@ export function onMouseDownSizingTool(value: MouseEvent,
       if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
         && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
         && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+        console.log('right');
         annotationFacade.setActiveAnnotation(item);
         editingOptions.addRight = true;
       }
@@ -61,6 +64,7 @@ export function onMouseDownSizingTool(value: MouseEvent,
       if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
         && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
         && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+        console.log('bottom');
         annotationFacade.setActiveAnnotation(item);
         editingOptions.addBottom = true;
       }
@@ -111,11 +115,9 @@ export function onMouseMoveSizingTool(value: MouseEvent,
     } else {
       updateImageAnnotation(annotationFacade, activeAnnotation, {
         xCoordinate: activeAnnotation.boundingBox.xCoordinate
-          + ((currentMousePositionX - mousePositions[mousePositions.length - 1].x)
-            / canvasEl.width * activeRawImage.width),
+          + getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
         yCoordinate: activeAnnotation.boundingBox.yCoordinate
-          + ((currentMousePositionY - mousePositions[mousePositions.length - 1].y)
-            / canvasEl.height * activeRawImage.height),
+          + getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
         height: activeAnnotation.boundingBox.height,
         width: activeAnnotation.boundingBox.width
       });
@@ -135,11 +137,9 @@ export function onMouseMoveSizingTool(value: MouseEvent,
       updateImageAnnotation(annotationFacade, activeAnnotation, {
         xCoordinate: activeAnnotation.boundingBox.xCoordinate,
         yCoordinate: activeAnnotation.boundingBox.yCoordinate
-          + ((currentMousePositionY - mousePositions[mousePositions.length - 1].y)
-            / canvasEl.height * activeRawImage.height),
-        height: activeAnnotation.boundingBox.height -
-          ((currentMousePositionY - mousePositions[mousePositions.length - 1].y)
-            / canvasEl.height * activeRawImage.height),
+          + getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
+        height: activeAnnotation.boundingBox.height
+          - getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
         width: activeAnnotation.boundingBox.width
       });
       mousePositions.push({
@@ -158,9 +158,8 @@ export function onMouseMoveSizingTool(value: MouseEvent,
       updateImageAnnotation(annotationFacade, activeAnnotation, {
         xCoordinate: activeAnnotation.boundingBox.xCoordinate,
         yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-        height: activeAnnotation.boundingBox.height +
-          ((currentMousePositionY - mousePositions[mousePositions.length - 1].y)
-            / canvasEl.height * activeRawImage.height),
+        height: activeAnnotation.boundingBox.height
+          + getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
         width: activeAnnotation.boundingBox.width
       });
       mousePositions.push({
@@ -178,13 +177,11 @@ export function onMouseMoveSizingTool(value: MouseEvent,
     } else {
       updateImageAnnotation(annotationFacade, activeAnnotation, {
         xCoordinate: activeAnnotation.boundingBox.xCoordinate
-          + ((currentMousePositionX - mousePositions[mousePositions.length - 1].x)
-            / canvasEl.width * activeRawImage.width),
+          + getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
         yCoordinate: activeAnnotation.boundingBox.yCoordinate,
         height: activeAnnotation.boundingBox.height,
         width: activeAnnotation.boundingBox.width
-          - ((currentMousePositionX - mousePositions[mousePositions.length - 1].x)
-            / canvasEl.width * activeRawImage.width)
+          - getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
       });
       mousePositions.push({
         x: currentMousePositionX,
@@ -204,8 +201,7 @@ export function onMouseMoveSizingTool(value: MouseEvent,
         yCoordinate: activeAnnotation.boundingBox.yCoordinate,
         height: activeAnnotation.boundingBox.height,
         width: activeAnnotation.boundingBox.width
-          + ((currentMousePositionX - mousePositions[mousePositions.length - 1].x)
-            / canvasEl.width * activeRawImage.width)
+          + getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
       });
       mousePositions.push({
         x: currentMousePositionX,
