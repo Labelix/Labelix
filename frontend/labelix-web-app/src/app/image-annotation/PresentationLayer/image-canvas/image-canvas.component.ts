@@ -249,12 +249,24 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
           onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
           this.redrawCanvas();
-        } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
+        } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionActive()) {
           this.onMouseUpSizingTool();
           this.redrawCanvas();
         }
       }
     });
+  }
+
+  checkIfResizingOptionActive(): boolean{
+    if (this.editingOptions.annotationDragging
+      || this.editingOptions.addTop
+      || this.editingOptions.addRight
+      || this.editingOptions.addLeft
+      || this.editingOptions.addBottom) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   onMouseUpSizingTool() {
