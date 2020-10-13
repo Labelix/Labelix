@@ -2,7 +2,7 @@
 
 <mat-list>
   <div *ngFor="let item of currentImageAnnotations">
-    <mat-list-item *ngIf="item.categoryLabel != undefined && item.image.id === activeImage.id">
+    <mat-list-item *ngIf="item.categoryLabel !== undefined && item.image !== undefined && activeImage !== undefined && item.image.id === activeImage.id">
       <mat-icon mat-list-icon
                 [ngStyle]="{backgroundColor: item.categoryLabel.colorCode}">{{ getRightIcon(item.annotationMode) }}
       </mat-icon>

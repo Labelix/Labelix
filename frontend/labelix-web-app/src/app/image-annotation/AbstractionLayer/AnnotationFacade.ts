@@ -70,7 +70,7 @@ export class AnnotationFacade {
     this.store.dispatch(new DeleteImageAnnoation(input));
   }
 
-  setActivePolygonAnnotation(input: IImageAnnotation) {
+  setActiveAnnotation(input: IImageAnnotation) {
     this.store.dispatch(new SetActiveAnnotation(input));
   }
 
