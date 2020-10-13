@@ -47,26 +47,14 @@ export class ProjectCardComponent implements OnInit {
       coco = JSON.parse(input.label);
       this.cocoController.getCategoriesFromCocoFormat(coco).forEach(value => this.categoryFacade.addLabelCategory(value));
     }
-    this.annotationFacade.replaceActiveProject({
-      label: input.label,
-      cocoExport: input.label !== '' && input.label !== null ? coco : undefined,
-      id: input.id,
-      timestamp: input.timestamp,
-      images: input.images,
-      AIModelConfig: input.AIModelConfig,
-      finishedAnnotation: input.finishedAnnotation,
-      name: input.name,
-      creationDate: input.creationDate,
-      description: input.description
-    });
+    this.setActiveProject(input, coco);
     this.setCurrentAnnotationImage(input);
-    // this.cocoController.getAnnotationsFromCocoFormat(coco).forEach(value => this.annotationFacade.addImageAnnotation(value));
   }
 
   addRawImages(input) {
     this.rawImageFacade.addRawImagesToState(input.images.map(entry => {
       return {
-        id: entry.id - 1,
+        id: entry.id,
         base64Url: entry.Data,
         width: -1,
         height: -1,
@@ -79,7 +67,7 @@ export class ProjectCardComponent implements OnInit {
   setCurrentAnnotationImage(input) {
     if (input.images.length > 0) {
       this.annotationFacade.changeCurrentAnnotationImage({
-        id: input.images[0].id - 1,
+        id: input.images[0].id,
         base64Url: input.images[0].Data,
         width: -1,
         height: -1,
@@ -87,6 +75,21 @@ export class ProjectCardComponent implements OnInit {
         name: input.images[0].Name
       });
     }
+  }
+
+  setActiveProject(input, coco) {
+    this.annotationFacade.replaceActiveProject({
+      label: input.label,
+      cocoExport: input.label !== '' && input.label !== null ? coco : undefined,
+      id: input.id,
+      timestamp: input.timestamp,
+      images: input.images,
+      AIModelConfig: input.AIModelConfig,
+      finishedAnnotation: input.finishedAnnotation,
+      name: input.name,
+      creationDate: input.creationDate,
+      description: input.description
+    });
   }
 
 }
