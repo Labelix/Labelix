@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {CocoFormatter} from '../../CoreLayer/CocoFormatter';
+import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
-import {IFile} from '../../../utility/contracts/IFile';
+import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http';
 
@@ -19,8 +19,7 @@ export class SingleAnnotationExportFormComponent implements OnInit {
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
               private labelCategoryFacade: LabelCategoryFacade,
-              private sanitizer: DomSanitizer,
-              private http: HttpClient) {
+              private sanitizer: DomSanitizer) {
   }
 
   description: string = undefined;
@@ -31,9 +30,9 @@ export class SingleAnnotationExportFormComponent implements OnInit {
 
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];
-  currentRawImages: IFile[];
+  currentRawImages: IRawImage[];
 
-  private cocoFormatter: CocoFormatter = new CocoFormatter();
+  private cocoFormatter: CocoFormatController = new CocoFormatController();
 
   ngOnInit(): void {
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);

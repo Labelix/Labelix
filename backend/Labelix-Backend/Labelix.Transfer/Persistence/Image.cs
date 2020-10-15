@@ -5,10 +5,10 @@ namespace Labelix.Transfer.Persistence
 {
     public partial class Image : TransferObject, IImage
     {
-        [JsonPropertyName("ImagePath")]
+        [JsonPropertyName("imagePath")]
         public string ImagePath { get; set; } = "";
 
-        [JsonPropertyName("ProjectImageId")]
+        [JsonPropertyName("projectImageId")]
         public int ProjectId { get; set; }
 
 

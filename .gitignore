@@ -345,3 +345,5 @@ docker/backendData/Images/1_CoolesProject/
 backend/Labelix-Backend/Labelix.WebAPI/Ressources/Images/1_ErstesProjekt/
 
 *.png
+
+backend/Labelix-Backend/Labelix.WebAPI/Ressources/Labels/1_Erstes Project/
