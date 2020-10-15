@@ -70,7 +70,9 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     addLeft: false,
     addRight: false,
     addTop: false,
-    annotationDragging: false
+    annotationDragging: false,
+    movePolygon: false,
+    polygonIndex: -1
   };
 
   @ViewChild('canvas') canvas: ElementRef;
@@ -191,7 +193,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     // TODO build in exception handling, when no label is selected
     fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
-
       if (this.activeLabel !== undefined) {
         this.currentlyDrawing = true;
 
@@ -210,6 +211,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
             this.annotationFacade,
             this.editingOptions);
         }
+        this.redrawCanvas();
       }
     });
 
@@ -245,14 +247,12 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         if (this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
           onMouseUpBoundingBoxen(lastPos, value, canvasEl, this.annotationFacade,
             this.activeRawImage, this.nextAnnotationId, this.activeLabel);
-
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
           onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
-          this.redrawCanvas();
         } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionActive()) {
           this.onMouseUpSizingTool();
-          this.redrawCanvas();
         }
+        this.redrawCanvas();
       }
     });
   }
@@ -262,7 +262,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       || this.editingOptions.addTop
       || this.editingOptions.addRight
       || this.editingOptions.addLeft
-      || this.editingOptions.addBottom) {
+      || this.editingOptions.addBottom
+      || this.editingOptions.movePolygon) {
       return true;
     } else {
       return false;
@@ -276,6 +277,9 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     this.editingOptions.addBottom = false;
     this.editingOptions.addLeft = false;
     this.mousePositions = [];
+    this.editingOptions.movePolygon = false;
+    this.editingOptions.polygonIndex = -1;
+    this.annotationFacade.resetActiveImageAnnotation();
   }
 
 
@@ -337,5 +341,7 @@ export class EditingOption {
   addRight = false;
   addBottom = false;
   addLeft = false;
+  movePolygon = false;
+  polygonIndex = -1;
 }
 
