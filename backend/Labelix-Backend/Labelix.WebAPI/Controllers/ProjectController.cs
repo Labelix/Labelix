@@ -109,10 +109,10 @@ namespace Labelix.WebAPI.Controllers
             */
             foreach (Data data in model.Images)
             {
-                if (oldProject.Images.Contains(data))
+                if (oldProject.Images != null && oldProjectConverted.Images.Contains(data))
                 {
                     model.Images.Remove(data);
-                    oldProject.Images.Remove(data);
+                    oldProjectConverted.Images.Remove(data);
                 }
                 else
                 {
@@ -120,10 +120,14 @@ namespace Labelix.WebAPI.Controllers
                 }
             }
 
-            foreach (var data in oldProject.Images)
+            if (oldProjectConverted.Images != null)
             {
-                Base64Controller.RemoveImageAsync(data);
+                foreach (var data in oldProjectConverted.Images)
+                {
+                    Base64Controller.RemoveImageAsync(data);
+                }
             }
+            
             Model newModel = new Project()
             {
                 CreationDate = model.CreationDate,
