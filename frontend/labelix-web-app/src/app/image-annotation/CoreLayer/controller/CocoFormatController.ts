@@ -9,7 +9,11 @@ import {ICocoAnnotation} from '../../../utility/contracts/cocoFormat/ICocoAnnota
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {IBoundingBox} from '../../../utility/contracts/IBoundingBox';
 import {ImageAnnotationHelper} from '../helper/image-annotation-helper';
+import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
+import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class CocoFormatController {
 
   createICocoInfo(
@@ -121,7 +125,7 @@ export class CocoFormatController {
   }
 
   // für jedes null muss noch eine Lösung gefunden werden
-  getAnnotationsFromCocoFormat(input: ICocoFormat): IImageAnnotation[] {
+  getAnnotationsFromCocoFormat(input: ICocoFormat, rawImages: IRawImage[], categoryLabels: ICategory[]): IImageAnnotation[] {
     const result: IImageAnnotation[] = [];
 
     for (const current of input.annotations) {
@@ -130,14 +134,41 @@ export class CocoFormatController {
         segmentations: current.segmentation,
         boundingBox: this.getBoundingBoxFromNumberArray(current.bbox),
         isCrowd: current.iscrowd,
-        annotationMode: null,
-        image: null,
-        categoryLabel: null,
-        area: current.id
+        annotationMode: this.getFormatOfImageAnnotation(current),
+        image: this.getRawImageById(current.imageId, rawImages),
+        categoryLabel: this.getCategoryById(current.categoryId, categoryLabels),
+        area: current.area
       });
     }
-
     return result;
+  }
+
+  getRawImageById(id: number, rawImages: IRawImage[]): IRawImage {
+    for (const current of rawImages) {
+      if (current.id === id) {
+        return current;
+      }
+    }
+    return undefined;
+  }
+
+  getFormatOfImageAnnotation(annotation: ICocoAnnotation): number {
+    if (annotation.bbox.length === 0 && annotation.segmentation.length === 0) {
+      return 0;
+    } else if (annotation.bbox.length !== 0) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
+  getCategoryById(id: number, categoryLabels: ICategory[]): ICategory {
+    for (const current of categoryLabels) {
+      if (current.id === id) {
+        return current;
+      }
+    }
+    return undefined;
   }
 
   getBoundingBoxFromNumberArray(input: number[]): IBoundingBox {
