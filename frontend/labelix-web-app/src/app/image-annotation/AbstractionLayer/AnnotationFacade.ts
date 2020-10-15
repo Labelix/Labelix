@@ -15,7 +15,7 @@ import {
   ChangeCategoryOfCurrentImageAnnoation,
   ChangeCurrentAnnotationMode,
   DeleteImageAnnoation,
-  IncrementAnnotationCount, ReplaceActiveProject, ResetAnnotationState,
+  IncrementAnnotationCount, ReplaceActiveProject, ResetActiveImageAnnotation, ResetAnnotationState,
   SetActiveAnnotation,
   SetCurrentAnnotationPicture, UpdateImageAnnotation
 } from '../CoreLayer/actions/image-annotation.actions';
@@ -70,7 +70,7 @@ export class AnnotationFacade {
     this.store.dispatch(new DeleteImageAnnoation(input));
   }
 
-  setActivePolygonAnnotation(input: IImageAnnotation) {
+  setActiveAnnotation(input: IImageAnnotation) {
     this.store.dispatch(new SetActiveAnnotation(input));
   }
 
@@ -92,5 +92,9 @@ export class AnnotationFacade {
 
   resetAnnotationState() {
     this.store.dispatch(new ResetAnnotationState());
+  }
+
+  resetActiveImageAnnotation() {
+    this.store.dispatch(new ResetActiveImageAnnotation());
   }
 }

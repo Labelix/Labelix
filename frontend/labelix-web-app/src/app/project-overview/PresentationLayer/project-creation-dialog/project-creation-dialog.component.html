@@ -23,6 +23,10 @@
         <mat-option *ngFor="let aiModel of aiModelNames" [value]="aiModel">{{aiModel}}</mat-option>
       </mat-select>
     </mat-form-field>
+  <app-image-upload></app-image-upload>
 </form>
+<button mat-raised-button color="primary" (click)="onOkSubmit()" class="create-button">Create</button>
 
-<button (click)="onOkSubmit()">Test</button>
+<button mat-raised-button color="primary" (click)="onOkSubmit()" class="create-button">Create</button>
+
+

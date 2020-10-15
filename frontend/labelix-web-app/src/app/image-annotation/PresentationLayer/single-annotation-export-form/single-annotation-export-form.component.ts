@@ -19,7 +19,8 @@ export class SingleAnnotationExportFormComponent implements OnInit {
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
               private labelCategoryFacade: LabelCategoryFacade,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private cocoFormatter: CocoFormatController) {
   }
 
   description: string = undefined;
@@ -31,8 +32,6 @@ export class SingleAnnotationExportFormComponent implements OnInit {
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
-
-  private cocoFormatter: CocoFormatController = new CocoFormatController();
 
   ngOnInit(): void {
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
