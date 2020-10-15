@@ -1,7 +1,7 @@
 import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {AnnotaionMode} from '../annotaionModeEnum';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
-import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
+import {ActionTypes, ImageAnnotationActions, ResetActiveImageAnnotation} from '../actions/image-annotation.actions';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {IProject} from '../../../utility/contracts/IProject';
 
@@ -15,7 +15,7 @@ export interface ReducerAnnotationState {
   activeProject: IProject;
 }
 
-export const initalAnnotationState: ReducerAnnotationState = {
+export const initialAnnotationState: ReducerAnnotationState = {
   currentAnnotatingImage: undefined,
   currentAnnotationMode: AnnotaionMode.WHOLE_IMAGE,
   currentImageAnnotations: [],
@@ -25,7 +25,7 @@ export const initalAnnotationState: ReducerAnnotationState = {
   activeProject: undefined
 };
 
-export function annotationReducer(state = initalAnnotationState,
+export function annotationReducer(state = initialAnnotationState,
                                   action: ImageAnnotationActions): ReducerAnnotationState {
   switch (action.type) {
     case ActionTypes.SetCurrentAnnotationPicture: {
@@ -263,6 +263,17 @@ export function annotationReducer(state = initalAnnotationState,
         annotationCount: 1,
         activeAnnotation: undefined,
         activeProject: undefined
+      };
+    }
+    case ActionTypes.ResetActiveImageAnnotation: {
+      return {
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        currentImageAnnotations: state.currentImageAnnotations,
+        annotationCount: state.annotationCount,
+        activeLabel: state.activeLabel,
+        activeAnnotation: undefined,
+        activeProject: state.activeProject
       };
     }
     default:
