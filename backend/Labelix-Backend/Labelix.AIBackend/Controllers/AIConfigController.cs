@@ -41,7 +41,7 @@ namespace Labelix.AIBackend.Controllers
 
 
             tempDir = PathHelper.GetRandomFileNameSecure(tempPath);
-            var (inDir, outDir) = CreateFolders(tempDir);
+            var (inDir, outDir) = ("/tmp/in", "/tmp/out"); // CreateFolders(tempDir);
 
 
             info.data.ForEach((x) =>
