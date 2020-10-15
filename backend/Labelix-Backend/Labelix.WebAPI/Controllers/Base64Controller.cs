@@ -3,6 +3,8 @@ using Labelix.Transfer.Modules;
 using Labelix.Transfer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Labelix.WebAPI.Controllers
@@ -107,6 +109,17 @@ namespace Labelix.WebAPI.Controllers
                 Console.WriteLine(er.ToString());
                 return "";
             }
+        }
+
+        public static async Task<int> RemoveImageAsync(Data data)
+        {
+            ProjectController projectController = new ProjectController();
+            ImageController imageController = new ImageController();
+            Project project = await projectController.GetAsync(data.ProjectId);
+            string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
+            imageController.DeleteAsync(data.Id);
+            System.IO.File.Delete(img_path);
+            return 200;
         }
     }
 

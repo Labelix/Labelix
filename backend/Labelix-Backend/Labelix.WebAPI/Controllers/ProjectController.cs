@@ -92,7 +92,7 @@ namespace Labelix.WebAPI.Controllers
                 if(!oldProject.LabeledPath.IsNullOrEmpty()) System.IO.File.Delete(oldProject.LabeledPath);
                 labelPath = await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
             }
-
+            /*
             if (oldProjectConverted.Images != model.Images)
             {
                 foreach (var modelImage in model.Images)
@@ -105,6 +105,24 @@ namespace Labelix.WebAPI.Controllers
                     Data = model.Images
                 };
                 await Base64Controller.MultipleImageUpload(images);
+            }
+            */
+            foreach (Data data in model.Images)
+            {
+                if (oldProject.Images.Contains(data))
+                {
+                    model.Images.Remove(data);
+                    oldProject.Images.Remove(data);
+                }
+                else
+                {
+                    Base64Controller.ImageUploadAsync(data);
+                }
+            }
+
+            foreach (var data in oldProject.Images)
+            {
+                Base64Controller.RemoveImageAsync(data);
             }
             Model newModel = new Project()
             {
