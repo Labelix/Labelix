@@ -2,7 +2,7 @@ import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/sto
 import {
   ReducerRawImageState,
   rawImageReducer
-} from './ReducerRawImageState';
+} from './reducerRawImageState';
 
 // For the raw image state handling
 

@@ -5,9 +5,9 @@ namespace Labelix.Transfer.Persistence
 {
     public class Label : TransferObject, ILabel
     {
-        [JsonPropertyName("Name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonPropertyName("Color")]
+        [JsonPropertyName("color")]
         public string Color { get; set; }
 
         public void CopyProperties(ILabel other)

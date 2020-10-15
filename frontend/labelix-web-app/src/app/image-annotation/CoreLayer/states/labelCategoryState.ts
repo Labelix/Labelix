@@ -26,3 +26,8 @@ export const getNumberOfExistingLabels = createSelector(
   getLabelCategoryFeatureState,
   (state: LabelCategoryState) => state.labelCategory.labelCategories.length
 );
+
+export const getNextLabelId = createSelector(
+  getLabelCategoryFeatureState,
+  (state: LabelCategoryState) => state.labelCategory.labelCount
+);

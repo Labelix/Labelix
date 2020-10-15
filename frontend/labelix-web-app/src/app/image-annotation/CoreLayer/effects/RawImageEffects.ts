@@ -8,6 +8,4 @@ import {switchMap} from 'rxjs/operators';
 export class RawImageEffects {
   constructor(private actions$: Actions, private fileApiService: FileApiService) {
   }
-
-
 }

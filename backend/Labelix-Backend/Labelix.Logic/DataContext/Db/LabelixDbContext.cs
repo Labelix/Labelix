@@ -12,8 +12,8 @@ namespace Labelix.Logic.DataContext.Db
 
         protected DbSet<Project> ProjectSet { get; set; }
 
-        protected DbSet<AIConfig> AIConfigSet { get; set; }
-        protected DbSet<Project_AIConfig> Project_AIConfigSet { get; set; }
+        protected DbSet<AIModelConfig> AIConfigSet { get; set; }
+        protected DbSet<Project_AIModelConfig> Project_AIConfigSet { get; set; }
 
         public override DbSet<E> Set<I, E>()
         {
@@ -31,11 +31,11 @@ namespace Labelix.Logic.DataContext.Db
             {
                 result = ProjectSet as DbSet<E>;
             }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIConfig))
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIModelConfig))
             {
                 result = AIConfigSet as DbSet<E>;
             }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIConfig))
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIModelConfig))
             {
                 result = Project_AIConfigSet as DbSet<E>;
             }
@@ -63,7 +63,8 @@ namespace Labelix.Logic.DataContext.Db
             ConfigureEntityType(modelBuilder.Entity<Image>());
             ConfigureEntityType(modelBuilder.Entity<Label>());
             ConfigureEntityType(modelBuilder.Entity<Project>());
-            ConfigureEntityType(modelBuilder.Entity<AIConfig>());
+            ConfigureEntityType(modelBuilder.Entity<AIModelConfig>());
+            ConfigureEntityType(modelBuilder.Entity<Project_AIModelConfig>());
         }
 
         private void ConfigureEntityType(EntityTypeBuilder<Image> entityTypeBuilder)
@@ -78,19 +79,24 @@ namespace Labelix.Logic.DataContext.Db
         {
             entityTypeBuilder.ToTable("projects");
             entityTypeBuilder
-                .HasMany<Project_AIConfig>(e => e.AIConfigs)
+                .HasMany<Project_AIModelConfig>(e => e.AIConfigs)
                 .WithOne()
                 .HasForeignKey(i => i.ProjectKey);
 
             
         }
-        private void ConfigureEntityType(EntityTypeBuilder<AIConfig> entityTypeBuilder)
+        private void ConfigureEntityType(EntityTypeBuilder<AIModelConfig> entityTypeBuilder)
         {
-            entityTypeBuilder.ToTable("ai_configs");
+            entityTypeBuilder.ToTable("ai_model_configs");
             entityTypeBuilder
-                .HasMany<Project_AIConfig>(e => e.Projects)
+                .HasMany<Project_AIModelConfig>(e => e.Projects)
                 .WithOne()
                 .HasForeignKey(i => i.AIConfigKey);
+        }
+
+        private void ConfigureEntityType(EntityTypeBuilder<Project_AIModelConfig> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("project_ai_model_configs");
         }
     }
 }

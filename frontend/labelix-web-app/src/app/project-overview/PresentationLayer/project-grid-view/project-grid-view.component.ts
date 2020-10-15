@@ -8,17 +8,18 @@ import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
   styleUrls: ['./project-grid-view.component.css']
 })
 export class ProjectGridViewComponent implements OnInit {
-  
+
   projects: IProject[] = undefined;
 
   breakpoint: number;
 
   constructor(private projectsFacade: ProjectsFacade) {
-    this.projectsFacade.getProjects().subscribe((m) => this.projects = m);
+    this.projectsFacade.projects$.subscribe((m) => this.projects = m);
   }
 
   ngOnInit(): void {
     this.changeRelation(window.innerWidth);
+    this.projectsFacade.getProjects();
   }
 
   onResize(event) {
