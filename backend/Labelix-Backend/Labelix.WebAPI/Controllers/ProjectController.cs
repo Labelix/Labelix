@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonBase.Extensions;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Contract = Labelix.Contracts.Persistence.IProject;
 using Model = Labelix.Transfer.Persistence.Project;
 
@@ -107,17 +108,38 @@ namespace Labelix.WebAPI.Controllers
                 await Base64Controller.MultipleImageUpload(images);
             }
             */
+            List<Data> removes1 = new List<Data>();
+            List<Data> removes2 = new List<Data>();
             foreach (Data data in model.Images)
             {
-                if (oldProject.Images != null && oldProjectConverted.Images.Contains(data))
+                bool done = false;
+
+                if (oldProjectConverted.Images != null)
                 {
-                    model.Images.Remove(data);
-                    oldProjectConverted.Images.Remove(data);
+                    foreach (var image in oldProjectConverted.Images)
+                    {
+                        if (image.Base64 == data.Base64 && image.Id == data.Id)
+                        {
+                            removes1.Add(data);
+                            removes2.Add(image);
+                            done = true;
+                        }
+                    }
                 }
-                else
+                if(!done)
                 {
                     Base64Controller.ImageUploadAsync(data);
                 }
+            }
+
+            foreach (var data in removes1)
+            {
+                model.Images.Remove(data);
+            }
+
+            foreach (var data in removes2)
+            {
+                oldProjectConverted.Images.Remove(data);
             }
 
             if (oldProjectConverted.Images != null)
