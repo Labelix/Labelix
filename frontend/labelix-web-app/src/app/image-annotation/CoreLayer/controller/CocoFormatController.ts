@@ -129,16 +129,31 @@ export class CocoFormatController {
     const result: IImageAnnotation[] = [];
 
     for (const current of input.annotations) {
-      result.push({
-        id: current.id,
-        segmentations: current.segmentation,
-        boundingBox: this.getBoundingBoxFromNumberArray(current.bbox),
-        isCrowd: current.iscrowd,
-        annotationMode: this.getFormatOfImageAnnotation(current),
-        image: this.getRawImageById(current.imageId, rawImages),
-        categoryLabel: this.getCategoryById(current.categoryId, categoryLabels),
-        area: current.area
-      });
+      const currentImage = this.getRawImageById(current.imageId, rawImages);
+      if (currentImage.height !== -1 && currentImage.width !== -1) {
+        result.push({
+          id: current.id,
+          segmentations: this.getScalesOfSegmentations(current.segmentation, currentImage),
+          boundingBox: current.bbox[2] === 0 ? undefined : this.getBoundingBoxFromNumberArray(current.bbox),
+          isCrowd: current.iscrowd,
+          annotationMode: this.getFormatOfImageAnnotation(current),
+          image: currentImage,
+          categoryLabel: this.getCategoryById(current.categoryId, categoryLabels),
+          area: current.area
+        });
+      }
+    }
+    return result;
+  }
+
+  getScalesOfSegmentations(segmentation: number[], rawImage: IRawImage): number[] {
+    const result: number[] = [];
+    for (let i = 0; i < segmentation.length; i++) {
+      if (i % 2 === 0) {
+        result.push(segmentation[i] / rawImage.width);
+      } else {
+        result.push(segmentation[i] / rawImage.height);
+      }
     }
     return result;
   }
@@ -155,7 +170,7 @@ export class CocoFormatController {
   getFormatOfImageAnnotation(annotation: ICocoAnnotation): number {
     if (annotation.bbox.length === 0 && annotation.segmentation.length === 0) {
       return 0;
-    } else if (annotation.bbox.length !== 0) {
+    } else if (annotation.segmentation.length === 0) {
       return 1;
     } else {
       return 2;

@@ -42,7 +42,9 @@ export function onMouseMovePolygon(
 
   ctx.strokeStyle = activeLabel.colorCode;
 
-  drawExistingPolygonAnnotations(canvasEl, currentImageAnnotations, activeRawImage, currentlyDrawing, ctx);
+  if (activeRawImage !== undefined) {
+    drawExistingPolygonAnnotations(canvasEl, currentImageAnnotations, activeRawImage, currentlyDrawing, ctx);
+  }
 
   if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
     drawPointsOfPolygonAnnotation(canvasEl, activeAnnotation, ctx, currentlyDrawing);
@@ -100,7 +102,8 @@ export function fillExistingPolygonAnnotations(
   ctx: CanvasRenderingContext2D,
   opacity: number) {
   for (const item of currentImageAnnotations) {
-    if (item.annotationMode === AnnotaionMode.POLYGON
+    if (activeRawImage !== undefined
+      && item.annotationMode === AnnotaionMode.POLYGON
       && item.image.id === activeRawImage.id) {
       fillShape(canvasEl, item, ctx, opacity);
     }
@@ -115,7 +118,8 @@ export function drawExistingPolygonAnnotations(
   ctx: CanvasRenderingContext2D) {
 
   for (const item of currentImageAnnotations) {
-    if (item.annotationMode === AnnotaionMode.POLYGON
+    if (activeRawImage !== undefined
+      && item.annotationMode === AnnotaionMode.POLYGON
       && item.image.id === activeRawImage.id) {
       drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing);
     }
