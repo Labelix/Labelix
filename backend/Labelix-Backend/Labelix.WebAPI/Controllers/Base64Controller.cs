@@ -96,13 +96,8 @@ namespace Labelix.WebAPI.Controllers
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
                 string label_path = $"{dir_path}/{data.Name}.json";
-                if (!System.IO.File.Exists(label_path))
-                {
-                    project.LabeledPath = label_path;
-                    //await projectController.PutAsync(project);
-                }
                 System.IO.File.WriteAllText(label_path, data.Base64);
-                return project.LabeledPath;
+                return label_path;
             }
             catch (Exception er)
             {
