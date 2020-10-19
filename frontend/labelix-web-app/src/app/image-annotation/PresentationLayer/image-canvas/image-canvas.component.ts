@@ -193,7 +193,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     // TODO build in exception handling, when no label is selected
     fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
-      if (this.activeLabel !== undefined) {
+      if (this.activeLabel !== undefined && this.activeRawImage !== undefined) {
         this.currentlyDrawing = true;
 
         setCanvasDimensions(canvasEl);
@@ -205,19 +205,20 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
           onMouseDownPolygon(value, canvasEl, this.activeAnnotation,
             this.annotationFacade, this.activeRawImage, this.nextAnnotationId, this.activeLabel);
-        } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
-          onMouseDownSizingTool(value, canvasEl,
-            this.currentImageAnnotations, this.activeRawImage,
-            this.annotationFacade,
-            this.editingOptions);
         }
         this.redrawCanvas();
+      }
+      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
+        onMouseDownSizingTool(value, canvasEl,
+          this.currentImageAnnotations, this.activeRawImage,
+          this.annotationFacade,
+          this.editingOptions);
       }
     });
 
     fromEvent(canvasEl, 'mousemove').subscribe((value: MouseEvent) => {
 
-      if (this.currentlyDrawing && this.activeLabel !== undefined) {
+      if (this.currentlyDrawing && this.activeLabel !== undefined && this.activeRawImage !== undefined) {
 
         setCanvasDimensions(canvasEl);
         drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations, this.ctx, this.activeRawImage, this.opacity);
@@ -229,13 +230,14 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           onMouseMovePolygon(value, canvasEl,
             this.ctx, this.activeAnnotation, this.currentImageAnnotations,
             this.activeRawImage, this.activeLabel, this.currentlyDrawing);
-        } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
-          onMouseMoveSizingTool(value, canvasEl,
-            this.editingOptions, this.mousePositions,
-            this.annotationFacade, this.activeAnnotation,
-            this.activeRawImage);
-          this.redrawCanvas();
         }
+      }
+      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
+        onMouseMoveSizingTool(value, canvasEl,
+          this.editingOptions, this.mousePositions,
+          this.annotationFacade, this.activeAnnotation,
+          this.activeRawImage);
+        this.redrawCanvas();
       }
     });
 
@@ -249,15 +251,16 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
             this.activeRawImage, this.nextAnnotationId, this.activeLabel);
         } else if (this.currentAnnotationMode === AnnotaionMode.POLYGON) {
           onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
-        } else if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionActive()) {
-          this.onMouseUpSizingTool();
         }
         this.redrawCanvas();
+      }
+      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionActive()) {
+        this.onMouseUpSizingTool();
       }
     });
   }
 
-  checkIfResizingOptionActive(): boolean{
+  checkIfResizingOptionActive(): boolean {
     if (this.editingOptions.annotationDragging
       || this.editingOptions.addTop
       || this.editingOptions.addRight
