@@ -90,7 +90,6 @@ namespace Labelix.WebAPI.Controllers
             string labelPath= oldProject.LabeledPath;
             if (oldProjectConverted.LabeledPath != model.LabeledPath)
             {
-                if(!oldProject.LabeledPath.IsNullOrEmpty()) System.IO.File.Delete(oldProject.LabeledPath);
                 labelPath = await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
             }
             /*
