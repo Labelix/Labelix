@@ -4,6 +4,7 @@ import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../../utility/contracts/ICategory';
 import {hexToRGB} from './drawingUtilLogic';
+import {drawAnnotationHeader} from './boundingBoxLogic';
 
 export function onMouseDownPolygon(
   value: MouseEvent,
@@ -47,7 +48,7 @@ export function onMouseMovePolygon(
   }
 
   if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
-    drawPointsOfPolygonAnnotation(canvasEl, activeAnnotation, ctx, currentlyDrawing);
+    drawPointsOfPolygonAnnotation(canvasEl, activeAnnotation, ctx, currentlyDrawing, '');
 
     ctx.beginPath();
     ctx.moveTo(activeAnnotation.segmentations[activeAnnotation.segmentations.length - 2]
@@ -76,9 +77,14 @@ export function drawPointsOfPolygonAnnotation(
   canvasEl: HTMLCanvasElement,
   annotation: IImageAnnotation,
   ctx: CanvasRenderingContext2D,
-  currentlyDrawing: boolean) {
+  currentlyDrawing: boolean,
+  name: string) {
   ctx.strokeStyle = annotation.categoryLabel.colorCode;
   for (let i = 2; i <= annotation.segmentations.length; i += 2) {
+    if (i === 2) {
+      drawAnnotationHeader(ctx,
+        annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height, ctx.strokeStyle, name);
+    }
     ctx.beginPath();
     if (i === 2) {
       ctx.moveTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
@@ -121,7 +127,7 @@ export function drawExistingPolygonAnnotations(
     if (activeRawImage !== undefined
       && item.annotationMode === AnnotaionMode.POLYGON
       && item.image.id === activeRawImage.id) {
-      drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing);
+      drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing, item.id + ': ' + item.categoryLabel.name);
     }
   }
 }

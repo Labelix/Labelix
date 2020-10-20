@@ -6,7 +6,7 @@
       <mat-icon mat-list-icon
                 [ngStyle]="{backgroundColor: item.categoryLabel.colorCode}">{{ getRightIcon(item.annotationMode) }}
       </mat-icon>
-      <div mat-line>{{item.categoryLabel.name}}</div>
+      <div mat-line>{{item.id}}: {{item.categoryLabel.name}}</div>
       <div><button mat-icon-button><mat-icon (click)="onDeleteImageAnnotation(item)">clear</mat-icon></button></div>
     </mat-list-item>
   </div>
