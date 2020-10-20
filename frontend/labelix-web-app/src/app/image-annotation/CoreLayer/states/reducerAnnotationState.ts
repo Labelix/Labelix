@@ -4,6 +4,7 @@ import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {ActionTypes, ImageAnnotationActions, ResetActiveImageAnnotation} from '../actions/image-annotation.actions';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {IProject} from '../../../utility/contracts/IProject';
+import {act} from '@ngrx/effects';
 
 export interface ReducerAnnotationState {
   currentAnnotatingImage: IRawImage;

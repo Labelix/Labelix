@@ -174,7 +174,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
       fillExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.ctx, this.opacity);
       if (this.activeAnnotation !== undefined) {
-        drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing);
+        drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing,
+          this.activeAnnotation.id + ': ' + this.activeAnnotation.categoryLabel.name);
         fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
       }
     }
@@ -191,7 +192,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     const lastPos = {x: undefined, y: undefined};
 
-    // TODO build in exception handling, when no label is selected
     fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
       if (this.activeLabel !== undefined && this.activeRawImage !== undefined) {
         this.currentlyDrawing = true;
@@ -254,13 +254,13 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         }
         this.redrawCanvas();
       }
-      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionActive()) {
+      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionIsActive()) {
         this.onMouseUpSizingTool();
       }
     });
   }
 
-  checkIfResizingOptionActive(): boolean {
+  checkIfResizingOptionIsActive(): boolean {
     if (this.editingOptions.annotationDragging
       || this.editingOptions.addTop
       || this.editingOptions.addRight
@@ -272,7 +272,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       return false;
     }
   }
-
+  // when finishing the dragging actions all involved variables should be reset
   onMouseUpSizingTool() {
     this.editingOptions.annotationDragging = false;
     this.editingOptions.addTop = false;
@@ -308,15 +308,15 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   onEscapeWhenDrawingPolygon() {
-    const tmpSegs = [];
-    for (const anno of this.activeAnnotation.segmentations) {
-      tmpSegs.push(anno);
+    const tmpSegmentations = [];
+    for (const segmentation of this.activeAnnotation.segmentations) {
+      tmpSegmentations.push(segmentation);
     }
-    // pop twice so the last line is  deleted
-    tmpSegs.pop();
-    tmpSegs.pop();
+    // pop twice so the last action (last drawn line)  is  deleted
+    tmpSegmentations.pop();
+    tmpSegmentations.pop();
     this.annotationFacade.updateImageAnnotation({
-      segmentations: tmpSegs,
+      segmentations: tmpSegmentations,
       boundingBox: this.activeAnnotation.boundingBox,
       annotationMode: this.activeAnnotation.annotationMode,
       area: this.activeAnnotation.area,

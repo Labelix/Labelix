@@ -68,6 +68,7 @@ export class ProjectCardComponent implements OnInit {
       this.annotationFacade.changeCurrentAnnotationImage({
         id: input.images[0].id,
         base64Url: input.images[0].Data,
+        // height and width can only be defined if base64 code is read in a image
         width: -1,
         height: -1,
         file: undefined,
