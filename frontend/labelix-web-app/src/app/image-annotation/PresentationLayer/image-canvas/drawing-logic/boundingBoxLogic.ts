@@ -1,7 +1,7 @@
 import {AnnotationFacade} from '../../../AbstractionLayer/AnnotationFacade';
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../../utility/contracts/ICategory';
-import {drawHandle, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
+import {drawAnnotationHeader, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
 import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {IBoundingBox} from '../../../../utility/contracts/IBoundingBox';
 import {IImageAnnotation} from '../../../../utility/contracts/IImageAnnotation';
@@ -97,14 +97,4 @@ export function drawExistingAnnotationsBoundingBoxes(
       drawBoundingBox(item.boundingBox, canvasEl, ctx, activeRawImage, item.id + ': ' + item.categoryLabel.name);
     }
   }
-}
-
-export function drawAnnotationHeader(ctx: CanvasRenderingContext2D, actualX: number, actualY: number, colorCode: string, name: string) {
-  ctx.beginPath();
-  ctx.font = '16px Roboto';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'bottom';
-  ctx.fillStyle = colorCode;
-  ctx.fillText(name, actualX, actualY);
-  ctx.stroke();
 }
