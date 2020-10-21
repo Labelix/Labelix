@@ -24,7 +24,6 @@ import {
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
-import {BitMapController} from '../../CoreLayer/controller/BitMapController';
 import {IProject} from '../../../utility/contracts/IProject';
 import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
 
@@ -45,8 +44,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
   imgWidth = 1400;
-  // specifies if the image can be dragged arround on the screen (by pressing ctrl)
-  dragable = true;
+  // specifies if the image can be dragged around on the screen (by pressing ctrl)
+  draggable = true;
 
   // drawing helper variables
   private currentlyDrawing = false;
@@ -152,7 +151,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   getDimensionsOfBase64() {
     const image = new Image();
     image.src = this.activeRawImage.base64Url;
-    image.addEventListener('load', ev => {
+    image.addEventListener('load', () => {
       const newRawImage = {
         id: this.activeRawImage.id,
         file: this.activeRawImage.file,
@@ -261,17 +260,14 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   checkIfResizingOptionIsActive(): boolean {
-    if (this.editingOptions.annotationDragging
+    return this.editingOptions.annotationDragging
       || this.editingOptions.addTop
       || this.editingOptions.addRight
       || this.editingOptions.addLeft
       || this.editingOptions.addBottom
-      || this.editingOptions.movePolygon) {
-      return true;
-    } else {
-      return false;
-    }
+      || this.editingOptions.movePolygon;
   }
+
   // when finishing the dragging actions all involved variables should be reset
   onMouseUpSizingTool() {
     this.editingOptions.annotationDragging = false;
@@ -287,11 +283,11 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
 
   canvasKeyUp(event: KeyboardEvent) {
-    this.dragable = !event.ctrlKey;
+    this.draggable = !event.ctrlKey;
   }
 
   canvasKeyDown(event: KeyboardEvent) {
-    this.dragable = !event.ctrlKey;
+    this.draggable = !event.ctrlKey;
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -338,7 +334,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 }
 
 export class EditingOption {
-  // is for the resizing tool an specifies if a whole annotation can be dragged arround the image
+  // is for the resizing tool an specifies if a whole annotation can be dragged around the image
   annotationDragging = false;
   addTop = false;
   addRight = false;
