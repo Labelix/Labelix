@@ -35,7 +35,11 @@ export class WholeImageAnnotationWidgetComponent implements OnInit {
   }
 
   onDeleteImageAnnotation(item: IImageAnnotation) {
-    const dialogRef = this.dialog.open(DeleteImageAnnotationDialogComponent, {data: {annotation: item}});
+    this.dialog.open(DeleteImageAnnotationDialogComponent, {data: {annotation: item}});
+  }
+
+  onChangeVisibility(item: IImageAnnotation) {
+    this.facade.changeVisibilityOfImageAnnotation(item);
   }
 
 }

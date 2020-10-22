@@ -20,7 +20,8 @@ export function onMouseDownPolygon(value: MouseEvent, canvasEl: HTMLCanvasElemen
       area: -1,
       boundingBox: undefined,
       categoryLabel: activeLabel,
-      id: nextAnnotationId
+      id: nextAnnotationId,
+      isVisible: true
     });
   }
 }
@@ -89,6 +90,7 @@ export function fillExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
   for (const item of currentImageAnnotations) {
     if (activeRawImage !== undefined
       && item.annotationMode === AnnotaionMode.POLYGON
+      && item.isVisible
       && item.image.id === activeRawImage.id) {
       fillShape(canvasEl, item, ctx, opacity);
     }
@@ -101,6 +103,7 @@ export function drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
   for (const item of currentImageAnnotations) {
     if (activeRawImage !== undefined
       && item.annotationMode === AnnotaionMode.POLYGON
+      && item.isVisible
       && item.image.id === activeRawImage.id) {
       drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing, item.id + ': ' + item.categoryLabel.name);
     }

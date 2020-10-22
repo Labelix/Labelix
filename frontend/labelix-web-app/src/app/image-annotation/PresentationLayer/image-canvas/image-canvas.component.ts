@@ -319,17 +319,18 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       categoryLabel: this.activeAnnotation.categoryLabel,
       id: this.activeAnnotation.id,
       image: this.activeAnnotation.image,
-      isCrowd: this.activeAnnotation.isCrowd
+      isCrowd: this.activeAnnotation.isCrowd,
+      isVisible: this.activeAnnotation.isVisible
     });
   }
 
   // for canvas zooming
   mouseWheelUpFunc() {
-    this.imgWidth = this.imgWidth + 20;
+    this.imgWidth = this.imgWidth + 40;
   }
 
   mouseWheelDownFunc() {
-    this.imgWidth = this.imgWidth - 20;
+    this.imgWidth = this.imgWidth - 40;
   }
 }
 
