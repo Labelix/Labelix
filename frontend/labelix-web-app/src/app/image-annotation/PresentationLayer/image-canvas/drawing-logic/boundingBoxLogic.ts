@@ -59,6 +59,7 @@ export function onMouseUpBoundingBoxen(
     categoryLabel: activeLabel,
     area: -1,
     annotationMode: AnnotaionMode.BOUNDING_BOXES,
+    isVisible: true
   });
 }
 
@@ -91,6 +92,7 @@ export function drawExistingAnnotationsBoundingBoxes(
     if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES
       && item.image !== undefined
       && activeRawImage !== undefined
+      && item.isVisible
       && item.image.id === activeRawImage.id) {
       ctx.strokeStyle = item.categoryLabel.colorCode;
       ctx.fillStyle = hexToRGB(item.categoryLabel.colorCode, opacity);

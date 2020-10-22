@@ -20,7 +20,7 @@ import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
 import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AnnotationFacade} from './AbstractionLayer/AnnotationFacade';
-import {annoationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
+import {annotationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
 import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
 import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
 import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete-image-annotation-dialog/delete-image-annotation-dialog.component';
@@ -64,7 +64,7 @@ import {CocoFormatController} from './CoreLayer/controller/CocoFormatController'
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
     StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annoationStateName, annotationStateReducers),
+    StoreModule.forFeature(annotationStateName, annotationStateReducers),
     EffectsModule.forFeature([RawImageEffects]),
     MaterialModule
   ]
