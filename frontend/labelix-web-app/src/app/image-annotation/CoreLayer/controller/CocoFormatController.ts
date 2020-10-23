@@ -189,8 +189,8 @@ export class CocoFormatController {
     return {
       xCoordinate: input[0],
       yCoordinate: input[1],
-      width: input[2],
-      height: input[3]
+      height: input[2],
+      width: input[3],
     };
   }
 
