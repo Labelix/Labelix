@@ -6,7 +6,7 @@ export const projectImageUploadStateName = 'projectImageUploadFeature';
 export interface ProjectImageUploadState {
   project: ReducerProjectImageUploadState;
 }
-export const projectImageUploadReducers: ActionReducerMap<ReducerProjectImageUploadState> = {
+export const projectImageUploadReducers: ActionReducerMap<ProjectImageUploadState> = {
   project: projectImageUploadReducer,
 };
 
