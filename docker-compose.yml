@@ -19,13 +19,23 @@ services:
             context: ./backend/Labelix-Backend
             dockerfile: ./Labelix.WebAPI/Dockerfile
         ports:
-            - 80:80
-            - 443:443
+            - 8080:80
         links: 
             - postgresdb
         volumes:
             - ./docker/backendData/Images:/app/Ressources/Images
             - ./docker/backendData/Labels:/app/Ressources/Labels
+        networks: 
+            - labelixNetwork
+
+    reverseproxy:
+        build:
+            context: ./docker/reverseproxy
+            dockerfile: Dockerfile
+        ports:
+            - 80:80
+        links:
+            - webapi
         networks: 
             - labelixNetwork
 volumes: 

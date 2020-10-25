@@ -12,4 +12,5 @@ export interface IImageAnnotation extends IIdentifiable{
   image: IRawImage;
   area: number;
   boundingBox: IBoundingBox;
+  isVisible: boolean;
 }

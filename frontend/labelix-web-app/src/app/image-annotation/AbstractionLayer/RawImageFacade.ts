@@ -19,7 +19,7 @@ export class RawImageFacade {
 
   uploadRawImages(importImages: IRawImage[]) {
     this.addRawImagesToState(importImages);
-    this.fileApi.postListOfRawImages(importImages);
+    // this.fileApi.postListOfRawImages(importImages);
   }
 
   updateRawImage(input: IRawImage) {
