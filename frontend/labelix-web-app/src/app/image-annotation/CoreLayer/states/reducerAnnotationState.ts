@@ -1,7 +1,7 @@
 import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {AnnotaionMode} from '../annotaionModeEnum';
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
-import {ActionTypes, ImageAnnotationActions, ResetActiveImageAnnotation} from '../actions/image-annotation.actions';
+import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
 import {ICategory} from '../../../utility/contracts/ICategory';
 import {IProject} from '../../../utility/contracts/IProject';
 
@@ -86,7 +86,8 @@ export function annotationReducer(state = initialAnnotationState,
             segmentations: value.segmentations,
             boundingBox: value.boundingBox,
             area: value.area,
-            annotationMode: value.annotationMode
+            annotationMode: value.annotationMode,
+            isVisible: value.isVisible
           };
         }
       });
@@ -152,7 +153,7 @@ export function annotationReducer(state = initialAnnotationState,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount,
         activeAnnotation: action.payload,
-        activeProject: state.activeProject
+        activeProject: state.activeProject,
       };
     }
 
@@ -175,7 +176,8 @@ export function annotationReducer(state = initialAnnotationState,
           boundingBox: state.activeAnnotation.boundingBox,
           area: state.activeAnnotation.area,
           image: state.activeAnnotation.image,
-          isCrowd: state.activeAnnotation.isCrowd
+          isCrowd: state.activeAnnotation.isCrowd,
+          isVisible: state.activeAnnotation.isVisible
         },
         activeProject: state.activeProject
       };
@@ -193,7 +195,8 @@ export function annotationReducer(state = initialAnnotationState,
             id: value.id,
             boundingBox: undefined,
             area: -1,
-            isCrowd: false
+            isCrowd: false,
+            isVisible: true
           });
           foundWholeImage = true;
         } else {
@@ -209,7 +212,8 @@ export function annotationReducer(state = initialAnnotationState,
           id: state.annotationCount,
           boundingBox: undefined,
           area: -1,
-          isCrowd: false
+          isCrowd: false,
+          isVisible: true
         });
       }
       return {
@@ -273,6 +277,37 @@ export function annotationReducer(state = initialAnnotationState,
         annotationCount: state.annotationCount,
         activeLabel: state.activeLabel,
         activeAnnotation: undefined,
+        activeProject: state.activeProject
+      };
+    }
+    case ActionTypes.ChangeVisibilityOfImageAnnotation: {
+      const tmpAnnotations: IImageAnnotation[] = [];
+
+      state.currentImageAnnotations.forEach(value => {
+        if (value.id === action.payload.id) {
+          tmpAnnotations.push({
+            isVisible: !action.payload.isVisible,
+            categoryLabel: action.payload.categoryLabel,
+            image: action.payload.image,
+            segmentations: action.payload.segmentations,
+            area: action.payload.area,
+            isCrowd: action.payload.isCrowd,
+            boundingBox: action.payload.boundingBox,
+            annotationMode: action.payload.annotationMode,
+            id: action.payload.id
+          });
+        } else {
+          tmpAnnotations.push(value);
+        }
+      });
+
+      return {
+        activeLabel: state.activeLabel,
+        currentImageAnnotations: tmpAnnotations,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        annotationCount: state.annotationCount + 1,
+        activeAnnotation: state.activeAnnotation,
         activeProject: state.activeProject
       };
     }
