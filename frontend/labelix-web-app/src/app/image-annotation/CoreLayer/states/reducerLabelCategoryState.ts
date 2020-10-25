@@ -15,9 +15,17 @@ export function labelCategoryReducer(state = initialLabelCategoryState, action: 
   switch (action.type) {
     case ActionTypes.AddAnnotationLabel: {
       const tempLabels: ICategory[] = [];
+      let existsYet = false;
 
-      state.labelCategories.forEach(value => tempLabels.push(value));
-      tempLabels.push(action.payload);
+      state.labelCategories.forEach(value => {
+        tempLabels.push(value);
+        if (value.id === action.payload.id) {
+          existsYet = true;
+        }
+      });
+      if (!existsYet) {
+        tempLabels.push(action.payload);
+      }
       const newLabelCount = state.labelCount + 1;
       return {
         labelCategories: tempLabels,

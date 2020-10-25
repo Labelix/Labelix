@@ -6,7 +6,6 @@ import {ImageUploadComponent} from './PresentationLayer/image-upload/image-uploa
 import {FormsModule} from '@angular/forms';
 import {DragNDropDirective} from './PresentationLayer/directives/drag-ndrop.directive';
 import {RawImageFacade} from './AbstractionLayer/RawImageFacade';
-import {ImageFacade} from './AbstractionLayer/ImageFacade';
 import {RawImageEffects} from './CoreLayer/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -21,7 +20,7 @@ import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
 import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AnnotationFacade} from './AbstractionLayer/AnnotationFacade';
-import {annoationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
+import {annotationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
 import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
 import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
 import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete-image-annotation-dialog/delete-image-annotation-dialog.component';
@@ -29,6 +28,7 @@ import { ImageTimelineComponent } from './PresentationLayer/image-timeline/image
 import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-timeline-single-image/image-timeline-single-image.component';
 import {ProjectsFacade} from '../project-overview/AbstractionLayer/ProjectsFacade';
 import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label-widget/selected-label-widget.component';
+import {CocoFormatController} from './CoreLayer/controller/CocoFormatController';
 
 @NgModule({
   declarations: [
@@ -48,11 +48,11 @@ import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label
   ],
   providers: [
     RawImageFacade,
-    ImageFacade,
     RawImageEffects,
     LabelCategoryFacade,
     AnnotationFacade,
-    ProjectsFacade
+    ProjectsFacade,
+    CocoFormatController
   ],
   exports: [
     SingleAnnotationExportFormComponent
@@ -64,7 +64,7 @@ import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
     StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annoationStateName, annotationStateReducers),
+    StoreModule.forFeature(annotationStateName, annotationStateReducers),
     EffectsModule.forFeature([RawImageEffects]),
     MaterialModule
   ]

@@ -9,7 +9,9 @@ import {ICocoAnnotation} from '../../../utility/contracts/cocoFormat/ICocoAnnota
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {IBoundingBox} from '../../../utility/contracts/IBoundingBox';
 import {ImageAnnotationHelper} from '../helper/image-annotation-helper';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class CocoFormatController {
 
   createICocoInfo(
@@ -121,31 +123,74 @@ export class CocoFormatController {
   }
 
   // für jedes null muss noch eine Lösung gefunden werden
-  getAnnotationsFromCocoFormat(input: ICocoFormat): IImageAnnotation[] {
+  getAnnotationsFromCocoFormat(input: ICocoFormat, rawImages: IRawImage[], categoryLabels: ICategory[]): IImageAnnotation[] {
     const result: IImageAnnotation[] = [];
 
     for (const current of input.annotations) {
-      result.push({
-        id: current.id,
-        segmentations: current.segmentation,
-        boundingBox: this.getBoundingBoxFromNumberArray(current.bbox),
-        isCrowd: current.iscrowd,
-        annotationMode: null,
-        image: null,
-        categoryLabel: null,
-        area: current.id
-      });
+      const currentImage = this.getRawImageById(current.imageId, rawImages);
+      if (currentImage.height !== -1 && currentImage.width !== -1) {
+        result.push({
+          id: current.id,
+          segmentations: this.getScalesOfSegmentations(current.segmentation, currentImage),
+          boundingBox: current.bbox[2] === 0 ? undefined : this.getBoundingBoxFromNumberArray(current.bbox),
+          isCrowd: current.iscrowd,
+          annotationMode: this.getFormatOfImageAnnotation(current),
+          image: currentImage,
+          categoryLabel: this.getCategoryById(current.categoryId, categoryLabels),
+          area: current.area,
+          isVisible: true
+        });
+      }
     }
-
     return result;
+  }
+
+  getScalesOfSegmentations(segmentation: number[], rawImage: IRawImage): number[] {
+    const result: number[] = [];
+    for (let i = 0; i < segmentation.length; i++) {
+      if (i % 2 === 0) {
+        result.push(segmentation[i] / rawImage.width);
+      } else {
+        result.push(segmentation[i] / rawImage.height);
+      }
+    }
+    return result;
+  }
+
+  getRawImageById(id: number, rawImages: IRawImage[]): IRawImage {
+    for (const current of rawImages) {
+      if (current.id === id) {
+        return current;
+      }
+    }
+    return undefined;
+  }
+
+  getFormatOfImageAnnotation(annotation: ICocoAnnotation): number {
+    if (annotation.bbox.length === 0 && annotation.segmentation.length === 0) {
+      return 0;
+    } else if (annotation.segmentation.length === 0) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
+  getCategoryById(id: number, categoryLabels: ICategory[]): ICategory {
+    for (const current of categoryLabels) {
+      if (current.id === id) {
+        return current;
+      }
+    }
+    return undefined;
   }
 
   getBoundingBoxFromNumberArray(input: number[]): IBoundingBox {
     return {
       xCoordinate: input[0],
       yCoordinate: input[1],
-      width: input[2],
-      height: input[3]
+      height: input[2],
+      width: input[3],
     };
   }
 

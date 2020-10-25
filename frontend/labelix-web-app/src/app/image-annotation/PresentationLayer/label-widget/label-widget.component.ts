@@ -61,13 +61,6 @@ export class LabelWidgetComponent implements OnInit {
     if (this.currentAnnotationMode === AnnotaionMode.WHOLE_IMAGE) {
       this.annotationFacade.addWholeImageAnnotation(this.selectedCategoryLabel);
     }
-    // this.openSnackBar(item.name);
-  }
-
-  openSnackBar(message: string, action?: string) {
-    this.snackBar.open(message, action ? action : undefined, {
-      verticalPosition: 'top', horizontalPosition: 'center'
-    });
   }
 
 }
