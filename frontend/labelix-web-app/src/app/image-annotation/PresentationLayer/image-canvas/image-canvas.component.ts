@@ -24,7 +24,6 @@ import {
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
-import {BitMapController} from '../../CoreLayer/controller/BitMapController';
 import {IProject} from '../../../utility/contracts/IProject';
 import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
 
@@ -45,8 +44,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
   imgWidth = 1400;
-  // specifies if the image can be dragged arround on the screen (by pressing ctrl)
-  dragable = true;
+  // specifies if the image can be dragged around on the screen (by pressing ctrl)
+  draggable = true;
 
   // drawing helper variables
   private currentlyDrawing = false;
@@ -152,7 +151,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   getDimensionsOfBase64() {
     const image = new Image();
     image.src = this.activeRawImage.base64Url;
-    image.addEventListener('load', ev => {
+    image.addEventListener('load', () => {
       const newRawImage = {
         id: this.activeRawImage.id,
         file: this.activeRawImage.file,
@@ -174,7 +173,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
       fillExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.ctx, this.opacity);
       if (this.activeAnnotation !== undefined) {
-        drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing);
+        drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing,
+          this.activeAnnotation.id + ': ' + this.activeAnnotation.categoryLabel.name);
         fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
       }
     }
@@ -191,7 +191,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
     const lastPos = {x: undefined, y: undefined};
 
-    // TODO build in exception handling, when no label is selected
     fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
       if (this.activeLabel !== undefined && this.activeRawImage !== undefined) {
         this.currentlyDrawing = true;
@@ -254,25 +253,22 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         }
         this.redrawCanvas();
       }
-      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionActive()) {
+      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL && this.checkIfResizingOptionIsActive()) {
         this.onMouseUpSizingTool();
       }
     });
   }
 
-  checkIfResizingOptionActive(): boolean {
-    if (this.editingOptions.annotationDragging
+  checkIfResizingOptionIsActive(): boolean {
+    return this.editingOptions.annotationDragging
       || this.editingOptions.addTop
       || this.editingOptions.addRight
       || this.editingOptions.addLeft
       || this.editingOptions.addBottom
-      || this.editingOptions.movePolygon) {
-      return true;
-    } else {
-      return false;
-    }
+      || this.editingOptions.movePolygon;
   }
 
+  // when finishing the dragging actions all involved variables should be reset
   onMouseUpSizingTool() {
     this.editingOptions.annotationDragging = false;
     this.editingOptions.addTop = false;
@@ -287,11 +283,11 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
 
   canvasKeyUp(event: KeyboardEvent) {
-    this.dragable = !event.ctrlKey;
+    this.draggable = !event.ctrlKey;
   }
 
   canvasKeyDown(event: KeyboardEvent) {
-    this.dragable = !event.ctrlKey;
+    this.draggable = !event.ctrlKey;
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -308,37 +304,38 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   onEscapeWhenDrawingPolygon() {
-    const tmpSegs = [];
-    for (const anno of this.activeAnnotation.segmentations) {
-      tmpSegs.push(anno);
+    const tmpSegmentations = [];
+    for (const segmentation of this.activeAnnotation.segmentations) {
+      tmpSegmentations.push(segmentation);
     }
-    // pop twice so the last line is  deleted
-    tmpSegs.pop();
-    tmpSegs.pop();
+    // pop twice so the last action (last drawn line)  is  deleted
+    tmpSegmentations.pop();
+    tmpSegmentations.pop();
     this.annotationFacade.updateImageAnnotation({
-      segmentations: tmpSegs,
+      segmentations: tmpSegmentations,
       boundingBox: this.activeAnnotation.boundingBox,
       annotationMode: this.activeAnnotation.annotationMode,
       area: this.activeAnnotation.area,
       categoryLabel: this.activeAnnotation.categoryLabel,
       id: this.activeAnnotation.id,
       image: this.activeAnnotation.image,
-      isCrowd: this.activeAnnotation.isCrowd
+      isCrowd: this.activeAnnotation.isCrowd,
+      isVisible: this.activeAnnotation.isVisible
     });
   }
 
   // for canvas zooming
   mouseWheelUpFunc() {
-    this.imgWidth = this.imgWidth + 20;
+    this.imgWidth = this.imgWidth + 40;
   }
 
   mouseWheelDownFunc() {
-    this.imgWidth = this.imgWidth - 20;
+    this.imgWidth = this.imgWidth - 40;
   }
 }
 
 export class EditingOption {
-  // is for the resizing tool an specifies if a whole annotation can be dragged arround the image
+  // is for the resizing tool an specifies if a whole annotation can be dragged around the image
   annotationDragging = false;
   addTop = false;
   addRight = false;

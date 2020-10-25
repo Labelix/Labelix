@@ -9,8 +9,6 @@ import {ICocoAnnotation} from '../../../utility/contracts/cocoFormat/ICocoAnnota
 import {IImageAnnotation} from '../../../utility/contracts/IImageAnnotation';
 import {IBoundingBox} from '../../../utility/contracts/IBoundingBox';
 import {ImageAnnotationHelper} from '../helper/image-annotation-helper';
-import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
-import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {Injectable} from '@angular/core';
 
 @Injectable()
@@ -139,7 +137,8 @@ export class CocoFormatController {
           annotationMode: this.getFormatOfImageAnnotation(current),
           image: currentImage,
           categoryLabel: this.getCategoryById(current.categoryId, categoryLabels),
-          area: current.area
+          area: current.area,
+          isVisible: true
         });
       }
     }
@@ -190,8 +189,8 @@ export class CocoFormatController {
     return {
       xCoordinate: input[0],
       yCoordinate: input[1],
-      width: input[2],
-      height: input[3]
+      height: input[2],
+      width: input[3],
     };
   }
 

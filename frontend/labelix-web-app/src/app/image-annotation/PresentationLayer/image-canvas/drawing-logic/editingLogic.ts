@@ -102,6 +102,8 @@ function getActualScale(value, rawImageValue, canvasValue): number {
   return value / rawImageValue * canvasValue;
 }
 
+
+// TODO add a solution for this redundancy
 function updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, boundingBox) {
   annotationFacade.updateImageAnnotation({
     id: activeAnnotation.id,
@@ -111,7 +113,8 @@ function updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, bo
     area: activeAnnotation.area,
     segmentations: activeAnnotation.segmentations,
     categoryLabel: activeAnnotation.categoryLabel,
-    image: activeAnnotation.image
+    image: activeAnnotation.image,
+    isVisible: activeAnnotation.isVisible
   });
 }
 
@@ -124,7 +127,8 @@ function updateImageAnnotationPolygon(annotationFacade, activeAnnotation, segmen
     area: activeAnnotation.area,
     segmentations,
     categoryLabel: activeAnnotation.categoryLabel,
-    image: activeAnnotation.image
+    image: activeAnnotation.image,
+    isVisible: activeAnnotation.isVisible
   });
 }
 
