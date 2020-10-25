@@ -30,7 +30,6 @@ function setEditingFlagPolygon(item: IImageAnnotation, value: MouseEvent, canvas
       && xMousePos < xTmp + clickField)
       && (yMousePos > yTmp - clickField
         && yMousePos < yTmp + clickField)) {
-      console.log('in range');
       annotationFacade.setActiveAnnotation(item);
       editingOptions.movePolygon = true;
       editingOptions.polygonIndex = i;
@@ -65,7 +64,6 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
   if (topBoxBoundary <= yMousePos
     && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
     && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
-    console.log('top');
     annotationFacade.setActiveAnnotation(item);
     editingOptions.addTop = true;
   }
@@ -74,7 +72,6 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
   if (leftBoxBoundary <= xMousePos
     && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
     && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
-    console.log('left');
     annotationFacade.setActiveAnnotation(item);
     editingOptions.addLeft = true;
   }
@@ -83,7 +80,6 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
   if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
     && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
     && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
-    console.log('right');
     annotationFacade.setActiveAnnotation(item);
     editingOptions.addRight = true;
   }
@@ -92,7 +88,6 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
   if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
     && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
     && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
-    console.log('bottom');
     annotationFacade.setActiveAnnotation(item);
     editingOptions.addBottom = true;
   }
@@ -107,6 +102,8 @@ function getActualScale(value, rawImageValue, canvasValue): number {
   return value / rawImageValue * canvasValue;
 }
 
+
+// TODO add a solution for this redundancy
 function updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, boundingBox) {
   annotationFacade.updateImageAnnotation({
     id: activeAnnotation.id,
@@ -116,7 +113,8 @@ function updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, bo
     area: activeAnnotation.area,
     segmentations: activeAnnotation.segmentations,
     categoryLabel: activeAnnotation.categoryLabel,
-    image: activeAnnotation.image
+    image: activeAnnotation.image,
+    isVisible: activeAnnotation.isVisible
   });
 }
 
@@ -129,7 +127,8 @@ function updateImageAnnotationPolygon(annotationFacade, activeAnnotation, segmen
     area: activeAnnotation.area,
     segmentations,
     categoryLabel: activeAnnotation.categoryLabel,
-    image: activeAnnotation.image
+    image: activeAnnotation.image,
+    isVisible: activeAnnotation.isVisible
   });
 }
 
@@ -140,10 +139,10 @@ function updateImageAnnotationPolygon(annotationFacade, activeAnnotation, segmen
 export function onMouseMoveSizingTool(value: MouseEvent, canvasEl: HTMLCanvasElement, editingOptions: EditingOption,
                                       mousePositions: { x: number, y: number }[], annotationFacade: AnnotationFacade,
                                       activeAnnotation: IImageAnnotation, activeRawImage: IRawImage) {
-  if (activeAnnotation.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+  if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
     changeValuesOnBoundingBoxAnnotation(annotationFacade, mousePositions, value,
       editingOptions, canvasEl, activeAnnotation, activeRawImage);
-  } else if (activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
+  } else if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
     changeValuesOnPolygonAnnotation(annotationFacade, mousePositions, value, editingOptions, canvasEl, activeAnnotation, activeRawImage);
   }
 }

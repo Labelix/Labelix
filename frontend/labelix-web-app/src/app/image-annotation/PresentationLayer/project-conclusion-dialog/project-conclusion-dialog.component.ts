@@ -8,6 +8,8 @@ import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {RawImageFacade} from '../../AbstractionLayer/RawImageFacade';
 import {LabelCategoryFacade} from '../../AbstractionLayer/LabelCategoryFacade';
 import {CocoFormatController} from '../../CoreLayer/controller/CocoFormatController';
+import {Router} from '@angular/router';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-conclusion-dialog',
@@ -21,11 +23,13 @@ export class ProjectConclusionDialogComponent implements OnInit {
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
 
-  constructor(private annotationFacade: AnnotationFacade,
+  constructor(public dialogRef: MatDialogRef<ProjectConclusionDialogComponent>,
+              private annotationFacade: AnnotationFacade,
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
               private labelCategoryFacade: LabelCategoryFacade,
-              private cocoFormatter: CocoFormatController) {
+              private cocoFormatter: CocoFormatController,
+              private router: Router) {
 
     annotationFacade.activeProject.subscribe(value => this.activeProject = value);
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
@@ -67,6 +71,8 @@ export class ProjectConclusionDialogComponent implements OnInit {
     });
 
     this.projectFacade.putProject(this.activeProject);
+    this.router.navigate(['projects']);
+    this.dialogRef.close();
   }
 
 }

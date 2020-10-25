@@ -5,7 +5,6 @@ import {AnnotationFacade} from '../../../image-annotation/AbstractionLayer/Annot
 import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
 import {RawImageFacade} from '../../../image-annotation/AbstractionLayer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../image-annotation/AbstractionLayer/LabelCategoryFacade';
-import {ImageAnnotationHelper} from '../../../image-annotation/CoreLayer/helper/image-annotation-helper';
 import {CocoFormatController} from '../../../image-annotation/CoreLayer/controller/CocoFormatController';
 
 @Component({
@@ -69,6 +68,7 @@ export class ProjectCardComponent implements OnInit {
       this.annotationFacade.changeCurrentAnnotationImage({
         id: input.images[0].id,
         base64Url: input.images[0].Data,
+        // height and width can only be defined if base64 code is read in a image
         width: -1,
         height: -1,
         file: undefined,

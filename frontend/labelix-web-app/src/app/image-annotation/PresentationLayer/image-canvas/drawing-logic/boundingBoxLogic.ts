@@ -1,9 +1,10 @@
 import {AnnotationFacade} from '../../../AbstractionLayer/AnnotationFacade';
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../../utility/contracts/ICategory';
-import {drawHandle, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
+import {drawAnnotationHeader, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
 import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {IBoundingBox} from '../../../../utility/contracts/IBoundingBox';
+import {IImageAnnotation} from '../../../../utility/contracts/IImageAnnotation';
 
 export function onMouseDownBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
   lastPos.x = (value.clientX - canvasEl.getBoundingClientRect().left);
@@ -58,36 +59,31 @@ export function onMouseUpBoundingBoxen(
     categoryLabel: activeLabel,
     area: -1,
     annotationMode: AnnotaionMode.BOUNDING_BOXES,
+    isVisible: true
   });
-  console.log((tmpX * activeRawImage.width / activeRawImage.width * canvasEl.width)
-    + (tmpX * activeRawImage.width / activeRawImage.width * canvasEl.width / 2));
 }
 
 export function drawBoundingBox(
   boundingBox: IBoundingBox,
   canvasEl: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
-  activeRawImage: IRawImage) {
+  activeRawImage: IRawImage,
+  name: string) {
 
+  const actualX = boundingBox.xCoordinate / activeRawImage.width * canvasEl.width;
+  const actualY = boundingBox.yCoordinate / activeRawImage.height * canvasEl.height;
+  const actualWidth = boundingBox.width / activeRawImage.width * canvasEl.width;
+  const actualHeight = boundingBox.height / activeRawImage.height * canvasEl.height;
   ctx.beginPath();
-  ctx.fillRect(
-    boundingBox.xCoordinate / activeRawImage.width * canvasEl.width,
-    boundingBox.yCoordinate / activeRawImage.height * canvasEl.height,
-    boundingBox.width / activeRawImage.width * canvasEl.width,
-    boundingBox.height / activeRawImage.height * canvasEl.height
-  );
-  ctx.rect(
-    boundingBox.xCoordinate / activeRawImage.width * canvasEl.width,
-    boundingBox.yCoordinate / activeRawImage.height * canvasEl.height,
-    boundingBox.width / activeRawImage.width * canvasEl.width,
-    boundingBox.height / activeRawImage.height * canvasEl.height
-  );
+  ctx.fillRect(actualX, actualY, actualWidth, actualHeight);
+  ctx.rect(actualX, actualY, actualWidth, actualHeight);
   ctx.stroke();
+  drawAnnotationHeader(ctx, actualX, actualY, ctx.strokeStyle.toString(), name);
 }
 
 export function drawExistingAnnotationsBoundingBoxes(
   canvasEl: HTMLCanvasElement,
-  elements,
+  elements: IImageAnnotation[],
   ctx: CanvasRenderingContext2D,
   activeRawImage: IRawImage,
   opacity: number) {
@@ -96,11 +92,11 @@ export function drawExistingAnnotationsBoundingBoxes(
     if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES
       && item.image !== undefined
       && activeRawImage !== undefined
+      && item.isVisible
       && item.image.id === activeRawImage.id) {
       ctx.strokeStyle = item.categoryLabel.colorCode;
       ctx.fillStyle = hexToRGB(item.categoryLabel.colorCode, opacity);
-      drawBoundingBox(item.boundingBox, canvasEl, ctx, activeRawImage);
-      // drawHandle(item.boundingBox.xCoordinate / activeRawImage.width * canvasEl.width + g)
+      drawBoundingBox(item.boundingBox, canvasEl, ctx, activeRawImage, item.id + ': ' + item.categoryLabel.name);
     }
   }
 }
