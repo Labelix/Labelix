@@ -12,9 +12,9 @@ import {
   AddPositionToActivePolygonAnnotation,
   AddWholeImageAnnotation,
   ChangeActiveLabel,
-  ChangeCategoryOfCurrentImageAnnoation,
-  ChangeCurrentAnnotationMode,
-  DeleteImageAnnoation,
+  ChangeCategoryOfCurrentImageAnnotation,
+  ChangeCurrentAnnotationMode, ChangeVisibilityOfImageAnnotation,
+  DeleteImageAnnotation,
   IncrementAnnotationCount, ReplaceActiveProject, ResetActiveImageAnnotation, ResetAnnotationState,
   SetActiveAnnotation,
   SetCurrentAnnotationPicture, UpdateImageAnnotation
@@ -59,15 +59,15 @@ export class AnnotationFacade {
   }
 
   changeCurrentAnnotationCategory(input: ICategory) {
-    this.store.dispatch(new ChangeCategoryOfCurrentImageAnnoation(input));
+    this.store.dispatch(new ChangeCategoryOfCurrentImageAnnotation(input));
   }
 
   changeActiveLabel(input: ICategory) {
     this.store.dispatch(new ChangeActiveLabel(input));
   }
 
-  deleteImageAnnotaion(input: IImageAnnotation) {
-    this.store.dispatch(new DeleteImageAnnoation(input));
+  deleteImageAnnotation(input: IImageAnnotation) {
+    this.store.dispatch(new DeleteImageAnnotation(input));
   }
 
   setActiveAnnotation(input: IImageAnnotation) {
@@ -96,5 +96,9 @@ export class AnnotationFacade {
 
   resetActiveImageAnnotation() {
     this.store.dispatch(new ResetActiveImageAnnotation());
+  }
+
+  changeVisibilityOfImageAnnotation(input: IImageAnnotation) {
+    this.store.dispatch(new ChangeVisibilityOfImageAnnotation(input));
   }
 }

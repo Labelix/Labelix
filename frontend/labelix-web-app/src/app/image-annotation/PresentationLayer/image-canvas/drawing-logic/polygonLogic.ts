@@ -3,16 +3,11 @@ import {AnnotationFacade} from '../../../AbstractionLayer/AnnotationFacade';
 import {IRawImage} from '../../../../utility/contracts/IRawImage';
 import {AnnotaionMode} from '../../../CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../../../utility/contracts/ICategory';
-import {hexToRGB} from './drawingUtilLogic';
+import {drawAnnotationHeader, hexToRGB} from './drawingUtilLogic';
 
-export function onMouseDownPolygon(
-  value: MouseEvent,
-  canvasEl: HTMLCanvasElement,
-  activeAnnotation: IImageAnnotation,
-  annotationFacade: AnnotationFacade,
-  activeRawImage: IRawImage,
-  nextAnnotationId: number,
-  activeLabel: ICategory) {
+export function onMouseDownPolygon(value: MouseEvent, canvasEl: HTMLCanvasElement, activeAnnotation: IImageAnnotation,
+                                   annotationFacade: AnnotationFacade, activeRawImage: IRawImage, nextAnnotationId: number,
+                                   activeLabel: ICategory) {
   if (activeAnnotation === undefined) {
     annotationFacade.setActiveAnnotation({
       annotationMode: AnnotaionMode.POLYGON,
@@ -25,67 +20,64 @@ export function onMouseDownPolygon(
       area: -1,
       boundingBox: undefined,
       categoryLabel: activeLabel,
-      id: nextAnnotationId
+      id: nextAnnotationId,
+      isVisible: true
     });
   }
 }
 
-export function onMouseMovePolygon(
-  value: MouseEvent,
-  canvasEl: HTMLCanvasElement,
-  ctx: CanvasRenderingContext2D,
-  activeAnnotation: IImageAnnotation,
-  currentImageAnnotations: IImageAnnotation[],
-  activeRawImage: IRawImage,
-  activeLabel: ICategory,
-  currentlyDrawing: boolean) {
+export function onMouseMovePolygon(value: MouseEvent, canvasEl: HTMLCanvasElement, ctx: CanvasRenderingContext2D,
+                                   activeAnnotation: IImageAnnotation, currentImageAnnotations: IImageAnnotation[],
+                                   activeRawImage: IRawImage, activeLabel: ICategory, currentlyDrawing: boolean) {
 
   ctx.strokeStyle = activeLabel.colorCode;
 
-  drawExistingPolygonAnnotations(canvasEl, currentImageAnnotations, activeRawImage, currentlyDrawing, ctx);
+  if (activeRawImage !== undefined) {
+    drawExistingPolygonAnnotations(canvasEl, currentImageAnnotations, activeRawImage, currentlyDrawing, ctx);
+  }
 
   if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
-    drawPointsOfPolygonAnnotation(canvasEl, activeAnnotation, ctx, currentlyDrawing);
+    drawPointsOfPolygonAnnotation(canvasEl, activeAnnotation, ctx, currentlyDrawing, '');
+
+    const actualX = activeAnnotation.segmentations[activeAnnotation.segmentations.length - 2] * canvasEl.width;
+    const actualY = activeAnnotation.segmentations[activeAnnotation.segmentations.length - 1] * canvasEl.height;
+
+    const actualMouseX = value.clientX - canvasEl.getBoundingClientRect().left;
+    const actualMouseY = value.clientY - canvasEl.getBoundingClientRect().top;
 
     ctx.beginPath();
-    ctx.moveTo(activeAnnotation.segmentations[activeAnnotation.segmentations.length - 2]
-      * canvasEl.width,
-      activeAnnotation.segmentations[activeAnnotation.segmentations.length - 1]
-      * canvasEl.height);
-    ctx.lineTo((value.clientX - canvasEl.getBoundingClientRect().left),
-      (value.clientY - canvasEl.getBoundingClientRect().top));
+    ctx.moveTo(actualX, actualY);
+    ctx.lineTo(actualMouseX, actualMouseY);
     ctx.stroke();
   }
 }
 
-export function onMouseUpPolygon(
-  lastPos: { x: number; y: number },
-  value: MouseEvent,
-  canvasEl: HTMLCanvasElement,
-  currentImageAnnotations: IImageAnnotation[],
-  annotationFacade: AnnotationFacade) {
+export function onMouseUpPolygon(lastPos: { x: number; y: number }, value: MouseEvent, canvasEl: HTMLCanvasElement,
+                                 currentImageAnnotations: IImageAnnotation[], annotationFacade: AnnotationFacade) {
   annotationFacade.addPointsToActivePolygonAnnotation({
     x: (value.clientX - canvasEl.getBoundingClientRect().left) / canvasEl.width,
     y: (value.clientY - canvasEl.getBoundingClientRect().top) / canvasEl.height
   });
 }
 
-export function drawPointsOfPolygonAnnotation(
-  canvasEl: HTMLCanvasElement,
-  annotation: IImageAnnotation,
-  ctx: CanvasRenderingContext2D,
-  currentlyDrawing: boolean) {
+export function drawPointsOfPolygonAnnotation(canvasEl: HTMLCanvasElement, annotation: IImageAnnotation, ctx: CanvasRenderingContext2D,
+                                              currentlyDrawing: boolean, name: string) {
+
   ctx.strokeStyle = annotation.categoryLabel.colorCode;
+
   for (let i = 2; i <= annotation.segmentations.length; i += 2) {
     ctx.beginPath();
+    const pointBeforeX = annotation.segmentations[i - 2] * canvasEl.width;
+    const pointBeforeY = annotation.segmentations[i - 1] * canvasEl.height;
     if (i === 2) {
-      ctx.moveTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+      drawAnnotationHeader(ctx, pointBeforeX, pointBeforeY, ctx.strokeStyle, name);
+      ctx.moveTo(pointBeforeX, pointBeforeY);
     }
     if (i + 2 <= annotation.segmentations.length) {
-      ctx.lineTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+      ctx.lineTo(pointBeforeX, pointBeforeY);
       ctx.lineTo(annotation.segmentations[i] * canvasEl.width, annotation.segmentations[i + 1] * canvasEl.height);
     } else if (currentlyDrawing === false) {
-      ctx.lineTo(annotation.segmentations[i - 2] * canvasEl.width, annotation.segmentations[i - 1] * canvasEl.height);
+      ctx.lineTo(pointBeforeX, pointBeforeY);
       ctx.lineTo(annotation.segmentations[0] * canvasEl.width, annotation.segmentations[1] * canvasEl.height);
     }
     ctx.fill();
@@ -93,31 +85,27 @@ export function drawPointsOfPolygonAnnotation(
   }
 }
 
-export function fillExistingPolygonAnnotations(
-  canvasEl: HTMLCanvasElement,
-  currentImageAnnotations: IImageAnnotation[],
-  activeRawImage: IRawImage,
-  ctx: CanvasRenderingContext2D,
-  opacity: number) {
+export function fillExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, currentImageAnnotations: IImageAnnotation[],
+                                               activeRawImage: IRawImage, ctx: CanvasRenderingContext2D, opacity: number) {
   for (const item of currentImageAnnotations) {
-    if (item.annotationMode === AnnotaionMode.POLYGON
+    if (activeRawImage !== undefined
+      && item.annotationMode === AnnotaionMode.POLYGON
+      && item.isVisible
       && item.image.id === activeRawImage.id) {
       fillShape(canvasEl, item, ctx, opacity);
     }
   }
 }
 
-export function drawExistingPolygonAnnotations(
-  canvasEl: HTMLCanvasElement,
-  currentImageAnnotations: IImageAnnotation[],
-  activeRawImage: IRawImage,
-  currentlyDrawing: boolean,
-  ctx: CanvasRenderingContext2D) {
+export function drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, currentImageAnnotations: IImageAnnotation[],
+                                               activeRawImage: IRawImage, currentlyDrawing: boolean, ctx: CanvasRenderingContext2D) {
 
   for (const item of currentImageAnnotations) {
-    if (item.annotationMode === AnnotaionMode.POLYGON
+    if (activeRawImage !== undefined
+      && item.annotationMode === AnnotaionMode.POLYGON
+      && item.isVisible
       && item.image.id === activeRawImage.id) {
-      drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing);
+      drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing, item.id + ': ' + item.categoryLabel.name);
     }
   }
 }

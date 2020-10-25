@@ -18,7 +18,7 @@ export class DeleteImageAnnotationDialogComponent implements OnInit {
   }
 
   onAccept() {
-    this.facade.deleteImageAnnotaion(this.data.annotation);
+    this.facade.deleteImageAnnotation(this.data.annotation);
     this.dialogRef.close();
   }
 

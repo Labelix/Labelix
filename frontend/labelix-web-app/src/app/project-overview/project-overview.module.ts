@@ -23,6 +23,7 @@ import {RawImageFacade} from '../image-annotation/AbstractionLayer/RawImageFacad
 import { ProjectConclusionDialogComponent } from '../image-annotation/PresentationLayer/project-conclusion-dialog/project-conclusion-dialog.component';
 import {ImageAnnotationModule} from '../image-annotation/image-annotation.module';
 import { ImageUploadComponent } from './PresentationLayer/image-upload/image-upload.component';
+import {projectImageUploadReducers, projectImageUploadStateName} from './CoreLayer/states/projectImageUploadState';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ImageUploadComponent } from './PresentationLayer/image-upload/image-upl
     MatCardModule,
     StoreModule.forFeature(featureStateName, projectReducers),
     StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
+    StoreModule.forFeature(projectImageUploadStateName, projectImageUploadReducers),
     MatButtonModule,
     MatProgressSpinnerModule,
     MaterialModule,

@@ -24,3 +24,13 @@ export function  drawHandle(x: number, y: number, ctx: CanvasRenderingContext2D)
     8, 8);
   ctx.stroke();
 }
+
+export function drawAnnotationHeader(ctx: CanvasRenderingContext2D, actualX: number, actualY: number, colorCode: string, name: string) {
+  ctx.beginPath();
+  ctx.font = '16px Roboto';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = colorCode;
+  ctx.fillText(name, actualX, actualY);
+  ctx.stroke();
+}
