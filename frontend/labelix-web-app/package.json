@@ -23,6 +23,7 @@
     "@angular/router": "~10.0.2",
     "@ngrx/effects": "^9.2.0",
     "@ngrx/store": "^9.2.0",
+    "angular2-hsl-color-picker": "^1.0.1",
     "buffer": "^5.6.0",
     "golden-layout": "^1.5.9",
     "jquery": "^3.5.1",
@@ -32,7 +33,7 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.1000.1",
+    "@angular-devkit/build-angular": "^0.1002.0",
     "@angular/cli": "^10.0.7",
     "@angular/compiler-cli": "~10.0.2",
     "@types/jasmine": "~3.5.0",
