@@ -17,7 +17,7 @@ import {
   DeleteImageAnnotation,
   IncrementAnnotationCount, ReplaceActiveProject, ResetActiveImageAnnotation, ResetAnnotationState,
   SetActiveAnnotation,
-  SetCurrentAnnotationPicture, UpdateImageAnnotation
+  SetCurrentAnnotationPicture, UpdateCategoryOInAnnotations, UpdateImageAnnotation
 } from '../CoreLayer/actions/image-annotation.actions';
 import {AnnotaionMode} from '../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
@@ -100,5 +100,9 @@ export class AnnotationFacade {
 
   changeVisibilityOfImageAnnotation(input: IImageAnnotation) {
     this.store.dispatch(new ChangeVisibilityOfImageAnnotation(input));
+  }
+
+  updateCategoryOnAnnotations(input: ICategory) {
+    this.store.dispatch(new UpdateCategoryOInAnnotations(input));
   }
 }
