@@ -3,5 +3,5 @@ import {IAIModelConfig} from './IAIModelConfig';
 
 export interface IAILabelInfo {
   aiModelConfig: IAIModelConfig;
-  data: IImage[];
+  images: IImage[];
 }
