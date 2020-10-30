@@ -3,11 +3,9 @@ import {CommonModule} from '@angular/common';
 
 import {ImageAnnotationRoutingModule} from './image-annotation-routing.module';
 import {ImageUploadComponent} from './PresentationLayer/image-upload/image-upload.component';
-import {TestCanvasComponent} from './PresentationLayer/test-canvas/test-canvas.component';
 import {FormsModule} from '@angular/forms';
 import {DragNDropDirective} from './PresentationLayer/directives/drag-ndrop.directive';
 import {RawImageFacade} from './AbstractionLayer/RawImageFacade';
-import {ImageFacade} from './AbstractionLayer/ImageFacade';
 import {RawImageEffects} from './CoreLayer/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
@@ -18,41 +16,46 @@ import { ToolbarComponent } from './PresentationLayer/toolbar/toolbar.component'
 import {MaterialModule} from '../material.module';
 import { MouseWheelDirective } from './PresentationLayer/directives/mouse-wheel.directive';
 import { LabelWidgetComponent } from './PresentationLayer/label-widget/label-widget.component';
-import { SinleLabelPresentationComponent } from './PresentationLayer/label-widget/sub-components/sinle-label-presentation/sinle-label-presentation.component';
 import {LabelCategoryFacade} from './AbstractionLayer/LabelCategoryFacade';
 import { WidgetBarComponent } from './PresentationLayer/widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AnnotationFacade} from './AbstractionLayer/AnnotationFacade';
-import {annoationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
+import {annotationStateName, annotationStateReducers} from './CoreLayer/states/annotationState';
 import { WholeImageAnnotationWidgetComponent } from './PresentationLayer/whole-image-annotation-widget/whole-image-annotation-widget.component';
 import { SingleAnnotationExportFormComponent } from './PresentationLayer/single-annotation-export-form/single-annotation-export-form.component';
 import { DeleteImageAnnotationDialogComponent } from './PresentationLayer/delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import { ImageTimelineComponent } from './PresentationLayer/image-timeline/image-timeline.component';
 import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-timeline-single-image/image-timeline-single-image.component';
+import {ProjectsFacade} from '../project-overview/AbstractionLayer/ProjectsFacade';
+import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label-widget/selected-label-widget.component';
+import {CocoFormatController} from './CoreLayer/controller/CocoFormatController';
 
 @NgModule({
   declarations: [
     ImageUploadComponent,
-    TestCanvasComponent,
     DragNDropDirective,
     ImageCanvasComponent,
     ToolbarComponent,
     MouseWheelDirective,
     LabelWidgetComponent,
-    SinleLabelPresentationComponent,
     WidgetBarComponent,
     WholeImageAnnotationWidgetComponent,
     SingleAnnotationExportFormComponent,
     DeleteImageAnnotationDialogComponent,
     ImageTimelineComponent,
-    ImageTimelineSingleImageComponent
+    ImageTimelineSingleImageComponent,
+    SelectedLabelWidgetComponent
   ],
   providers: [
     RawImageFacade,
-    ImageFacade,
     RawImageEffects,
     LabelCategoryFacade,
-    AnnotationFacade
+    AnnotationFacade,
+    ProjectsFacade,
+    CocoFormatController
+  ],
+  exports: [
+    SingleAnnotationExportFormComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +64,7 @@ import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-tim
     FormsModule,
     StoreModule.forFeature(featureStateName, rawImageReducers),
     StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annoationStateName, annotationStateReducers),
+    StoreModule.forFeature(annotationStateName, annotationStateReducers),
     EffectsModule.forFeature([RawImageEffects]),
     MaterialModule
   ]

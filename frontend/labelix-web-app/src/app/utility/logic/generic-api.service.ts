@@ -29,7 +29,7 @@ export class GenericApiService<T extends IIdentifiable> {
     }
 
     postItem(item: T): Observable<T> {
-      return this.httpClient.post<T>(`${this.urlRoot}`, item);
+      return this.httpClient.post<T>(`${this.urlRoot}/create`, item);
     }
 
     deleteItem(item: T): Observable<T> {

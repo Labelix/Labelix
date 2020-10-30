@@ -13,13 +13,27 @@ import {ProjectsFacade} from './AbstractionLayer/ProjectsFacade';
 import {MaterialModule} from '../material.module';
 import {StoreModule} from '@ngrx/store';
 import {featureStateName, projectReducers} from './CoreLayer/states/projectState';
-
+import { AddProjectCardComponent } from './PresentationLayer/add-project-card/add-project-card.component';
+import { ProjectCreationDialogComponent } from './PresentationLayer/project-creation-dialog/project-creation-dialog.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AiModelConfigFacade} from './AbstractionLayer/AiModelConfigFacade';
+import {aiModelConfigReducers, featureAiModelConfigStateName} from './CoreLayer/states/aiModelConfigState';
+import {AnnotationFacade} from '../image-annotation/AbstractionLayer/AnnotationFacade';
+import {RawImageFacade} from '../image-annotation/AbstractionLayer/RawImageFacade';
+import { ProjectConclusionDialogComponent } from '../image-annotation/PresentationLayer/project-conclusion-dialog/project-conclusion-dialog.component';
+import {ImageAnnotationModule} from '../image-annotation/image-annotation.module';
+import { ImageUploadComponent } from './PresentationLayer/image-upload/image-upload.component';
+import {projectImageUploadReducers, projectImageUploadStateName} from './CoreLayer/states/projectImageUploadState';
 
 @NgModule({
   declarations: [
     ProjectOverviewBaseComponent,
     ProjectGridViewComponent,
     ProjectCardComponent,
+    AddProjectCardComponent,
+    ProjectCreationDialogComponent,
+    ProjectConclusionDialogComponent,
+    ImageUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -27,12 +41,20 @@ import {featureStateName, projectReducers} from './CoreLayer/states/projectState
     MatGridListModule,
     MatCardModule,
     StoreModule.forFeature(featureStateName, projectReducers),
+    StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
+    StoreModule.forFeature(projectImageUploadStateName, projectImageUploadReducers),
     MatButtonModule,
     MatProgressSpinnerModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ImageAnnotationModule
   ],
   providers: [
-    ProjectsFacade
+    ProjectsFacade,
+    AiModelConfigFacade,
+    AnnotationFacade,
+    RawImageFacade
   ]
 })
 export class ProjectOverviewModule { }

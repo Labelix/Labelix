@@ -3,6 +3,8 @@ using Labelix.Transfer.Modules;
 using Labelix.Transfer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Labelix.WebAPI.Controllers
@@ -40,6 +42,7 @@ namespace Labelix.WebAPI.Controllers
                 
                 //the image is saved
                 System.IO.File.WriteAllBytes(img_path, bytes);
+                imageController.SetImage(image);
                 return image;
             }
             catch (Exception er)
@@ -67,7 +70,7 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
-        public static async Task CocoUploadAsync(Data data)
+        public static async Task<string> CocoUploadAsync(Data data)
         {
             ProjectController projectController = new ProjectController();
             try
@@ -93,17 +96,25 @@ namespace Labelix.WebAPI.Controllers
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
                 string label_path = $"{dir_path}/{data.Name}.json";
-                if (!System.IO.File.Exists(label_path))
-                {
-                    project.LabeledPath = label_path;
-                    //await projectController.PutAsync(project);
-                }
                 System.IO.File.WriteAllText(label_path, data.Base64);
+                return label_path;
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
+                return "";
             }
+        }
+
+        public static async Task<int> RemoveImageAsync(Data data)
+        {
+            ProjectController projectController = new ProjectController();
+            ImageController imageController = new ImageController();
+            Project project = await projectController.GetAsync(data.ProjectId);
+            string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
+            imageController.DeleteAsync(data.Id);
+            System.IO.File.Delete(img_path);
+            return 200;
         }
     }
 
