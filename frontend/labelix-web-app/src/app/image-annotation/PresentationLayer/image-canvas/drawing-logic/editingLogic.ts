@@ -51,7 +51,7 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
   const actualBoundingBoxHeight = getActualScale(item.boundingBox.height, activeRawImage.height, canvasEl.height);
 
 
-  // check if the bounding box can be dragged arround based on the mouse position
+  // check if the bounding box can be dragged around based on the mouse position
   if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
     && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
     && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
