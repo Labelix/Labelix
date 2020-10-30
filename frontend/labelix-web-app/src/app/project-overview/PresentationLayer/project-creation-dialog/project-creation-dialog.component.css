@@ -1,0 +1,26 @@
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.create-button{
+  position: center;
+  align-content: center;
+
+  width: 50%;
+  margin-bottom: 2em;
+}
+
+td {
+  padding-right: 8px;
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}

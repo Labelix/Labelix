@@ -27,6 +27,7 @@ namespace Labelix.WebAPI.Controllers
             string[] pathParts = image.ImagePath.Split('/');
             Data data = new Data
             {
+                Id = id,
                 Base64 = base64,
                 Name = pathParts[^1],
                 ProjectId = image.ProjectId
@@ -61,8 +62,14 @@ namespace Labelix.WebAPI.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> PostAsync(Data data)
         {
-            await InsertModelAsync(await Base64Controller.ImageUploadAsync(data));
+            await Base64Controller.ImageUploadAsync(data);
 
+            return Ok();
+        }
+
+        public async Task<IActionResult> SetImage(Model image)
+        {
+            InsertModelAsync(image);
             return Ok();
         }
         [HttpPut("update")]
