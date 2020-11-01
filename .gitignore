@@ -350,3 +350,7 @@ backend/Labelix-Backend/Labelix.WebAPI/Ressources/Labels/1_Erstes Project/
 
 # AI-Weights
 *.pkl
+
+# Damit keine Bilder und Labels auf Github landen
+/home/florentin/Documents/HTL-Leonding/Diplomarbeit/Labelix/docker/backendData/Images
+/home/florentin/Documents/HTL-Leonding/Diplomarbeit/Labelix/docker/backendData/Labels
