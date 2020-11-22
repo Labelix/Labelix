@@ -50,7 +50,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   // drawing helper variables
   private currentlyDrawing = false;
   private nextAnnotationId: number;
-  private opacity = 0.25;
+  private opacity = 0.5;
   private mousePositions: { x: number, y: number }[] = [];
 
   // state data placeholders
