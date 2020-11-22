@@ -1,4 +1,7 @@
-<mat-card-title>Labels</mat-card-title>
+<mat-grid-list [cols]="2" rowHeight="4:1">
+  <mat-grid-tile><mat-card-title>Labels</mat-card-title></mat-grid-tile>
+  <mat-grid-tile><button mat-icon-button (click)="onSettings()"><mat-icon>settings</mat-icon></button></mat-grid-tile>
+</mat-grid-list>
 
 <mat-chip-list>
   <mat-chip *ngFor="let item of currentLabelCategories"
@@ -6,23 +9,3 @@
             (click)="onLabelClick(item)">{{currentLabelCategories.indexOf(item) + 1}}
     : {{ item.name }}</mat-chip>
 </mat-chip-list>
-
-<div *ngIf="currentlyAdding === false">
-  <button mat-raised-button class="add-button" (click)="onAddLabel()">Add Label</button>
-</div>
-
-<div *ngIf="currentlyAdding === true" style="margin-top: 1em;">
-  <mat-form-field appearance="fill">
-    <mat-label>Name</mat-label>
-    <input matInput [(ngModel)]="newLabelName">
-  </mat-form-field>
-  <br>
-  <mat-form-field appearance="fill">
-    <mat-label>Supercategory</mat-label>
-    <input matInput [(ngModel)]="newSupercategory">
-  </mat-form-field>
-  <br>
-  <button mat-raised-button class="add-button" (click)="onSave()">Save
-  </button>
-</div>
-

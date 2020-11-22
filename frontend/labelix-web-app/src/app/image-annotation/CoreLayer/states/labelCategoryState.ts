@@ -29,5 +29,5 @@ export const getNumberOfExistingLabels = createSelector(
 
 export const getNextLabelId = createSelector(
   getLabelCategoryFeatureState,
-  (state: LabelCategoryState) => state.labelCategory.labelCount
+  (state: LabelCategoryState) => state.labelCategory.labelCategories.length + 1
 );
