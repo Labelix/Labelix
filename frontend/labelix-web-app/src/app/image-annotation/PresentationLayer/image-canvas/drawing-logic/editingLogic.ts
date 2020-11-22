@@ -51,7 +51,7 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
   const actualBoundingBoxHeight = getActualScale(item.boundingBox.height, activeRawImage.height, canvasEl.height);
 
 
-  // check if the bounding box can be dragged arround based on the mouse position
+  // check if the bounding box can be dragged around based on the mouse position
   if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
     && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
     && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
@@ -139,6 +139,7 @@ function updateImageAnnotationPolygon(annotationFacade, activeAnnotation, segmen
 export function onMouseMoveSizingTool(value: MouseEvent, canvasEl: HTMLCanvasElement, editingOptions: EditingOption,
                                       mousePositions: { x: number, y: number }[], annotationFacade: AnnotationFacade,
                                       activeAnnotation: IImageAnnotation, activeRawImage: IRawImage) {
+
   if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
     changeValuesOnBoundingBoxAnnotation(annotationFacade, mousePositions, value,
       editingOptions, canvasEl, activeAnnotation, activeRawImage);
@@ -153,103 +154,93 @@ function changeValuesOnBoundingBoxAnnotation(annotationFacade: AnnotationFacade,
   const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
   const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
 
-  if (editingOptions.annotationDragging) {
-    if (mousePositions.length === 0) {
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    } else {
-      updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-        xCoordinate: activeAnnotation.boundingBox.xCoordinate
-          + getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
-        yCoordinate: activeAnnotation.boundingBox.yCoordinate
-          + getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
-        height: activeAnnotation.boundingBox.height,
-        width: activeAnnotation.boundingBox.width
-      });
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    }
+  let newScaleX: number;
+  let newScaleY: number;
+
+  if (mousePositions.length !== 0) {
+    newScaleX = getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x),
+      canvasEl.width, activeRawImage.width);
+    newScaleY = getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y),
+      canvasEl.height, activeRawImage.height);
   }
-  if (editingOptions.addTop) {
+
+  if (editingOptions.annotationDragging || editingOptions.addTop
+    || editingOptions.addLeft || editingOptions.addRight || editingOptions.addBottom) {
     if (mousePositions.length === 0) {
       mousePositions.push({
         x: currentMousePositionX,
         y: currentMousePositionY
       });
     } else {
-      updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-        xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-        yCoordinate: activeAnnotation.boundingBox.yCoordinate
-          + getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
-        height: activeAnnotation.boundingBox.height
-          - getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
-        width: activeAnnotation.boundingBox.width
-      });
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    }
-  }
-  if (editingOptions.addBottom) {
-    if (mousePositions.length === 0) {
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    } else {
-      updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-        xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-        yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-        height: activeAnnotation.boundingBox.height
-          + getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y), canvasEl.height, activeRawImage.height),
-        width: activeAnnotation.boundingBox.width
-      });
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    }
-  }
-  if (editingOptions.addLeft) {
-    if (mousePositions.length === 0) {
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    } else {
-      updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-        xCoordinate: activeAnnotation.boundingBox.xCoordinate
-          + getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
-        yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-        height: activeAnnotation.boundingBox.height,
-        width: activeAnnotation.boundingBox.width
-          - getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
-      });
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    }
-  }
-  if (editingOptions.addRight) {
-    if (mousePositions.length === 0) {
-      mousePositions.push({
-        x: currentMousePositionX,
-        y: currentMousePositionY
-      });
-    } else {
-      updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-        xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-        yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-        height: activeAnnotation.boundingBox.height,
-        width: activeAnnotation.boundingBox.width
-          + getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x), canvasEl.width, activeRawImage.width),
-      });
+      if (editingOptions.addTop && editingOptions.addRight) {
+        // move upper right corner
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox.height - newScaleY,
+          width: activeAnnotation.boundingBox.width + newScaleX,
+        });
+      } else if (editingOptions.addTop && editingOptions.addLeft) {
+        // move upper left corner
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox.height - newScaleY,
+          width: activeAnnotation.boundingBox.width - newScaleX,
+        });
+      } else if (editingOptions.addBottom && editingOptions.addLeft) {
+        // move lower left corner
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
+          height: activeAnnotation.boundingBox.height + newScaleY,
+          width: activeAnnotation.boundingBox.width - newScaleX,
+        });
+      } else if (editingOptions.addBottom && editingOptions.addRight) {
+        // move lower right corner
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
+          height: activeAnnotation.boundingBox.height + newScaleY,
+          width: activeAnnotation.boundingBox.width + newScaleX,
+        });
+      } else if (editingOptions.annotationDragging) {
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox.height,
+          width: activeAnnotation.boundingBox.width
+        });
+      } else if (editingOptions.addTop) {
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox.height - newScaleY,
+          width: activeAnnotation.boundingBox.width
+        });
+      } else if (editingOptions.addBottom) {
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
+          height: activeAnnotation.boundingBox.height + newScaleY,
+          width: activeAnnotation.boundingBox.width
+        });
+      } else if (editingOptions.addLeft) {
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
+          height: activeAnnotation.boundingBox.height,
+          width: activeAnnotation.boundingBox.width - newScaleX,
+        });
+      } else if (editingOptions.addRight) {
+        updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
+          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
+          height: activeAnnotation.boundingBox.height,
+          width: activeAnnotation.boundingBox.width + newScaleX,
+        });
+      }
+
       mousePositions.push({
         x: currentMousePositionX,
         y: currentMousePositionY
