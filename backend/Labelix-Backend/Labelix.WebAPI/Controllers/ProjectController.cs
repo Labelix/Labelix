@@ -84,7 +84,6 @@ namespace Labelix.WebAPI.Controllers
         [HttpPut("update")]
         public async Task<Model> PutAsync(Model model)
         {
-            ImageController imageController = new ImageController();
             Model oldProject = await GetAsyncOnlyProject(model.Id);
             Model oldProjectConverted = await GetAsync(model.Id);
             string labelPath= oldProject.LabeledPath;
@@ -113,7 +112,7 @@ namespace Labelix.WebAPI.Controllers
                 }
                 if(!done)
                 {
-                    Base64Controller.ImageUploadAsync(data);
+                    await Base64Controller.ImageUploadAsync(data);
                 }
             }
 
@@ -124,14 +123,14 @@ namespace Labelix.WebAPI.Controllers
 
             foreach (var data in removes2)
             {
-                oldProjectConverted.Images.Remove(data);
+                oldProjectConverted.Images?.Remove(data);
             }
 
             if (oldProjectConverted.Images != null)
             {
                 foreach (var data in oldProjectConverted.Images)
                 {
-                    Base64Controller.RemoveImageAsync(data);
+                    await Base64Controller.RemoveImageAsync(data);
                 }
             }
             
