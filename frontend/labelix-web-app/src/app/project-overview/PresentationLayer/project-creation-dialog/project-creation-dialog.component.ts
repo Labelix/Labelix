@@ -19,7 +19,7 @@ import {IImage} from '../../../utility/contracts/IImage';
 export class ProjectCreationDialogComponent implements OnInit {
 
   aiModelNames: string[];
-  aiIds: number[] = [1, 2, 3]; // todo set to Config ID wich is seleted
+  aiIds: number[] = [1, 2]; // todo set to Config ID wich is seleted
   images: IRawImage[];
 
   // tslint:disable-next-line:max-line-length
@@ -45,7 +45,7 @@ export class ProjectCreationDialogComponent implements OnInit {
   onOkSubmit() {
     const imageData: IImage[] = [];
     for (const i of this.images){
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1});
+      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
     }
     this.project = {
       id: 0,
