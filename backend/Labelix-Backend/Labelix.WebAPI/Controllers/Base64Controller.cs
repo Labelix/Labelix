@@ -41,8 +41,8 @@ namespace Labelix.WebAPI.Controllers
                 }
                 
                 //the image is saved
-                System.IO.File.WriteAllBytes(img_path, bytes);
-                imageController.SetImage(image);
+                await System.IO.File.WriteAllBytesAsync(img_path, bytes);
+                await imageController.SetImage(image);
                 return image;
             }
             catch (Exception er)

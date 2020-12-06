@@ -18,7 +18,7 @@ namespace Labelix.WebAPI.Controllers
         {
             return await GetModelByIdAsync(id);
         }
-        [HttpGet("Picture-{id}")]
+        [HttpGet("picture-{id}")]
         public async Task<Data> GetAsyncPicture(int id)
         {
             Model image = await GetModelByIdAsync(id);
@@ -69,7 +69,7 @@ namespace Labelix.WebAPI.Controllers
 
         public async Task<IActionResult> SetImage(Model image)
         {
-            InsertModelAsync(image);
+            await InsertModelAsync(image);
             return Ok();
         }
         [HttpPut("update")]
