@@ -5,13 +5,20 @@ import {AddConfigs, GetConfigNames} from './aiModelConfig.actions';
 
 export enum ActionTypes {
   HowManyLeft = '[ProjectImageUpload] Gives Back how many Images need to be uploaded',
-  AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State'
+  AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State',
+  GetRawImages = '[ProjectImageUpload] Gets RawImages'
 }
 
 export class HowManyLeft implements Action {
   readonly type = ActionTypes.HowManyLeft;
 
   constructor(public payload: number) {
+  }
+}
+export class GetRawImages implements Action{
+  readonly type = ActionTypes.GetRawImages;
+
+  constructor(public payload: IRawImage[]) {
   }
 }
 export class AddRawImage implements Action {
@@ -22,4 +29,5 @@ export class AddRawImage implements Action {
 }
 export type ProjectImageUploadActions =
   | HowManyLeft
-  | AddRawImage;
+  | AddRawImage
+  | GetRawImages;
