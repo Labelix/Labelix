@@ -32,6 +32,14 @@ export function projectImageUploadReducer(
         rawImages: tmpList,
       };
     }
+    case ActionTypes.GetRawImages: {
+      const tempActions: IRawImage[] = [];
+      action.payload.forEach(value => tempActions.push(value));
+      return{
+        numberOfImages: state.numberOfImages,
+        rawImages: tempActions
+      };
+    }
     default:
       return state;
   }
