@@ -5,6 +5,7 @@ import {select, Store} from '@ngrx/store';
 import {ProjectImageUploadState, getNumberOfRawImages, getAllRawImages} from '../CoreLayer/states/projectImageUploadState';
 import {AddRawImage} from '../CoreLayer/actions/projectImageUpload.actions';
 import {ImageServiceService} from '../CoreLayer/services/image-service.service';
+import {AddBase64CodeToIFile} from '../../image-annotation/CoreLayer/actions/image-annotation.actions';
 
 @Injectable({providedIn: 'root'})
 export class ProjectImageUploadFacade {
@@ -17,5 +18,8 @@ export class ProjectImageUploadFacade {
   postRawImage(importImage: IRawImage){
     this.store.dispatch(new AddRawImage(importImage));
     // tslint:disable-next-line:forin
+  }
+  addBase64CodeToIFile(input: { id: number, baseCode: string }) {
+    this.store.dispatch(new AddBase64CodeToIFile({id: input.id, baseCode: input.baseCode}));
   }
 }

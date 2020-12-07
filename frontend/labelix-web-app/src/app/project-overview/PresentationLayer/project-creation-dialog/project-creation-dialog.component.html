@@ -32,6 +32,7 @@
     </mat-select>
   </mat-form-field>
   <app-image-upload></app-image-upload>
+  <app-image-timeline *ngIf="images.length >= 1"></app-image-timeline>
 </form>
 <button mat-raised-button color="primary" (click)="onOkSubmit()" class="create-button">Create</button>
 

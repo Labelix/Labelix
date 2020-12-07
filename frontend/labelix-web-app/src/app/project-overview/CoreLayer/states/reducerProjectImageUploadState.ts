@@ -40,6 +40,27 @@ export function projectImageUploadReducer(
         rawImages: tempActions
       };
     }
+    case ActionTypes.AddBase64CodeToIFile: {
+      const tempImages: IRawImage[] = [];
+      state.rawImages.forEach(value => {
+        if (value.id === action.payload.id) {
+          tempImages.push({
+            id: value.id,
+            file: value.file,
+            base64Url: action.payload.baseCode,
+            height: value.height,
+            width: value.width,
+            name: value.name
+          });
+        } else {
+          tempImages.push(value);
+        }
+      });
+      return {
+        numberOfImages: state.numberOfImages,
+        rawImages: tempImages
+      };
+    }
     default:
       return state;
   }

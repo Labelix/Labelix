@@ -6,7 +6,8 @@ import {AddConfigs, GetConfigNames} from './aiModelConfig.actions';
 export enum ActionTypes {
   HowManyLeft = '[ProjectImageUpload] Gives Back how many Images need to be uploaded',
   AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State',
-  GetRawImages = '[ProjectImageUpload] Gets RawImages'
+  GetRawImages = '[ProjectImageUpload] Gets RawImages',
+  AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
 }
 
 export class HowManyLeft implements Action {
@@ -27,7 +28,14 @@ export class AddRawImage implements Action {
   constructor(public payload: IRawImage) {
   }
 }
+export class AddBase64CodeToIFile implements Action {
+  readonly type = ActionTypes.AddBase64CodeToIFile;
+
+  constructor(public payload: { id: number, baseCode: string }) {
+  }
+}
 export type ProjectImageUploadActions =
   | HowManyLeft
   | AddRawImage
-  | GetRawImages;
+  | GetRawImages
+  | AddBase64CodeToIFile;
