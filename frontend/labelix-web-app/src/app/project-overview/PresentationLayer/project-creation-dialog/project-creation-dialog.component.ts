@@ -10,6 +10,7 @@ import {AiModelConfigFacade} from '../../AbstractionLayer/AiModelConfigFacade';
 import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {ProjectImageUploadFacade} from '../../AbstractionLayer/ProjectImageUploadFacade';
 import {IImage} from '../../../utility/contracts/IImage';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -21,9 +22,10 @@ export class ProjectCreationDialogComponent implements OnInit {
   aiModelNames: string[];
   aiIds: number[] = [1, 2]; // todo set to Config ID wich is seleted
   images: IRawImage[];
+  imageNumber = 5;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private projectFacade: ProjectsFacade, private aiModelConfigFacade: AiModelConfigFacade, private imageUploadFacade: ProjectImageUploadFacade) {
+  constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>, private projectFacade: ProjectsFacade, private aiModelConfigFacade: AiModelConfigFacade, private imageUploadFacade: ProjectImageUploadFacade) {
     this.imageUploadFacade.rawImages$.subscribe((m) => this.images = m);
   }
   project: IProject;
@@ -61,5 +63,7 @@ export class ProjectCreationDialogComponent implements OnInit {
     };
     console.log(this.newProjectName);
     this.projectFacade.postProject(this.project);
+    this.dialogRef.close();
+    this.projectFacade.getProjects();
   }
 }

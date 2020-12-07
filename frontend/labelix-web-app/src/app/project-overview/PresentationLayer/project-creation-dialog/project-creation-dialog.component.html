@@ -1,5 +1,4 @@
-<form class="example-form">
-
+<form>
   <mat-form-field class="example-full-width">
     <mat-label>ProjectName</mat-label>
     <label>
@@ -31,9 +30,19 @@
       <mat-option *ngFor="let aiModel of aiModelNames" [value]="aiModel">{{aiModel}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <app-image-upload></app-image-upload>
-  <app-image-timeline *ngIf="images.length >= 1"></app-image-timeline>
 </form>
+
+<h2>Bilder</h2>
+<mat-slider class="maxPics" *ngIf="images.length >= 5" thumbLabel tickInterval="1000" min="5" max="{{images.length}}" step="1" value="1" [(ngModel)]="imageNumber"></mat-slider>
+
+<mat-grid-list cols="6">
+  <mat-grid-tile>
+    <app-image-upload class="image-input"></app-image-upload>
+  </mat-grid-tile>
+  <mat-grid-tile *ngFor="let image of images.slice(0,imageNumber)">
+    <app-image-timeline-single-image [myImage]="image"></app-image-timeline-single-image>
+  </mat-grid-tile>
+</mat-grid-list>
 <button mat-raised-button color="primary" (click)="onOkSubmit()" class="create-button">Create</button>
 
 
