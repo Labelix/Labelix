@@ -16,8 +16,8 @@ export class AddProjectCardComponent implements OnInit {
 
   onAddCardClick() {
     const dialogRef = this.dialog.open(ProjectCreationDialogComponent, {
-      height: '400px',
-      width: '600px',
+      height: '80%',
+      width: '60%',
     });
   }
 }

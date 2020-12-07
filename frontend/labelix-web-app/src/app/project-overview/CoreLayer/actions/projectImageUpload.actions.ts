@@ -8,6 +8,7 @@ export enum ActionTypes {
   AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State',
   GetRawImages = '[ProjectImageUpload] Gets RawImages',
   AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
+  DeleteRawImage = '[ImageAnnotation] Delete RawImage',
 }
 
 export class HowManyLeft implements Action {
@@ -20,6 +21,12 @@ export class GetRawImages implements Action{
   readonly type = ActionTypes.GetRawImages;
 
   constructor(public payload: IRawImage[]) {
+  }
+}
+export class DeleteRawImage implements Action{
+  readonly type = ActionTypes.DeleteRawImage;
+
+  constructor(public payload: IRawImage) {
   }
 }
 export class AddRawImage implements Action {
@@ -38,4 +45,5 @@ export type ProjectImageUploadActions =
   | HowManyLeft
   | AddRawImage
   | GetRawImages
-  | AddBase64CodeToIFile;
+  | AddBase64CodeToIFile
+  | DeleteRawImage;

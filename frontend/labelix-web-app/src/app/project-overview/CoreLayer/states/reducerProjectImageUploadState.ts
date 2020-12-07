@@ -61,6 +61,17 @@ export function projectImageUploadReducer(
         rawImages: tempImages
       };
     }
+    case ActionTypes.DeleteRawImage: {
+      const temp: IRawImage[] = [];
+      state.rawImages.forEach(value => temp.push(value));
+      const rawImage: IRawImage = action.payload;
+      const index = temp.indexOf(rawImage, 0);
+      delete temp[index];
+      return {
+        numberOfImages: state.numberOfImages,
+        rawImages: temp
+      };
+    }
     default:
       return state;
   }
