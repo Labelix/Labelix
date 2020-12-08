@@ -1,0 +1,15 @@
+.tab {
+  width: 25em;
+  height: 30em;
+}
+
+.name-font {
+  font-size: 2em;
+}
+
+.save-button {
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

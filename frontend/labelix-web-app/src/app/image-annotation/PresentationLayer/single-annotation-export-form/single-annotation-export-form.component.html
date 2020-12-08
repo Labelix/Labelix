@@ -1,0 +1,35 @@
+<br>
+<mat-card-title>Export Meta Data</mat-card-title>
+
+<mat-divider></mat-divider>
+
+<br>
+
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>Description</mat-label>
+    <input matInput [(ngModel)]="description" name="description"/>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Contributor</mat-label>
+    <input matInput [(ngModel)]="contributor" name="contributor"/>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>URL</mat-label>
+    <input matInput [ngModel]="inputUrl" name="url"/>
+  </mat-form-field>
+</form>
+
+<button mat-raised-button class="export-button" (click)="onExport()"> Export </button>
+
+<br>
+
+<div *ngIf="url != undefined" class="download-position">
+  <a mat-raised-button class="export-button" title="Download JSON" [href]="url" download="download.json"> Download </a>
+</div>

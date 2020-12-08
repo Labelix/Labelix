@@ -1,0 +1,7 @@
+<div class="time-line">
+  <mat-grid-list cols="2" rowHeight="2:1" class="horizontal-list">
+    <mat-grid-tile *ngFor="let image of listOfRawImages">
+      <app-image-timeline-single-image [myImage]="image"></app-image-timeline-single-image>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
