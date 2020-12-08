@@ -3,4 +3,5 @@
   width: 16em;
   height: 9em;
   object-fit: fill;
+  cursor: url('delete2.png'),pointer;
 }

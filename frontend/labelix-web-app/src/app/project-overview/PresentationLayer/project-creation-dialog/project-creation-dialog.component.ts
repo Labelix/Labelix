@@ -64,6 +64,5 @@ export class ProjectCreationDialogComponent implements OnInit {
     console.log(this.newProjectName);
     this.projectFacade.postProject(this.project);
     this.dialogRef.close();
-    this.projectFacade.getProjects();
   }
 }
