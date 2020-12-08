@@ -1,5 +1,6 @@
-import {ActionReducerMap, createFeatureSelector} from '@ngrx/store';
+import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 import {projectImageUploadReducer, ReducerProjectImageUploadState} from './reducerProjectImageUploadState';
+import {getRawImageFeatureState} from '../../../image-annotation/CoreLayer/states/rawImageState';
 
 export const projectImageUploadStateName = 'projectImageUploadFeature';
 
@@ -10,8 +11,17 @@ export const projectImageUploadReducers: ActionReducerMap<ProjectImageUploadStat
   project: projectImageUploadReducer,
 };
 
-export const getProjectFeatureState = createFeatureSelector<ReducerProjectImageUploadState>(
+export const getRawImageState = createFeatureSelector<ProjectImageUploadState>(
   projectImageUploadStateName
+);
+
+export const getAllRawImages = createSelector(
+  getRawImageState,
+  (state: ProjectImageUploadState) => state.project.rawImages
+);
+export const getNumberOfRawImages = createSelector(
+  getRawImageState,
+  (state: ProjectImageUploadState) => state.project.rawImages.length
 );
 
 // Methods to subscribe to

@@ -1,0 +1,6 @@
+.single-image {
+  margin-left: 1em;
+  width: 16em;
+  height: 9em;
+  object-fit: fill;
+}

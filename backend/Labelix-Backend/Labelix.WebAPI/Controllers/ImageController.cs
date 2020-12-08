@@ -69,7 +69,7 @@ namespace Labelix.WebAPI.Controllers
 
         public async Task<IActionResult> SetImage(Model image)
         {
-            InsertModelAsync(image);
+            await InsertModelAsync(image);
             return Ok();
         }
         [HttpPut("update")]

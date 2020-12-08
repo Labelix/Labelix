@@ -165,6 +165,15 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     });
   }
 
+  checkInBound(mousePos: number, boxBoundary: number, actualBoundingBoxSize: number): boolean {
+    return boxBoundary <= mousePos && boxBoundary + actualBoundingBoxSize >= mousePos;
+  }
+
+// hier ist jehweils immer die Breite oder die Höhe bei rawImageValue und canvasValue anzugeben
+  getActualScale(value, rawImageValue, canvasValue): number {
+    return value / rawImageValue * canvasValue;
+  }
+
   private redrawCanvas() {
     if (this.canvas !== undefined) {
       const canvasEl = this.canvas.nativeElement;
@@ -216,6 +225,85 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     });
 
     fromEvent(canvasEl, 'mousemove').subscribe((value: MouseEvent) => {
+
+      let noAnnotation = true;
+
+      if (this.currentAnnotationMode === AnnotaionMode.POLYGON || this.currentAnnotationMode === AnnotaionMode.BOUNDING_BOXES) {
+        this.canvas.nativeElement.style.cursor = 'crosshair';
+        noAnnotation = false;
+      }
+      if (this.currentAnnotationMode === AnnotaionMode.SIZING_TOOL) {
+        for (const item of this.currentImageAnnotations) {
+          const spaceRatio = 0.2;
+          const clickField = 10;
+
+          const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
+          const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
+
+          if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+            const leftBoxBoundary = this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width, canvasEl.width);
+            const topBoxBoundary = this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height, canvasEl.height);
+            const actualBoundingBoxWidth = this.getActualScale(item.boundingBox.width, this.activeRawImage.width, canvasEl.width);
+            const actualBoundingBoxHeight = this.getActualScale(item.boundingBox.height, this.activeRawImage.height, canvasEl.height);
+            // check if the bounding box can be dragged around based on the mouse position
+            if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
+              && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
+              && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
+              && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos) {
+              this.canvas.nativeElement.style.cursor = 'grab';
+              noAnnotation = false;
+            }
+
+            // check if top side can be modified
+            if (topBoxBoundary <= yMousePos
+              && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
+              && this.checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+              this.canvas.nativeElement.style.cursor = 'n-resize';
+              noAnnotation = false;
+            }
+
+            // check if left side can be modified
+            if (leftBoxBoundary <= xMousePos
+              && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
+              && this.checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+              this.canvas.nativeElement.style.cursor = 'w-resize';
+              noAnnotation = false;
+            }
+
+            // check if right side can be modified
+            if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
+              && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
+              && this.checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+              this.canvas.nativeElement.style.cursor = 'e-resize';
+              noAnnotation = false;
+            }
+
+            // check if bottom side can be modified
+            if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
+              && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
+              && this.checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+              this.canvas.nativeElement.style.cursor = 's-resize';
+              noAnnotation = false;
+            }
+          }
+          if (item.annotationMode === AnnotaionMode.POLYGON) {
+            for (let i = 0; i < item.segmentations.length - 1; i = i + 2) {
+              const xTmp = (item.segmentations[i] * canvasEl.width);
+              const yTmp = (item.segmentations[i + 1] * canvasEl.height);
+              if ((xMousePos > xTmp - clickField
+                && xMousePos < xTmp + clickField)
+                && (yMousePos > yTmp - clickField
+                  && yMousePos < yTmp + clickField)) {
+                this.canvas.nativeElement.style.cursor = 'grab';
+                noAnnotation = false;
+              }
+            }
+          }
+          if (noAnnotation) {
+            this.canvas.nativeElement.style.cursor = 'default';
+          }
+        }
+      }
 
       if (this.currentlyDrawing && this.activeLabel !== undefined && this.activeRawImage !== undefined) {
 
