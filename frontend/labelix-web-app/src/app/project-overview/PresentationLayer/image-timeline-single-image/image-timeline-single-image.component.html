@@ -1,3 +1,3 @@
-<div (click)="onImageClick()">
+<div (click)="onImageClick()" *ngIf="myImage != null">
   <img class="single-image" [src]="myImage.base64Url" layout-fill/>
 </div>
