@@ -41,6 +41,7 @@ services:
             - 8180:8080
         volumes:
             - ./docker/keycloak/:/tmp/keycloak
+            - ./docker/keycloak/material:/opt/jboss/keycloak/themes/material
         networks:
             - labelixNetwork
         depends_on:
