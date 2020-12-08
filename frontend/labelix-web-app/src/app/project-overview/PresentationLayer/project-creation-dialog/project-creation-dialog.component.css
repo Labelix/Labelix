@@ -1,0 +1,22 @@
+.example-full-width {
+  width: 100%;
+}
+
+.create-button{
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.maxPics{
+  margin-left: 90%;
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+.image-input{
+  align-content: center;
+}
