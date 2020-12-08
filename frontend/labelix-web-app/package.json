@@ -23,6 +23,8 @@
     "@angular/router": "~10.0.2",
     "@ngrx/effects": "^9.2.0",
     "@ngrx/store": "^9.2.0",
+    "angular-oauth2-oidc": "^10.0.3",
+    "angular-oauth2-oidc-jwks": "^9.0.0",
     "angular2-hsl-color-picker": "^1.0.1",
     "buffer": "^5.6.0",
     "color": "^3.1.3",

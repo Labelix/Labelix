@@ -12,6 +12,9 @@ import {MaterialModule} from './material.module';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
+import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
+import {authConfig} from './auth.config';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 
 @NgModule({
   declarations: [
@@ -27,9 +30,17 @@ import {EffectsModule} from '@ngrx/effects';
     MaterialModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    OAuthModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+  constructor(private oauthService: OAuthService) {
+    this.oauthService.configure(authConfig);
+    this.oauthService.tokenValidationHandler =
+      new JwksValidationHandler();
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
 }
