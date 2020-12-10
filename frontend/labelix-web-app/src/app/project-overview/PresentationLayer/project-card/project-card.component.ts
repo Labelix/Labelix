@@ -26,6 +26,7 @@ export class ProjectCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.myProject.name, this.myProject.images); // TODO Remove
   }
 
   onStartAnnotating(): void {

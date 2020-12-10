@@ -41,7 +41,6 @@ export class ProjectCreationDialogComponent implements OnInit {
       const names: string[] = [];
       value.forEach(value1 => {
         names.push(value1.name);
-        console.log(value1.name);
       });
       this.aiModelNames = names;
     });
@@ -63,7 +62,6 @@ export class ProjectCreationDialogComponent implements OnInit {
       AIModelConfig: this.aiIds,
       cocoExport: undefined
     };
-    console.log(this.newProjectName);
     this.projectFacade.postProject(this.project);
     this.dialogRef.close();
   }
