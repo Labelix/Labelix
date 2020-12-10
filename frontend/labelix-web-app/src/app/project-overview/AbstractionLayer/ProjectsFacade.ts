@@ -23,7 +23,8 @@ export class ProjectsFacade {
   }
 
   postProject(importProject: IProject) {
-    this.projectApi.postItem(importProject).subscribe(value => this.store.dispatch(new AddProjectAction(value)));
+    this.projectApi.postItem(importProject);
+    this.store.dispatch(new AddProjectAction(importProject));
   }
 
   getProjectObservableNyId(id: number): Observable<IProject> {

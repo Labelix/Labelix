@@ -6,6 +6,8 @@ import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
 import {RawImageFacade} from '../../../image-annotation/AbstractionLayer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../image-annotation/AbstractionLayer/LabelCategoryFacade';
 import {CocoFormatController} from '../../../image-annotation/CoreLayer/controller/CocoFormatController';
+import {ImageServiceService} from '../../CoreLayer/services/image-service.service';
+import {IImage} from '../../../utility/contracts/IImage';
 
 @Component({
   selector: 'app-project-card',
@@ -16,17 +18,20 @@ export class ProjectCardComponent implements OnInit {
 
   @Input()
   myProject: IProject;
+  firstImage: IImage;
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
               private categoryFacade: LabelCategoryFacade,
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
-              private cocoController: CocoFormatController) {
+              private cocoController: CocoFormatController,
+              private imageService: ImageServiceService) {
   }
 
   ngOnInit(): void {
-    console.log(this.myProject.name, this.myProject.images); // TODO Remove
+    // tslint:disable-next-line:max-line-length
+    this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value;     console.log(this.firstImage); });
   }
 
   onStartAnnotating(): void {

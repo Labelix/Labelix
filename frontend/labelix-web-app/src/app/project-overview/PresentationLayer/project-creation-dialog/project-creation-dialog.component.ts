@@ -27,7 +27,7 @@ export class ProjectCreationDialogComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>, private projectFacade: ProjectsFacade, private aiModelConfigFacade: AiModelConfigFacade, private imageUploadFacade: ProjectImageUploadFacade) {
     this.imageUploadFacade.rawImages$.subscribe((m) => this.images = m);
-    this.dialogRef.afterClosed().subscribe(() => { this.imageUploadFacade.deleteAllImages(0); console.log('closed'); });
+    this.dialogRef.afterClosed().subscribe(() => { this.imageUploadFacade.deleteAllImages(0); });
   }
   project: IProject;
   newProjectName: string;
