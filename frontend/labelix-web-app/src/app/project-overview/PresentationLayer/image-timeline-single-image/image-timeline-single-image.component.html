@@ -1,3 +1,4 @@
-<div (click)="onImageClick()" *ngIf="myImage != null">
-  <img class="single-image" [src]="myImage.base64Url" layout-fill/>
+<div class="single-image" *ngIf="myImage != null">
+  <img class="close" (click)="onImageClick()" src="delete2.png">
+  <img class="image" [src]="myImage.base64Url"/>
 </div>
