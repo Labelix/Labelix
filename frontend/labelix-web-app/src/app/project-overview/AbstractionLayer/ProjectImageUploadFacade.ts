@@ -17,7 +17,6 @@ export class ProjectImageUploadFacade {
   }
   postRawImage(importImage: IRawImage){
     this.store.dispatch(new AddRawImage(importImage));
-    // tslint:disable-next-line:forin
   }
   addBase64CodeToIFile(input: { id: number, baseCode: string }) {
     this.store.dispatch(new AddBase64CodeToIFile({id: input.id, baseCode: input.baseCode}));

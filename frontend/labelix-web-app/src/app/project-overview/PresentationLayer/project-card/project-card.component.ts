@@ -31,7 +31,7 @@ export class ProjectCardComponent implements OnInit {
 
   ngOnInit(): void {
     // tslint:disable-next-line:max-line-length
-    this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value;     console.log(this.firstImage); });
+    this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value; });
   }
 
   onStartAnnotating(): void {
