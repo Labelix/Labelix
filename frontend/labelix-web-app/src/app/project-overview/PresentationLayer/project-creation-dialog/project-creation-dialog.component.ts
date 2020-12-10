@@ -23,10 +23,11 @@ export class ProjectCreationDialogComponent implements OnInit {
   aiIds: number[] = [1, 2]; // todo set to Config ID wich is seleted
   images: IRawImage[];
   imageNumber = 5;
-
+  breakpoint: number;
   // tslint:disable-next-line:max-line-length
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>, private projectFacade: ProjectsFacade, private aiModelConfigFacade: AiModelConfigFacade, private imageUploadFacade: ProjectImageUploadFacade) {
     this.imageUploadFacade.rawImages$.subscribe((m) => this.images = m);
+    this.dialogRef.afterClosed().subscribe(() => { this.imageUploadFacade.deleteAllImages(0); console.log('closed'); });
   }
   project: IProject;
   newProjectName: string;
@@ -34,6 +35,7 @@ export class ProjectCreationDialogComponent implements OnInit {
   aiModels = new FormControl();
 
   ngOnInit(): void {
+    this.changeRelation(window.innerWidth);
     this.aiModelConfigFacade.getConfigs();
     this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
       const names: string[] = [];
@@ -64,5 +66,24 @@ export class ProjectCreationDialogComponent implements OnInit {
     console.log(this.newProjectName);
     this.projectFacade.postProject(this.project);
     this.dialogRef.close();
+  }
+  onResize(event) {
+    this.changeRelation(event.target.innerWidth);
+  }
+
+  private changeRelation(width) {
+    if (width >= 3840) {
+      this.breakpoint = 8;
+    } else if (width >= 3000) {
+      this.breakpoint = 6;
+    } else if (width >= 1860) {
+      this.breakpoint = 4;
+    } else if (width >= 1420) {
+      this.breakpoint = 3;
+    } else if (width >= 950) {
+      this.breakpoint = 2;
+    } else {
+      this.breakpoint = 1;
+    }
   }
 }
