@@ -33,6 +33,6 @@ export class GenericApiService<T extends IIdentifiable> {
     }
 
     deleteItem(item: T): Observable<T> {
-      return this.httpClient.delete<T>(`${this.urlRoot}/${item.id}`);
+      return this.httpClient.delete<T>(`${this.urlRoot}/delete-${item.id}`);
     }
 }
