@@ -31,11 +31,12 @@
     </mat-select>
   </mat-form-field>
 </form>
+<div class="image-header">
+  <h2>Bilder</h2>
+  <mat-slider class="maxPics" *ngIf="images.length >= breakpoint" thumbLabel tickInterval="1000" [min]="breakpoint-1" max="{{images.length}}" [step]="breakpoint" value="1" [(ngModel)]="imageNumber"></mat-slider>
+</div>
 
-<h2>Bilder</h2>
-<mat-slider class="maxPics" *ngIf="images.length >= 5" thumbLabel tickInterval="1000" min="5" max="{{images.length}}" step="1" value="1" [(ngModel)]="imageNumber"></mat-slider>
-
-<mat-grid-list cols="6">
+<mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
   <mat-grid-tile>
     <app-image-upload class="image-input"></app-image-upload>
   </mat-grid-tile>
@@ -44,7 +45,3 @@
   </mat-grid-tile>
 </mat-grid-list>
 <button mat-raised-button color="primary" (click)="onOkSubmit()" class="create-button">Create</button>
-
-
-
-

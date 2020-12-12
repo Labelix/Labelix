@@ -72,6 +72,12 @@ export function projectImageUploadReducer(
         rawImages: temp
       };
     }
+    case ActionTypes.DeleteAllImages: {
+      return  {
+        numberOfImages: 0,
+        rawImages: []
+      };
+    }
     default:
       return state;
   }

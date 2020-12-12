@@ -3,7 +3,7 @@ import {ProjectServiceService} from '../CoreLayer/services/project-service.servi
 import {select, Store} from '@ngrx/store';
 import {getAllProjects, getNumberOfExistingProjects, ProjectState} from '../CoreLayer/states/projectState';
 import {IProject} from '../../utility/contracts/IProject';
-import {AddProjectAction, GetProjectsAction} from '../CoreLayer/actions/project.actions';
+import {AddProjectAction, DeleteProjectAction, GetProjectsAction} from '../CoreLayer/actions/project.actions';
 import {Observable} from 'rxjs';
 
 @Injectable()
@@ -23,7 +23,8 @@ export class ProjectsFacade {
   }
 
   postProject(importProject: IProject) {
-    this.projectApi.postItem(importProject).subscribe(value => this.store.dispatch(new AddProjectAction(value)));
+    this.projectApi.postItem(importProject).subscribe();
+    this.store.dispatch(new AddProjectAction(importProject));
   }
 
   getProjectObservableNyId(id: number): Observable<IProject> {
@@ -32,5 +33,8 @@ export class ProjectsFacade {
 
   putProject(data: IProject) {
     this.projectApi.updateProject(data).subscribe(value => console.log(value));
+  }
+  deleteProject(data: IProject){
+    this.projectApi.deleteItem(data).subscribe(() => {this.store.dispatch(new DeleteProjectAction(data)); });
   }
 }

@@ -9,6 +9,7 @@ export enum ActionTypes {
   GetRawImages = '[ProjectImageUpload] Gets RawImages',
   AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
   DeleteRawImage = '[ImageAnnotation] Delete RawImage',
+  DeleteAllImages = '[ImageAnnotation] Delete all RawImage'
 }
 
 export class HowManyLeft implements Action {
@@ -41,9 +42,15 @@ export class AddBase64CodeToIFile implements Action {
   constructor(public payload: { id: number, baseCode: string }) {
   }
 }
+export class DeleteAllImages implements Action{
+  readonly type = ActionTypes.DeleteAllImages;
+  constructor(public payload) {
+  }
+}
 export type ProjectImageUploadActions =
   | HowManyLeft
   | AddRawImage
   | GetRawImages
   | AddBase64CodeToIFile
-  | DeleteRawImage;
+  | DeleteRawImage
+  | DeleteAllImages;
