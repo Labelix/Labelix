@@ -49,9 +49,6 @@ export class GenericApiService<T extends IIdentifiable> {
 
   deleteItem(item: T): Observable<T> {
     this.setHeader();
-    return this.httpClient.delete<T>(`${this.urlRoot}/${item.id}`, {headers: this.headers, responseType: 'json'});
+    return this.httpClient.delete<T>(`${this.urlRoot}/delete-${item.id}`, {headers: this.headers, responseType: 'json'});
   }
-    deleteItem(item: T): Observable<T> {
-      return this.httpClient.delete<T>(`${this.urlRoot}/delete-${item.id}`);
-    }
 }
