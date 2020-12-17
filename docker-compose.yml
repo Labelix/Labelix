@@ -13,6 +13,39 @@ services:
             - postgres_data:/var/lib/postgresql/data
         networks: 
             - labelixNetwork
+    postgres-keycloak:
+        image: postgres
+        volumes:
+            - postgres-keycloak_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=keycloak
+            - POSTGRES_USER=keycloak
+            - POSTGRES_PASSWORD=password
+        networks:
+            - labelixNetwork
+    keycloak:
+        image: jboss/keycloak
+        command: -Dkeycloak.profile.feature.upload_scripts=enabled
+        environment:
+            - DB_VENDOR=POSTGRES
+            - DB_ADDR=postgres-keycloak
+            - DB_PORT=5432
+            - DB_DATABASE=keycloak
+            - DB_USER=keycloak
+            - DB_SCHEMA=public
+            - DB_PASSWORD=password
+            - KEYCLOAK_IMPORT=/tmp/keycloak/realm_v2.json
+            - KEYCLOAK_USER=admin
+            - KEYCLOAK_PASSWORD=admin
+        ports:
+            - 8180:8080
+        volumes:
+            - ./docker/keycloak/:/tmp/keycloak
+            - ./docker/keycloak/material:/opt/jboss/keycloak/themes/material
+        networks:
+            - labelixNetwork
+        depends_on:
+            - postgres-keycloak
 
     webapi:
         build:
@@ -40,7 +73,6 @@ services:
             - labelixNetwork
 volumes: 
     postgres_data:
+    postgres-keycloak_data:
 networks: 
     labelixNetwork:
-
-            
