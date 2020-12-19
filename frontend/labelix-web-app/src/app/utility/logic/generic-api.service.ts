@@ -26,7 +26,6 @@ export class GenericApiService<T extends IIdentifiable> {
     this.setHeader();
     return this.httpClient.get<T[]>(`${this.urlRoot}/all`, {headers: this.headers, responseType: 'json'});
   }
-
   getItemById(id: number): Observable<T> {
     this.setHeader();
     return this.httpClient.get<T>(`${this.urlRoot}/${id}`, {headers: this.headers, responseType: 'json'});

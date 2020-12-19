@@ -24,7 +24,7 @@ services:
         networks:
             - labelixNetwork
     keycloak:
-        image: jboss/keycloak
+        image: jboss/keycloak:11.0.2
         command: -Dkeycloak.profile.feature.upload_scripts=enabled
         environment:
             - DB_VENDOR=POSTGRES
