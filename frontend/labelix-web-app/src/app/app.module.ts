@@ -14,7 +14,8 @@ import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
 import {authConfig} from './auth.config';
-import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
+import {JwksValidationHandler} from 'angular-oauth2-oidc-jwks';
+import {NgxImageZoomModule} from 'ngx-image-zoom';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
     MaterialModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    NgxImageZoomModule,
     OAuthModule.forRoot()
   ],
   providers: [],
@@ -38,8 +40,7 @@ import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 export class AppModule {
   constructor(private oauthService: OAuthService) {
     this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler =
-      new JwksValidationHandler();
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
 

@@ -44,6 +44,8 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
   imgWidth = 1400;
+  imagePosX = 0;
+  imagePosY = 0;
   // specifies if the image can be dragged around on the screen (by pressing ctrl)
   draggable = true;
 
@@ -62,6 +64,9 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   activeRawImage: IRawImage;
   private activeAnnotation: IImageAnnotation;
   private activeProject: IProject;
+  // for zooming
+  repositioning = 40;
+
 
   // specifies the several different modes, when the resizing tool is used
   editingOptions: EditingOption = {
@@ -413,14 +418,27 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   }
 
   // for canvas zooming
-  mouseWheelUpFunc() {
-    this.imgWidth = this.imgWidth + 40;
+  mouseWheelUpFunc(value: MouseEvent) {
+    const xMousePos = value.clientX - this.canvas.nativeElement.getBoundingClientRect().left;
+    const yMousePos = value.clientY - this.canvas.nativeElement.getBoundingClientRect().top;
+
+    this.imgWidth = this.imgWidth + this.repositioning;
+    this.imagePosX = this.imagePosX - (this.repositioning * (xMousePos / this.canvas.nativeElement.getBoundingClientRect().width / 2));
+    this.imagePosY = this.imagePosY - (this.repositioning * (yMousePos / this.canvas.nativeElement.getBoundingClientRect().height / 2));
   }
 
-  mouseWheelDownFunc() {
-    this.imgWidth = this.imgWidth - 40;
+  mouseWheelDownFunc(value: MouseEvent) {
+
+    const xMousePos = value.clientX - this.canvas.nativeElement.getBoundingClientRect().left;
+    const yMousePos = value.clientY - this.canvas.nativeElement.getBoundingClientRect().top;
+
+    this.imgWidth = this.imgWidth - this.repositioning;
+    this.imagePosX = this.imagePosX + (this.repositioning * (xMousePos / this.canvas.nativeElement.getBoundingClientRect().width / 2));
+    this.imagePosY = this.imagePosY + (this.repositioning * (yMousePos / this.canvas.nativeElement.getBoundingClientRect().height / 2));
   }
 }
+
+
 
 export class EditingOption {
   // is for the resizing tool an specifies if a whole annotation can be dragged around the image
