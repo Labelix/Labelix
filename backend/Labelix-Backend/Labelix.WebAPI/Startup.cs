@@ -16,6 +16,7 @@ namespace Labelix.WebAPI
         public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
+			Enviroment = env;
         }
 
         public IConfiguration Configuration { get; }
