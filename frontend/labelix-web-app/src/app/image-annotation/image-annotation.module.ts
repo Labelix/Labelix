@@ -31,6 +31,7 @@ import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label
 import {CocoFormatController} from './CoreLayer/controller/CocoFormatController';
 import { LabelSettingsDialogComponent } from './PresentationLayer/label-settings-dialog/label-settings-dialog.component';
 import {ColorChromeModule} from 'ngx-color/chrome';
+import {NgxImageZoomModule} from 'ngx-image-zoom';
 
 
 @NgModule({
@@ -61,18 +62,19 @@ import {ColorChromeModule} from 'ngx-color/chrome';
   exports: [
     SingleAnnotationExportFormComponent
   ],
-  imports: [
-    CommonModule,
-    ImageAnnotationRoutingModule,
-    DragDropModule,
-    FormsModule,
-    StoreModule.forFeature(featureStateName, rawImageReducers),
-    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annotationStateName, annotationStateReducers),
-    EffectsModule.forFeature([RawImageEffects]),
-    MaterialModule,
-    ColorChromeModule,
-  ]
+    imports: [
+        CommonModule,
+        ImageAnnotationRoutingModule,
+        DragDropModule,
+        FormsModule,
+        StoreModule.forFeature(featureStateName, rawImageReducers),
+        StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+        StoreModule.forFeature(annotationStateName, annotationStateReducers),
+        EffectsModule.forFeature([RawImageEffects]),
+        MaterialModule,
+        ColorChromeModule,
+        NgxImageZoomModule,
+    ]
 })
 export class ImageAnnotationModule {
 }
