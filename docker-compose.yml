@@ -27,7 +27,18 @@ services:
             - ./docker/backendData/Labels:/app/Ressources/Labels
         networks: 
             - labelixNetwork
-
+    
+    frontend:
+        build: 
+            context: ./frontend/labelix-web-app
+            dockerfile: ./Dockerfile
+        ports: 
+            - 4200:80
+        links:
+            - webapi
+        networks: 
+            - labelixNetwork
+              
     reverseproxy:
         build:
             context: ./docker/reverseproxy
