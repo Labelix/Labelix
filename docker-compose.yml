@@ -49,6 +49,7 @@ services:
             - webapi
         networks: 
             - labelixNetwork
+
 volumes: 
     postgres_data:
 networks: 
