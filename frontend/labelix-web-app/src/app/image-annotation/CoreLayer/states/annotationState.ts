@@ -1,7 +1,7 @@
 import {annotationReducer, ReducerAnnotationState} from './reducerAnnotationState';
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 
-export const annoationStateName = 'annotationStateFeature';
+export const annotationStateName = 'annotationStateFeature';
 
 export interface AnnotationState {
   annotation: ReducerAnnotationState;
@@ -12,7 +12,7 @@ export const annotationStateReducers: ActionReducerMap<AnnotationState> = {
 };
 
 export const getAnnotationFeatureState = createFeatureSelector<AnnotationState>(
-  annoationStateName
+  annotationStateName
 );
 
 // Selectors to subscribe to
@@ -44,5 +44,10 @@ export const getNextAnnotationId = createSelector(
 
 export const getActivePolygonAnnotation = createSelector(
   getAnnotationFeatureState,
-  (state: AnnotationState) => state.annotation.activePolygonAnnotation
+  (state: AnnotationState) => state.annotation.activeAnnotation
+);
+
+export const getActiveProject = createSelector(
+  getAnnotationFeatureState,
+  (state: AnnotationState) => state.annotation.activeProject
 );

@@ -1,10 +1,11 @@
-.image-card{
+.image-card {
   text-align: center;
-
   margin: 0 auto;
 }
 
-* {box-sizing: border-box;}
+* {
+  box-sizing: border-box;
+}
 
 .img-zoom-container {
   position: relative;
@@ -23,4 +24,32 @@
   /*set the size of the result div:*/
   width: 300px;
   height: 300px;
+}
+
+.example-box {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 4px;
+  margin-top: 1em;
+  margin-left: 5em;
+  position: relative;
+}
+
+.example-box:active {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+  0 8px 10px 1px rgba(0, 0, 0, 0.14),
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.example-handle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #ccc;
+  cursor: move;
+  width: 24px;
+  height: 24px;
 }

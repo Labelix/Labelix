@@ -1,17 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {GenericApiService} from '../../../utility/logic/generic-api.service';
 import {IImage} from '../../../utility/contracts/IImage';
 import {HttpClient} from '@angular/common/http';
-import {IFile} from '../../../utility/contracts/IFile';
-import {Observable} from 'rxjs';
+import {OAuthService} from 'angular-oauth2-oidc';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ImageApiService extends GenericApiService<IImage>{
+export class ImageApiService extends GenericApiService<IImage> {
 
-  constructor(protected  httpClient: HttpClient) {
-    super(httpClient);
+  constructor(protected  httpClient: HttpClient, protected oauthService: OAuthService) {
+    super(httpClient, oauthService);
     this.urlRoot = 'http://localhost:3400/images';
   }
 

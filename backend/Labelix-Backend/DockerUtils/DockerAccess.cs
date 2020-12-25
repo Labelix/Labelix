@@ -11,10 +11,13 @@ namespace DockerAccess
 {
     public static partial class Docker
     {
-        public async static Task<int> RunAsync(string image, string options = "", string command = "", string arguments = "") 
+        public static async Task<int> RunAsync(string image, string options = "", string command = "", string arguments = "") 
         {
-            var res =  await ProcessHelper.RunProcessAsync("docker", $"run {options} {image} {command} {arguments}");
-
+            var args = $"{options} {image} {command} {arguments}";
+            var res =  await ProcessHelper.RunProcessAsync("docker", "run " + args);
+            
+            if(res.Item1 != 0) throw new DockerAccessException(res.Item1, res.Item3);
+            
             return res.Item1;
         }
 
@@ -23,7 +26,7 @@ namespace DockerAccess
             return RunAsync(image, options, command, arguments).Result;
         }
 
-        public async static Task<(int, string)> PsAsync()
+        public static async Task<(int, string)> PsAsync()
         {
             var (err, stdout, stderr) = await ProcessHelper.RunProcessAsync("docker", $"ps");
             return (err, await stdout.ReadToEndAsync());

@@ -1,6 +1,9 @@
 import {IIdentifiable} from './IIdentifiable';
 
 export interface IImage extends IIdentifiable{
-  imagePath: string;
-  labeledPath: string;
+  Data: string;
+  imageId: number;
+  projectId: number;
+  format: string;
+  name: string;
 }

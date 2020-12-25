@@ -3,23 +3,21 @@ using Labelix.Transfer.Modules;
 using Labelix.Transfer.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Labelix.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class Base64Controller : ControllerBase
+    public static class Base64Controller
     {
-        public ImageController imageController = new ImageController();
-        public ProjectController projectController = new ProjectController();
-
-        [HttpPost("UploadImage")]
-        [DisableRequestSizeLimit]
-        public async Task<IActionResult> ImageUploadAsync(Data data)
+        
+        public static async Task<Image> ImageUploadAsync(Data data)
         {
             try
             {
+                ProjectController projectController = new ProjectController();
+                ImageController imageController = new ImageController();
                 data = GetBase64OutOfXML(data);
                 var bytes = data.Base64.Base64ToByte();
                 Project project = await projectController.GetAsyncOnlyProject(data.ProjectId);
@@ -40,34 +38,31 @@ namespace Labelix.WebAPI.Controllers
                 {
                     image.ImagePath = img_path;
                     image.ProjectId = data.ProjectId;
-                    await imageController.PostAsync(image);
                 }
-
+                
                 //the image is saved
-                System.IO.File.WriteAllBytes(img_path, bytes);
-                return Ok();
+                await System.IO.File.WriteAllBytesAsync(img_path, bytes);
+                await imageController.SetImage(image);
+                return image;
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
-                return BadRequest();
+                return null;
             }
         }
 
-        [HttpPost("MultipleImageUpload")]
-        [DisableRequestSizeLimit]
-        public async Task<IActionResult> MultipleImageUpload(MultipleData datas)
+        public static async Task MultipleImageUpload(MultipleData datas)
         {
             foreach (var item in datas.Data)
             {
                 await ImageUploadAsync(item);
             }
 
-            return Ok();
         }
-
+        
         //Reads Base64Code and Image Format out of XML
-        private Data GetBase64OutOfXML(Data data)
+        private static Data GetBase64OutOfXML(Data data)
         {
             string[] text = data.Base64.Split(';');
             data.Base64 = text[1].Split(',')[1];
@@ -75,11 +70,9 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
-
-
-        [HttpPost("UploadCoco")]
-        public async Task<IActionResult> CocoUploadAsync(Data data)
+        public static async Task<string> CocoUploadAsync(Data data)
         {
+            ProjectController projectController = new ProjectController();
             try
             {
                 Project project = await projectController.GetAsync(data.ProjectId);
@@ -103,19 +96,25 @@ namespace Labelix.WebAPI.Controllers
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
                 string label_path = $"{dir_path}/{data.Name}.json";
-                if (!System.IO.File.Exists(label_path))
-                {
-                    project.LabeledPath = label_path;
-                    await projectController.PutAsync(project);
-                }
                 System.IO.File.WriteAllText(label_path, data.Base64);
-                return Ok();
+                return label_path;
             }
             catch (Exception er)
             {
                 Console.WriteLine(er.ToString());
-                return BadRequest();
+                return "";
             }
+        }
+
+        public static async Task<int> RemoveImageAsync(Data data)
+        {
+            ProjectController projectController = new ProjectController();
+            ImageController imageController = new ImageController();
+            Project project = await projectController.GetAsync(data.ProjectId);
+            string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
+            imageController.DeleteAsync(data.Id);
+            System.IO.File.Delete(img_path);
+            return 200;
         }
     }
 

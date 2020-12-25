@@ -18,7 +18,7 @@ namespace Labelix.WebAPI.Controllers
         {
             return await GetModelByIdAsync(id);
         }
-        [HttpGet("Picture-{id}")]
+        [HttpGet("picture-{id}")]
         public async Task<Data> GetAsyncPicture(int id)
         {
             Model image = await GetModelByIdAsync(id);
@@ -27,6 +27,7 @@ namespace Labelix.WebAPI.Controllers
             string[] pathParts = image.ImagePath.Split('/');
             Data data = new Data
             {
+                Id = id,
                 Base64 = base64,
                 Name = pathParts[^1],
                 ProjectId = image.ProjectId
@@ -40,6 +41,24 @@ namespace Labelix.WebAPI.Controllers
         {
             data.Base64 = $"data:image/{data.Format};base64,{data.Base64}";
             return data;
+        }
+
+        [HttpGet("FirstOfProject-{projectId}")]
+        public async Task<Data> FirstOfProject(int projectId)
+        {
+            Model image = (await GetAllAsync()).FirstOrDefault(e => e.ProjectId == projectId);
+            byte[] bytes = System.IO.File.ReadAllBytes(image?.ImagePath);
+            string base64 = bytes.ImageToBase64();
+            string[] pathParts = image?.ImagePath.Split('/');
+            Data data = new Data
+            {
+                Id = image.Id,
+                Base64 = base64,
+                Name = pathParts[^1],
+                ProjectId = image.ProjectId
+            };
+            data.Format = data.Name.Split('.')[1];
+            return GetXMLOfBase(data);
         }
 
         [HttpGet("all")]
@@ -59,9 +78,17 @@ namespace Labelix.WebAPI.Controllers
             return entities.Where(i => i.ProjectId == projectId);
         }
         [HttpPost("create")]
-        public Task<Model> PostAsync(Model model)
+        public async Task<IActionResult> PostAsync(Data data)
         {
-            return InsertModelAsync(model);
+            await Base64Controller.ImageUploadAsync(data);
+
+            return Ok();
+        }
+
+        public async Task<IActionResult> SetImage(Model image)
+        {
+            await InsertModelAsync(image);
+            return Ok();
         }
         [HttpPut("update")]
         public Task<Model> PutAsync(Model model)
@@ -72,6 +99,18 @@ namespace Labelix.WebAPI.Controllers
         public Task DeleteAsync(int id)
         {
             return DeleteModelAsync(id);
+        }
+
+        public async Task<IActionResult> DeleteByProjectId(int projectId)
+        {
+            IEnumerable<Model> entities = await GetByProjectId(projectId);
+            foreach (var img in entities)
+            {
+                System.IO.File.Delete(img.ImagePath);
+                await DeleteAsync(img.Id);
+            }
+
+            return Ok();
         }
     }
 }

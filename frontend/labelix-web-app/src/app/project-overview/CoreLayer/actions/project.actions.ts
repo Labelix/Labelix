@@ -3,13 +3,14 @@ import {IProject} from '../../../utility/contracts/IProject';
 
 export enum ActionTypes {
   AddProject = '[Project] Add Projects',
-  DeleteProject = '[Project] Delete Projects'
+  DeleteProject = '[Project] Delete Projects',
+  GetProjects = '[Project] Get Projects'
 }
 
 export class AddProjectAction implements Action {
   readonly type = ActionTypes.AddProject;
 
-  constructor(public payload: IProject[]) {
+  constructor(public payload: IProject) {
   }
 }
 export class DeleteProjectAction implements Action {
@@ -18,7 +19,14 @@ export class DeleteProjectAction implements Action {
   constructor(public payload: IProject) {
   }
 }
+export class GetProjectsAction implements Action {
+  readonly type = ActionTypes.GetProjects;
+
+  constructor(public payload: IProject[]) {
+  }
+}
 
 export type ProjectActions =
   | AddProjectAction
-  | DeleteProjectAction;
+  | DeleteProjectAction
+  | GetProjectsAction;

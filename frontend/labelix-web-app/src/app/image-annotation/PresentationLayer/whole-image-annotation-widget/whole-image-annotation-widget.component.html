@@ -2,12 +2,27 @@
 
 <mat-list>
   <div *ngFor="let item of currentImageAnnotations">
-    <mat-list-item *ngIf="item.categoryLabel != undefined">
+    <mat-list-item
+      *ngIf="item.categoryLabel !== undefined && item.image !== undefined && activeImage !== undefined && item.image.id === activeImage.id">
       <mat-icon mat-list-icon
                 [ngStyle]="{backgroundColor: item.categoryLabel.colorCode}">{{ getRightIcon(item.annotationMode) }}
       </mat-icon>
-      <div mat-line>{{item.categoryLabel.name}}</div>
-      <div><button mat-icon-button><mat-icon (click)="onDeleteImageAnnotation(item)">clear</mat-icon></button></div>
+      <div mat-line>{{item.id}}: {{item.categoryLabel.name}}</div>
+      <div *ngIf="item.isVisible === true">
+        <button mat-icon-button>
+          <mat-icon (click)="onChangeVisibility(item)">visibility_off</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="item.isVisible === false">
+        <button mat-icon-button>
+          <mat-icon (click)="onChangeVisibility(item)">visibility</mat-icon>
+        </button>
+      </div>
+      <div>
+        <button mat-icon-button>
+          <mat-icon (click)="onDeleteImageAnnotation(item)">clear</mat-icon>
+        </button>
+      </div>
     </mat-list-item>
   </div>
 </mat-list>

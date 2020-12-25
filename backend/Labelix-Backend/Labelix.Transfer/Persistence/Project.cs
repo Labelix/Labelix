@@ -8,17 +8,17 @@ namespace Labelix.Transfer.Persistence
 {
     public class Project : TransferObject, IProject
     {
-        [JsonPropertyName("Name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonPropertyName("Description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
-        [JsonPropertyName("CreationDate")]
+        [JsonPropertyName("creationDate")]
         public DateTime CreationDate { get; set; }
-        [JsonPropertyName("FinishedAnnotation")]
+        [JsonPropertyName("finishedAnnotation")]
         public bool FinishedAnnotation { get; set; }
-        [JsonPropertyName("LabeledPath")]
+        [JsonPropertyName("label")]
         public string LabeledPath { get; set; } = "";
-        [JsonPropertyName("Images")]
+        [JsonPropertyName("images")]
         public List<Data> Images { get; set; }
 
         public void CopyProperties(IProject other)

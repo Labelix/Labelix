@@ -1,7 +1,7 @@
 import {IIdentifiable} from './IIdentifiable';
 import {AnnotaionMode} from '../../image-annotation/CoreLayer/annotaionModeEnum';
 import {ICategory} from './ICategory';
-import {IFile} from './IFile';
+import {IRawImage} from './IRawImage';
 import {IBoundingBox} from './IBoundingBox';
 
 export interface IImageAnnotation extends IIdentifiable{
@@ -9,7 +9,8 @@ export interface IImageAnnotation extends IIdentifiable{
   categoryLabel: ICategory;
   isCrowd: boolean;
   segmentations: number[];
-  image: IFile;
+  image: IRawImage;
   area: number;
   boundingBox: IBoundingBox;
+  isVisible: boolean;
 }
