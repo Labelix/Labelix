@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Labelix.WebApi.Controllers
 {
-    public abstract class GenericController<I, M> : ControllerBase
+    public abstract class GenericController<I, M> : Controller
         where I : Contracts.IIdentifiable
         where M : Transfer.TransferObject, I, Contracts.ICopyable<I>, new()
     {

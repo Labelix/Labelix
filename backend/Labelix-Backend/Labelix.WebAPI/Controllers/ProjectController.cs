@@ -18,9 +18,7 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
-
-        
-
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
         {
@@ -41,12 +39,12 @@ namespace Labelix.WebAPI.Controllers
             return GetModelByIdAsync(id);
         }
 
-        [Authorize]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {
             return GetModelsAsync();
         }
+
         [HttpGet("count")]
         public Task<int> GetCountAsync()
         {
