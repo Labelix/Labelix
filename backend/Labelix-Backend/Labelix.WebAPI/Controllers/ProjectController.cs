@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonBase.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Contract = Labelix.Contracts.Persistence.IProject;
 using Model = Labelix.Transfer.Persistence.Project;
@@ -40,6 +41,7 @@ namespace Labelix.WebAPI.Controllers
             return GetModelByIdAsync(id);
         }
 
+        [Authorize]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {

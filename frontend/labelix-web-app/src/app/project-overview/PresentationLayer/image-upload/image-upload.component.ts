@@ -25,7 +25,6 @@ export class ImageUploadComponent implements OnInit {
         image.onload = () => {
           // tslint:disable-next-line:max-line-length
           this.rawImageFacade.postRawImage({id: -1, file: item, height: image.height, width: image.width, base64Url: image.src, name: item.name});
-          console.log(this.rawImages.length);
         };
       });
       reader.readAsDataURL(item);

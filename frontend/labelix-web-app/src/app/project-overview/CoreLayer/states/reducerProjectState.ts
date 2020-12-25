@@ -18,6 +18,7 @@ export function projectReducer(
 
       state.projects.forEach(value => tempActions.push(value));
       tempActions.push(action.payload);
+      console.log(action.payload); // todo remove
       return {
         projects: tempActions
       };

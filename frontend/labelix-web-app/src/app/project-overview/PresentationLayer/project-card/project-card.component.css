@@ -1,51 +1,30 @@
-.example-card {
+.card {
   width: 30em;
   max-width: 600px;
-  height: 12em;
+  height: 19em;
   cursor: pointer;
   user-select: none;
 }
-
-.icon-footer {
-  margin-left: 1em;
-  margin-top: 3em;
-  justify-content: right;
+.img{
+  max-width: 600px;
+  height: 15em;
+  object-fit: fill;
 }
-
 .example-header-image {
-  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-image: url('profile.png');
   background-size: cover;
 }
-
-.check-icon {
-  color: lightgreen;
-  font-size: 28pt;
-  margin-left: 7.5em;
-}
-
-.not-finished-icon {
-  color: red;
-  font-size: 28pt;
-  margin-left: 7.5em;
-}
-
-.content {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-button {
-  margin: 5%;
-  width: 30%;
-  right: 0;
-  bottom: 0;
+.wrap .option{
   position: absolute;
+  width: 2em;
+  height: 2em;
+  right: 0.02em;
+  top: 0.1em;
+}
+.wrap{
+  margin-bottom: 0.5em;
+  position: relative;
+}
+.wrap .option .moreIcon{
+  margin-bottom: 0.5em;
 }
