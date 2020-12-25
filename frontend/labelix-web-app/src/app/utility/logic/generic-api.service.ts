@@ -26,7 +26,6 @@ export class GenericApiService<T extends IIdentifiable> {
     this.setHeader();
     return this.httpClient.get<T[]>(`${this.urlRoot}/all`, {headers: this.headers, responseType: 'json'});
   }
-
   getItemById(id: number): Observable<T> {
     this.setHeader();
     return this.httpClient.get<T>(`${this.urlRoot}/${id}`, {headers: this.headers, responseType: 'json'});
@@ -49,6 +48,6 @@ export class GenericApiService<T extends IIdentifiable> {
 
   deleteItem(item: T): Observable<T> {
     this.setHeader();
-    return this.httpClient.delete<T>(`${this.urlRoot}/${item.id}`, {headers: this.headers, responseType: 'json'});
+    return this.httpClient.delete<T>(`${this.urlRoot}/delete-${item.id}`, {headers: this.headers, responseType: 'json'});
   }
 }

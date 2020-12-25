@@ -1,6 +1,6 @@
 
 <div *ngIf="projects != undefined">
-  <mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
+  <mat-grid-list [cols]="breakpoint" rowHeight="4:3" (window:resize)="onResize($event)">
     <div class="cardOfList">
       <mat-grid-tile *ngIf="1 === 1"> <!--Wenn Usermanagment Anzeige nur bei admin-->
         <app-add-project-card></app-add-project-card>

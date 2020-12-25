@@ -9,8 +9,11 @@
   margin-bottom: 2em;
 }
 
-.maxPics{
-  margin-left: 90%;
+.image-header .maxPics{
+  margin-left: 88%;
+  width: 10%;
+  position: absolute;
+  top: 0px;
 }
 
 .example-additional-selection {
@@ -19,4 +22,9 @@
 }
 .image-input{
   align-content: center;
+}
+
+.image-header{
+  margin-top: 2em;
+  position: relative;
 }
