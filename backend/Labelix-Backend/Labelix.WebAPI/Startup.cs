@@ -22,9 +22,12 @@ namespace Labelix.WebAPI
         public IConfiguration Configuration { get; }
         public IHostEnvironment Enviroment { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -33,6 +36,8 @@ namespace Labelix.WebAPI
             {
                 o.Authority = Configuration["Jwt:Authority"];
                 o.Audience = Configuration["Jwt:Audience"];
+                o.RequireHttpsMetadata = false;
+
                 o.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = c =>
@@ -45,11 +50,11 @@ namespace Labelix.WebAPI
                         {
                             return c.Response.WriteAsync(c.Exception.ToString());
                         }
-
                         return c.Response.WriteAsync("An error occured processing your authentification");
                     }
                 };
             });
+
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
