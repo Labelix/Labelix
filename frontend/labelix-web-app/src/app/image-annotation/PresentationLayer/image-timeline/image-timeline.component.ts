@@ -18,7 +18,7 @@ export class ImageTimelineComponent implements OnInit {
     this.rawImageFacade.files$.subscribe(value => {
       this.listOfRawImages = value;
       for (const item of this.listOfRawImages) {
-        if (item.base64Url === undefined) {
+        if (item.base64Url === undefined || item.base64Url === "") {
           this.getBase64(item);
         }
       }
