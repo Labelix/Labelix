@@ -43,6 +43,24 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
+        [HttpGet("FirstOfProject-{projectId}")]
+        public async Task<Data> FirstOfProject(int projectId)
+        {
+            Model image = (await GetAllAsync()).FirstOrDefault(e => e.ProjectId == projectId);
+            byte[] bytes = System.IO.File.ReadAllBytes(image?.ImagePath);
+            string base64 = bytes.ImageToBase64();
+            string[] pathParts = image?.ImagePath.Split('/');
+            Data data = new Data
+            {
+                Id = image.Id,
+                Base64 = base64,
+                Name = pathParts[^1],
+                ProjectId = image.ProjectId
+            };
+            data.Format = data.Name.Split('.')[1];
+            return GetXMLOfBase(data);
+        }
+
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {
@@ -69,7 +87,7 @@ namespace Labelix.WebAPI.Controllers
 
         public async Task<IActionResult> SetImage(Model image)
         {
-            InsertModelAsync(image);
+            await InsertModelAsync(image);
             return Ok();
         }
         [HttpPut("update")]

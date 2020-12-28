@@ -24,6 +24,8 @@ import { ProjectConclusionDialogComponent } from '../image-annotation/Presentati
 import {ImageAnnotationModule} from '../image-annotation/image-annotation.module';
 import { ImageUploadComponent } from './PresentationLayer/image-upload/image-upload.component';
 import {projectImageUploadReducers, projectImageUploadStateName} from './CoreLayer/states/projectImageUploadState';
+import {ImageTimelineComponent} from './PresentationLayer/image-timeline/image-timeline.component';
+import {ImageTimelineSingleImageComponent} from './PresentationLayer/image-timeline-single-image/image-timeline-single-image.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import {projectImageUploadReducers, projectImageUploadStateName} from './CoreLay
     ProjectCreationDialogComponent,
     ProjectConclusionDialogComponent,
     ImageUploadComponent,
+    ImageTimelineComponent,
+    ImageTimelineSingleImageComponent,
   ],
   imports: [
     CommonModule,

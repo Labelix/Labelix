@@ -3,7 +3,6 @@
   height: 200px;
   padding: 2rem;
   text-align: center;
-  border: dashed 1px #979797;
   position: relative;
   margin: 2em auto;
 }
@@ -17,18 +16,22 @@ input {
   top: 0;
   left: 0;
 }
-
+.image{
+  margin-top: 2%;
+  width: 50%;
+  height: 50%;
+}
 label {
   color: white;
-  width: 183px;
-  height: 44px;
+  width: 60%;
+  height: 20%;
   border-radius: 21.5px;
   padding: 8px 16px;
   background-color: #3f51b5;
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 80%;
   font-weight: 600;
   color: #38424c;
 }

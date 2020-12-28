@@ -6,7 +6,7 @@ using Labelix.Contracts.Persistence;
 
 namespace Labelix.Transfer.Modules
 {
-    public class ProjectInsert : TransferObject,IProject
+    public class ProjectInsert : TransferObject, IProject
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
