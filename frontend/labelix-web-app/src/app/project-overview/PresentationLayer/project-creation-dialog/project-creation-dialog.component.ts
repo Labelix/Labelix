@@ -48,7 +48,7 @@ export class ProjectCreationDialogComponent implements OnInit {
   onOkSubmit() {
     const imageData: IImage[] = [];
     for (const i of this.images){
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
+      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, height: -1, width: -1});
     }
     this.project = {
       id: 0,
