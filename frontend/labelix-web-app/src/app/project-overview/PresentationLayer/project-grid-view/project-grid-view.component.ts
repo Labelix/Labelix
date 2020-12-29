@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IProject} from '../../../utility/contracts/IProject';
 import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
+import {OAuthService} from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-project-grid-view',
@@ -13,9 +14,30 @@ export class ProjectGridViewComponent implements OnInit {
 
   breakpoint: number;
 
-  constructor(private projectsFacade: ProjectsFacade) {
+  constructor(private projectsFacade: ProjectsFacade, private oauthService: OAuthService) {
     this.projectsFacade.projects$.subscribe((m) => this.projects = m);
   }
+
+  // keycloak test
+
+  login() {
+    // this.oauthService.initImplicitFlow();
+  }
+
+  logout() {
+    this.oauthService.logOut();
+  }
+
+  get givenName() {
+    const claims = this.oauthService.getIdentityClaims();
+    if (!claims) {
+      return null;
+    }
+    // @ts-ignore
+    return claims.given_name;
+  }
+
+  // keycloak test
 
   ngOnInit(): void {
     this.changeRelation(window.innerWidth);

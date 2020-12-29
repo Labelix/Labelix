@@ -5,7 +5,11 @@ import {AddConfigs, GetConfigNames} from './aiModelConfig.actions';
 
 export enum ActionTypes {
   HowManyLeft = '[ProjectImageUpload] Gives Back how many Images need to be uploaded',
-  AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State'
+  AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State',
+  GetRawImages = '[ProjectImageUpload] Gets RawImages',
+  AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
+  DeleteRawImage = '[ImageAnnotation] Delete RawImage',
+  DeleteAllImages = '[ImageAnnotation] Delete all RawImage'
 }
 
 export class HowManyLeft implements Action {
@@ -14,12 +18,39 @@ export class HowManyLeft implements Action {
   constructor(public payload: number) {
   }
 }
+export class GetRawImages implements Action{
+  readonly type = ActionTypes.GetRawImages;
+
+  constructor(public payload: IRawImage[]) {
+  }
+}
+export class DeleteRawImage implements Action{
+  readonly type = ActionTypes.DeleteRawImage;
+
+  constructor(public payload: IRawImage) {
+  }
+}
 export class AddRawImage implements Action {
   readonly type = ActionTypes.AddRawImage;
 
   constructor(public payload: IRawImage) {
   }
 }
+export class AddBase64CodeToIFile implements Action {
+  readonly type = ActionTypes.AddBase64CodeToIFile;
+
+  constructor(public payload: { id: number, baseCode: string }) {
+  }
+}
+export class DeleteAllImages implements Action{
+  readonly type = ActionTypes.DeleteAllImages;
+  constructor(public payload) {
+  }
+}
 export type ProjectImageUploadActions =
   | HowManyLeft
-  | AddRawImage;
+  | AddRawImage
+  | GetRawImages
+  | AddBase64CodeToIFile
+  | DeleteRawImage
+  | DeleteAllImages;

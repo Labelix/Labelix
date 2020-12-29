@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
+import {BitmaskCocoConverter} from '../../../utility/logic/bitmask-logic/bitmask-coco-converter';
 
 @Component({
   selector: 'app-image-timeline-single-image',

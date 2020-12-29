@@ -5,6 +5,9 @@ import {AnnotationFacade} from '../../AbstractionLayer/AnnotationFacade';
 import {AnnotaionMode} from '../../CoreLayer/annotaionModeEnum';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ImageAnnotationHelper} from '../../CoreLayer/helper/image-annotation-helper';
+import {SingleAnnotationExportFormComponent} from '../single-annotation-export-form/single-annotation-export-form.component';
+import {LabelSettingsDialogComponent} from '../label-settings-dialog/label-settings-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-label-widget',
@@ -27,7 +30,7 @@ export class LabelWidgetComponent implements OnInit {
 
   constructor(private facade: LabelCategoryFacade,
               private annotationFacade: AnnotationFacade,
-              private snackBar: MatSnackBar) {
+              public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -42,16 +45,8 @@ export class LabelWidgetComponent implements OnInit {
     this.currentlyAdding = true;
   }
 
-  onSave() {
-    this.facade.addLabelCategory({
-      name: this.newLabelName,
-      supercategory: this.newSupercategory,
-      id: this.nextLabelId,
-      colorCode: ImageAnnotationHelper.getRandomColor()
-    });
-    this.newLabelName = '';
-    this.newSupercategory = '';
-    this.currentlyAdding = false;
+  onSettings() {
+    this.dialog.open(LabelSettingsDialogComponent);
   }
 
   onLabelClick(item: ICategory) {

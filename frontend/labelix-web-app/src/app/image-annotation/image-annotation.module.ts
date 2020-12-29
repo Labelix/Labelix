@@ -29,6 +29,10 @@ import { ImageTimelineSingleImageComponent } from './PresentationLayer/image-tim
 import {ProjectsFacade} from '../project-overview/AbstractionLayer/ProjectsFacade';
 import { SelectedLabelWidgetComponent } from './PresentationLayer/selected-label-widget/selected-label-widget.component';
 import {CocoFormatController} from './CoreLayer/controller/CocoFormatController';
+import { LabelSettingsDialogComponent } from './PresentationLayer/label-settings-dialog/label-settings-dialog.component';
+import {ColorChromeModule} from 'ngx-color/chrome';
+import {NgxImageZoomModule} from 'ngx-image-zoom';
+
 
 @NgModule({
   declarations: [
@@ -44,7 +48,8 @@ import {CocoFormatController} from './CoreLayer/controller/CocoFormatController'
     DeleteImageAnnotationDialogComponent,
     ImageTimelineComponent,
     ImageTimelineSingleImageComponent,
-    SelectedLabelWidgetComponent
+    SelectedLabelWidgetComponent,
+    LabelSettingsDialogComponent,
   ],
   providers: [
     RawImageFacade,
@@ -57,17 +62,19 @@ import {CocoFormatController} from './CoreLayer/controller/CocoFormatController'
   exports: [
     SingleAnnotationExportFormComponent
   ],
-  imports: [
-    CommonModule,
-    ImageAnnotationRoutingModule,
-    DragDropModule,
-    FormsModule,
-    StoreModule.forFeature(featureStateName, rawImageReducers),
-    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annotationStateName, annotationStateReducers),
-    EffectsModule.forFeature([RawImageEffects]),
-    MaterialModule
-  ]
+    imports: [
+        CommonModule,
+        ImageAnnotationRoutingModule,
+        DragDropModule,
+        FormsModule,
+        StoreModule.forFeature(featureStateName, rawImageReducers),
+        StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+        StoreModule.forFeature(annotationStateName, annotationStateReducers),
+        EffectsModule.forFeature([RawImageEffects]),
+        MaterialModule,
+        ColorChromeModule,
+        NgxImageZoomModule,
+    ]
 })
 export class ImageAnnotationModule {
 }

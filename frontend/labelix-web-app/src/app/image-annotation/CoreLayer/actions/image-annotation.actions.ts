@@ -27,7 +27,10 @@ export enum ActionTypes {
   ResetAnnotationState = '[ImageAnnotation] ResetAnnotationState',
   ResetCategoryLabelState = '[ImageAnnotation] ResetCategoryLabelState',
   ResetActiveImageAnnotation = '[ImageAnnotation] Reset Active Image Annotation to undefined',
-  ChangeVisibilityOfImageAnnotation = '[ImageAnnotation] Change visibility'
+  ChangeVisibilityOfImageAnnotation = '[ImageAnnotation] Change visibility',
+  UpdateCategory = '[ImageAnnotation] Update Category',
+  DeleteCategory = '[ImageAnnotation] Delete Category',
+  UpdateCategoryOnAnnotations = '[ImageAnnotation] Update Category on Image Annotations'
 }
 
 export class AddRawImagesAction implements Action {
@@ -165,6 +168,27 @@ export class ChangeVisibilityOfImageAnnotation implements Action {
   }
 }
 
+export class UpdateCategory implements Action {
+  readonly type = ActionTypes.UpdateCategory
+
+  constructor(public payload: ICategory) {
+  }
+}
+
+export class DeleteCategory implements Action {
+  readonly type = ActionTypes.DeleteCategory
+
+  constructor(public payload: number) {
+  }
+}
+
+export class UpdateCategoryOInAnnotations implements Action {
+  readonly type = ActionTypes.UpdateCategoryOnAnnotations;
+
+  constructor(public payload: ICategory) {
+  }
+}
+
 
 export type ImageAnnotationActions =
   | AddRawImagesAction
@@ -187,4 +211,7 @@ export type ImageAnnotationActions =
   | ResetAnnotationState
   | ResetCategoryLabelState
   | ResetActiveImageAnnotation
-  | ChangeVisibilityOfImageAnnotation;
+  | ChangeVisibilityOfImageAnnotation
+  | UpdateCategory
+  | DeleteCategory
+  | UpdateCategoryOInAnnotations;

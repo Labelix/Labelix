@@ -1,0 +1,19 @@
+.mat-selection-list{
+  height: 100%;
+  width: 100%;
+}
+
+.mat-list-option{
+  height: 3em;
+}
+
+.settings_body{
+  height: 100%;
+}
+mat-slider {
+  width: 300px;
+}
+.card {
+  width: 348px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}

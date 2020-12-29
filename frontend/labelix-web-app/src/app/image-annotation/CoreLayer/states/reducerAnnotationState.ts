@@ -311,6 +311,37 @@ export function annotationReducer(state = initialAnnotationState,
         activeProject: state.activeProject
       };
     }
+    case ActionTypes.UpdateCategoryOnAnnotations: {
+      const tmpAnnotations: IImageAnnotation[] = [];
+
+      state.currentImageAnnotations.forEach(value => {
+        if (value.categoryLabel.id === action.payload.id) {
+          tmpAnnotations.push({
+            categoryLabel: action.payload,
+            id: value.id,
+            isVisible: value.isVisible,
+            annotationMode: value.annotationMode,
+            boundingBox: value.boundingBox,
+            isCrowd: value.isCrowd,
+            area: value.area,
+            segmentations: value.segmentations,
+            image: value.image
+          });
+        } else {
+          tmpAnnotations.push(value);
+        }
+      });
+
+      return {
+        activeLabel: state.activeLabel,
+        currentImageAnnotations: tmpAnnotations,
+        currentAnnotatingImage: state.currentAnnotatingImage,
+        currentAnnotationMode: state.currentAnnotationMode,
+        annotationCount: state.annotationCount,
+        activeAnnotation: state.activeAnnotation,
+        activeProject: state.activeProject
+      };
+    }
     default:
       return state;
   }

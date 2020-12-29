@@ -3,12 +3,10 @@ import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.a
 
 export interface ReducerLabelCategoryState {
   labelCategories: ICategory[];
-  labelCount: number;
 }
 
 export const initialLabelCategoryState: ReducerLabelCategoryState = {
   labelCategories: [],
-  labelCount: 1
 };
 
 export function labelCategoryReducer(state = initialLabelCategoryState, action: ImageAnnotationActions): ReducerLabelCategoryState {
@@ -26,16 +24,38 @@ export function labelCategoryReducer(state = initialLabelCategoryState, action: 
       if (!existsYet) {
         tempLabels.push(action.payload);
       }
-      const newLabelCount = state.labelCount + 1;
       return {
         labelCategories: tempLabels,
-        labelCount: newLabelCount
       };
     }
     case ActionTypes.ResetCategoryLabelState: {
       return {
         labelCategories: [],
-        labelCount: 1
+      };
+    }
+    case ActionTypes.UpdateCategory: {
+      const tempLabels: ICategory[] = [];
+
+      for (const current of state.labelCategories) {
+        if (current.id === action.payload.id) {
+          tempLabels.push(action.payload);
+        } else {
+          tempLabels.push(current);
+        }
+      }
+      return {
+        labelCategories: tempLabels,
+      };
+    }
+    case ActionTypes.DeleteCategory: {
+      const tempLabels: ICategory[] = [];
+      for (const current of state.labelCategories) {
+        if (current.id !== action.payload) {
+          tempLabels.push(current);
+        }
+      }
+      return {
+        labelCategories: tempLabels,
       };
     }
     default:
