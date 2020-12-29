@@ -1,16 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {ProjectState} from '../../CoreLayer/states/projectState';
-import {AddProjectAction} from '../../CoreLayer/actions/project.actions';
+import {Component, OnInit} from '@angular/core';
 import {IProject} from '../../../utility/contracts/IProject';
-import {ProjectServiceService} from '../../CoreLayer/services/project-service.service';
 import {ProjectsFacade} from '../../AbstractionLayer/ProjectsFacade';
 import {FormControl} from '@angular/forms';
 import {AiModelConfigFacade} from '../../AbstractionLayer/AiModelConfigFacade';
 import {IRawImage} from '../../../utility/contracts/IRawImage';
 import {ProjectImageUploadFacade} from '../../AbstractionLayer/ProjectImageUploadFacade';
 import {IImage} from '../../../utility/contracts/IImage';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-creation-dialog',
