@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
-using Microsoft.AspNetCore.Routing;
-using PathHelper = CommonBase.Helpers.PathHelper;
-using Labelix.Transfer.Modules;
-using CommonBase.Extensions;
-using DockerAccess;
-using System.Web.Http.Results;
-using System;
-using System.Buffers.Text;
 using System.Linq;
-using System.Net;
+using System.Threading.Tasks;
+using CommonBase.Extensions;
+using CommonBase.Helpers;
+using DockerAccess;
+using Labelix.Transfer.Modules;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Labelix.AIBackend.Controllers
 {
@@ -61,7 +58,7 @@ namespace Labelix.AIBackend.Controllers
             var optionsString = string.Join(" ", options.ToArray());
 
 
-            var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
+            //var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
 
             IActionResult actionResult;
 
@@ -108,10 +105,14 @@ namespace Labelix.AIBackend.Controllers
         private static async Task<Data> EncodeImage(int projectId, string fileName)
         {
             var file = (await System.IO.File.ReadAllBytesAsync(fileName)).ImageToBase64();
-            var data = new Data(projectId, Path.GetFileName(fileName), Path.GetExtension(fileName), file);
+            
+            var bmp = new Bitmap(fileName);
+
+            var bytes = bmp.ConvertBitmapToBitmask(240);
+            
+            var data = new Data(projectId, Path.GetFileName(fileName), Path.GetExtension(fileName), bytes.ImageToBase64(), bmp.Width, bmp.Height );
             return data;
         }
-
         #endregion
     }
 }
