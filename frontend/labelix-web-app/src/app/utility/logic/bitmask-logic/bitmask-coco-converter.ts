@@ -1,6 +1,6 @@
 import {IImageAnnotation} from '../../contracts/IImageAnnotation';
 import {Buffer} from 'buffer';
-import {IImage} from '../../contracts/IImage';
+import {IData} from '../../contracts/IData';
 import {IRawImage} from '../../contracts/IRawImage';
 import {AnnotaionMode} from '../../../image-annotation/CoreLayer/annotaionModeEnum';
 import {ICategory} from '../../contracts/ICategory';
@@ -9,11 +9,10 @@ export class BitmaskCocoConverter {
 
   private listOfCoordinates: { x: number, y: number }[] = [];
 
-  convertBase64ToAnnotation(input: IImage, rawImage: IRawImage, category: ICategory): IImageAnnotation {
+  convertBase64ToAnnotation(input: IData, rawImage: IRawImage, category: ICategory): IImageAnnotation {
 
     const myBuffer = Buffer.from(input.Data, 'base64');
     const field = this.get2DimensionalArrayFrommBuffer(myBuffer, input.width, input.height);
-    console.log(field);
     const beginning = this.findBeginning(field, input.width, input.height);
 
     // recursive function

@@ -1,6 +1,6 @@
 import {IIdentifiable} from './IIdentifiable';
 
-export interface IImage extends IIdentifiable {
+export interface IData extends IIdentifiable {
   // is the base64 string
   Data: string;
   imageId: number;

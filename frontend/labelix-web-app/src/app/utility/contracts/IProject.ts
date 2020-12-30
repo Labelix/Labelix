@@ -1,5 +1,5 @@
 import {IIdentifiable} from './IIdentifiable';
-import {IImage} from './IImage';
+import {IData} from './IData';
 import {ICocoFormat} from './cocoFormat/ICocoFormat';
 
 export interface IProject extends IIdentifiable{
@@ -9,7 +9,7 @@ export interface IProject extends IIdentifiable{
   // creator: string; // later here will be another interface
   finishedAnnotation: boolean;
   label: string;
-  images: IImage[];
+  images: IData[];
   timestamp: Date;
   AIModelConfig: number[];
   cocoExport: ICocoFormat;

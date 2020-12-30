@@ -32,6 +32,7 @@ import {CocoFormatController} from './CoreLayer/controller/CocoFormatController'
 import { LabelSettingsDialogComponent } from './PresentationLayer/label-settings-dialog/label-settings-dialog.component';
 import {ColorChromeModule} from 'ngx-color/chrome';
 import {NgxImageZoomModule} from 'ngx-image-zoom';
+import {AiModelConfigFacade} from '../project-overview/AbstractionLayer/AiModelConfigFacade';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import {NgxImageZoomModule} from 'ngx-image-zoom';
     LabelCategoryFacade,
     AnnotationFacade,
     ProjectsFacade,
-    CocoFormatController
+    CocoFormatController,
+    AiModelConfigFacade
   ],
   exports: [
     SingleAnnotationExportFormComponent

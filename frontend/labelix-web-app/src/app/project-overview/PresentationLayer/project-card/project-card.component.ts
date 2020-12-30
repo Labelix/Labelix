@@ -7,7 +7,7 @@ import {RawImageFacade} from '../../../image-annotation/AbstractionLayer/RawImag
 import {LabelCategoryFacade} from '../../../image-annotation/AbstractionLayer/LabelCategoryFacade';
 import {CocoFormatController} from '../../../image-annotation/CoreLayer/controller/CocoFormatController';
 import {ImageServiceService} from '../../CoreLayer/services/image-service.service';
-import {IImage} from '../../../utility/contracts/IImage';
+import {IData} from '../../../utility/contracts/IData';
 import {MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
@@ -19,7 +19,7 @@ export class ProjectCardComponent implements OnInit {
 
   @Input()
   myProject: IProject;
-  firstImage: IImage;
+  firstImage: IData;
 
 
   constructor(public router: Router,

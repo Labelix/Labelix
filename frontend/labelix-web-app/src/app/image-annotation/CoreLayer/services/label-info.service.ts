@@ -4,6 +4,7 @@ import {IAILabelInfo} from '../../../utility/contracts/IAILabelInfo';
 import {HttpClient} from '@angular/common/http';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {Observable} from 'rxjs';
+import {IData} from '../../../utility/contracts/IData';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class LabelInfoService extends GenericApiService<IAILabelInfo> {
   }
 
   // dadurch, dass der Rückgabewert keine IAILabelInfo ist, kann der GenericApiService in diesem Fall nicht benutzt werden
-  postLabelInfo(item: IAILabelInfo): Observable<any> {
-    return this.httpClient.put(this.urlRoot, item);
+  postLabelInfo(item: IAILabelInfo): Observable<IData[]> {
+    return this.httpClient.put<IData[]>(this.urlRoot, item);
   }
 }

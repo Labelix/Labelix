@@ -10,9 +10,6 @@ export class ImageAnnotationHelper {
   static getHSLColor(h: number): string {
     return Color.fromHSL(h, 100, 50).toString();
   }
-
-
-
 }
 
 

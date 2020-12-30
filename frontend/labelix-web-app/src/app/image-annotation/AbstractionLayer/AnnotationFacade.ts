@@ -23,6 +23,15 @@ import {AnnotaionMode} from '../CoreLayer/annotaionModeEnum';
 import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
 import {ICategory} from '../../utility/contracts/ICategory';
 import {IProject} from '../../utility/contracts/IProject';
+import {LabelInfoService} from '../CoreLayer/services/label-info.service';
+import {BitmaskCocoConverter} from '../../utility/logic/bitmask-logic/bitmask-coco-converter';
+import {LabelCategoryFacade} from './LabelCategoryFacade';
+import {IAILabelInfo} from '../../utility/contracts/IAILabelInfo';
+import {ImageAnnotationHelper} from '../CoreLayer/helper/image-annotation-helper';
+import {RawImageFacade} from './RawImageFacade';
+import {IData} from '../../utility/contracts/IData';
+import {AiModelConfigFacade} from '../../project-overview/AbstractionLayer/AiModelConfigFacade';
+import {IAIModelConfig} from '../../utility/contracts/IAIModelConfig';
 
 @Injectable()
 export class AnnotationFacade {
@@ -35,7 +44,12 @@ export class AnnotationFacade {
   activePolygonAnnotation: Observable<IImageAnnotation>;
   activeProject: Observable<IProject>;
 
-  constructor(private store: Store<AnnotationState>) {
+  constructor(private store: Store<AnnotationState>,
+              private labelInfoApi: LabelInfoService,
+              private categoryFacade: LabelCategoryFacade,
+              private rawImageFacade: RawImageFacade,
+              private aiModelConfigFacade: AiModelConfigFacade) {
+
     this.currentAnnotationImage = this.store.pipe(select(getCurrentAnnotatingImage));
     this.currentAnnotationMode = this.store.pipe(select(getCurrentAnnotationMode));
     this.currentImageAnnotations = this.store.pipe(select(getCurrentImageAnnotations));
@@ -43,6 +57,7 @@ export class AnnotationFacade {
     this.numberOfCurrentImageAnnotations = this.store.pipe(select(getNextAnnotationId));
     this.activePolygonAnnotation = this.store.pipe(select(getActivePolygonAnnotation));
     this.activeProject = this.store.pipe(select(getActiveProject));
+
   }
 
   changeCurrentAnnotationImage(input: IRawImage) {
@@ -104,5 +119,60 @@ export class AnnotationFacade {
 
   updateCategoryOnAnnotations(input: ICategory) {
     this.store.dispatch(new UpdateCategoryOInAnnotations(input));
+  }
+
+  sendAllToAI(project: IProject, aiConfig: IAIModelConfig) {
+
+    const labelInfo: IAILabelInfo = {
+      id: 0,
+      aiModelConfig: aiConfig,
+      images: project.images
+    };
+
+    this.labelInfoApi.postLabelInfo(labelInfo).subscribe(response => {
+      let nextCategoryId: number;
+      let images: IRawImage[];
+      const newCategories: ICategory[] = [];
+
+      this.categoryFacade.nextLabelId$.subscribe(value => nextCategoryId = value);
+      this.rawImageFacade.files$.subscribe(value => images = value);
+
+      const bitmaskConverter = new BitmaskCocoConverter();
+
+      for (const data of response) {
+
+        const category = this.getCategoryForAILabel(data, newCategories, nextCategoryId);
+        const imageName = data.name.split('_')[0] + '.' + data.name.split('.')[1];
+        const rawImage = images.find(value => value.name === imageName);
+
+        const newAnnotation = bitmaskConverter.convertBase64ToAnnotation(data, rawImage, category);
+        this.addImageAnnotation(newAnnotation);
+      }
+
+      // add new created categories to the category state
+      for (const category of newCategories) {
+        this.categoryFacade.addLabelCategory(category);
+      }
+    });
+  }
+
+  private getCategoryForAILabel(data: IData, newCategories: ICategory[], nextCategoryId: number): ICategory {
+    let labelName = data.name.split('_')[1];
+    labelName = labelName.split('.')[0];
+
+    let category: ICategory;
+
+    if (newCategories.every(value => value.name !== labelName)) {
+      category = {
+        name: labelName,
+        id: nextCategoryId,
+        colorCode: ImageAnnotationHelper.getRandomColor(),
+        supercategory: labelName
+      };
+      newCategories.push(category);
+    } else {
+      category = newCategories.find(value => value.name === labelName);
+    }
+    return category;
   }
 }
