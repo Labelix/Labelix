@@ -18,7 +18,7 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
-        [Authorize]
+        [Authorize(Roles = "user")]
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
         {
@@ -39,17 +39,21 @@ namespace Labelix.WebAPI.Controllers
             return GetModelByIdAsync(id);
         }
 
+        [Authorize(Roles = "user")]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {
             return GetModelsAsync();
         }
 
+        [Authorize(Roles = "user")]
         [HttpGet("count")]
         public Task<int> GetCountAsync()
         {
             return CountAsync();
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost("create")]
         public async Task<IActionResult> PostAsync(ProjectInsert model)
         {
@@ -81,6 +85,8 @@ namespace Labelix.WebAPI.Controllers
             }
             
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPut("update")]
         public async Task<Model> PutAsync(Model model)
         {
@@ -149,12 +155,15 @@ namespace Labelix.WebAPI.Controllers
             if (System.IO.File.Exists(dir_path)) respondModel.LabeledPath = System.IO.File.ReadAllText(dir_path);
             return respondModel;
         }
+
+        [Authorize(Roles = "admin")]
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
         {
             return DeleteModelAsync(id);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("uploadCoco")]
         public Task UploadSingleCoco(Data data)
         {
