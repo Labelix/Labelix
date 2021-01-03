@@ -50,6 +50,8 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("count")]
         public Task<int> GetCountAsync()
         {
+            var b = this.User.Claims.GetUserId();
+            //"fb9d2511-5114-4dbb-b974-4c12b6e25e88"
             return CountAsync();
         }
 
