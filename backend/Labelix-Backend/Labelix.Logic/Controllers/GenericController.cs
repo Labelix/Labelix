@@ -47,6 +47,12 @@ namespace Labelix.Logic.Controllers
 
             return Task.Run<I>(() => Set().SingleOrDefault(i => i.Id == id));
         }
+
+        public virtual Task<IEnumerable<I>> GetAllWhereAsync(Func<I, bool> whereFunc)
+        {
+            return Task.Run(() => Set().Where(whereFunc));
+        }
+
         public async virtual Task<IEnumerable<I>> GetAllAsync()
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
