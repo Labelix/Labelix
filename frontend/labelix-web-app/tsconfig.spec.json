@@ -10,7 +10,7 @@
   "files": [
     "src/test.ts",
     "src/polyfills.ts",
-    "src/app/image-annotation/CoreLayer/helper/image-annotation-helper.ts"
+    "src/app/core-layer/helper/image-annotation-helper.ts"
   ],
   "include": [
     "src/**/*.spec.ts",
