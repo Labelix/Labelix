@@ -67,6 +67,8 @@ namespace Labelix.WebAPI.Controllers
         {
             try
             {
+                var keycloakUser = this.User.Claims.GetUserId();
+                var user = await new UserController().GetUserId(keycloakUser);
                 Project_AIModelConfigController aiModelConfigController = new Project_AIModelConfigController();
                 Project project = new Project();
                 project.CopyProperties(model);
@@ -84,6 +86,8 @@ namespace Labelix.WebAPI.Controllers
                     data.ProjectId = project.Id;
                 }
                 await Base64Controller.MultipleImageUpload(images);
+                await new UserProjectController().PostAsync(new ProjectUser
+                    {ProjectKey = project.Id, UserIdKey = user.Id});
                 return Ok();
             }
             catch (Exception e)
