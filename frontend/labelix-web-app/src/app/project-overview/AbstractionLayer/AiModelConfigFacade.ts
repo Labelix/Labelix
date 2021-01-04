@@ -4,12 +4,12 @@ import {IAIModelConfig} from '../../utility/contracts/IAIModelConfig';
 import {AiModelConfigServiceService} from '../CoreLayer/services/aiModelConfig-service.service ';
 import {select, Store} from '@ngrx/store';
 import {AiModelConfigState, GetConfigs} from '../CoreLayer/states/aiModelConfigState';
-import {AddConfigs} from '../CoreLayer/actions/aiModelConfig.actions';
+import {AddConfig, AddConfigs, DeleteConfig, UpdateConfig} from '../CoreLayer/actions/aiModelConfig.actions';
 
 @Injectable()
 export class AiModelConfigFacade {
-  aiModelConfigs$: Observable<IAIModelConfig[]>;
 
+  aiModelConfigs$: Observable<IAIModelConfig[]>;
 
   constructor(private aiModelConfigApi: AiModelConfigServiceService, private store: Store<AiModelConfigState>) {
     this.aiModelConfigs$ = this.store.pipe(select(GetConfigs));
@@ -19,6 +19,30 @@ export class AiModelConfigFacade {
     this.aiModelConfigApi.getItems().subscribe((value: IAIModelConfig[]) => {
       this.store.dispatch(new AddConfigs(value));
     });
+  }
+
+  postConfig(config: IAIModelConfig): Observable<IAIModelConfig> {
+    return this.aiModelConfigApi.postItem(config);
+  }
+
+  putConfig(config: IAIModelConfig): Observable<IAIModelConfig> {
+    return this.aiModelConfigApi.putItem(config);
+  }
+
+  deleteConfig(config: IAIModelConfig): Observable<any> {
+    return this.aiModelConfigApi.deleteItem(config);
+  }
+
+  addToState(config: IAIModelConfig) {
+    this.store.dispatch(new AddConfig(config));
+  }
+
+  updateToState(config: IAIModelConfig) {
+    this.store.dispatch(new UpdateConfig(config));
+  }
+
+  deleteToState(config: IAIModelConfig) {
+    this.store.dispatch(new DeleteConfig(config.id));
   }
 
 }
