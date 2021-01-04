@@ -4,8 +4,8 @@ import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
 import {select, Store} from '@ngrx/store';
 import {ProjectImageUploadState, getNumberOfRawImages, getAllRawImages} from '../core-layer/states/projectImageUploadState';
 import {AddRawImage, DeleteAllImages, DeleteRawImage} from '../core-layer/actions/projectImageUpload.actions';
-import {ImageServiceService} from '../core-layer/services/image-service.service';
 import {AddBase64CodeToIFile} from '../core-layer/actions/image-annotation.actions';
+import {ImageServiceService} from '../core-layer/services/image-service.service';
 
 @Injectable({providedIn: 'root'})
 export class ProjectImageUploadFacade {

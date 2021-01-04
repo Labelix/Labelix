@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import {IIdentifiable} from '../contracts/IIdentifiable';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,30 +11,45 @@ import {IIdentifiable} from '../contracts/IIdentifiable';
 export class GenericApiService<T extends IIdentifiable> {
   urlRoot = '';
 
-  constructor(protected  httpClient: HttpClient) {
-   }
+  protected headers: HttpHeaders;
 
-    getItems(): Observable<T[]> {
-      return this.httpClient.get<T[]>(`${this.urlRoot}/all`);
-    }
+  constructor(protected  httpClient: HttpClient, protected  oauthService: OAuthService) {
 
-    getItemById(id: number): Observable<T> {
-      return this.httpClient.get<T>(`${this.urlRoot}/${id}`);
-    }
+  }
 
-    patchItem(item: T): Observable<T> {
-      return this.httpClient.patch<T>(`${this.urlRoot}/${item.id}`, item);
-    }
+  protected setHeader(): void {
+    this.headers = new HttpHeaders({
+      Authorization: 'Bearer ' + this.oauthService.getAccessToken()
+    });
+  }
 
-    putItem(item: T): Observable<T> {
-      return this.httpClient.put<T>(`${this.urlRoot}/update`, item);
-    }
+  getItems(): Observable<T[]> {
+    this.setHeader();
+    return this.httpClient.get<T[]>(`${this.urlRoot}/all`, {headers: this.headers, responseType: 'json'});
+  }
 
-    postItem(item: T): Observable<T> {
-      return this.httpClient.post<T>(`${this.urlRoot}/create`, item);
-    }
+  getItemById(id: number): Observable<T> {
+    this.setHeader();
+    return this.httpClient.get<T>(`${this.urlRoot}/${id}`, {headers: this.headers, responseType: 'json'});
+  }
 
-    deleteItem(item: T): Observable<T> {
-      return this.httpClient.delete<T>(`${this.urlRoot}/delete-${item.id}`);
-    }
+  patchItem(item: T): Observable<T> {
+    this.setHeader();
+    return this.httpClient.patch<T>(`${this.urlRoot}/${item.id}`, item, {headers: this.headers, responseType: 'json'});
+  }
+
+  putItem(item: T): Observable<T> {
+    this.setHeader();
+    return this.httpClient.put<T>(`${this.urlRoot}/${item.id}`, item, {headers: this.headers, responseType: 'json'});
+  }
+
+  postItem(item: T): Observable<T> {
+    this.setHeader();
+    return this.httpClient.post<T>(`${this.urlRoot}/create`, item, {headers: this.headers, responseType: 'json'});
+  }
+
+  deleteItem(item: T): Observable<T> {
+    this.setHeader();
+    return this.httpClient.delete<T>(`${this.urlRoot}/delete-${item.id}`, {headers: this.headers, responseType: 'json'});
+  }
 }

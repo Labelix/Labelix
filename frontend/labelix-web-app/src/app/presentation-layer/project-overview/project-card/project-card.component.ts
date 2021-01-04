@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
 import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
@@ -8,7 +8,6 @@ import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacad
 import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
 import {ImageServiceService} from '../../../core-layer/services/image-service.service';
 import {IImage} from '../../../core-layer/utility/contracts/IImage';
-import {MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'app-project-card',
