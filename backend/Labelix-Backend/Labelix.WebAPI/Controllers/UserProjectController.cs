@@ -25,5 +25,10 @@ namespace Labelix.WebAPI.Controllers
 
             return result.ToArray();
         }
+
+        public Task<Model> PostAsync(Model model)
+        {
+            return InsertModelAsync(model);
+        }
     }
 }
