@@ -28,13 +28,17 @@ export class LabelSettingsDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.labelFacade.labelCategories$.subscribe(value => {
+
       this.currentLabelCategories = value;
       if (this.firstInit) {
         this.copyProperties(this.currentLabelCategories[0]);
         this.firstInit = false;
       }
+
     });
+
     this.labelFacade.nextLabelId$.subscribe(value => this.nextLabelId = value);
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.imageAnnotations = value);
 

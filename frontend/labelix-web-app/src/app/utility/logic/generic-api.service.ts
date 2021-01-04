@@ -25,7 +25,7 @@ export class GenericApiService<T extends IIdentifiable> {
     }
 
     putItem(item: T): Observable<T> {
-      return this.httpClient.put<T>(`${this.urlRoot}/${item.id}`, item);
+      return this.httpClient.put<T>(`${this.urlRoot}/update`, item);
     }
 
     postItem(item: T): Observable<T> {
