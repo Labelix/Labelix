@@ -20,3 +20,7 @@
   margin-bottom: 3.35%;
   z-index: 2000;
 }
+
+.example-spacer {
+  flex: 1 1 auto;
+}

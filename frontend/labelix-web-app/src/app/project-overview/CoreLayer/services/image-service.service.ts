@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {GenericApiService} from '../../../utility/logic/generic-api.service';
 import {IImage} from '../../../utility/contracts/IImage';
 import {HttpClient} from '@angular/common/http';
+import {OAuthService} from 'angular-oauth2-oidc';
 import {IProject} from '../../../utility/contracts/IProject';
 import {Observable} from 'rxjs';
 
@@ -10,8 +11,8 @@ import {Observable} from 'rxjs';
 })
 export class ImageServiceService extends GenericApiService<IImage> {
 
-  constructor(protected  httpClient: HttpClient) {
-    super(httpClient);
+  constructor(protected  httpClient: HttpClient, protected oauthService: OAuthService) {
+    super(httpClient, oauthService);
     this.urlRoot = 'api/image';
   }
   getImageByProjectId(projectId: number): Observable<IImage>{
