@@ -1,0 +1,123 @@
+
+<mat-grid-list cols="5" rowHeight="5em">
+
+  <mat-grid-tile colspan="1">
+
+    <div style="margin-bottom: 3em; margin-top: 1em; font-size: large">
+      <section class="mat-typography">Your AI Configurations</section>
+    </div>
+
+    <mat-divider></mat-divider>
+
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="4"></mat-grid-tile>
+
+</mat-grid-list>
+
+<mat-grid-list cols="5" rowHeight="45em" style="height: 100%">
+
+  <mat-grid-tile [colspan]="1" style="height: 100%">
+
+    <mat-selection-list [multiple]="false">
+
+      <div *ngFor=" let config of configs">
+
+        <mat-list-option (click)="selectConfig(config)">{{config.name}}</mat-list-option>
+
+      </div>
+
+    </mat-selection-list>
+
+  </mat-grid-tile>
+
+  <mat-grid-tile [colspan]="4" style="height: 100%;">
+
+    <div class="mat-typography" style="width: 100%">
+
+      <div *ngIf="currentConfig !== undefined">
+
+        <div *ngIf="addMode === false">
+          <button mat-stroked-button color="primary" style="margin-bottom: 1em" (click)="switchAddModeOn()">Create new Configuration</button>
+        </div>
+
+        <div *ngIf="addMode === true">
+          <button mat-stroked-button color="warn" style="margin-bottom: 1em" (click)="switchAddModOff()">Cancel</button>
+        </div>
+
+        <br>
+
+        <mat-form-field appearance="fill" style="width: 90%">
+          <mat-label>Name</mat-label>
+          <label>
+            <input matInput [(ngModel)]="currentConfig.name">
+          </label>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="fill" style="width: 90%">
+          <mat-label>Docker Image</mat-label>
+          <label>
+            <input matInput [(ngModel)]="currentConfig.dockerImageName">
+          </label>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="fill" style="width: 90%">
+          <mat-label>Parameter</mat-label>
+          <label>
+            <input matInput [(ngModel)]="currentConfig.parameter">
+          </label>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="fill" style="width: 90%">
+          <mat-label>Input Directory</mat-label>
+          <label>
+            <input matInput [(ngModel)]="currentConfig.inputDirectory">
+          </label>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="fill" style="width: 90%">
+          <mat-label>Output Directory</mat-label>
+          <label>
+            <input matInput [(ngModel)]="currentConfig.outputDirectory">
+          </label>
+        </mat-form-field>
+
+        <br>
+
+        <mat-form-field appearance="fill" style="width: 90%">
+          <mat-label>Options</mat-label>
+          <label>
+            <input matInput [(ngModel)]="currentConfig.options">
+          </label>
+        </mat-form-field>
+
+        <div *ngIf="addMode === false">
+
+          <button mat-raised-button color="primary" style="bottom: 0; left: 1em; position: absolute" (click)="updateConfig()">
+            Update
+          </button>
+
+          <button mat-raised-button color="warn" style="bottom: 0; left: 8em; position: absolute" (click)="deleteConfig()">
+            Delete
+          </button>
+
+        </div>
+
+        <div *ngIf="addMode === true">
+          <button mat-raised-button color="primary" style="bottom: 0; left: 1em; position: absolute" (click)="addConfig()">Save</button>
+        </div>
+
+      </div>
+    </div>
+
+  </mat-grid-tile>
+
+</mat-grid-list>
