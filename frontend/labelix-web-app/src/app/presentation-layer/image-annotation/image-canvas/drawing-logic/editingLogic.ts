@@ -1,4 +1,4 @@
-import {AnnotaionMode} from '../../../../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
 import {IImageAnnotation} from '../../../../core-layer/utility/contracts/IImageAnnotation';
 import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
@@ -9,9 +9,9 @@ import {EditingOption} from '../image-canvas.component';
 export function onMouseDownSizingTool(value: MouseEvent, canvasEl: HTMLCanvasElement, currentImageAnnotations: IImageAnnotation[],
                                       activeRawImage: IRawImage, annotationFacade: AnnotationFacade, editingOptions: EditingOption) {
   for (const item of currentImageAnnotations) {
-    if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+    if (item.annotationMode === AnnotationMode.BOUNDING_BOXES) {
       setEditingFlagBoundingBox(item, activeRawImage, value, canvasEl, annotationFacade, editingOptions);
-    } else if (item.annotationMode === AnnotaionMode.POLYGON) {
+    } else if (item.annotationMode === AnnotationMode.POLYGON) {
       setEditingFlagPolygon(item, value, canvasEl, activeRawImage, editingOptions, annotationFacade);
     }
   }
@@ -140,10 +140,10 @@ export function onMouseMoveSizingTool(value: MouseEvent, canvasEl: HTMLCanvasEle
                                       mousePositions: { x: number, y: number }[], annotationFacade: AnnotationFacade,
                                       activeAnnotation: IImageAnnotation, activeRawImage: IRawImage) {
 
-  if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.BOUNDING_BOXES) {
+  if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotationMode.BOUNDING_BOXES) {
     changeValuesOnBoundingBoxAnnotation(annotationFacade, mousePositions, value,
       editingOptions, canvasEl, activeAnnotation, activeRawImage);
-  } else if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
+  } else if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotationMode.POLYGON) {
     changeValuesOnPolygonAnnotation(annotationFacade, mousePositions, value, editingOptions, canvasEl, activeAnnotation, activeRawImage);
   }
 }

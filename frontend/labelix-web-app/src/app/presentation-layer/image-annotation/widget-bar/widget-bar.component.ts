@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {AnnotaionMode} from '../../../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {MatDialog} from '@angular/material/dialog';
 import {SingleAnnotationExportFormComponent} from '../single-annotation-export-form/single-annotation-export-form.component';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
@@ -17,7 +17,7 @@ export class WidgetBarComponent implements OnInit {
   constructor(private annotationFacade: AnnotationFacade, public dialog: MatDialog) {
   }
 
-  currentAnnotationMode: AnnotaionMode;
+  currentAnnotationMode: AnnotationMode;
   activeProject: IProject;
   activeLabel: ICategory;
 

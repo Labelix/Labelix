@@ -1,11 +1,11 @@
 import {IIdentifiable} from './IIdentifiable';
-import {AnnotaionMode} from '../../annotaionModeEnum';
+import {AnnotationMode} from '../annotaionModeEnum';
 import {ICategory} from './ICategory';
 import {IRawImage} from './IRawImage';
 import {IBoundingBox} from './IBoundingBox';
 
 export interface IImageAnnotation extends IIdentifiable{
-  annotationMode: AnnotaionMode;
+  annotationMode: AnnotationMode;
   categoryLabel: ICategory;
   isCrowd: boolean;
   segmentations: number[];

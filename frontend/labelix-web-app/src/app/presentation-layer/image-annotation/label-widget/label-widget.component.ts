@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
 import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {AnnotaionMode} from '../../../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ImageAnnotationHelper} from '../../../core-layer/helper/image-annotation-helper';
 import {SingleAnnotationExportFormComponent} from '../single-annotation-export-form/single-annotation-export-form.component';
@@ -17,7 +17,7 @@ import {MatDialog} from '@angular/material/dialog';
 export class LabelWidgetComponent implements OnInit {
 
   currentLabelCategories: ICategory[] = [];
-  currentAnnotationMode: AnnotaionMode;
+  currentAnnotationMode: AnnotationMode;
   selectedCategoryLabel: ICategory;
 
   currentlyAdding = false;
@@ -53,7 +53,7 @@ export class LabelWidgetComponent implements OnInit {
     this.annotationFacade.changeActiveLabel(item);
     // wenn nur das ganze Bild annotiert werden soll, kann sofort eine Annotierung für das gesamte Bild gespeichert
     // werden
-    if (this.currentAnnotationMode === AnnotaionMode.WHOLE_IMAGE) {
+    if (this.currentAnnotationMode === AnnotationMode.WHOLE_IMAGE) {
       this.annotationFacade.addWholeImageAnnotation(this.selectedCategoryLabel);
     }
   }
