@@ -63,10 +63,8 @@ namespace Labelix.WebAPI.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPost("create")]
-        public async Task<IActionResult> PostAsync(ProjectInsert model)
+        public async Task<Project> PostAsync(ProjectInsert model)
         {
-            try
-            {
                 var keycloakUser = this.User.Claims.GetUserId();
                 var user = await new UserController().GetUserId(keycloakUser);
                 Project_AIModelConfigController aiModelConfigController = new Project_AIModelConfigController();
@@ -88,13 +86,8 @@ namespace Labelix.WebAPI.Controllers
                 await Base64Controller.MultipleImageUpload(images);
                 await new UserProjectController().PostAsync(new ProjectUser
                     {ProjectKey = project.Id, UserIdKey = user.Id});
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500);
-            }
+                return project;
+            
             
         }
 
