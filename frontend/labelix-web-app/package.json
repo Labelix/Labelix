@@ -31,8 +31,6 @@
     "golden-layout": "^1.5.9",
     "jquery": "^3.5.1",
     "ngx-color": "^6.0.4",
-    "ngx-golden-layout": "0.0.37",
-    "ngx-image-zoom": "^0.6.0",
     "react-color": "^2.18.1",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
