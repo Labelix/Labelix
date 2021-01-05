@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -38,7 +39,6 @@ namespace Labelix.WebAPI
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
             }).AddJwtBearer(o =>
             {
                 o.Authority = Configuration["Jwt:Authority"];
@@ -58,8 +58,14 @@ namespace Labelix.WebAPI
                         {
                             return c.Response.WriteAsync(c.Exception.ToString());
                         }
-
-                        return c.Response.WriteAsync("An error occured processing your authentication.");
+                        o.TokenValidationParameters.ValidIssuers = new[]
+                        {
+                            "http://localhost:8180/auth/realms/Labelix",
+                            "http://labelix_keycloak_1:8080/auth/realms/Labelix",
+                        };
+                        //return c.Response.WriteAsync("An error occured processing your authentication.");
+                        IdentityModelEventSource.ShowPII = true;
+                        return c.Response.WriteAsync(c.Exception.ToString());
                     }
                 };
 
