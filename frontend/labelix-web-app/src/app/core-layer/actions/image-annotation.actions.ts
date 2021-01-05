@@ -1,7 +1,7 @@
 import {Action} from '@ngrx/store';
 import {IRawImage} from '../utility/contracts/IRawImage';
 import {ICategory} from '../utility/contracts/ICategory';
-import {AnnotaionMode} from '../annotaionModeEnum';
+import {AnnotationMode} from '../utility/annotaionModeEnum';
 import {IImageAnnotation} from '../utility/contracts/IImageAnnotation';
 import {IProject} from '../utility/contracts/IProject';
 
@@ -57,7 +57,7 @@ export class SetCurrentAnnotationPicture implements Action {
 export class ChangeCurrentAnnotationMode implements Action {
   readonly type = ActionTypes.ChangeCurrentAnnotationMode;
 
-  constructor(public payload: AnnotaionMode) {
+  constructor(public payload: AnnotationMode) {
   }
 }
 

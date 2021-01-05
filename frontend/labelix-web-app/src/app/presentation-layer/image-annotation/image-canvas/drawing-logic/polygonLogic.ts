@@ -1,7 +1,7 @@
 import {IImageAnnotation} from '../../../../core-layer/utility/contracts/IImageAnnotation';
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
 import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
-import {AnnotaionMode} from '../../../../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
 import {ICategory} from '../../../../core-layer/utility/contracts/ICategory';
 import {drawAnnotationHeader, hexToRGB} from './drawingUtilLogic';
 
@@ -10,7 +10,7 @@ export function onMouseDownPolygon(value: MouseEvent, canvasEl: HTMLCanvasElemen
                                    activeLabel: ICategory) {
   if (activeAnnotation === undefined) {
     annotationFacade.setActiveAnnotation({
-      annotationMode: AnnotaionMode.POLYGON,
+      annotationMode: AnnotationMode.POLYGON,
       segmentations: [
         (value.clientX - canvasEl.getBoundingClientRect().left) / canvasEl.width,
         (value.clientY - canvasEl.getBoundingClientRect().top) / canvasEl.height
@@ -36,7 +36,7 @@ export function onMouseMovePolygon(value: MouseEvent, canvasEl: HTMLCanvasElemen
     drawExistingPolygonAnnotations(canvasEl, currentImageAnnotations, activeRawImage, currentlyDrawing, ctx);
   }
 
-  if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotaionMode.POLYGON) {
+  if (activeAnnotation !== undefined && activeAnnotation.annotationMode === AnnotationMode.POLYGON) {
     drawPointsOfPolygonAnnotation(canvasEl, activeAnnotation, ctx, currentlyDrawing, '');
 
     const actualX = activeAnnotation.segmentations[activeAnnotation.segmentations.length - 2] * canvasEl.width;
@@ -89,7 +89,7 @@ export function fillExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
                                                activeRawImage: IRawImage, ctx: CanvasRenderingContext2D, opacity: number) {
   for (const item of currentImageAnnotations) {
     if (activeRawImage !== undefined
-      && item.annotationMode === AnnotaionMode.POLYGON
+      && item.annotationMode === AnnotationMode.POLYGON
       && item.isVisible
       && item.image.id === activeRawImage.id) {
       fillShape(canvasEl, item, ctx, opacity);
@@ -102,7 +102,7 @@ export function drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
 
   for (const item of currentImageAnnotations) {
     if (activeRawImage !== undefined
-      && item.annotationMode === AnnotaionMode.POLYGON
+      && item.annotationMode === AnnotationMode.POLYGON
       && item.isVisible
       && item.image.id === activeRawImage.id) {
       drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing, item.id + ': ' + item.categoryLabel.name);

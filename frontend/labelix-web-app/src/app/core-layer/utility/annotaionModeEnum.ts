@@ -1,4 +1,4 @@
-export enum AnnotaionMode {
+export enum AnnotationMode {
   WHOLE_IMAGE,
   BOUNDING_BOXES,
   POLYGON  ,

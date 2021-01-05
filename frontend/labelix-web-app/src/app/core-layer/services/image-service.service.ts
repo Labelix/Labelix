@@ -15,6 +15,7 @@ export class ImageServiceService extends GenericApiService<IImage> {
     this.urlRoot = 'api/image';
   }
   getImageByProjectId(projectId: number): Observable<IImage>{
-    return this.httpClient.get<IImage>(`${this.urlRoot}/FirstOfProject-${projectId}`);
+    this.setHeader();
+    return this.httpClient.get<IImage>(`${this.urlRoot}/FirstOfProject-${projectId}`, {headers: this.headers, responseType: 'json'});
   }
 }
