@@ -22,10 +22,12 @@ export class ProjectsFacade {
     });
   }
 
-  postProject(importProject: IProject) {
-    this.projectApi.postItem(importProject).subscribe(
-      value => this.store.dispatch(new AddProjectAction(value))
-    );
+  postProject(importProject: IProject): Observable<IProject> {
+    return this.projectApi.postItem(importProject);
+  }
+
+  addProjectToState(project: IProject) {
+    this.store.dispatch(new AddProjectAction(project));
   }
 
   getProjectObservableNyId(id: number): Observable<IProject> {
