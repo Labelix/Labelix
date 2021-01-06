@@ -4,10 +4,12 @@ import {IRawImage} from '../utility/contracts/IRawImage';
 import {AddConfigs, GetConfigNames} from './aiModelConfig.actions';
 
 export enum ActionTypes {
+  AddRawImages = '[ImageAnnotation] Add RawImages',
   HowManyLeft = '[ProjectImageUpload] Gives Back how many Images need to be uploaded',
   AddRawImage = '[ProjectImageUpload] Add Raw Image To Image State',
   GetRawImages = '[ProjectImageUpload] Gets RawImages',
   AddBase64CodeToIFile = '[ImageAnnotation] Add Base64Code to IFile',
+  UpdateRawImage = '[ImageAnnotation] UpdateRawImage',
   DeleteRawImage = '[ImageAnnotation] Delete RawImage',
   DeleteAllImages = '[ImageAnnotation] Delete all RawImage'
 }
@@ -36,21 +38,39 @@ export class AddRawImage implements Action {
   constructor(public payload: IRawImage) {
   }
 }
+
+export class AddRawImages implements Action {
+  readonly type = ActionTypes.AddRawImages;
+
+  constructor(public payload: IRawImage[]) {
+  }
+}
+
 export class AddBase64CodeToIFile implements Action {
   readonly type = ActionTypes.AddBase64CodeToIFile;
 
   constructor(public payload: { id: number, baseCode: string }) {
   }
 }
+
+export class UpdateRawImage implements Action {
+  readonly type = ActionTypes.UpdateRawImage;
+
+  constructor(public payload: IRawImage) {
+  }
+}
+
 export class DeleteAllImages implements Action{
   readonly type = ActionTypes.DeleteAllImages;
-  constructor(public payload) {
+  constructor() {
   }
 }
 export type ProjectImageUploadActions =
   | HowManyLeft
   | AddRawImage
+  | AddRawImages
   | GetRawImages
   | AddBase64CodeToIFile
+  | UpdateRawImage
   | DeleteRawImage
   | DeleteAllImages;

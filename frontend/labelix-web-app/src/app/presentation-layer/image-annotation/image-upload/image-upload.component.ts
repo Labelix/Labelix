@@ -11,19 +11,19 @@ import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 })
 export class ImageUploadComponent implements OnInit {
 
+  listOfFiles: IRawImage[];
+  nums: number;
+
+  @ViewChild('fileDropRef', {static: false}) fileDropEl: ElementRef;
+
   constructor(private facade: RawImageFacade,
               private router: Router,
               private annotationFacade: AnnotationFacade) {
   }
 
-  @ViewChild('fileDropRef', {static: false}) fileDropEl: ElementRef;
-
-  listOfFiles: IRawImage[];
-  nums: number;
-
   ngOnInit(): void {
     this.facade.numberOfImages$.subscribe(value => this.nums = value);
-    this.facade.files$.subscribe(value => this.listOfFiles = value);
+    this.facade.rawImages$.subscribe(value => this.listOfFiles = value);
   }
 
   onFileDropped($event) {
@@ -36,7 +36,7 @@ export class ImageUploadComponent implements OnInit {
       count++;
     }
     this.annotationFacade.resetAnnotationState();
-    this.facade.uploadRawImages(tmp);
+    this.facade.addRawImagesToState(tmp);
     this.annotationFacade.changeCurrentAnnotationImage(tmp[0]);
 
     this.router.navigate(['image-annotation/image-view']);

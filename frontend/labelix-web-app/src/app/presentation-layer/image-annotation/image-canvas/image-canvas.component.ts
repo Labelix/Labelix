@@ -85,7 +85,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.categoryLabelFacade.resetCategoryLabelState();
 
-    this.rawImageFacade.files$.subscribe(value => {
+    this.rawImageFacade.rawImages$.subscribe(value => {
       this.rawImages = value;
       this.setAnnotationsFromCoco();
     });
@@ -146,7 +146,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           base64Url: image.src,
           name: this.activeRawImage.file.name
         };
-        this.rawImageFacade.updateRawImage(newRawImage);
+        this.rawImageFacade.updateRawImagesOnState(newRawImage);
         this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
       };
     });
@@ -165,7 +165,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         base64Url: image.src,
         name: this.activeRawImage.name
       };
-      this.rawImageFacade.updateRawImage(newRawImage);
+      this.rawImageFacade.updateRawImagesOnState(newRawImage);
       this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
     });
   }

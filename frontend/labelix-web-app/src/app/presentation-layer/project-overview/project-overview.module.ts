@@ -26,6 +26,7 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
 import {projectImageUploadReducers, projectImageUploadStateName} from '../../core-layer/states/projectImageUploadState';
 import {ImageTimelineComponent} from './image-timeline/image-timeline.component';
 import {ImageTimelineSingleImageComponent} from './image-timeline-single-image/image-timeline-single-image.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import {ImageTimelineSingleImageComponent} from './image-timeline-single-image/i
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    ImageAnnotationModule
+    ImageAnnotationModule,
+    DragDropModule
   ],
   providers: [
     ProjectsFacade,

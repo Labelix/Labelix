@@ -60,7 +60,8 @@ import {NgxImageZoomModule} from 'ngx-image-zoom';
     CocoFormatController
   ],
   exports: [
-    SingleAnnotationExportFormComponent
+    SingleAnnotationExportFormComponent,
+    DragNDropDirective
   ],
     imports: [
         CommonModule,

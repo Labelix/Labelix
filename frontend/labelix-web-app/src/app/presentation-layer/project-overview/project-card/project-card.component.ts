@@ -6,8 +6,8 @@ import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
 import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
-import {ImageServiceService} from '../../../core-layer/services/image-service.service';
 import {IImage} from '../../../core-layer/utility/contracts/IImage';
+import {ImageApi} from '../../../core-layer/services/image-api.service';
 
 @Component({
   selector: 'app-project-card',
@@ -27,7 +27,7 @@ export class ProjectCardComponent implements OnInit {
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
               private cocoController: CocoFormatController,
-              private imageService: ImageServiceService) {
+              private imageService: ImageApi) {
   }
 
   ngOnInit(): void {
@@ -46,7 +46,7 @@ export class ProjectCardComponent implements OnInit {
 
   onProjectLoad(input) {
     this.annotationFacade.resetAnnotationState();
-    this.rawImageFacade.clearRawImages();
+    this.rawImageFacade.clearRawImagesOnState();
     this.addRawImages(input);
     let coco;
     if (input.label !== null && input.label !== '') {

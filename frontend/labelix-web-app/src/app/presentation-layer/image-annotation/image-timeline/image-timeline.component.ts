@@ -15,10 +15,10 @@ export class ImageTimelineComponent implements OnInit {
   listOfRawImages: IRawImage[];
 
   ngOnInit(): void {
-    this.rawImageFacade.files$.subscribe(value => {
+    this.rawImageFacade.rawImages$.subscribe(value => {
       this.listOfRawImages = value;
       for (const item of this.listOfRawImages) {
-        if (item.base64Url === undefined || item.base64Url === "") {
+        if (item.base64Url === undefined || item.base64Url === '') {
           this.getBase64(item);
         }
       }
@@ -28,7 +28,7 @@ export class ImageTimelineComponent implements OnInit {
   private getBase64(item: IRawImage) {
     const reader = new FileReader();
     reader.addEventListener('load', (event: any) => {
-      this.rawImageFacade.addBase64CodeToIFile({
+      this.rawImageFacade.addBase64CodeToRawImageOnState({
         id: item.id,
         baseCode: event.target.result
       });

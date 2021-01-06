@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
-import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageUploadFacade';
+import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 
 @Component({
   selector: 'app-image-timeline',
@@ -10,13 +10,14 @@ import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageU
 export class ImageTimelineComponent implements OnInit {
   listOfRawImages: IRawImage[];
 
-  constructor(private rawImageFacade: ProjectImageUploadFacade) {
+  constructor(private rawImageFacade: RawImageFacade) {
   }
+
   ngOnInit(): void {
     this.rawImageFacade.rawImages$.subscribe(value => {
       this.listOfRawImages = value;
       for (const item of this.listOfRawImages) {
-        if (item.base64Url === undefined) {
+        if (item.base64Url === undefined || item.base64Url === '') {
           this.getBase64(item);
         }
       }
@@ -26,7 +27,7 @@ export class ImageTimelineComponent implements OnInit {
   private getBase64(item: IRawImage) {
     const reader = new FileReader();
     reader.addEventListener('load', (event: any) => {
-      this.rawImageFacade.addBase64CodeToIFile({
+      this.rawImageFacade.addBase64CodeToRawImageOnState({
         id: item.id,
         baseCode: event.target.result
       });

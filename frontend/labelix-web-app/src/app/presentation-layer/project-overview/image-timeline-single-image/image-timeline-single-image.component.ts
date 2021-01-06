@@ -9,7 +9,7 @@ import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageU
 })
 export class ImageTimelineSingleImageComponent implements OnInit {
 
-  constructor(private projectImageUploadFacade: ProjectImageUploadFacade) {
+  constructor(private rawImageFacade: ProjectImageUploadFacade) {
   }
 
   @Input()
@@ -18,6 +18,6 @@ export class ImageTimelineSingleImageComponent implements OnInit {
   ngOnInit(): void {
   }
   onImageClick(){
-    this.projectImageUploadFacade.deleteImage(this.myImage);
+    this.rawImageFacade.deleteImage(this.myImage);
   }
 }

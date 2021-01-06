@@ -35,7 +35,7 @@ export class SingleAnnotationExportFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
-    this.rawImageFacade.files$.subscribe(value => this.currentRawImages = value);
+    this.rawImageFacade.rawImages$.subscribe(value => this.currentRawImages = value);
     this.labelCategoryFacade.labelCategories$.subscribe(value => this.currentCategoryLabels = value);
   }
 
