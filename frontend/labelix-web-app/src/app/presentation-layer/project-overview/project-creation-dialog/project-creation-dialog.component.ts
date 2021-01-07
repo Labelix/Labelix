@@ -19,7 +19,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   aiModelNames: string[];
-  aiIds: number[] = [1, 2]; // todo set to Config ID wich is seleted
+  aiIds: number[] = [1, 2]; // todo set to Config ID which is selected
   images: IRawImage[];
   imageNumber = 5;
   breakpoint: number;
@@ -76,10 +76,13 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       cocoExport: undefined
     };
 
-    this.projectFacade.postProject(this.project).subscribe(newProject => {
+    this.subscription.add(this.projectFacade.postProject(this.project).subscribe(newProject => {
+
       for (const image of imageData) {
+
         image.projectId = newProject.id;
-        this.rawImageFacade.postImage(image).subscribe(value => {
+
+        this.subscription.add(this.rawImageFacade.postImage(image).subscribe(value => {
           if (value !== undefined && value !== null) {
             this.rawImageFacade.addRawImageToState({
               id: value.id,
@@ -90,10 +93,10 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
               file: undefined
             });
           }
-        });
+        }));
 
       }
-    });
+    }));
 
     this.dialogRef.close();
   }
