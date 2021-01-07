@@ -1,23 +1,30 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-image-upload',
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.css']
 })
-export class ImageUploadComponent implements OnInit {
+export class ImageUploadComponent implements OnInit, OnDestroy {
 
+  subscription: Subscription;
   rawImages: IRawImage[] = [];
 
   @ViewChild('fileDropRef', {static: false}) fileDropEl: ElementRef;
 
   constructor(private rawImageFacade: RawImageFacade) {
-    this.rawImageFacade.rawImages$.subscribe((m) => this.rawImages = m);
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.rawImages = m));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onFileDropped($event) {

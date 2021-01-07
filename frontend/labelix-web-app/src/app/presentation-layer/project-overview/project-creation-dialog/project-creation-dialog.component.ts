@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {FormControl} from '@angular/forms';
@@ -7,13 +7,16 @@ import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
 import {IImage} from '../../../core-layer/utility/contracts/IImage';
 import {MatDialogRef} from '@angular/material/dialog';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-project-creation-dialog',
   templateUrl: './project-creation-dialog.component.html',
   styleUrls: ['./project-creation-dialog.component.css']
 })
-export class ProjectCreationDialogComponent implements OnInit {
+export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   aiModelNames: string[];
   aiIds: number[] = [1, 2]; // todo set to Config ID wich is seleted
@@ -30,23 +33,29 @@ export class ProjectCreationDialogComponent implements OnInit {
               private projectFacade: ProjectsFacade,
               private aiModelConfigFacade: AiModelConfigFacade,
               private rawImageFacade: RawImageFacade) {
-    this.rawImageFacade.rawImages$.subscribe((m) => this.images = m);
-    this.dialogRef.afterClosed().subscribe(() => {
-      this.rawImageFacade.clearRawImagesOnState();
-    });
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
-    this.changeRelation(window.innerWidth);
-    this.rawImageFacade.clearRawImagesOnState();
-    this.aiModelConfigFacade.getConfigs();
-    this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+    this.subscription.add(this.dialogRef.afterClosed().subscribe(() => {
+      this.rawImageFacade.clearRawImagesOnState();
+    }));
+    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
       const names: string[] = [];
       value.forEach(value1 => {
         names.push(value1.name);
       });
       this.aiModelNames = names;
-    });
+    }));
+
+    this.changeRelation(window.innerWidth);
+    this.rawImageFacade.clearRawImagesOnState();
+    this.aiModelConfigFacade.getConfigs();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onOkSubmit() {

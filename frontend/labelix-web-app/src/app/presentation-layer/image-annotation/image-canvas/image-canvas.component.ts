@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {fromEvent} from 'rxjs';
+import {fromEvent, Subscription} from 'rxjs';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
 import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
@@ -33,13 +33,16 @@ import {CocoFormatController} from '../../../core-layer/controller/CocoFormatCon
   styleUrls: ['./image-canvas.component.css']
 })
 
-export class ImageCanvasComponent implements OnInit, AfterViewInit {
+export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
               private categoryLabelFacade: LabelCategoryFacade,
               private cocoController: CocoFormatController) {
+    this.subscription = new Subscription();
   }
+
+  subscription: Subscription;
 
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
@@ -83,35 +86,42 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
-    this.categoryLabelFacade.resetCategoryLabelState();
+    this.subscription.add(this.categoryLabelFacade.resetCategoryLabelState());
 
-    this.rawImageFacade.rawImages$.subscribe(value => {
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe(value => {
       this.rawImages = value;
       this.setAnnotationsFromCoco();
-    });
-    this.annotationFacade.activeProject.subscribe(value => {
+    }));
+
+    this.subscription.add(this.annotationFacade.activeProject.subscribe(value => {
       this.activeProject = value;
       this.setAnnotationsFromCoco();
-    });
-    this.categoryLabelFacade.labelCategories$.subscribe(value => this.categories = value);
+    }));
 
-    this.annotationFacade.currentAnnotationImage.subscribe(value => {
+    this.subscription.add(this.categoryLabelFacade.labelCategories$.subscribe(value => this.categories = value));
+
+    this.subscription.add(this.annotationFacade.currentAnnotationImage.subscribe(value => {
       if (value !== undefined) {
         this.activeRawImage = value;
         this.readDataFromRawImage();
         this.redrawCanvas();
       }
-    });
-    this.annotationFacade.currentImageAnnotations.subscribe(value => {
+    }));
+
+    this.subscription.add(this.annotationFacade.currentImageAnnotations.subscribe(value => {
       this.currentImageAnnotations = value;
       this.readDataFromRawImage();
       this.redrawCanvas();
-    });
+    }));
 
-    this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
-    this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activeAnnotation = value);
-    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
-    this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
+    this.subscription.add(this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value));
+    this.subscription.add(this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activeAnnotation = value));
+    this.subscription.add(this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value));
+    this.subscription.add(this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   readDataFromRawImage() {

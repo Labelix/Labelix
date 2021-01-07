@@ -1,28 +1,36 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-image-timeline',
   templateUrl: './image-timeline.component.html',
   styleUrls: ['./image-timeline.component.css']
 })
-export class ImageTimelineComponent implements OnInit {
+export class ImageTimelineComponent implements OnInit, OnDestroy {
 
-  constructor(private rawImageFacade: RawImageFacade) {
-  }
+  subscription: Subscription;
 
   listOfRawImages: IRawImage[];
 
+  constructor(private rawImageFacade: RawImageFacade) {
+    this.subscription = new Subscription();
+  }
+
   ngOnInit(): void {
-    this.rawImageFacade.rawImages$.subscribe(value => {
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe(value => {
       this.listOfRawImages = value;
       for (const item of this.listOfRawImages) {
         if (item.base64Url === undefined || item.base64Url === '') {
           this.getBase64(item);
         }
       }
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private getBase64(item: IRawImage) {

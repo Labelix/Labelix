@@ -9,11 +9,11 @@ import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageU
 })
 export class ImageTimelineSingleImageComponent implements OnInit {
 
-  constructor(private rawImageFacade: ProjectImageUploadFacade) {
-  }
-
   @Input()
   myImage: IRawImage;
+
+  constructor(private rawImageFacade: ProjectImageUploadFacade) {
+  }
 
   ngOnInit(): void {
   }

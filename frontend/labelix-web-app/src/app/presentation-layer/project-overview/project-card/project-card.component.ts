@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
 import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
@@ -8,18 +8,19 @@ import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacad
 import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
 import {IImage} from '../../../core-layer/utility/contracts/IImage';
 import {ImageApi} from '../../../core-layer/services/image-api.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-project-card',
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.css']
 })
-export class ProjectCardComponent implements OnInit {
+export class ProjectCardComponent implements OnInit, OnDestroy {
 
+  subscription: Subscription;
   @Input()
   myProject: IProject;
   firstImage: IImage;
-
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
@@ -28,11 +29,15 @@ export class ProjectCardComponent implements OnInit {
               private rawImageFacade: RawImageFacade,
               private cocoController: CocoFormatController,
               private imageService: ImageApi) {
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
-    // tslint:disable-next-line:max-line-length
-    this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value; });
+    this.subscription.add(this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value; }));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onStartAnnotating(): void {

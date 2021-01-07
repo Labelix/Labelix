@@ -1,21 +1,29 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
 
-  constructor(private annotationFacade: AnnotationFacade) {
-  }
+  subscription: Subscription;
 
   currentAnnotationMode: AnnotationMode;
 
+  constructor(private annotationFacade: AnnotationFacade) {
+    this.subscription = new Subscription();
+  }
+
   ngOnInit(): void {
-    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
+    this.subscription.add(this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   clickToolbarItem(input: number) {
