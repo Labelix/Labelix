@@ -70,7 +70,21 @@ export class ProjectConclusionDialogComponent implements OnInit {
       cocoExport: undefined
     });
 
-    this.projectFacade.putProject(this.activeProject);
+    // images always have to be transferred separately because the json object would become to large as it stands now 6.1.2020
+    const transferObject: IProject = {
+      images: [],
+      id: this.activeProject.id,
+      AIModelConfig: this.activeProject.AIModelConfig,
+      cocoExport: this.activeProject.cocoExport,
+      creationDate: this.activeProject.creationDate,
+      description: this.activeProject.description,
+      finishedAnnotation: this.activeProject.finishedAnnotation,
+      label: this.activeProject.label,
+      name: this.activeProject.name,
+      timestamp: this.activeProject.timestamp
+    };
+
+    this.projectFacade.putProject(transferObject);
     this.router.navigate(['projects']);
     this.dialogRef.close();
   }
