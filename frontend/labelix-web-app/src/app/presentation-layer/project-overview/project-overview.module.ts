@@ -10,7 +10,6 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ProjectsFacade} from '../../abstraction-layer/ProjectsFacade';
-import {MaterialModule} from '../../material.module';
 import {StoreModule} from '@ngrx/store';
 import {featureStateName, projectReducers} from '../../core-layer/states/projectState';
 import { AddProjectCardComponent } from './add-project-card/add-project-card.component';
@@ -27,6 +26,15 @@ import {projectImageUploadReducers, projectImageUploadStateName} from '../../cor
 import {ImageTimelineComponent} from './image-timeline/image-timeline.component';
 import {ImageTimelineSingleImageComponent} from './image-timeline-single-image/image-timeline-single-image.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSliderModule} from '@angular/material/slider';
+import {_MatMenuDirectivesModule, MatMenuModule} from '@angular/material/menu';
+import {MatInputModule} from '@angular/material/input';
+import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -50,17 +58,27 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     StoreModule.forFeature(projectImageUploadStateName, projectImageUploadReducers),
     MatButtonModule,
     MatProgressSpinnerModule,
-    MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     ImageAnnotationModule,
-    DragDropModule
+    DragDropModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatSliderModule,
+    _MatMenuDirectivesModule,
+    MatMenuModule,
+    MatInputModule,
+    MatDialogModule
   ],
   providers: [
     ProjectsFacade,
     AiModelConfigFacade,
     AnnotationFacade,
-    RawImageFacade
+    RawImageFacade,
+    MatDialog
   ]
 })
 export class ProjectOverviewModule { }
