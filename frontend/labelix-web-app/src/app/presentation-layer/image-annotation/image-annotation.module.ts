@@ -13,7 +13,6 @@ import {featureStateName, rawImageReducers} from '../../core-layer/states/rawIma
 import {labelCategoryName, labelCategoryReducers} from '../../core-layer/states/labelCategoryState';
 import { ImageCanvasComponent } from './image-canvas/image-canvas.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import {MaterialModule} from '../../material.module';
 import { MouseWheelDirective } from './directives/mouse-wheel.directive';
 import { LabelWidgetComponent } from './label-widget/label-widget.component';
 import {LabelCategoryFacade} from '../../abstraction-layer/LabelCategoryFacade';
@@ -32,6 +31,16 @@ import {CocoFormatController} from '../../core-layer/controller/CocoFormatContro
 import { LabelSettingsDialogComponent } from './label-settings-dialog/label-settings-dialog.component';
 import {ColorChromeModule} from 'ngx-color/chrome';
 import {NgxImageZoomModule} from 'ngx-image-zoom';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -57,25 +66,36 @@ import {NgxImageZoomModule} from 'ngx-image-zoom';
     LabelCategoryFacade,
     AnnotationFacade,
     ProjectsFacade,
-    CocoFormatController
+    CocoFormatController,
+    MatDialog,
+    MatSnackBar
   ],
   exports: [
     SingleAnnotationExportFormComponent,
     DragNDropDirective
   ],
-    imports: [
-        CommonModule,
-        ImageAnnotationRoutingModule,
-        DragDropModule,
-        FormsModule,
-        StoreModule.forFeature(featureStateName, rawImageReducers),
-        StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-        StoreModule.forFeature(annotationStateName, annotationStateReducers),
-        EffectsModule.forFeature([RawImageEffects]),
-        MaterialModule,
-        ColorChromeModule,
-        NgxImageZoomModule,
-    ]
+  imports: [
+    CommonModule,
+    ImageAnnotationRoutingModule,
+    DragDropModule,
+    FormsModule,
+    StoreModule.forFeature(featureStateName, rawImageReducers),
+    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+    StoreModule.forFeature(annotationStateName, annotationStateReducers),
+    EffectsModule.forFeature([RawImageEffects]),
+    ColorChromeModule,
+    NgxImageZoomModule,
+    MatCardModule,
+    MatListModule,
+    MatGridListModule,
+    MatFormFieldModule,
+    MatChipsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatDialogModule,
+    MatSnackBarModule
+  ]
 })
 export class ImageAnnotationModule {
 }
