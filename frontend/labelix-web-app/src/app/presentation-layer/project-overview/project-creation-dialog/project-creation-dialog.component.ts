@@ -71,14 +71,16 @@ export class ProjectCreationDialogComponent implements OnInit {
       for (const image of imageData) {
         image.projectId = newProject.id;
         this.rawImageFacade.postImage(image).subscribe(value => {
-          this.rawImageFacade.addRawImageToState({
-            id: value.id,
-            height: undefined,
-            width: undefined,
-            base64Url: value.Data,
-            name: value.name,
-            file: undefined
-          });
+          if (value !== undefined && value !== null) {
+            this.rawImageFacade.addRawImageToState({
+              id: value.id,
+              height: undefined,
+              width: undefined,
+              base64Url: value.Data,
+              name: value.name,
+              file: undefined
+            });
+          }
         });
 
       }
