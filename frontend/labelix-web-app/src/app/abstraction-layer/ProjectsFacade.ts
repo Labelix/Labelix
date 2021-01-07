@@ -35,7 +35,7 @@ export class ProjectsFacade {
   }
 
   putProject(data: IProject) {
-    this.projectApi.updateProject(data).subscribe(value => console.log(value));
+    this.projectApi.putItem(data).subscribe(value => console.log(value));
   }
   deleteProject(data: IProject){
     this.projectApi.deleteItem(data).subscribe(() => {this.store.dispatch(new DeleteProjectAction(data)); });

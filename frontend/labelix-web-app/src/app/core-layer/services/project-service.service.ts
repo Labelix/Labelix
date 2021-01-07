@@ -14,9 +14,4 @@ export class ProjectServiceService extends GenericApiService<IProject>{
     super(httpClient, oauthService);
     this.urlRoot = 'api/project';
   }
-
-  updateProject(item: IProject): Observable<IProject> {
-    this.setHeader();
-    return this.httpClient.put<IProject>(`${this.urlRoot}/update`, item, {headers: super.headers, responseType: 'json'});
-  }
 }
