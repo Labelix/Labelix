@@ -1,27 +1,35 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {DeleteImageAnnotationDialogComponent} from '../delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-whole-image-annotation-widget',
   templateUrl: './whole-image-annotation-widget.component.html',
   styleUrls: ['./whole-image-annotation-widget.component.css']
 })
-export class WholeImageAnnotationWidgetComponent implements OnInit {
+export class WholeImageAnnotationWidgetComponent implements OnInit, OnDestroy {
 
-  constructor(private facade: AnnotationFacade, private dialog: MatDialog) {
-  }
+  subscription: Subscription;
 
   currentImageAnnotations: IImageAnnotation[];
   activeImage: IRawImage;
 
+  constructor(private facade: AnnotationFacade, private dialog: MatDialog) {
+    this.subscription = new Subscription();
+  }
+
   ngOnInit(): void {
-    this.facade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
-    this.facade.currentAnnotationImage.subscribe(value => this.activeImage = value);
+    this.subscription.add(this.facade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value));
+    this.subscription.add(this.facade.currentAnnotationImage.subscribe(value => this.activeImage = value));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   getRightIcon(mode: AnnotationMode): string {

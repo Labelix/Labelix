@@ -1,13 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
 import {IAIModelConfig} from '../../../core-layer/utility/contracts/IAIModelConfig';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-ai-config-settings',
   templateUrl: './ai-config-settings.component.html',
   styleUrls: ['./ai-config-settings.component.css']
 })
-export class AiConfigSettingsComponent implements OnInit {
+export class AiConfigSettingsComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   configs: IAIModelConfig[];
   currentConfig: LocalConfig;
@@ -16,11 +19,12 @@ export class AiConfigSettingsComponent implements OnInit {
   addMode = false;
 
   constructor(private aiConfigFacade: AiModelConfigFacade) {
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
 
-    this.aiConfigFacade.aiModelConfigs$.subscribe(value => {
+    this.subscription.add(this.aiConfigFacade.aiModelConfigs$.subscribe(value => {
 
       this.configs = value;
       if (this.isInit && this.configs[0] !== undefined) {
@@ -28,9 +32,13 @@ export class AiConfigSettingsComponent implements OnInit {
         this.isInit = false;
       }
 
-    });
+    }));
 
     this.aiConfigFacade.getConfigs();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   selectConfig(other: IAIModelConfig) {

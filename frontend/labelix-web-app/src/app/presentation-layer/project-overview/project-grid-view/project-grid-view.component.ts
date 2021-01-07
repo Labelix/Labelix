@@ -1,25 +1,33 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-project-grid-view',
   templateUrl: './project-grid-view.component.html',
   styleUrls: ['./project-grid-view.component.css']
 })
-export class ProjectGridViewComponent implements OnInit {
+export class ProjectGridViewComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   projects: IProject[] = undefined;
-
   breakpoint: number;
 
   constructor(private projectsFacade: ProjectsFacade) {
-    this.projectsFacade.projects$.subscribe((m) => this.projects = m);
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
+    this.subscription.add(this.projectsFacade.projects$.subscribe((m) => this.projects = m));
+
     this.changeRelation(window.innerWidth);
     this.projectsFacade.getProjects();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onResize(event) {
