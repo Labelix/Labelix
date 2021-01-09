@@ -82,7 +82,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
 
         image.projectId = newProject.id;
 
-        this.subscription.add(this.rawImageFacade.postImage(image).subscribe(value => {
+        this.rawImageFacade.postImage(image).subscribe(value => {
           if (value !== undefined && value !== null) {
             this.rawImageFacade.addRawImageToState({
               id: value.id,
@@ -93,7 +93,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
               file: undefined
             });
           }
-        }));
+        });
 
       }
     }));

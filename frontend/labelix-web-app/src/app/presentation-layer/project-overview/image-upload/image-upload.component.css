@@ -3,8 +3,9 @@
   height: 200px;
   padding: 2rem;
   text-align: center;
-  position: relative;
-  margin: 2em auto;
+  margin: 6em auto;
+  zoom: 0.8;
+  -moz-transform: scale(0.5);
 }
 
 input {
