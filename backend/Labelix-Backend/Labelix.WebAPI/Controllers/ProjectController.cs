@@ -22,11 +22,6 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
         {
-            var b = this.User.Claims.GetUserId();
-            //"fb9d2511-5114-4dbb-b974-4c12b6e25e88"
-            var userController = new UserController();
-            await userController.GetUserId(b);
-
             ImageController imageController = new ImageController();
             Project project = await GetModelByIdAsync(id);
             List<Image> images = (await imageController.GetByProjectId(project.Id)).ToList();
