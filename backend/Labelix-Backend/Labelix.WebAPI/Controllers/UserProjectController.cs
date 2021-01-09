@@ -30,5 +30,10 @@ namespace Labelix.WebAPI.Controllers
         {
             return InsertModelAsync(model);
         }
+
+        public Task AddUserToProject(int userId, int projectId)
+        {
+            return PostAsync(new Model {UserIdKey = userId, ProjectKey = projectId});
+        }
     }
 }
