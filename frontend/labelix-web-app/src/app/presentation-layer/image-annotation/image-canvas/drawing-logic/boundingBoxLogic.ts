@@ -1,5 +1,5 @@
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
-import {AnnotaionMode} from '../../../../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
 import {ICategory} from '../../../../core-layer/utility/contracts/ICategory';
 import {drawAnnotationHeader, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
 import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
@@ -58,7 +58,7 @@ export function onMouseUpBoundingBoxen(
     id: nextAnnotationId,
     categoryLabel: activeLabel,
     area: -1,
-    annotationMode: AnnotaionMode.BOUNDING_BOXES,
+    annotationMode: AnnotationMode.BOUNDING_BOXES,
     isVisible: true
   });
 }
@@ -89,7 +89,7 @@ export function drawExistingAnnotationsBoundingBoxes(
   opacity: number) {
   setCanvasDimensions(canvasEl);
   for (const item of elements) {
-    if (item.annotationMode === AnnotaionMode.BOUNDING_BOXES
+    if (item.annotationMode === AnnotationMode.BOUNDING_BOXES
       && item.image !== undefined
       && activeRawImage !== undefined
       && item.isVisible

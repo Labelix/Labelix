@@ -9,9 +9,20 @@
       <mat-icon>menu</mat-icon>
     </button>
     <span>Labelix</span>
+    <span class="example-spacer"></span>
+    <span *ngIf="!getClaimName">
+      <button mat-button (click)="login()" style="font-size: 1em">
+        Login
+      </button>
+    </span>
+    <span *ngIf="getClaimName">
+      <button mat-button (click)="logout()" style="font-size: 1em">
+        Logout
+      </button>
+    </span>
   </mat-toolbar>
 
-  <div style="margin-top: 3.35%;">
+  <div style="margin-top: 3.35%;" *ngIf="getClaimName">
     <router-outlet></router-outlet>
   </div>
 

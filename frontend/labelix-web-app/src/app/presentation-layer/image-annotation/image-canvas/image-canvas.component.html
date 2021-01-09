@@ -9,8 +9,8 @@
             [ngStyle]="{backgroundImage: activeRawImage != undefined
                         ? 'url('+activeRawImage.base64Url+')'
                         : 'url()', backgroundSize: 'cover'}"
-            (mouseWheelUp)="mouseWheelUpFunc()"
-            (mouseWheelDown)="mouseWheelDownFunc()"></canvas>
+            (mouseWheelUp)="mouseWheelUpFunc($event)"
+            (mouseWheelDown)="mouseWheelDownFunc($event)"></canvas>
   </div>
 </div>
 

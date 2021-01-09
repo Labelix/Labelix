@@ -1,20 +1,36 @@
-<mat-card class="card" >
+
+<mat-card class="card">
+
   <img class="img" mat-card-image *ngIf="firstImage != null" [src]="firstImage.Data" (click)="onStartAnnotating()">
   <img class="img" mat-card-image *ngIf="firstImage == null" (click)="onStartAnnotating()">
+
   <div class="wrap">
+
     <mat-card-header>
+
       <div mat-card-avatar class="example-header-image" (click)="onStartAnnotating()"></div>
+
       <mat-card-title (click)="onStartAnnotating()">{{myProject.name}}</mat-card-title>
-      <mat-card-subtitle (click)="onStartAnnotating()">{{myProject.description.slice(0, 35)}}</mat-card-subtitle>
+
+      <mat-card-subtitle
+        (click)="onStartAnnotating()">{{myProject.description !== null ? myProject.description.slice(0, 35) : ''}}
+      </mat-card-subtitle>
+
     </mat-card-header>
+    
     <button mat-icon-button [matMenuTriggerFor]="menu" class="option">
       <mat-icon class="moreIcon">more_vert</mat-icon>
     </button>
+
     <mat-menu #menu="matMenu">
+
       <button mat-menu-item (click)="onDeleteClicked()">
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
       </button>
+
     </mat-menu>
+
   </div>
+
 </mat-card>

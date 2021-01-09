@@ -1,32 +1,40 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {AnnotaionMode} from '../../../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
+
+  currentAnnotationMode: AnnotationMode;
 
   constructor(private annotationFacade: AnnotationFacade) {
+    this.subscription = new Subscription();
   }
 
-  currentAnnotationMode: AnnotaionMode;
-
   ngOnInit(): void {
-    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
+    this.subscription.add(this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   clickToolbarItem(input: number) {
     if (input === 0) {
-      this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.WHOLE_IMAGE);
+      this.annotationFacade.changeCurrentAnnotationMode(AnnotationMode.WHOLE_IMAGE);
     } else if (input === 1) {
-      this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.BOUNDING_BOXES);
+      this.annotationFacade.changeCurrentAnnotationMode(AnnotationMode.BOUNDING_BOXES);
     } else if (input === 2){
-      this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.POLYGON);
+      this.annotationFacade.changeCurrentAnnotationMode(AnnotationMode.POLYGON);
     } else {
-      this.annotationFacade.changeCurrentAnnotationMode(AnnotaionMode.SIZING_TOOL);
+      this.annotationFacade.changeCurrentAnnotationMode(AnnotationMode.SIZING_TOOL);
     }
   }
 }

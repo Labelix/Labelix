@@ -352,5 +352,5 @@ backend/Labelix-Backend/Labelix.WebAPI/Ressources/Labels/1_Erstes Project/
 *.pkl
 
 # Damit keine Bilder und Labels auf Github landen
-docker/backendData/Images
-docker/backendData/Labels
+/docker/backendData/Images
+/docker/backendData/Labels

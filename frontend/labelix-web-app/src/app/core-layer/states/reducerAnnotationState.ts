@@ -1,5 +1,5 @@
 import {IRawImage} from '../utility/contracts/IRawImage';
-import {AnnotaionMode} from '../annotaionModeEnum';
+import {AnnotationMode} from '../utility/annotaionModeEnum';
 import {IImageAnnotation} from '../utility/contracts/IImageAnnotation';
 import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
 import {ICategory} from '../utility/contracts/ICategory';
@@ -7,7 +7,7 @@ import {IProject} from '../utility/contracts/IProject';
 
 export interface ReducerAnnotationState {
   currentAnnotatingImage: IRawImage;
-  currentAnnotationMode: AnnotaionMode;
+  currentAnnotationMode: AnnotationMode;
   currentImageAnnotations: IImageAnnotation[];
   activeLabel: ICategory;
   annotationCount: number;
@@ -17,7 +17,7 @@ export interface ReducerAnnotationState {
 
 export const initialAnnotationState: ReducerAnnotationState = {
   currentAnnotatingImage: undefined,
-  currentAnnotationMode: AnnotaionMode.WHOLE_IMAGE,
+  currentAnnotationMode: AnnotationMode.WHOLE_IMAGE,
   currentImageAnnotations: [],
   activeLabel: undefined,
   annotationCount: 1,
@@ -77,7 +77,7 @@ export function annotationReducer(state = initialAnnotationState,
       state.currentImageAnnotations.forEach(value => tmpImages.push(value));
       tmpImages.forEach(value => {
         if (value.image.id === state.currentAnnotatingImage.id
-          && value.annotationMode === AnnotaionMode.WHOLE_IMAGE) {
+          && value.annotationMode === AnnotationMode.WHOLE_IMAGE) {
           tmpImages[tmpImages.indexOf(value)] = {
             categoryLabel: action.payload,
             id: value.id,
@@ -186,10 +186,10 @@ export function annotationReducer(state = initialAnnotationState,
       const tmpAnnotations: IImageAnnotation[] = [];
       let foundWholeImage = false;
       state.currentImageAnnotations.forEach(value => {
-        if (value.annotationMode === AnnotaionMode.WHOLE_IMAGE) {
+        if (value.annotationMode === AnnotationMode.WHOLE_IMAGE) {
           tmpAnnotations.push({
             image: value.image,
-            annotationMode: AnnotaionMode.WHOLE_IMAGE,
+            annotationMode: AnnotationMode.WHOLE_IMAGE,
             categoryLabel: action.payload,
             segmentations: [],
             id: value.id,
@@ -206,7 +206,7 @@ export function annotationReducer(state = initialAnnotationState,
       if (!foundWholeImage) {
         tmpAnnotations.push({
           image: state.currentAnnotatingImage,
-          annotationMode: AnnotaionMode.WHOLE_IMAGE,
+          annotationMode: AnnotationMode.WHOLE_IMAGE,
           categoryLabel: action.payload,
           segmentations: [],
           id: state.annotationCount,
@@ -261,7 +261,7 @@ export function annotationReducer(state = initialAnnotationState,
     case ActionTypes.ResetAnnotationState: {
       return {
         currentAnnotatingImage: undefined,
-        currentAnnotationMode: AnnotaionMode.WHOLE_IMAGE,
+        currentAnnotationMode: AnnotationMode.WHOLE_IMAGE,
         currentImageAnnotations: [],
         activeLabel: undefined,
         annotationCount: 1,

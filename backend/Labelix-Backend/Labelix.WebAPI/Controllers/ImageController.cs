@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Contract = Labelix.Contracts.Persistence.IImage;
 using Model = Labelix.Transfer.Persistence.Image;
 namespace Labelix.WebAPI.Controllers
@@ -13,11 +14,13 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ImageController : GenericController<Contract, Model>
     {
+        [Authorize(Roles = "user")]
         [HttpGet("{id}")]
         public async Task<Model> GetImageAsync(int id)
         {
             return await GetModelByIdAsync(id);
         }
+        [Authorize(Roles = "user")]
         [HttpGet("picture-{id}")]
         public async Task<Data> GetAsyncPicture(int id)
         {
@@ -43,6 +46,7 @@ namespace Labelix.WebAPI.Controllers
             return data;
         }
 
+        [Authorize(Roles = "user")]
         [HttpGet("FirstOfProject-{projectId}")]
         public async Task<Data> FirstOfProject(int projectId)
         {
@@ -60,23 +64,26 @@ namespace Labelix.WebAPI.Controllers
             data.Format = data.Name.Split('.')[1];
             return GetXMLOfBase(data);
         }
-
+        [Authorize(Roles = "user")]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {
             return GetModelsAsync();
         }
+        [Authorize(Roles = "user")]
         [HttpGet("count")]
         public Task<int> GetCountAsync()
         {
             return CountAsync();
         }
+        [Authorize(Roles = "user")]
         [HttpGet("GetByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
             IEnumerable<Model> entities = await GetAllAsync();
             return entities.Where(i => i.ProjectId == projectId);
         }
+        [Authorize(Roles = "admin")]
         [HttpPost("create")]
         public async Task<IActionResult> PostAsync(Data data)
         {
@@ -90,11 +97,15 @@ namespace Labelix.WebAPI.Controllers
             await InsertModelAsync(image);
             return Ok();
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPut("update")]
         public Task<Model> PutAsync(Model model)
         {
             return UpdateModelAsync(model);
         }
+
+        [Authorize(Roles = "admin")]
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
         {
