@@ -1,53 +1,66 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {ProjectState} from '../../../core-layer/states/projectState';
-import {AddProjectAction} from '../../../core-layer/actions/project.actions';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
-import {ProjectServiceService} from '../../../core-layer/services/project-service.service';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {FormControl} from '@angular/forms';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
 import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
-import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageUploadFacade';
 import {IImage} from '../../../core-layer/utility/contracts/IImage';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogRef} from '@angular/material/dialog';
+import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-project-creation-dialog',
   templateUrl: './project-creation-dialog.component.html',
   styleUrls: ['./project-creation-dialog.component.css']
 })
-export class ProjectCreationDialogComponent implements OnInit {
+export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   aiModelNames: string[];
-  aiIds: number[] = [1, 2]; // todo set to Config ID wich is seleted
+  aiIds: number[] = [1, 2]; // todo set to Config ID which is selected
   images: IRawImage[];
   imageNumber = 5;
   breakpoint: number;
-  // tslint:disable-next-line:max-line-length
-  constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>, private projectFacade: ProjectsFacade, private aiModelConfigFacade: AiModelConfigFacade, private imageUploadFacade: ProjectImageUploadFacade) {
-    this.imageUploadFacade.rawImages$.subscribe((m) => this.images = m);
-    this.dialogRef.afterClosed().subscribe(() => { this.imageUploadFacade.deleteAllImages(0); });
-  }
+
   project: IProject;
   newProjectName: string;
   newProjectDescription: string;
   aiModels = new FormControl();
 
+  constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
+              private projectFacade: ProjectsFacade,
+              private aiModelConfigFacade: AiModelConfigFacade,
+              private rawImageFacade: RawImageFacade) {
+    this.subscription = new Subscription();
+  }
+
   ngOnInit(): void {
-    this.changeRelation(window.innerWidth);
-    this.aiModelConfigFacade.getConfigs();
-    this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+    this.subscription.add(this.dialogRef.afterClosed().subscribe(() => {
+      this.rawImageFacade.clearRawImagesOnState();
+    }));
+    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
       const names: string[] = [];
       value.forEach(value1 => {
         names.push(value1.name);
       });
       this.aiModelNames = names;
-    });
+    }));
+
+    this.changeRelation(window.innerWidth);
+    this.rawImageFacade.clearRawImagesOnState();
+    this.aiModelConfigFacade.getConfigs();
   }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   onOkSubmit() {
     const imageData: IImage[] = [];
-    for (const i of this.images){
+    for (const i of this.images) {
       imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
     }
     this.project = {
@@ -56,15 +69,38 @@ export class ProjectCreationDialogComponent implements OnInit {
       description: this.newProjectDescription,
       creationDate: new Date(),
       finishedAnnotation: false,
-      images: imageData,
+      images: [],
       label: '',
       timestamp: undefined,
       AIModelConfig: this.aiIds,
       cocoExport: undefined
     };
-    this.projectFacade.postProject(this.project);
+
+    this.subscription.add(this.projectFacade.postProject(this.project).subscribe(newProject => {
+
+      for (const image of imageData) {
+
+        image.projectId = newProject.id;
+
+        this.subscription.add(this.rawImageFacade.postImage(image).subscribe(value => {
+          if (value !== undefined && value !== null) {
+            this.rawImageFacade.addRawImageToState({
+              id: value.id,
+              height: undefined,
+              width: undefined,
+              base64Url: value.Data,
+              name: value.name,
+              file: undefined
+            });
+          }
+        }));
+
+      }
+    }));
+
     this.dialogRef.close();
   }
+
   onResize(event) {
     this.changeRelation(event.target.innerWidth);
   }

@@ -19,7 +19,7 @@ import {
   SetActiveAnnotation,
   SetCurrentAnnotationPicture, UpdateCategoryOInAnnotations, UpdateImageAnnotation
 } from '../core-layer/actions/image-annotation.actions';
-import {AnnotaionMode} from '../core-layer/annotaionModeEnum';
+import {AnnotationMode} from '../core-layer/utility/annotaionModeEnum';
 import {IImageAnnotation} from '../core-layer/utility/contracts/IImageAnnotation';
 import {ICategory} from '../core-layer/utility/contracts/ICategory';
 import {IProject} from '../core-layer/utility/contracts/IProject';
@@ -28,7 +28,7 @@ import {IProject} from '../core-layer/utility/contracts/IProject';
 export class AnnotationFacade {
 
   currentAnnotationImage: Observable<IRawImage>;
-  currentAnnotationMode: Observable<AnnotaionMode>;
+  currentAnnotationMode: Observable<AnnotationMode>;
   currentImageAnnotations: Observable<IImageAnnotation[]>;
   activeLabel: Observable<ICategory>;
   numberOfCurrentImageAnnotations: Observable<number>;
@@ -49,7 +49,7 @@ export class AnnotationFacade {
     this.store.dispatch(new SetCurrentAnnotationPicture(input));
   }
 
-  changeCurrentAnnotationMode(input: AnnotaionMode) {
+  changeCurrentAnnotationMode(input: AnnotationMode) {
     this.store.dispatch(new ChangeCurrentAnnotationMode(input));
   }
 

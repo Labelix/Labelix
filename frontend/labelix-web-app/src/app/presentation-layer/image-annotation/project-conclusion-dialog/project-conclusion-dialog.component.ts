@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {IProject} from '../../../core-layer/utility/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
@@ -10,13 +10,16 @@ import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacad
 import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
 import {Router} from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-project-conclusion-dialog',
   templateUrl: './project-conclusion-dialog.component.html',
   styleUrls: ['./project-conclusion-dialog.component.css']
 })
-export class ProjectConclusionDialogComponent implements OnInit {
+export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   activeProject: IProject;
   currentCategoryLabels: ICategory[];
@@ -30,14 +33,18 @@ export class ProjectConclusionDialogComponent implements OnInit {
               private labelCategoryFacade: LabelCategoryFacade,
               private cocoFormatter: CocoFormatController,
               private router: Router) {
-
-    annotationFacade.activeProject.subscribe(value => this.activeProject = value);
-    this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value);
-    this.rawImageFacade.files$.subscribe(value => this.currentRawImages = value);
-    this.labelCategoryFacade.labelCategories$.subscribe(value => this.currentCategoryLabels = value);
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
+    this.subscription.add(this.annotationFacade.activeProject.subscribe(value => this.activeProject = value));
+    this.subscription.add(this.annotationFacade.currentImageAnnotations.subscribe(value => this.currentImageAnnotations = value));
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe(value => this.currentRawImages = value));
+    this.subscription.add(this.labelCategoryFacade.labelCategories$.subscribe(value => this.currentCategoryLabels = value));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onSaveWork() {
@@ -70,7 +77,21 @@ export class ProjectConclusionDialogComponent implements OnInit {
       cocoExport: undefined
     });
 
-    this.projectFacade.putProject(this.activeProject);
+    // images always have to be transferred separately because the json object would become to large as it stands now 6.1.2020
+    const transferObject: IProject = {
+      images: [],
+      id: this.activeProject.id,
+      AIModelConfig: this.activeProject.AIModelConfig,
+      cocoExport: this.activeProject.cocoExport,
+      creationDate: this.activeProject.creationDate,
+      description: this.activeProject.description,
+      finishedAnnotation: this.activeProject.finishedAnnotation,
+      label: this.activeProject.label,
+      name: this.activeProject.name,
+      timestamp: this.activeProject.timestamp
+    };
+
+    this.projectFacade.putProject(transferObject);
     this.router.navigate(['projects']);
     this.dialogRef.close();
   }

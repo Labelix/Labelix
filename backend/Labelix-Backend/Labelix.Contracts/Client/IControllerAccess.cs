@@ -18,6 +18,8 @@ namespace Labelix.Contracts.Client
         /// </summary>
         /// <returns>Number of entities in the collection.</returns>
         Task<int> CountAsync();
+
+        Task<IEnumerable<T>> GetAllWhereAsync(Func<T, bool> whereFunc);
         /// <summary>
         /// Returns all interfaces of the entities in the collection.
         /// </summary>

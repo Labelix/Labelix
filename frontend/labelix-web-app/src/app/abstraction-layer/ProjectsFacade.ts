@@ -22,9 +22,12 @@ export class ProjectsFacade {
     });
   }
 
-  postProject(importProject: IProject) {
-    this.projectApi.postItem(importProject).subscribe();
-    this.store.dispatch(new AddProjectAction(importProject));
+  postProject(importProject: IProject): Observable<IProject> {
+    return this.projectApi.postItem(importProject);
+  }
+
+  addProjectToState(project: IProject) {
+    this.store.dispatch(new AddProjectAction(project));
   }
 
   getProjectObservableNyId(id: number): Observable<IProject> {
@@ -32,7 +35,7 @@ export class ProjectsFacade {
   }
 
   putProject(data: IProject) {
-    this.projectApi.updateProject(data).subscribe(value => console.log(value));
+    this.projectApi.putItem(data).subscribe(value => console.log(value));
   }
   deleteProject(data: IProject){
     this.projectApi.deleteItem(data).subscribe(() => {this.store.dispatch(new DeleteProjectAction(data)); });

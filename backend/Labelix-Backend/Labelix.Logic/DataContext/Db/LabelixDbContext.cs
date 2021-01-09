@@ -14,6 +14,8 @@ namespace Labelix.Logic.DataContext.Db
 
         protected DbSet<AIModelConfig> AIConfigSet { get; set; }
         protected DbSet<Project_AIModelConfig> Project_AIConfigSet { get; set; }
+        protected DbSet<User> UserSet { get; set; }
+        protected DbSet<Project_User> Project_UserSet { get; set; }
 
         public override DbSet<E> Set<I, E>()
         {
@@ -39,6 +41,15 @@ namespace Labelix.Logic.DataContext.Db
             {
                 result = Project_AIConfigSet as DbSet<E>;
             }
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IUser))
+            {
+                result = UserSet as DbSet<E>;
+            }
+            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_User))
+            {
+                result = Project_UserSet as DbSet<E>;
+            }
+
 
             return result;
         }
@@ -65,6 +76,8 @@ namespace Labelix.Logic.DataContext.Db
             ConfigureEntityType(modelBuilder.Entity<Project>());
             ConfigureEntityType(modelBuilder.Entity<AIModelConfig>());
             ConfigureEntityType(modelBuilder.Entity<Project_AIModelConfig>());
+            ConfigureEntityType(modelBuilder.Entity<User>());
+            ConfigureEntityType(modelBuilder.Entity<Project_User>());
         }
 
         private void ConfigureEntityType(EntityTypeBuilder<Image> entityTypeBuilder)
@@ -97,6 +110,15 @@ namespace Labelix.Logic.DataContext.Db
         private void ConfigureEntityType(EntityTypeBuilder<Project_AIModelConfig> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("project_ai_model_configs");
+        }
+
+        private void ConfigureEntityType(EntityTypeBuilder<User> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("users");
+        }
+        private void ConfigureEntityType(EntityTypeBuilder<Project_User> entityTypeBuilder)
+        {
+            entityTypeBuilder.ToTable("project_users");
         }
     }
 }

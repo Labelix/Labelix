@@ -9,7 +9,7 @@
   right: 0.5em;
   width: 2em;
   height: 2em;
-  cursor: url("delete2.png"), pointer;
+  cursor: url("../../../../assets/img/delete2.png"), pointer;
 }
 .single-image .image{
   width: 16em;

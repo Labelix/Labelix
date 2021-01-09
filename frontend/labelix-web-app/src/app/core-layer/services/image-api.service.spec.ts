@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-
-import { ImageApiService } from './image-api.service';
+import {ImageApi} from './image-api.service';
 
 describe('ImageApiService', () => {
-  let service: ImageApiService;
+  let service: ImageApi;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ImageApiService);
+    service = TestBed.inject(ImageApi);
   });
 
   it('should be created', () => {
