@@ -97,48 +97,48 @@ namespace Labelix.WebAPI.Controllers
             {
                 labelPath = await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
             }
-            List<Data> removes1 = new List<Data>();
-            List<Data> removes2 = new List<Data>();
+            //List<Data> removes1 = new List<Data>();
+            //List<Data> removes2 = new List<Data>();
 
-            foreach (Data data in model.Images)
-            {
-                bool done = false;
+            //foreach (Data data in model.Images)
+            //{
+            //    bool done = false;
 
-                if (oldProjectConverted.Images != null)
-                {
-                    foreach (var image in oldProjectConverted.Images)
-                    {
-                        if (image.Base64 == data.Base64 && image.Id == data.Id)
-                        {
-                            removes1.Add(data);
-                            removes2.Add(image);
-                            done = true;
-                        }
-                    }
-                }
-                if(!done)
-                {
-                    await Base64Controller.ImageUploadAsync(data);
-                }
-            }
+            //    if (oldProjectConverted.Images != null)
+            //    {
+            //        foreach (var image in oldProjectConverted.Images)
+            //        {
+            //            if (image.Base64 == data.Base64 && image.Id == data.Id)
+            //            {
+            //                removes1.Add(data);
+            //                removes2.Add(image);
+            //                done = true;
+            //            }
+            //        }
+            //    }
+            //    if(!done)
+            //    {
+            //        await Base64Controller.ImageUploadAsync(data);
+            //    }
+            //}
 
-            foreach (var data in removes1)
-            {
-                model.Images.Remove(data);
-            }
+            //foreach (var data in removes1)
+            //{
+            //    model.Images.Remove(data);
+            //}
 
-            foreach (var data in removes2)
-            {
-                oldProjectConverted.Images?.Remove(data);
-            }
+            //foreach (var data in removes2)
+            //{
+            //    oldProjectConverted.Images?.Remove(data);
+            //}
 
-            if (oldProjectConverted.Images != null)
-            {
-                foreach (var data in oldProjectConverted.Images)
-                {
-                    await Base64Controller.RemoveImageAsync(data);
-                }
-            }
+            //if (oldProjectConverted.Images != null)
+            //{
+            //    foreach (var data in oldProjectConverted.Images)
+            //    {
+            //        await Base64Controller.RemoveImageAsync(data);
+            //    }
+            //}
             
             Model newModel = new Project()
             {
