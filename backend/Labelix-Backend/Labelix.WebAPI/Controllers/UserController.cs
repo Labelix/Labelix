@@ -17,7 +17,7 @@ namespace Labelix.WebAPI.Controllers
     {
         public async Task<Contract> GetUserId(string userKeyCloakId)
         {
-            var res = (await GetAllWhereAsync(s => s.Keycloak_id == userKeyCloakId)).FirstOrDefault();
+            var res = (await GetAllWhereAsync(s => s.KeycloakId == userKeyCloakId)).FirstOrDefault();
             if (res == null)
             {
                 return await CreateNewUser(userKeyCloakId);
@@ -30,7 +30,7 @@ namespace Labelix.WebAPI.Controllers
 
         private async Task<Contract>CreateNewUser(string userKeyCloakId)
         {
-            Model model = new Model {Keycloak_id = userKeyCloakId};
+            Model model = new Model {KeycloakId = userKeyCloakId};
             return await InsertModelAsync(model);
         }
 

@@ -10,9 +10,9 @@ namespace Labelix.Transfer.Persistence
         public void CopyProperties(IUser other)
         {
             Id = other.Id;
-            Keycloak_id = other.Keycloak_id;
+            KeycloakId = other.KeycloakId;
         }
 
-        public string Keycloak_id { get; set; }
+        public string KeycloakId { get; set; }
     }
 }

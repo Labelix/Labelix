@@ -1,5 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {labelCategoryReducer, ReducerLabelCategoryState} from './reducerLabelCategoryState';
+import {labelCategoryReducer, ReducerLabelCategoryState} from '../reducers/reducerLabelCategoryState';
 
 export const labelCategoryName = 'labelCategoryFeature';
 

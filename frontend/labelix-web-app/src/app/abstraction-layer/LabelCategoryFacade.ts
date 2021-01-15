@@ -4,7 +4,7 @@ import {
   getAllCurrentCategoryLabels, getNextLabelId,
   getNumberOfExistingLabels,
   LabelCategoryState
-} from '../core-layer/states/labelCategoryState';
+} from '../core-layer/states/state-definitions/labelCategoryState';
 import {Observable} from 'rxjs';
 import {ICategory} from '../core-layer/utility/contracts/ICategory';
 import {AddAnnotationLabel, DeleteCategory, ResetCategoryLabelState, UpdateCategory} from '../core-layer/actions/image-annotation.actions';

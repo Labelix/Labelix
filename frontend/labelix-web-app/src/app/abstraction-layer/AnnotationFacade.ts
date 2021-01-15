@@ -3,7 +3,7 @@ import {
   AnnotationState, getActiveLabel, getActivePolygonAnnotation, getActiveProject,
   getCurrentAnnotatingImage,
   getCurrentAnnotationMode, getCurrentImageAnnotations, getNextAnnotationId
-} from '../core-layer/states/annotationState';
+} from '../core-layer/states/state-definitions/annotationState';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
