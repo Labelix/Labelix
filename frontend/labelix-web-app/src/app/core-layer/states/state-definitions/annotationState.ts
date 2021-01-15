@@ -1,4 +1,4 @@
-import {annotationReducer, ReducerAnnotationState} from './reducerAnnotationState';
+import {annotationReducer, ReducerAnnotationState} from '../reducers/reducerAnnotationState';
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 
 export const annotationStateName = 'annotationStateFeature';

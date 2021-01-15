@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IAIModelConfig} from '../core-layer/utility/contracts/IAIModelConfig';
 import {select, Store} from '@ngrx/store';
-import {AiModelConfigState, GetConfigs} from '../core-layer/states/aiModelConfigState';
+import {AiModelConfigState, GetConfigs} from '../core-layer/states/state-definitions/aiModelConfigState';
 import {AddConfig, AddConfigs, DeleteConfig, UpdateConfig} from '../core-layer/actions/aiModelConfig.actions';
 import {AiModelConfigServiceService} from '../core-layer/services/aiModelConfig-service.service ';
 

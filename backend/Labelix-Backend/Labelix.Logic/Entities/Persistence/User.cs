@@ -7,12 +7,11 @@ namespace Labelix.Logic.Entities.Persistence
 {
     class User : IdentityObject, IUser
     {
+        public string KeycloakId { get; set; }
         public void CopyProperties(IUser other)
         {
             this.Id = other.Id;
-            Keycloak_id = other.Keycloak_id;
+            KeycloakId = other.KeycloakId;
         }
-
-        public string Keycloak_id { get; set; }
     }
 }

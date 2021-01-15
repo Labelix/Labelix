@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ProjectServiceService} from '../core-layer/services/project-service.service';
 import {select, Store} from '@ngrx/store';
-import {getAllProjects, getNumberOfExistingProjects, ProjectState} from '../core-layer/states/projectState';
+import {getAllProjects, getNumberOfExistingProjects, ProjectState} from '../core-layer/states/state-definitions/projectState';
 import {IProject} from '../core-layer/utility/contracts/IProject';
 import {AddProjectAction, DeleteProjectAction, GetProjectsAction} from '../core-layer/actions/project.actions';
 import {Observable} from 'rxjs';

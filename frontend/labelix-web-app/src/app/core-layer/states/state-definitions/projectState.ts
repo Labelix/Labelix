@@ -1,5 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {ReducerProjectState, projectReducer} from './reducerProjectState';
+import {ReducerProjectState, projectReducer} from '../reducers/reducerProjectState';
 
 export const featureStateName = 'projectFeature';
 

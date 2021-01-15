@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ImageApi} from '../core-layer/services/image-api.service';
 import {select, Store} from '@ngrx/store';
-import {getAllRawImages, getNumberOfExistingImages, RawImageState} from '../core-layer/states/rawImageState';
+import {getAllRawImages, getNumberOfExistingImages, RawImageState} from '../core-layer/states/state-definitions/rawImageState';
 import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
 import {Observable} from 'rxjs';
 import {IImage} from '../core-layer/utility/contracts/IImage';
