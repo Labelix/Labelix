@@ -36,14 +36,14 @@ namespace Labelix.WebAPI.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpGet("all")]
-        private Task<IEnumerable<Model>> GetUsers()
+        public Task<IEnumerable<Model>> GetUsers()
         {
             return GetModelsAsync();
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost("addUserToProject-{id}")]
-        private Task AddUserToProject(int projectId , Model model)
+        public Task AddUserToProject(int projectId , Model model)
         {
             return new UserProjectController().AddUserToProject(model.Id, projectId);
         }
