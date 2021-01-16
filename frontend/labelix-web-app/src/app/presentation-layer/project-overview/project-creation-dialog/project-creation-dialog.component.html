@@ -1,3 +1,5 @@
+<h1>Create Project</h1>
+
 <form>
 
   <mat-form-field class="example-full-width">
@@ -48,10 +50,43 @@
 
 </form>
 
+<div>
+
+  <h2>Assign Users</h2>
+
+  <mat-chip-list>
+    <mat-chip *ngFor="let item of selectedUsers">{{item.keycloakId}}</mat-chip>
+    <mat-chip (click)="clickAddSomeone()">+</mat-chip>
+  </mat-chip-list>
+
+  <div *ngIf="addUserMode === true">
+
+    <mat-divider style="margin-top: 1em"></mat-divider>
+
+    <div style="max-height: 20em">
+
+      <mat-selection-list #userSelectionList
+                          (selectionChange)="onGroupsChange(userSelectionList.selectedOptions.selected)">
+
+        <mat-list-option *ngFor="let item of allUsers" [value]="item">
+          {{item.keycloakId}}
+        </mat-list-option>
+
+      </mat-selection-list>
+
+    </div>
+
+    <button mat-raised-button color="primary" (click)="clickDoneAddingSomeone()" style="margin: 1em">Done</button>
+
+  </div>
+
+</div>
+
 <div class="image-header">
+
   <h2>Pictures</h2>
-  <mat-slider class="maxPics" *ngIf="images.length >= breakpoint" thumbLabel tickInterval="1000" [min]="breakpoint-1"
-              max="{{images.length}}" [step]="breakpoint" value="1" [(ngModel)]="imageNumber"></mat-slider>
+  <!--<mat-slider class="maxPics" *ngIf="images.length >= breakpoint" thumbLabel tickInterval="1000" [min]="breakpoint-1"
+              max="{{images.length}}" [step]="breakpoint" value="1" [(ngModel)]="imageNumber"></mat-slider>-->
 </div>
 
 <mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)">
@@ -60,7 +95,7 @@
     <app-image-upload class="image-input"></app-image-upload>
   </mat-grid-tile>
 
-  <mat-grid-tile *ngFor="let image of images.slice(0,imageNumber)">
+  <mat-grid-tile *ngFor="let image of images">
     <app-image-timeline-single-image [myImage]="image"></app-image-timeline-single-image>
   </mat-grid-tile>
 

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {DeleteImageAnnotationDialogComponent} from '../delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {Subscription} from 'rxjs';
 
 @Component({

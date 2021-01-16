@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IAIModelConfig} from '../utility/contracts/IAIModelConfig';
+import {IAIModelConfig} from '../../contracts/IAIModelConfig';
 
 export enum ActionTypes {
   GetConfigNames = '[AIModelConfig] Returns all names of existing AIModelConfigs',

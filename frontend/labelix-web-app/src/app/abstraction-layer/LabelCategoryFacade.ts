@@ -6,8 +6,8 @@ import {
   LabelCategoryState
 } from '../core-layer/states/state-definitions/labelCategoryState';
 import {Observable} from 'rxjs';
-import {ICategory} from '../core-layer/utility/contracts/ICategory';
-import {AddAnnotationLabel, DeleteCategory, ResetCategoryLabelState, UpdateCategory} from '../core-layer/actions/image-annotation.actions';
+import {ICategory} from '../core-layer/contracts/ICategory';
+import {AddAnnotationLabel, DeleteCategory, ResetCategoryLabelState, UpdateCategory} from '../core-layer/states/actions/image-annotation.actions';
 
 @Injectable()
 export class LabelCategoryFacade {

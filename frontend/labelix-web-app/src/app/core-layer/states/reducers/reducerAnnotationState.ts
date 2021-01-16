@@ -1,9 +1,9 @@
-import {IRawImage} from '../../utility/contracts/IRawImage';
+import {IRawImage} from '../../contracts/IRawImage';
 import {AnnotationMode} from '../../utility/annotaionModeEnum';
-import {IImageAnnotation} from '../../utility/contracts/IImageAnnotation';
-import {ActionTypes, ImageAnnotationActions} from '../../actions/image-annotation.actions';
-import {ICategory} from '../../utility/contracts/ICategory';
-import {IProject} from '../../utility/contracts/IProject';
+import {IImageAnnotation} from '../../contracts/IImageAnnotation';
+import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
+import {ICategory} from '../../contracts/ICategory';
+import {IProject} from '../../contracts/IProject';
 
 export interface ReducerAnnotationState {
   currentAnnotatingImage: IRawImage;

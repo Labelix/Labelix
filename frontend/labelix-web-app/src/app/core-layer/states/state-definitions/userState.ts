@@ -1,7 +1,7 @@
 import {ReducerUserState, userReducer} from '../reducers/reducerUserState';
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
 
-export const featureStateName = 'userFeature';
+export const userStateName = 'userFeature';
 
 export interface UserState {
   user: ReducerUserState;
@@ -12,7 +12,7 @@ export const userReducers: ActionReducerMap<UserState> = {
 };
 
 export const getUserState = createFeatureSelector<UserState>(
-  featureStateName
+  userStateName
 );
 
 // Methods to subscribe to

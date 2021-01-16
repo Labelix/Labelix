@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IUser} from '../utility/contracts/IUser';
+import {IUser} from '../../contracts/IUser';
 
 export enum ActionTypes {
   ClearUsers = '[User] Clear users list',

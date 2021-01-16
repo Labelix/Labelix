@@ -1,10 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {
-  ReducerRawImageState,
-  rawImageReducer
-} from '../reducers/reducerRawImageState';
-
-// For the raw image state handling
+import {ReducerRawImageState, rawImageReducer} from '../reducers/reducerRawImageState';
 
 export const featureStateName = 'rawImageFeature';
 

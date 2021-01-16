@@ -23,5 +23,5 @@ export const getAllProjects = createSelector(
 
 export const getNumberOfExistingProjects = createSelector(
   getProjectFeatureState,
-  (state: ProjectState) => this.state.project.projects.length
+  (state: ProjectState) => state.project.projects.length
 );

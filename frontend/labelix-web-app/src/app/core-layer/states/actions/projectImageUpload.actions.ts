@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IRawImage} from '../utility/contracts/IRawImage';
+import {IRawImage} from '../../contracts/IRawImage';
 
 export enum ActionTypes {
   AddRawImages = '[ImageAnnotation] Add RawImages',

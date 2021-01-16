@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {GenericApiService} from '../utility/logic/generic-api.service';
-import {IProject} from '../utility/contracts/IProject';
+import {IProject} from '../contracts/IProject';
 import {HttpClient} from '@angular/common/http';
 import {OAuthService} from 'angular-oauth2-oidc';
 

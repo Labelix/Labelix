@@ -1,9 +1,9 @@
 import {Action} from '@ngrx/store';
-import {IRawImage} from '../utility/contracts/IRawImage';
-import {ICategory} from '../utility/contracts/ICategory';
-import {AnnotationMode} from '../utility/annotaionModeEnum';
-import {IImageAnnotation} from '../utility/contracts/IImageAnnotation';
-import {IProject} from '../utility/contracts/IProject';
+import {IRawImage} from '../../contracts/IRawImage';
+import {ICategory} from '../../contracts/ICategory';
+import {AnnotationMode} from '../../utility/annotaionModeEnum';
+import {IImageAnnotation} from '../../contracts/IImageAnnotation';
+import {IProject} from '../../contracts/IProject';
 
 // TODO split these actions into different files
 export enum ActionTypes {

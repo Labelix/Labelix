@@ -1,5 +1,5 @@
-import {IRawImage} from '../../utility/contracts/IRawImage';
-import {ProjectImageUploadActions, ActionTypes} from '../../actions/projectImageUpload.actions';
+import {IRawImage} from '../../contracts/IRawImage';
+import {ProjectImageUploadActions, ActionTypes} from '../actions/projectImageUpload.actions';
 
 export interface ReducerRawImageState {
   rawImages: IRawImage[];

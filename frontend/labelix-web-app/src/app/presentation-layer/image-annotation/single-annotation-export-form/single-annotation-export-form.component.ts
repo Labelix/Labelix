@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
+import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http';
 import {Subscription} from 'rxjs';
@@ -33,7 +33,7 @@ export class SingleAnnotationExportFormComponent implements OnInit, OnDestroy {
               private rawImageFacade: RawImageFacade,
               private labelCategoryFacade: LabelCategoryFacade,
               private sanitizer: DomSanitizer,
-              private cocoFormatter: CocoFormatController) {
+              private cocoFormatter: CocoFormatHelper) {
     this.subscription = new Subscription();
   }
 
