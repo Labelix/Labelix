@@ -6,7 +6,7 @@ import {ImageUploadComponent} from './image-upload/image-upload.component';
 import {FormsModule} from '@angular/forms';
 import {DragNDropDirective} from './directives/drag-ndrop.directive';
 import {RawImageFacade} from '../../abstraction-layer/RawImageFacade';
-import {RawImageEffects} from '../../core-layer/effects/RawImageEffects';
+import {RawImageEffects} from '../../core-layer/states/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {featureStateName, rawImageReducers} from '../../core-layer/states/state-definitions/rawImageState';
@@ -27,7 +27,7 @@ import { ImageTimelineComponent } from './image-timeline/image-timeline.componen
 import { ImageTimelineSingleImageComponent } from './image-timeline-single-image/image-timeline-single-image.component';
 import {ProjectsFacade} from '../../abstraction-layer/ProjectsFacade';
 import { SelectedLabelWidgetComponent } from './selected-label-widget/selected-label-widget.component';
-import {CocoFormatController} from '../../core-layer/controller/CocoFormatController';
+import {CocoFormatHelper} from '../../core-layer/utility/helper/coco-format-helper.service';
 import { LabelSettingsDialogComponent } from './label-settings-dialog/label-settings-dialog.component';
 import {ColorChromeModule} from 'ngx-color/chrome';
 import {NgxImageZoomModule} from 'ngx-image-zoom';
@@ -66,7 +66,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     LabelCategoryFacade,
     AnnotationFacade,
     ProjectsFacade,
-    CocoFormatController,
+    CocoFormatHelper,
     MatDialog,
     MatSnackBar
   ],

@@ -1,5 +1,5 @@
-import {IProject} from '../../utility/contracts/IProject';
-import {ActionTypes, ProjectActions} from '../../actions/project.actions';
+import {IProject} from '../../contracts/IProject';
+import {ActionTypes, ProjectActions} from '../actions/project.actions';
 
 export interface ReducerProjectState {
   projects: IProject[];

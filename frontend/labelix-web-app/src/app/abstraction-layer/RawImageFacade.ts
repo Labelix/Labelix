@@ -2,16 +2,16 @@ import {Injectable} from '@angular/core';
 import {ImageApi} from '../core-layer/services/image-api.service';
 import {select, Store} from '@ngrx/store';
 import {getAllRawImages, getNumberOfExistingImages, RawImageState} from '../core-layer/states/state-definitions/rawImageState';
-import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../core-layer/contracts/IRawImage';
 import {Observable} from 'rxjs';
-import {IImage} from '../core-layer/utility/contracts/IImage';
+import {IImage} from '../core-layer/contracts/IImage';
 import {
   AddBase64CodeToIFile,
   AddRawImage,
   AddRawImages, DeleteAllImages,
   DeleteRawImage,
   UpdateRawImage
-} from '../core-layer/actions/projectImageUpload.actions';
+} from '../core-layer/states/actions/projectImageUpload.actions';
 
 @Injectable()
 export class RawImageFacade {

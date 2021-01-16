@@ -1,5 +1,5 @@
-import {IAIModelConfig} from '../../utility/contracts/IAIModelConfig';
-import {ActionTypes, AiModelConfigActions} from '../../actions/aiModelConfig.actions';
+import {IAIModelConfig} from '../../contracts/IAIModelConfig';
+import {ActionTypes, AiModelConfigActions} from '../actions/aiModelConfig.actions';
 
 export interface ReducerAiModelConfigState {
   aiModelConfigs: IAIModelConfig[];

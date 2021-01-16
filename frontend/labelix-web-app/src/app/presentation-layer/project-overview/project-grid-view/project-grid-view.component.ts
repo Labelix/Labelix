@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {Subscription} from 'rxjs';
 

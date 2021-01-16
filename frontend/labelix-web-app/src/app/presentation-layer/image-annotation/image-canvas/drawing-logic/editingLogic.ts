@@ -1,6 +1,6 @@
 import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
-import {IImageAnnotation} from '../../../../core-layer/utility/contracts/IImageAnnotation';
-import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
+import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
+import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
 import {EditingOption} from '../image-canvas.component';
 

@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {Subscription} from 'rxjs';
 

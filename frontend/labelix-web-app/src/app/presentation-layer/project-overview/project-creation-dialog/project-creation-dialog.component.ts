@@ -1,13 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {FormControl} from '@angular/forms';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
-import {IImage} from '../../../core-layer/utility/contracts/IImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
+import {IImage} from '../../../core-layer/contracts/IImage';
 import {MatDialogRef} from '@angular/material/dialog';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {Subscription} from 'rxjs';
+import {UserFacade} from '../../../abstraction-layer/UserFacade';
+import {IUser} from '../../../core-layer/contracts/IUser';
+import {MatListOption} from '@angular/material/list';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -18,8 +21,6 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  aiModelNames: string[];
-  aiIds: number[] = [1, 2]; // todo set to Config ID which is selected
   images: IRawImage[];
   imageNumber = 5;
   breakpoint: number;
@@ -27,12 +28,20 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   project: IProject;
   newProjectName: string;
   newProjectDescription: string;
+
   aiModels = new FormControl();
+  aiModelNames: string[];
+  aiIds: number[] = [1, 2]; // todo set to Config ID which is selected
+
+  addUserMode = false;
+  allUsers: IUser[];
+  selectedUsers: IUser[] = [];
 
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
               private projectFacade: ProjectsFacade,
               private aiModelConfigFacade: AiModelConfigFacade,
-              private rawImageFacade: RawImageFacade) {
+              private rawImageFacade: RawImageFacade,
+              private userFacade: UserFacade) {
     this.subscription = new Subscription();
   }
 
@@ -48,6 +57,11 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       });
       this.aiModelNames = names;
     }));
+    this.subscription.add(this.userFacade.users$.subscribe(value => this.allUsers = value));
+
+    if (this.allUsers.length === 0) {
+      this.userFacade.getUsers();
+    }
 
     this.changeRelation(window.innerWidth);
     this.rawImageFacade.clearRawImagesOnState();
@@ -99,6 +113,19 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     }));
 
     this.dialogRef.close();
+  }
+
+  clickAddSomeone() {
+    this.addUserMode = true;
+  }
+
+  clickDoneAddingSomeone() {
+    this.addUserMode = false;
+  }
+
+  onGroupsChange(options: MatListOption[]) {
+    this.selectedUsers = [];
+    options.map(o => this.selectedUsers.push(o.value));
   }
 
   onResize(event) {

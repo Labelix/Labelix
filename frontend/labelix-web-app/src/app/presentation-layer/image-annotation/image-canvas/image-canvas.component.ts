@@ -1,11 +1,11 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {fromEvent, Subscription} from 'rxjs';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {
   drawExistingAnnotationsBoundingBoxes,
   onMouseDownBoundingBoxen,
@@ -24,8 +24,8 @@ import {
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
-import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
+import {IProject} from '../../../core-layer/contracts/IProject';
+import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
 
 @Component({
   selector: 'app-image-canvas',
@@ -38,7 +38,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
               private categoryLabelFacade: LabelCategoryFacade,
-              private cocoController: CocoFormatController) {
+              private cocoController: CocoFormatHelper) {
     this.subscription = new Subscription();
   }
 

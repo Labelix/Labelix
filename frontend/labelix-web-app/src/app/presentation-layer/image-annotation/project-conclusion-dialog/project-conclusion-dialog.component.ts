@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
+import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
 import {Router} from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
@@ -31,7 +31,7 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
               private labelCategoryFacade: LabelCategoryFacade,
-              private cocoFormatter: CocoFormatController,
+              private cocoFormatter: CocoFormatHelper,
               private router: Router) {
     this.subscription = new Subscription();
   }

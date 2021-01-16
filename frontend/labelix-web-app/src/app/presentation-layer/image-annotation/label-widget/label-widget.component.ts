@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {LabelSettingsDialogComponent} from '../label-settings-dialog/label-settings-dialog.component';

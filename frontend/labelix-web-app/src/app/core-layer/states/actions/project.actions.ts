@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IProject} from '../utility/contracts/IProject';
+import {IProject} from '../../contracts/IProject';
 
 export enum ActionTypes {
   AddProject = '[Project] Add Projects',

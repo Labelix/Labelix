@@ -1,5 +1,5 @@
-import {IUser} from '../../utility/contracts/IUser';
-import {ActionTypes, UserActions} from '../../actions/user.actions';
+import {IUser} from '../../contracts/IUser';
+import {ActionTypes, UserActions} from '../actions/user.actions';
 
 export interface ReducerUserState {
   users: IUser[];

@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import { ImageUploadComponent } from './image-upload.component';
 describe('ImageUploadComponent', () => {
   let component: ImageUploadComponent;

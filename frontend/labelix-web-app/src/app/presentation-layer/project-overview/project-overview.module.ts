@@ -35,6 +35,11 @@ import {MatSliderModule} from '@angular/material/slider';
 import {_MatMenuDirectivesModule, MatMenuModule} from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatChipsModule} from '@angular/material/chips';
+import {UserFacade} from '../../abstraction-layer/UserFacade';
+import {MatListModule} from '@angular/material/list';
+import {MatRadioModule} from '@angular/material/radio';
+import {userReducers, userStateName} from '../../core-layer/states/state-definitions/userState';
 
 @NgModule({
   declarations: [
@@ -56,6 +61,7 @@ import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog
     StoreModule.forFeature(featureStateName, projectReducers),
     StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
     StoreModule.forFeature(projectImageUploadStateName, projectImageUploadReducers),
+    StoreModule.forFeature(userStateName, userReducers),
     MatButtonModule,
     MatProgressSpinnerModule,
     FormsModule,
@@ -71,13 +77,17 @@ import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog
     _MatMenuDirectivesModule,
     MatMenuModule,
     MatInputModule,
-    MatDialogModule
+    MatDialogModule,
+    MatChipsModule,
+    MatListModule,
+    MatRadioModule
   ],
   providers: [
     ProjectsFacade,
     AiModelConfigFacade,
     AnnotationFacade,
     RawImageFacade,
+    UserFacade,
     MatDialog
   ]
 })

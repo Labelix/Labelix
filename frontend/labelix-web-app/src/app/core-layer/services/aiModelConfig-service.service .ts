@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {GenericApiService} from '../utility/logic/generic-api.service';
 import {HttpClient} from '@angular/common/http';
-import {IAIModelConfig} from '../utility/contracts/IAIModelConfig';
+import {IAIModelConfig} from '../contracts/IAIModelConfig';
 import {OAuthService} from 'angular-oauth2-oidc';
 
 @Injectable({

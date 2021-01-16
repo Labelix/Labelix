@@ -1,12 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
-import {IImage} from '../../../core-layer/utility/contracts/IImage';
+import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
+import {IImage} from '../../../core-layer/contracts/IImage';
 import {ImageApi} from '../../../core-layer/services/image-api.service';
 import {Subscription} from 'rxjs';
 
@@ -27,7 +27,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
               private categoryFacade: LabelCategoryFacade,
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
-              private cocoController: CocoFormatController,
+              private cocoController: CocoFormatHelper,
               private imageService: ImageApi) {
     this.subscription = new Subscription();
   }
