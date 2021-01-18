@@ -14,7 +14,6 @@ import {EffectsModule} from '@ngrx/effects';
 import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
 import {authConfig} from './auth.config';
 import {JwksValidationHandler} from 'angular-oauth2-oidc-jwks';
-import {NgxImageZoomModule} from 'ngx-image-zoom';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
@@ -35,7 +34,6 @@ import {UserFacade} from './abstraction-layer/UserFacade';
     AppRoutingModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    NgxImageZoomModule,
     OAuthModule.forRoot(),
     MatSidenavModule,
     MatToolbarModule,

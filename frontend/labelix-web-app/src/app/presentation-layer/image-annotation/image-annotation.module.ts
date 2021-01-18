@@ -30,7 +30,6 @@ import { SelectedLabelWidgetComponent } from './selected-label-widget/selected-l
 import {CocoFormatHelper} from '../../core-layer/utility/helper/coco-format-helper.service';
 import { LabelSettingsDialogComponent } from './label-settings-dialog/label-settings-dialog.component';
 import {ColorChromeModule} from 'ngx-color/chrome';
-import {NgxImageZoomModule} from 'ngx-image-zoom';
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -85,7 +84,6 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
         StoreModule.forFeature(annotationStateName, annotationStateReducers),
         EffectsModule.forFeature([RawImageEffects]),
         ColorChromeModule,
-        NgxImageZoomModule,
         MatCardModule,
         MatListModule,
         MatGridListModule,
