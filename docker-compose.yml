@@ -34,7 +34,7 @@ services:
             - DB_USER=keycloak
             - DB_SCHEMA=public
             - DB_PASSWORD=password
-            - KEYCLOAK_IMPORT=/tmp/keycloak/realm_v2.json
+            - KEYCLOAK_IMPORT=/tmp/keycloak/realm.json
             - KEYCLOAK_USER=admin
             - KEYCLOAK_PASSWORD=admin
         ports:
@@ -60,7 +60,18 @@ services:
             - ./docker/backendData/Labels:/app/Ressources/Labels
         networks: 
             - labelixNetwork
-
+    
+    frontend:
+        build: 
+            context: ./frontend/labelix-web-app
+            dockerfile: ./Dockerfile
+        ports: 
+            - 4200:80
+        links:
+            - webapi
+        networks: 
+            - labelixNetwork
+              
     reverseproxy:
         build:
             context: ./docker/reverseproxy
@@ -71,6 +82,7 @@ services:
             - webapi
         networks: 
             - labelixNetwork
+
 volumes: 
     postgres_data:
     postgres-keycloak_data:
