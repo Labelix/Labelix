@@ -1,47 +1,170 @@
+<h1>Create Project</h1>
+
 <form>
+
   <mat-form-field class="example-full-width">
+
     <mat-label>ProjectName</mat-label>
+
     <label>
       <input matInput [(ngModel)]="newProjectName" #projectName maxlength="25" type="text" name="projectName">
     </label>
+
     <mat-hint align="end">{{projectName.value.length}} / 25</mat-hint>
+
   </mat-form-field>
 
 
   <mat-form-field class="example-full-width">
+
     <mat-label>Description</mat-label>
+
     <label>
       <textarea matInput #projectDescription maxlength="200" [(ngModel)]="newProjectDescription"
-          name="projectDescription"></textarea>
+                name="projectDescription"></textarea>
     </label>
+
     <mat-hint align="end">{{projectDescription.value.length}} / 200</mat-hint>
+
   </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>possible AI-Models</mat-label>
-    <mat-select [formControl]="aiModels" multiple>
-      <mat-select-trigger>
-        {{aiModels.value ? aiModels.value[0] : ''}}, {{aiModels.value ? aiModels.value[1] : ''}}
-        , {{aiModels.value ? aiModels.value[2] : ''}}
-        <span *ngIf="aiModels.value?.length > 3" class="example-additional-selection">
-            (+{{aiModels.value.length - 3}} {{aiModels.value?.length === 2 ? 'other' : 'others'}})
-          </span>
-      </mat-select-trigger>
-      <mat-option *ngFor="let aiModel of aiModelNames" [value]="aiModel">{{aiModel}}</mat-option>
-    </mat-select>
-  </mat-form-field>
 </form>
-<div class="image-header">
-  <h2>Bilder</h2>
-  <mat-slider class="maxPics" *ngIf="images.length >= breakpoint" thumbLabel tickInterval="1000" [min]="breakpoint-1" max="{{images.length}}" [step]="breakpoint" value="1" [(ngModel)]="imageNumber"></mat-slider>
+
+<div>
+
+  <h2>Assign AI-Configs</h2>
+
+  <mat-chip-list>
+    <mat-chip *ngFor="let item of selectedAiConfigs">{{item.name}}</mat-chip>
+    <mat-chip (click)="clickAddConfig()">+</mat-chip>
+  </mat-chip-list>
+
+  <div *ngIf="addConfigsMode === true">
+
+    <mat-divider style="margin-top: 1em"></mat-divider>
+
+    <form style="margin: 1em">
+      <mat-form-field>
+
+        <mat-label>Filter</mat-label>
+
+        <label>
+          <input matInput #configInput placeholder="User name..." (input)="filterConfig(configInput.value)"/>
+        </label>
+
+      </mat-form-field>
+
+    </form>
+
+    <div style="max-height: 20em">
+
+      <mat-selection-list #configSelectionList
+                          (selectionChange)="onSelectionListChangesConfig(configSelectionList.selectedOptions.selected)">
+
+        <div *ngFor="let item of filteredAiConfigs">
+
+          <div *ngIf="checkIfConfigAlreadySelected(item) === true">
+            <mat-list-option  [value]="item" [selected]="true">
+              {{item.name}}
+            </mat-list-option>
+          </div>
+
+          <div *ngIf="checkIfConfigAlreadySelected(item) === false">
+            <mat-list-option  [value]="item">
+              {{item.name}}
+            </mat-list-option>
+          </div>
+
+        </div>
+
+      </mat-selection-list>
+
+    </div>
+
+    <button mat-raised-button color="primary" (click)="clickDoneConfigs()" style="margin: 1em">Done</button>
+
+  </div>
+
 </div>
 
-<mat-grid-list [cols]="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)">
+<mat-divider style="margin-top: 1em"></mat-divider>
+
+<div style="margin-top: 2em">
+
+  <h2>Assign Users</h2>
+
+  <mat-chip-list>
+    <mat-chip *ngFor="let item of selectedUsers">{{item.keycloakId}}</mat-chip>
+    <mat-chip (click)="clickAddUser()">+</mat-chip>
+  </mat-chip-list>
+
+  <div *ngIf="addUserMode === true">
+
+    <mat-divider style="margin-top: 1em"></mat-divider>
+
+    <form style="margin: 1em">
+      <mat-form-field>
+
+        <mat-label>Filter</mat-label>
+
+        <label>
+          <input matInput #myInput placeholder="User name..." (input)="filterUser(myInput.value)"/>
+        </label>
+
+      </mat-form-field>
+
+    </form>
+
+    <div style="max-height: 20em">
+
+      <mat-selection-list #userSelectionList
+                          (selectionChange)="onSelectionListChangesUser(userSelectionList.selectedOptions.selected)">
+
+        <div *ngFor="let item of filteredUsers">
+
+          <div *ngIf="checkIfUserAlreadySelected(item) === true">
+            <mat-list-option  [value]="item" [selected]="true">
+              {{item.keycloakId}}
+            </mat-list-option>
+          </div>
+
+          <div *ngIf="checkIfUserAlreadySelected(item) === false">
+            <mat-list-option  [value]="item">
+              {{item.keycloakId}}
+            </mat-list-option>
+          </div>
+
+        </div>
+
+      </mat-selection-list>
+
+    </div>
+
+    <button mat-raised-button color="primary" (click)="clickDoneUser()" style="margin: 1em">Done</button>
+
+  </div>
+
+</div>
+
+<mat-divider style="margin-top: 1em"></mat-divider>
+
+<div class="image-header">
+
+  <h2>Pictures</h2>
+  <!--<mat-slider class="maxPics" *ngIf="images.length >= breakpoint" thumbLabel tickInterval="1000" [min]="breakpoint-1"
+              max="{{images.length}}" [step]="breakpoint" value="1" [(ngModel)]="imageNumber"></mat-slider>-->
+</div>
+
+<mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)">
+
   <mat-grid-tile>
     <app-image-upload class="image-input"></app-image-upload>
   </mat-grid-tile>
-  <mat-grid-tile *ngFor="let image of images.slice(0,imageNumber)">
+
+  <mat-grid-tile *ngFor="let image of images">
     <app-image-timeline-single-image [myImage]="image"></app-image-timeline-single-image>
   </mat-grid-tile>
+
 </mat-grid-list>
+
 <button mat-raised-button color="primary" (click)="onOkSubmit()" class="create-button">Create</button>

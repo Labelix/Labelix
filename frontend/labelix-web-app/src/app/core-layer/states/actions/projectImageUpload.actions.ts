@@ -1,7 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IProject} from '../utility/contracts/IProject';
-import {IRawImage} from '../utility/contracts/IRawImage';
-import {AddConfigs, GetConfigNames} from './aiModelConfig.actions';
+import {IRawImage} from '../../contracts/IRawImage';
 
 export enum ActionTypes {
   AddRawImages = '[ImageAnnotation] Add RawImages',

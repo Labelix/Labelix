@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Labelix.Logic;
-using Contract = Labelix.Contracts.Persistence.IUser;
-using Model = Labelix.Transfer.Persistence.User;
 using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Contract = Labelix.Contracts.Persistence.IUser;
+using Model = Labelix.Transfer.Persistence.User;
 
 namespace Labelix.WebAPI.Controllers
 {
@@ -17,7 +15,7 @@ namespace Labelix.WebAPI.Controllers
     {
         public async Task<Contract> GetUserId(string userKeyCloakId)
         {
-            var res = (await GetAllWhereAsync(s => s.Keycloak_id == userKeyCloakId)).FirstOrDefault();
+            var res = (await GetAllWhereAsync(s => s.KeycloakId == userKeyCloakId)).FirstOrDefault();
             if (res == null)
             {
                 return await CreateNewUser(userKeyCloakId);
@@ -28,9 +26,9 @@ namespace Labelix.WebAPI.Controllers
             }
         }
 
-        private async Task<Contract>CreateNewUser(string userKeyCloakId)
+        public async Task<Contract>CreateNewUser(string userKeyCloakId)
         {
-            Model model = new Model {Keycloak_id = userKeyCloakId};
+            Model model = new Model {KeycloakId = userKeyCloakId};
             return await InsertModelAsync(model);
         }
 
@@ -42,7 +40,7 @@ namespace Labelix.WebAPI.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost("addUserToProject-{id}")]
+        [HttpPost("addUserToProject-{projectId}")]
         public Task AddUserToProject(int projectId , Model model)
         {
             return new UserProjectController().AddUserToProject(model.Id, projectId);

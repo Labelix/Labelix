@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 
 @Component({

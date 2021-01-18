@@ -1,8 +1,8 @@
-import {IImageAnnotation} from '../../../../core-layer/utility/contracts/IImageAnnotation';
+import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
-import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
 import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
-import {ICategory} from '../../../../core-layer/utility/contracts/ICategory';
+import {ICategory} from '../../../../core-layer/contracts/ICategory';
 import {drawAnnotationHeader, hexToRGB} from './drawingUtilLogic';
 
 export function onMouseDownPolygon(value: MouseEvent, canvasEl: HTMLCanvasElement, activeAnnotation: IImageAnnotation,

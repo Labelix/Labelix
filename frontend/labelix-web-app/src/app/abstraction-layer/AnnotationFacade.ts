@@ -3,10 +3,10 @@ import {
   AnnotationState, getActiveLabel, getActivePolygonAnnotation, getActiveProject,
   getCurrentAnnotatingImage,
   getCurrentAnnotationMode, getCurrentImageAnnotations, getNextAnnotationId
-} from '../core-layer/states/annotationState';
+} from '../core-layer/states/state-definitions/annotationState';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../core-layer/contracts/IRawImage';
 import {
   AddImageAnnotation,
   AddPositionToActivePolygonAnnotation,
@@ -18,11 +18,11 @@ import {
   IncrementAnnotationCount, ReplaceActiveProject, ResetActiveImageAnnotation, ResetAnnotationState,
   SetActiveAnnotation,
   SetCurrentAnnotationPicture, UpdateCategoryOInAnnotations, UpdateImageAnnotation
-} from '../core-layer/actions/image-annotation.actions';
+} from '../core-layer/states/actions/image-annotation.actions';
 import {AnnotationMode} from '../core-layer/utility/annotaionModeEnum';
-import {IImageAnnotation} from '../core-layer/utility/contracts/IImageAnnotation';
-import {ICategory} from '../core-layer/utility/contracts/ICategory';
-import {IProject} from '../core-layer/utility/contracts/IProject';
+import {IImageAnnotation} from '../core-layer/contracts/IImageAnnotation';
+import {ICategory} from '../core-layer/contracts/ICategory';
+import {IProject} from '../core-layer/contracts/IProject';
 
 @Injectable()
 export class AnnotationFacade {

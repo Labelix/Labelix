@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {Subscription} from 'rxjs';
 
 @Component({

@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
-import {ImageAnnotationHelper} from '../../../core-layer/helper/image-annotation-helper';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {ImageAnnotationHelper} from '../../../core-layer/utility/helper/image-annotation-helper';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
 

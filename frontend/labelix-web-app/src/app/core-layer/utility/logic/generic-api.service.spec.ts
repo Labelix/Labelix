@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { GenericApiService } from './generic-api.service';
-import {IIdentifiable} from '../contracts/IIdentifiable';
+import {IIdentifiable} from '../../contracts/IIdentifiable';
 
 describe('GenericApiService', () => {
   let service: GenericApiService<IIdentifiable>;

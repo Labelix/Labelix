@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {GenericApiService} from '../utility/logic/generic-api.service';
-import {IAILabelInfo} from '../utility/contracts/IAILabelInfo';
+import {IAILabelInfo} from '../contracts/IAILabelInfo';
 import {HttpClient} from '@angular/common/http';
 import {OAuthService} from 'angular-oauth2-oidc';
 

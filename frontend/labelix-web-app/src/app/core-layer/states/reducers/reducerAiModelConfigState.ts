@@ -1,4 +1,4 @@
-import {IAIModelConfig} from '../utility/contracts/IAIModelConfig';
+import {IAIModelConfig} from '../../contracts/IAIModelConfig';
 import {ActionTypes, AiModelConfigActions} from '../actions/aiModelConfig.actions';
 
 export interface ReducerAiModelConfigState {
@@ -74,7 +74,7 @@ export function aiModelConfigReducer(
 
     case ActionTypes.DeleteConfig: {
 
-      let configs: IAIModelConfig[] = [];
+      const configs: IAIModelConfig[] = [];
 
       state.aiModelConfigs.forEach(value => configs.push(value));
 
