@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
+RUN npm install -g npm@7.4.2
 RUN npm run build
 
 ### STAGE 2: Run ###
