@@ -23,6 +23,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   @Input()
   myProject: IProject;
   firstImage: IImage;
+  countTries = 0;
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
@@ -41,10 +42,16 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   }
 
   getFirstImageAndLoadIntoState() {
+
     this.subscription.add(this.imageService.getImageByProjectId(this.myProject.id)
       .subscribe(value => {
         this.firstImage = value;
-      }, error => this.getFirstImageAndLoadIntoState()));
+      }, error => {
+        if (this.countTries < 5) {
+          this.getFirstImageAndLoadIntoState();
+          this.countTries++;
+        }
+      }));
   }
 
   ngOnDestroy() {

@@ -55,4 +55,8 @@ export class UserFacade {
       this.store.dispatch(new AddUsers(value));
     });
   }
+
+  addUserToProjectViaId(projectId: number, other: IUser): Observable<any> {
+    return this.userApi.addUserToProject(projectId, other);
+  }
 }

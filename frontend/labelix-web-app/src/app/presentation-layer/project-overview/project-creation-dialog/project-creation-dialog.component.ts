@@ -11,6 +11,7 @@ import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {IUser} from '../../../core-layer/contracts/IUser';
 import {MatListOption} from '@angular/material/list';
 import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
+import {takeUntil, takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -109,6 +110,8 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
         });
       }
       this.projectFacade.addProjectToState(newProject);
+      this.selectedUsers.forEach(value => this.userFacade.addUserToProjectViaId(newProject.id, value)
+        .subscribe());
     }));
 
     this.dialogRef.close();
