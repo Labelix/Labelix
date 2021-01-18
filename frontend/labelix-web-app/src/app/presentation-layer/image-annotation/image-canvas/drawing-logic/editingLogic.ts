@@ -40,7 +40,7 @@ function setEditingFlagPolygon(item: IImageAnnotation, value: MouseEvent, canvas
 function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawImage,
                                    value: MouseEvent, canvasEl: HTMLCanvasElement,
                                    annotationFacade: AnnotationFacade, editingOptions: EditingOption) {
-  const spaceRatio = 0.2;
+  const spaceRatio = 0.15;
 
   const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
   const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
