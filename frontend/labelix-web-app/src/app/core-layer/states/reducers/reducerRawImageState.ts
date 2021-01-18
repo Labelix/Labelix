@@ -1,5 +1,5 @@
-import {IRawImage} from '../utility/contracts/IRawImage';
-import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
+import {IRawImage} from '../../contracts/IRawImage';
+import {ProjectImageUploadActions, ActionTypes} from '../actions/projectImageUpload.actions';
 
 export interface ReducerRawImageState {
   rawImages: IRawImage[];
@@ -11,11 +11,14 @@ export const initialRawImageState: ReducerRawImageState = {
 
 export function rawImageReducer(
   state = initialRawImageState,
-  action: ImageAnnotationActions): ReducerRawImageState {
-  switch (action.type) {
-    case ActionTypes.AddRawImages: {
-      const tempActions: IRawImage[] = [];
+  action: ProjectImageUploadActions): ReducerRawImageState {
 
+  // @ts-ignore
+  switch (action.type) {
+
+    case ActionTypes.AddRawImages: {
+
+      const tempActions: IRawImage[] = [];
       state.rawImages.forEach(value => tempActions.push(value));
       action.payload.forEach(value => tempActions.push(value));
 
@@ -23,6 +26,18 @@ export function rawImageReducer(
         rawImages: tempActions
       };
     }
+
+    case ActionTypes.AddRawImage: {
+
+      const tempActions: IRawImage[] = [];
+      state.rawImages.forEach(value => tempActions.push(value));
+      tempActions.push(action.payload);
+
+      return {
+        rawImages: tempActions
+      };
+    }
+
     case ActionTypes.UpdateRawImage: {
       const tempActions: IRawImage[] = [];
 
@@ -38,6 +53,7 @@ export function rawImageReducer(
         rawImages: tempActions
       };
     }
+
     case ActionTypes.AddBase64CodeToIFile: {
       const tempImages: IRawImage[] = [];
       state.rawImages.forEach(value => {
@@ -58,7 +74,8 @@ export function rawImageReducer(
         rawImages: tempImages
       };
     }
-    case ActionTypes.ClearRawImages: {
+
+    case ActionTypes.DeleteAllImages: {
       return {
         rawImages: []
       };

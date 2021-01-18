@@ -1,17 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
-import {ImageAnnotationHelper} from '../../../core-layer/helper/image-annotation-helper';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {ImageAnnotationHelper} from '../../../core-layer/utility/helper/image-annotation-helper';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-label-settings-dialog',
   templateUrl: './label-settings-dialog.component.html',
   styleUrls: ['./label-settings-dialog.component.css']
 })
-export class LabelSettingsDialogComponent implements OnInit {
+export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   currentLabelCategories: ICategory[];
   imageAnnotations: IImageAnnotation[];
@@ -25,11 +28,12 @@ export class LabelSettingsDialogComponent implements OnInit {
   constructor(private labelFacade: LabelCategoryFacade,
               private annotationFacade: AnnotationFacade,
               private snackBar: MatSnackBar) {
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
 
-    this.labelFacade.labelCategories$.subscribe(value => {
+    this.subscription.add(this.labelFacade.labelCategories$.subscribe(value => {
 
       this.currentLabelCategories = value;
       if (this.firstInit) {
@@ -37,11 +41,15 @@ export class LabelSettingsDialogComponent implements OnInit {
         this.firstInit = false;
       }
 
-    });
+    }));
 
-    this.labelFacade.nextLabelId$.subscribe(value => this.nextLabelId = value);
-    this.annotationFacade.currentImageAnnotations.subscribe(value => this.imageAnnotations = value);
+    this.subscription.add(this.labelFacade.nextLabelId$.subscribe(value => this.nextLabelId = value));
+    this.subscription.add(this.annotationFacade.currentImageAnnotations.subscribe(value => this.imageAnnotations = value));
 
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   copyProperties(other: ICategory) {

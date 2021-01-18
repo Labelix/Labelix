@@ -1,43 +1,66 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {Router} from '@angular/router';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
-import {ImageServiceService} from '../../../core-layer/services/image-service.service';
-import {IImage} from '../../../core-layer/utility/contracts/IImage';
+import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
+import {IImage} from '../../../core-layer/contracts/IImage';
+import {ImageApi} from '../../../core-layer/services/image-api.service';
+import {Subscription} from 'rxjs';
+import {UserFacade} from '../../../abstraction-layer/UserFacade';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-project-card',
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.css']
 })
-export class ProjectCardComponent implements OnInit {
+export class ProjectCardComponent implements OnInit, OnDestroy {
 
+  subscription: Subscription;
   @Input()
   myProject: IProject;
   firstImage: IImage;
-
+  countTries = 0;
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
               private categoryFacade: LabelCategoryFacade,
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
-              private cocoController: CocoFormatController,
-              private imageService: ImageServiceService) {
+              private cocoController: CocoFormatHelper,
+              private userFacade: UserFacade,
+              private imageService: ImageApi,
+              private snackBar: MatSnackBar) {
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
-    // tslint:disable-next-line:max-line-length
-    this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value; });
+    this.getFirstImageAndLoadIntoState();
+  }
+
+  getFirstImageAndLoadIntoState() {
+
+    this.subscription.add(this.imageService.getImageByProjectId(this.myProject.id)
+      .subscribe(value => {
+        this.firstImage = value;
+      }, error => {
+        if (this.countTries < 5) {
+          this.getFirstImageAndLoadIntoState();
+          this.countTries++;
+        }
+      }));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onStartAnnotating(): void {
+    this.snackBar.open('Project loading...');
     this.annotationFacade.changeCurrentAnnotationImage(undefined);
-    this.router.navigate(['/image-annotation/image-view']);
     this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
       // sorry for that ugly thing but it works for now, I guess
       setTimeout(() => this.onProjectLoad(value), 10);
@@ -46,7 +69,7 @@ export class ProjectCardComponent implements OnInit {
 
   onProjectLoad(input) {
     this.annotationFacade.resetAnnotationState();
-    this.rawImageFacade.clearRawImages();
+    this.rawImageFacade.clearRawImagesOnState();
     this.addRawImages(input);
     let coco;
     if (input.label !== null && input.label !== '') {
@@ -55,6 +78,8 @@ export class ProjectCardComponent implements OnInit {
     }
     this.setActiveProject(input, coco);
     this.setCurrentAnnotationImage(input);
+    this.snackBar.dismiss();
+    this.router.navigate(['/image-annotation/image-view']);
   }
 
   addRawImages(input) {
@@ -97,6 +122,10 @@ export class ProjectCardComponent implements OnInit {
       creationDate: input.creationDate,
       description: input.description
     });
+  }
+
+  isAdmin(): boolean {
+    return this.userFacade.isAdmin();
   }
 
   onDeleteClicked() {

@@ -1,3 +1,4 @@
+
 <app-toolbar></app-toolbar>
 
 <div style="display: flex; flex-direction: row;">
@@ -7,8 +8,8 @@
     <canvas #canvas id="canvas" [style.width]="imgWidth + 'px'"
             [style.height]="imgWidth * activeRawImage.height / activeRawImage.width + 'px'" appMouseWheel
             [ngStyle]="{backgroundImage: activeRawImage != undefined
-                        ? 'url('+activeRawImage.base64Url+')'
-                        : 'url()', backgroundSize: 'cover'}"
+                      ? 'url('+activeRawImage.base64Url+')'
+                      : 'url()', backgroundSize: 'cover'}"
             (mouseWheelUp)="mouseWheelUpFunc($event)"
             (mouseWheelDown)="mouseWheelDownFunc($event)"></canvas>
   </div>

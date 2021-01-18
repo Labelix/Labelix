@@ -1,41 +1,63 @@
 import {Injectable} from '@angular/core';
-import {FileApiService} from '../core-layer/services/file-api.service';
+import {ImageApi} from '../core-layer/services/image-api.service';
 import {select, Store} from '@ngrx/store';
-import {getAllRawImages, getNumberOfExistingImages, RawImageState} from '../core-layer/states/rawImageState';
-import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
-import {AddBase64CodeToIFile, AddRawImagesAction, ClearRawImages, UpdateRawImage} from '../core-layer/actions/image-annotation.actions';
+import {getAllRawImages, getNumberOfExistingImages, RawImageState} from '../core-layer/states/state-definitions/rawImageState';
+import {IRawImage} from '../core-layer/contracts/IRawImage';
 import {Observable} from 'rxjs';
+import {IImage} from '../core-layer/contracts/IImage';
+import {
+  AddBase64CodeToIFile,
+  AddRawImage,
+  AddRawImages, DeleteAllImages,
+  DeleteRawImage,
+  UpdateRawImage
+} from '../core-layer/states/actions/projectImageUpload.actions';
 
 @Injectable()
 export class RawImageFacade {
 
-  constructor(private fileApi: FileApiService, private store: Store<RawImageState>) {
-    this.files$ = this.store.pipe(select(getAllRawImages));
+  numberOfImages$: Observable<number>;
+  rawImages$: Observable<IRawImage[]>;
+
+  constructor(private imageApi: ImageApi, private store: Store<RawImageState>) {
+    this.rawImages$ = this.store.pipe(select(getAllRawImages));
     this.numberOfImages$ = this.store.pipe(select(getNumberOfExistingImages));
   }
 
-  numberOfImages$: Observable<number>;
-  files$: Observable<IRawImage[]>;
-
-  uploadRawImages(importImages: IRawImage[]) {
-    this.addRawImagesToState(importImages);
-    // this.fileApi.postListOfRawImages(importImages);
-  }
-
-  updateRawImage(input: IRawImage) {
-    this.store.dispatch(new UpdateRawImage(input));
-  }
-
-  addBase64CodeToIFile(input: { id: number, baseCode: string }) {
-    this.store.dispatch(new AddBase64CodeToIFile({id: input.id, baseCode: input.baseCode}));
+  addRawImageToState(importImage: IRawImage) {
+    this.store.dispatch(new AddRawImage(importImage));
   }
 
   addRawImagesToState(input: IRawImage[]) {
-    this.store.dispatch(new AddRawImagesAction(input));
+    this.store.dispatch(new AddRawImages(input));
   }
 
-  clearRawImages() {
-    this.store.dispatch(new ClearRawImages());
+  updateRawImagesOnState(input: IRawImage) {
+    this.store.dispatch(new UpdateRawImage(input));
+  }
+
+  deleteRawImageOnState(deleteImage: IRawImage) {
+    this.store.dispatch(new DeleteRawImage(deleteImage));
+  }
+
+  clearRawImagesOnState() {
+    this.store.dispatch(new DeleteAllImages());
+  }
+
+  addBase64CodeToRawImageOnState(input: { id: number, baseCode: string }) {
+    this.store.dispatch(new AddBase64CodeToIFile({id: input.id, baseCode: input.baseCode}));
+  }
+
+  postImage(image: IImage): Observable<IImage> {
+    return this.imageApi.postItem(image);
+  }
+
+  putImage(image: IImage): Observable<IImage> {
+    return this.imageApi.putItem(image);
+  }
+
+  deleteImage(image: IImage): Observable<IImage> {
+    return this.imageApi.deleteItem(image);
   }
 
 }

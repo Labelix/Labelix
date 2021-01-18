@@ -1,29 +1,43 @@
-import {Component, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
+import {Subscription} from 'rxjs';
+import {UserFacade} from '../../../abstraction-layer/UserFacade';
 
 @Component({
   selector: 'app-project-grid-view',
   templateUrl: './project-grid-view.component.html',
   styleUrls: ['./project-grid-view.component.css']
 })
-export class ProjectGridViewComponent implements OnInit {
+export class ProjectGridViewComponent implements OnInit, OnDestroy {
+
+  subscription: Subscription;
 
   projects: IProject[] = undefined;
-
   breakpoint: number;
 
-  constructor(private projectsFacade: ProjectsFacade) {
-    this.projectsFacade.projects$.subscribe((m) => this.projects = m);
+  constructor(private projectsFacade: ProjectsFacade,
+              private userFacade: UserFacade) {
+    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
+    this.subscription.add(this.projectsFacade.projects$.subscribe((m) => this.projects = m));
+
     this.changeRelation(window.innerWidth);
     this.projectsFacade.getProjects();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   onResize(event) {
     this.changeRelation(event.target.innerWidth);
+  }
+
+  isAdmin(): boolean {
+    return this.userFacade.isAdmin();
   }
 
   private changeRelation(width) {

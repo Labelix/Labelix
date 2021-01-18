@@ -3,10 +3,12 @@
 }
 
 .create-button{
-  width: 50%;
-  margin-left: 25%;
-  margin-top: 2em;
-  margin-bottom: 2em;
+  width: 8em;
+  font-size: 1em;
+  margin: 2em;
+  position: fixed;
+  bottom: 10%;
+  right: 20%;
 }
 
 .image-header .maxPics{

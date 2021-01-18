@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {fromEvent} from 'rxjs';
+import {fromEvent, Subscription} from 'rxjs';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
-import {IImageAnnotation} from '../../../core-layer/utility/contracts/IImageAnnotation';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {
   drawExistingAnnotationsBoundingBoxes,
   onMouseDownBoundingBoxen,
@@ -24,8 +24,8 @@ import {
 } from './drawing-logic/polygonLogic';
 import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/editingLogic';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
-import {CocoFormatController} from '../../../core-layer/controller/CocoFormatController';
+import {IProject} from '../../../core-layer/contracts/IProject';
+import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
 
 @Component({
   selector: 'app-image-canvas',
@@ -33,13 +33,16 @@ import {CocoFormatController} from '../../../core-layer/controller/CocoFormatCon
   styleUrls: ['./image-canvas.component.css']
 })
 
-export class ImageCanvasComponent implements OnInit, AfterViewInit {
+export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
               private categoryLabelFacade: LabelCategoryFacade,
-              private cocoController: CocoFormatController) {
+              private cocoController: CocoFormatHelper) {
+    this.subscription = new Subscription();
   }
+
+  subscription: Subscription;
 
 
   // start with of 1400px fits the resolution of full hd best (maybe build a dynamic system later)
@@ -59,7 +62,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   private currentImageAnnotations: IImageAnnotation[];
   private currentAnnotationMode: AnnotationMode;
   private activeLabel: ICategory;
-  private rawImages: IRawImage[];
+  rawImages: IRawImage[];
   private categories: ICategory[];
   activeRawImage: IRawImage;
   private activeAnnotation: IImageAnnotation;
@@ -83,35 +86,42 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
-    this.categoryLabelFacade.resetCategoryLabelState();
 
-    this.rawImageFacade.files$.subscribe(value => {
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe(value => {
       this.rawImages = value;
       this.setAnnotationsFromCoco();
-    });
-    this.annotationFacade.activeProject.subscribe(value => {
+    }));
+
+    this.subscription.add(this.annotationFacade.activeProject.subscribe(value => {
       this.activeProject = value;
       this.setAnnotationsFromCoco();
-    });
-    this.categoryLabelFacade.labelCategories$.subscribe(value => this.categories = value);
+    }));
 
-    this.annotationFacade.currentAnnotationImage.subscribe(value => {
+    this.subscription.add(this.categoryLabelFacade.labelCategories$.subscribe(value => this.categories = value));
+
+    this.subscription.add(this.annotationFacade.currentAnnotationImage.subscribe(value => {
       if (value !== undefined) {
         this.activeRawImage = value;
         this.readDataFromRawImage();
         this.redrawCanvas();
       }
-    });
-    this.annotationFacade.currentImageAnnotations.subscribe(value => {
+    }));
+
+    this.subscription.add(this.annotationFacade.currentImageAnnotations.subscribe(value => {
       this.currentImageAnnotations = value;
       this.readDataFromRawImage();
       this.redrawCanvas();
-    });
+    }));
 
-    this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value);
-    this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activeAnnotation = value);
-    this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value);
-    this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value);
+    this.subscription.add(this.annotationFacade.activeLabel.subscribe(value => this.activeLabel = value));
+    this.subscription.add(this.annotationFacade.activePolygonAnnotation.subscribe(value => this.activeAnnotation = value));
+    this.subscription.add(this.annotationFacade.currentAnnotationMode.subscribe(value => this.currentAnnotationMode = value));
+    this.subscription.add(this.annotationFacade.numberOfCurrentImageAnnotations.subscribe(value => this.nextAnnotationId = value));
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.categoryLabelFacade.resetCategoryLabelState();
   }
 
   readDataFromRawImage() {
@@ -125,6 +135,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
   setAnnotationsFromCoco() {
     if (this.activeProject !== undefined
       && this.activeProject.cocoExport !== undefined
+      && this.categories !== undefined
       && this.categories.length > 0
       && this.rawImages.length > 0) {
       this.cocoController.getAnnotationsFromCocoFormat(this.activeProject.cocoExport, this.rawImages, this.categories)
@@ -146,7 +157,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
           base64Url: image.src,
           name: this.activeRawImage.file.name
         };
-        this.rawImageFacade.updateRawImage(newRawImage);
+        this.rawImageFacade.updateRawImagesOnState(newRawImage);
         this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
       };
     });
@@ -165,7 +176,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
         base64Url: image.src,
         name: this.activeRawImage.name
       };
-      this.rawImageFacade.updateRawImage(newRawImage);
+      this.rawImageFacade.updateRawImagesOnState(newRawImage);
       this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
     });
   }
@@ -239,73 +250,75 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
       }
       if (this.currentAnnotationMode === AnnotationMode.SIZING_TOOL) {
         for (const item of this.currentImageAnnotations) {
-          const spaceRatio = 0.2;
-          const clickField = 10;
+          if (item.image.id === this.activeRawImage.id) {
+            const spaceRatio = 0.15;
+            const clickField = 10;
 
-          const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
-          const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
+            const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
+            const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
 
-          if (item.annotationMode === AnnotationMode.BOUNDING_BOXES) {
-            const leftBoxBoundary = this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width, canvasEl.width);
-            const topBoxBoundary = this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height, canvasEl.height);
-            const actualBoundingBoxWidth = this.getActualScale(item.boundingBox.width, this.activeRawImage.width, canvasEl.width);
-            const actualBoundingBoxHeight = this.getActualScale(item.boundingBox.height, this.activeRawImage.height, canvasEl.height);
-            // check if the bounding box can be dragged around based on the mouse position
-            if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
-              && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
-              && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
-              && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos) {
-              this.canvas.nativeElement.style.cursor = 'grab';
-              noAnnotation = false;
-            }
-
-            // check if top side can be modified
-            if (topBoxBoundary <= yMousePos
-              && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
-              && this.checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
-              this.canvas.nativeElement.style.cursor = 'n-resize';
-              noAnnotation = false;
-            }
-
-            // check if left side can be modified
-            if (leftBoxBoundary <= xMousePos
-              && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
-              && this.checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
-              this.canvas.nativeElement.style.cursor = 'w-resize';
-              noAnnotation = false;
-            }
-
-            // check if right side can be modified
-            if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
-              && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
-              && this.checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
-              this.canvas.nativeElement.style.cursor = 'e-resize';
-              noAnnotation = false;
-            }
-
-            // check if bottom side can be modified
-            if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
-              && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
-              && this.checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
-              this.canvas.nativeElement.style.cursor = 's-resize';
-              noAnnotation = false;
-            }
-          }
-          if (item.annotationMode === AnnotationMode.POLYGON) {
-            for (let i = 0; i < item.segmentations.length - 1; i = i + 2) {
-              const xTmp = (item.segmentations[i] * canvasEl.width);
-              const yTmp = (item.segmentations[i + 1] * canvasEl.height);
-              if ((xMousePos > xTmp - clickField
-                && xMousePos < xTmp + clickField)
-                && (yMousePos > yTmp - clickField
-                  && yMousePos < yTmp + clickField)) {
+            if (item.annotationMode === AnnotationMode.BOUNDING_BOXES) {
+              const leftBoxBoundary = this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width, canvasEl.width);
+              const topBoxBoundary = this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height, canvasEl.height);
+              const actualBoundingBoxWidth = this.getActualScale(item.boundingBox.width, this.activeRawImage.width, canvasEl.width);
+              const actualBoundingBoxHeight = this.getActualScale(item.boundingBox.height, this.activeRawImage.height, canvasEl.height);
+              // check if the bounding box can be dragged around based on the mouse position
+              if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
+                && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
+                && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
+                && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos) {
                 this.canvas.nativeElement.style.cursor = 'grab';
                 noAnnotation = false;
               }
+
+              // check if top side can be modified
+              if (topBoxBoundary <= yMousePos
+                && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
+                && this.checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+                this.canvas.nativeElement.style.cursor = 'n-resize';
+                noAnnotation = false;
+              }
+
+              // check if left side can be modified
+              if (leftBoxBoundary <= xMousePos
+                && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
+                && this.checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+                this.canvas.nativeElement.style.cursor = 'w-resize';
+                noAnnotation = false;
+              }
+
+              // check if right side can be modified
+              if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
+                && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
+                && this.checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+                this.canvas.nativeElement.style.cursor = 'e-resize';
+                noAnnotation = false;
+              }
+
+              // check if bottom side can be modified
+              if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
+                && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
+                && this.checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+                this.canvas.nativeElement.style.cursor = 's-resize';
+                noAnnotation = false;
+              }
             }
-          }
-          if (noAnnotation) {
-            this.canvas.nativeElement.style.cursor = 'default';
+            if (item.annotationMode === AnnotationMode.POLYGON) {
+              for (let i = 0; i < item.segmentations.length - 1; i = i + 2) {
+                const xTmp = (item.segmentations[i] * canvasEl.width);
+                const yTmp = (item.segmentations[i + 1] * canvasEl.height);
+                if ((xMousePos > xTmp - clickField
+                  && xMousePos < xTmp + clickField)
+                  && (yMousePos > yTmp - clickField
+                    && yMousePos < yTmp + clickField)) {
+                  this.canvas.nativeElement.style.cursor = 'grab';
+                  noAnnotation = false;
+                }
+              }
+            }
+            if (noAnnotation) {
+              this.canvas.nativeElement.style.cursor = 'default';
+            }
           }
         }
       }
@@ -437,7 +450,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit {
     this.imagePosY = this.imagePosY + (this.repositioning * (yMousePos / this.canvas.nativeElement.getBoundingClientRect().height / 2));
   }
 }
-
 
 
 export class EditingOption {

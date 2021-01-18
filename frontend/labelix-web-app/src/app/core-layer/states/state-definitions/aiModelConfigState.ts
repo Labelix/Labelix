@@ -1,5 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {aiModelConfigReducer, ReducerAiModelConfigState} from './reducerAiModelConfigState';
+import {aiModelConfigReducer, ReducerAiModelConfigState} from '../reducers/reducerAiModelConfigState';
 
 export const featureAiModelConfigStateName = 'aiModelConfigFeature';
 

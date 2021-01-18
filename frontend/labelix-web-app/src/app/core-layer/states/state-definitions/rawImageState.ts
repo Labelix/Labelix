@@ -1,10 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {
-  ReducerRawImageState,
-  rawImageReducer
-} from './reducerRawImageState';
-
-// For the raw image state handling
+import {ReducerRawImageState, rawImageReducer} from '../reducers/reducerRawImageState';
 
 export const featureStateName = 'rawImageFeature';
 
@@ -31,6 +26,3 @@ export const getNumberOfExistingImages = createSelector(
   getRawImageFeatureState,
   (state: RawImageState) => state.rawImage.rawImages.length
 );
-
-
-// TODO divide this file later into multiple

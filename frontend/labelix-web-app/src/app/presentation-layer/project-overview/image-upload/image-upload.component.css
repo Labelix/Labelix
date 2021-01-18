@@ -3,8 +3,9 @@
   height: 200px;
   padding: 2rem;
   text-align: center;
-  position: relative;
-  margin: 2em auto;
+  margin: 6em auto;
+  zoom: 0.8;
+  -moz-transform: scale(0.5);
 }
 
 input {
@@ -15,6 +16,7 @@ input {
   height: 100%;
   top: 0;
   left: 0;
+  cursor: pointer;
 }
 .image{
   margin-top: 2%;

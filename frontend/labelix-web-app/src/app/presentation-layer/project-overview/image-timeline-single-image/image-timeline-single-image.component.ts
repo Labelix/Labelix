@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageUploadFacade';
 
 @Component({
@@ -9,15 +9,15 @@ import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageU
 })
 export class ImageTimelineSingleImageComponent implements OnInit {
 
-  constructor(private projectImageUploadFacade: ProjectImageUploadFacade) {
-  }
-
   @Input()
   myImage: IRawImage;
+
+  constructor(private rawImageFacade: ProjectImageUploadFacade) {
+  }
 
   ngOnInit(): void {
   }
   onImageClick(){
-    this.projectImageUploadFacade.deleteImage(this.myImage);
+    this.rawImageFacade.deleteImage(this.myImage);
   }
 }
