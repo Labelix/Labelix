@@ -16,6 +16,7 @@ input {
   height: 100%;
   top: 0;
   left: 0;
+  cursor: pointer;
 }
 .image{
   margin-top: 2%;

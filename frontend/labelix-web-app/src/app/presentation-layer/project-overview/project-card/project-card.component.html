@@ -1,4 +1,3 @@
-
 <mat-card class="card">
 
   <img class="img" mat-card-image *ngIf="firstImage != null" [src]="firstImage.Data" (click)="onStartAnnotating()">
@@ -17,19 +16,22 @@
       </mat-card-subtitle>
 
     </mat-card-header>
-    
-    <button mat-icon-button [matMenuTriggerFor]="menu" class="option">
-      <mat-icon class="moreIcon">more_vert</mat-icon>
-    </button>
 
-    <mat-menu #menu="matMenu">
+    <div *ngIf="isAdmin()">
 
-      <button mat-menu-item (click)="onDeleteClicked()">
-        <mat-icon>delete</mat-icon>
-        <span>Delete</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="option">
+        <mat-icon class="moreIcon">more_vert</mat-icon>
       </button>
 
-    </mat-menu>
+      <mat-menu #menu="matMenu">
+
+        <button mat-menu-item (click)="onDeleteClicked()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+
+      </mat-menu>
+    </div>
 
   </div>
 

@@ -62,7 +62,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   private currentImageAnnotations: IImageAnnotation[];
   private currentAnnotationMode: AnnotationMode;
   private activeLabel: ICategory;
-  private rawImages: IRawImage[];
+  rawImages: IRawImage[];
   private categories: ICategory[];
   activeRawImage: IRawImage;
   private activeAnnotation: IImageAnnotation;
@@ -86,7 +86,6 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
-    this.subscription.add(this.categoryLabelFacade.resetCategoryLabelState());
 
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe(value => {
       this.rawImages = value;
@@ -122,6 +121,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.categoryLabelFacade.resetCategoryLabelState();
   }
 
   readDataFromRawImage() {

@@ -41,6 +41,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -74,28 +75,29 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     SingleAnnotationExportFormComponent,
     DragNDropDirective
   ],
-  imports: [
-    CommonModule,
-    ImageAnnotationRoutingModule,
-    DragDropModule,
-    FormsModule,
-    StoreModule.forFeature(featureStateName, rawImageReducers),
-    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annotationStateName, annotationStateReducers),
-    EffectsModule.forFeature([RawImageEffects]),
-    ColorChromeModule,
-    NgxImageZoomModule,
-    MatCardModule,
-    MatListModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatChipsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSnackBarModule
-  ]
+    imports: [
+        CommonModule,
+        ImageAnnotationRoutingModule,
+        DragDropModule,
+        FormsModule,
+        StoreModule.forFeature(featureStateName, rawImageReducers),
+        StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+        StoreModule.forFeature(annotationStateName, annotationStateReducers),
+        EffectsModule.forFeature([RawImageEffects]),
+        ColorChromeModule,
+        NgxImageZoomModule,
+        MatCardModule,
+        MatListModule,
+        MatGridListModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule
+    ]
 })
 export class ImageAnnotationModule {
 }

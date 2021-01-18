@@ -10,7 +10,7 @@
 
       </mat-grid-tile>
 
-      <mat-grid-tile *ngIf="1 === 1"> <!--Wenn Usermanagment Anzeige nur bei admin-->
+      <mat-grid-tile *ngIf="isAdmin()">
         <app-add-project-card></app-add-project-card>
       </mat-grid-tile>
 

@@ -9,6 +9,8 @@ import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-h
 import {IImage} from '../../../core-layer/contracts/IImage';
 import {ImageApi} from '../../../core-layer/services/image-api.service';
 import {Subscription} from 'rxjs';
+import {UserFacade} from '../../../abstraction-layer/UserFacade';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-project-card',
@@ -28,12 +30,21 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
               private cocoController: CocoFormatHelper,
-              private imageService: ImageApi) {
+              private userFacade: UserFacade,
+              private imageService: ImageApi,
+              private snackBar: MatSnackBar) {
     this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
-    this.subscription.add(this.imageService.getImageByProjectId(this.myProject.id).subscribe(value => {this.firstImage = value; }));
+    this.getFirstImageAndLoadIntoState();
+  }
+
+  getFirstImageAndLoadIntoState() {
+    this.subscription.add(this.imageService.getImageByProjectId(this.myProject.id)
+      .subscribe(value => {
+        this.firstImage = value;
+      }, error => this.getFirstImageAndLoadIntoState()));
   }
 
   ngOnDestroy() {
@@ -41,8 +52,8 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   }
 
   onStartAnnotating(): void {
+    this.snackBar.open('Project loading...');
     this.annotationFacade.changeCurrentAnnotationImage(undefined);
-    this.router.navigate(['/image-annotation/image-view']);
     this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
       // sorry for that ugly thing but it works for now, I guess
       setTimeout(() => this.onProjectLoad(value), 10);
@@ -60,6 +71,8 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
     }
     this.setActiveProject(input, coco);
     this.setCurrentAnnotationImage(input);
+    this.snackBar.dismiss();
+    this.router.navigate(['/image-annotation/image-view']);
   }
 
   addRawImages(input) {
@@ -102,6 +115,10 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
       creationDate: input.creationDate,
       description: input.description
     });
+  }
+
+  isAdmin(): boolean {
+    return this.userFacade.isAdmin();
   }
 
   onDeleteClicked() {
