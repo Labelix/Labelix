@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {OAuthService} from 'angular-oauth2-oidc';
+import {UserFacade} from '../../../abstraction-layer/UserFacade';
 
 @Component({
   selector: 'app-application-header',
@@ -9,23 +9,28 @@ import {OAuthService} from 'angular-oauth2-oidc';
 })
 export class ApplicationHeaderComponent implements OnInit {
 
-  constructor(public router: Router, private oauthService: OAuthService) { }
+  constructor(public router: Router, private userFacade: UserFacade) {
+  }
 
   login() {
-    this.oauthService.initImplicitFlow();
+    this.userFacade.login();
   }
 
   logout() {
-    this.oauthService.logOut();
+    this.userFacade.logout();
   }
 
-  get getClaimName() {
-    const claims = this.oauthService.getIdentityClaims();
-    if (!claims) {
-      return null;
+  getUserName(): string {
+    if (this.userFacade.isLoggedIn()) {
+      // @ts-ignore
+      return this.userFacade.getIdentityClaims().name;
+    } else {
+      return '';
     }
-    // @ts-ignore
-    return claims.given_name;
+  }
+
+  isLoggedIn(): boolean {
+    return this.userFacade.isLoggedIn();
   }
 
   ngOnInit(): void {

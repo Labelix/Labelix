@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
-import {FormControl} from '@angular/forms';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
 import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {IImage} from '../../../core-layer/contracts/IImage';
@@ -11,6 +10,7 @@ import {Subscription} from 'rxjs';
 import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {IUser} from '../../../core-layer/contracts/IUser';
 import {MatListOption} from '@angular/material/list';
+import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -29,12 +29,14 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   newProjectName: string;
   newProjectDescription: string;
 
-  aiModels = new FormControl();
-  aiModelNames: string[];
-  aiIds: number[] = [1, 2]; // todo set to Config ID which is selected
+  addConfigsMode = false;
+  allAiConfigs: IAIModelConfig[];
+  filteredAiConfigs: IAIModelConfig[];
+  selectedAiConfigs: IAIModelConfig[] = [];
 
   addUserMode = false;
   allUsers: IUser[];
+  filteredUsers: IUser[];
   selectedUsers: IUser[] = [];
 
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
@@ -46,18 +48,13 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => this.allAiConfigs = value));
+    this.subscription.add(this.userFacade.users$.subscribe(value => this.allUsers = value));
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => {
       this.rawImageFacade.clearRawImagesOnState();
     }));
-    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => {
-      const names: string[] = [];
-      value.forEach(value1 => {
-        names.push(value1.name);
-      });
-      this.aiModelNames = names;
-    }));
-    this.subscription.add(this.userFacade.users$.subscribe(value => this.allUsers = value));
 
     if (this.allUsers.length === 0) {
       this.userFacade.getUsers();
@@ -77,6 +74,8 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     for (const i of this.images) {
       imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
     }
+    const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
+    console.log(aiConfigIdList);
     this.project = {
       id: 0,
       name: this.newProjectName,
@@ -86,7 +85,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       images: [],
       label: '',
       timestamp: undefined,
-      AIModelConfig: this.aiIds,
+      AIModelConfig: aiConfigIdList,
       cocoExport: undefined
     };
 
@@ -108,24 +107,77 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
             });
           }
         });
-
       }
+      this.projectFacade.addProjectToState(newProject);
     }));
 
     this.dialogRef.close();
   }
 
-  clickAddSomeone() {
-    this.addUserMode = true;
+  filterUser(value: string) {
+    if (value.length !== 0) {
+      this.filteredUsers = Object
+        .assign([], this.allUsers)
+        .filter(item => item.keycloakId.toLowerCase().indexOf(value.toLowerCase()) > -1);
+    } else {
+      this.filteredUsers = this.allUsers;
+    }
   }
 
-  clickDoneAddingSomeone() {
+  filterConfig(value: string) {
+    if (value.length !== 0) {
+      this.filteredAiConfigs = Object
+        .assign([], this.allAiConfigs)
+        .filter(item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
+    } else {
+      this.filteredAiConfigs = this.allAiConfigs;
+    }
+  }
+
+  checkIfUserAlreadySelected(user: IUser): boolean {
+    for (const item of this.selectedUsers) {
+      if (item.keycloakId === user.keycloakId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkIfConfigAlreadySelected(config: IAIModelConfig): boolean {
+    for (const item of this.selectedAiConfigs) {
+      if (item.id === config.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  clickAddUser() {
+    this.addUserMode = true;
+    this.filteredUsers = this.allUsers;
+  }
+
+  clickDoneUser() {
     this.addUserMode = false;
   }
 
-  onGroupsChange(options: MatListOption[]) {
+  clickAddConfig() {
+    this.addConfigsMode = true;
+    this.filteredAiConfigs = this.allAiConfigs;
+  }
+
+  clickDoneConfigs() {
+    this.addConfigsMode = false;
+  }
+
+  onSelectionListChangesUser(options: MatListOption[]) {
     this.selectedUsers = [];
     options.map(o => this.selectedUsers.push(o.value));
+  }
+
+  onSelectionListChangesConfig(options: MatListOption[]) {
+    this.selectedAiConfigs = [];
+    options.map(o => this.selectedAiConfigs.push(o.value));
   }
 
   onResize(event) {
