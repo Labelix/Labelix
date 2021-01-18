@@ -1,10 +1,10 @@
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
 import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
-import {ICategory} from '../../../../core-layer/utility/contracts/ICategory';
+import {ICategory} from '../../../../core-layer/contracts/ICategory';
 import {drawAnnotationHeader, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
-import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
-import {IBoundingBox} from '../../../../core-layer/utility/contracts/IBoundingBox';
-import {IImageAnnotation} from '../../../../core-layer/utility/contracts/IImageAnnotation';
+import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
+import {IBoundingBox} from '../../../../core-layer/contracts/IBoundingBox';
+import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
 
 export function onMouseDownBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
   lastPos.x = (value.clientX - canvasEl.getBoundingClientRect().left);

@@ -1,4 +1,4 @@
-import {IRawImage} from '../utility/contracts/IRawImage';
+import {IRawImage} from '../../contracts/IRawImage';
 import {ActionTypes, ProjectImageUploadActions} from '../actions/projectImageUpload.actions';
 
 

@@ -1,5 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {ReducerProjectState, projectReducer} from './reducerProjectState';
+import {ReducerProjectState, projectReducer} from '../reducers/reducerProjectState';
 
 export const featureStateName = 'projectFeature';
 
@@ -23,5 +23,5 @@ export const getAllProjects = createSelector(
 
 export const getNumberOfExistingProjects = createSelector(
   getProjectFeatureState,
-  (state: ProjectState) => this.state.project.projects.length
+  (state: ProjectState) => state.project.projects.length
 );

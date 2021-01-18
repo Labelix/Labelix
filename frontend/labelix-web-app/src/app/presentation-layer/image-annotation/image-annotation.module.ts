@@ -6,11 +6,11 @@ import {ImageUploadComponent} from './image-upload/image-upload.component';
 import {FormsModule} from '@angular/forms';
 import {DragNDropDirective} from './directives/drag-ndrop.directive';
 import {RawImageFacade} from '../../abstraction-layer/RawImageFacade';
-import {RawImageEffects} from '../../core-layer/effects/RawImageEffects';
+import {RawImageEffects} from '../../core-layer/states/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {featureStateName, rawImageReducers} from '../../core-layer/states/rawImageState';
-import {labelCategoryName, labelCategoryReducers} from '../../core-layer/states/labelCategoryState';
+import {featureStateName, rawImageReducers} from '../../core-layer/states/state-definitions/rawImageState';
+import {labelCategoryName, labelCategoryReducers} from '../../core-layer/states/state-definitions/labelCategoryState';
 import { ImageCanvasComponent } from './image-canvas/image-canvas.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MouseWheelDirective } from './directives/mouse-wheel.directive';
@@ -19,7 +19,7 @@ import {LabelCategoryFacade} from '../../abstraction-layer/LabelCategoryFacade';
 import { WidgetBarComponent } from './widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AnnotationFacade} from '../../abstraction-layer/AnnotationFacade';
-import {annotationStateName, annotationStateReducers} from '../../core-layer/states/annotationState';
+import {annotationStateName, annotationStateReducers} from '../../core-layer/states/state-definitions/annotationState';
 import { WholeImageAnnotationWidgetComponent } from './whole-image-annotation-widget/whole-image-annotation-widget.component';
 import { SingleAnnotationExportFormComponent } from './single-annotation-export-form/single-annotation-export-form.component';
 import { DeleteImageAnnotationDialogComponent } from './delete-image-annotation-dialog/delete-image-annotation-dialog.component';
@@ -27,7 +27,7 @@ import { ImageTimelineComponent } from './image-timeline/image-timeline.componen
 import { ImageTimelineSingleImageComponent } from './image-timeline-single-image/image-timeline-single-image.component';
 import {ProjectsFacade} from '../../abstraction-layer/ProjectsFacade';
 import { SelectedLabelWidgetComponent } from './selected-label-widget/selected-label-widget.component';
-import {CocoFormatController} from '../../core-layer/controller/CocoFormatController';
+import {CocoFormatHelper} from '../../core-layer/utility/helper/coco-format-helper.service';
 import { LabelSettingsDialogComponent } from './label-settings-dialog/label-settings-dialog.component';
 import {ColorChromeModule} from 'ngx-color/chrome';
 import {NgxImageZoomModule} from 'ngx-image-zoom';
@@ -41,6 +41,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     LabelCategoryFacade,
     AnnotationFacade,
     ProjectsFacade,
-    CocoFormatController,
+    CocoFormatHelper,
     MatDialog,
     MatSnackBar
   ],
@@ -74,28 +75,29 @@ import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
     SingleAnnotationExportFormComponent,
     DragNDropDirective
   ],
-  imports: [
-    CommonModule,
-    ImageAnnotationRoutingModule,
-    DragDropModule,
-    FormsModule,
-    StoreModule.forFeature(featureStateName, rawImageReducers),
-    StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
-    StoreModule.forFeature(annotationStateName, annotationStateReducers),
-    EffectsModule.forFeature([RawImageEffects]),
-    ColorChromeModule,
-    NgxImageZoomModule,
-    MatCardModule,
-    MatListModule,
-    MatGridListModule,
-    MatFormFieldModule,
-    MatChipsModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSnackBarModule
-  ]
+    imports: [
+        CommonModule,
+        ImageAnnotationRoutingModule,
+        DragDropModule,
+        FormsModule,
+        StoreModule.forFeature(featureStateName, rawImageReducers),
+        StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
+        StoreModule.forFeature(annotationStateName, annotationStateReducers),
+        EffectsModule.forFeature([RawImageEffects]),
+        ColorChromeModule,
+        NgxImageZoomModule,
+        MatCardModule,
+        MatListModule,
+        MatGridListModule,
+        MatFormFieldModule,
+        MatChipsModule,
+        MatIconModule,
+        MatButtonModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule
+    ]
 })
 export class ImageAnnotationModule {
 }

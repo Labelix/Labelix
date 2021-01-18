@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {IRawImage} from '../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../core-layer/contracts/IRawImage';
 import {select, Store} from '@ngrx/store';
-import {ProjectImageUploadState, getNumberOfRawImages, getAllRawImages} from '../core-layer/states/projectImageUploadState';
-import {AddBase64CodeToIFile, AddRawImage, DeleteAllImages, DeleteRawImage} from '../core-layer/actions/projectImageUpload.actions';
+import {ProjectImageUploadState, getNumberOfRawImages, getAllRawImages} from '../core-layer/states/state-definitions/projectImageUploadState';
+import {AddBase64CodeToIFile, AddRawImage, DeleteAllImages, DeleteRawImage} from '../core-layer/states/actions/projectImageUpload.actions';
 import {ImageApi} from '../core-layer/services/image-api.service';
 
 @Injectable({providedIn: 'root'})

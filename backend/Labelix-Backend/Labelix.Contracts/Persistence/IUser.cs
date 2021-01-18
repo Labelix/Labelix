@@ -6,6 +6,6 @@ namespace Labelix.Contracts.Persistence
 {
     public interface IUser : ICopyable<IUser>, IIdentifiable
     {
-        string Keycloak_id { get; set; }
+        string KeycloakId { get; set; }
     }
 }

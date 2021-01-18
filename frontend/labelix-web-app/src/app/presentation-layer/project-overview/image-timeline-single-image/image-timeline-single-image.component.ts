@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IRawImage} from '../../../core-layer/utility/contracts/IRawImage';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {ProjectImageUploadFacade} from '../../../abstraction-layer/ProjectImageUploadFacade';
 
 @Component({

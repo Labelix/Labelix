@@ -1,5 +1,5 @@
 import {ActionReducerMap, createFeatureSelector, createSelector} from '@ngrx/store';
-import {projectImageUploadReducer, ReducerProjectImageUploadState} from './reducerProjectImageUploadState';
+import {projectImageUploadReducer, ReducerProjectImageUploadState} from '../reducers/reducerProjectImageUploadState';
 import {getRawImageFeatureState} from './rawImageState';
 
 export const projectImageUploadStateName = 'projectImageUploadFeature';

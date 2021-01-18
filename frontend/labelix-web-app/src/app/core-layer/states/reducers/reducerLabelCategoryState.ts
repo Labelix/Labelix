@@ -1,4 +1,4 @@
-import {ICategory} from '../utility/contracts/ICategory';
+import {ICategory} from '../../contracts/ICategory';
 import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
 
 export interface ReducerLabelCategoryState {

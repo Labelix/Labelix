@@ -1,6 +1,6 @@
 import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
-import {IImageAnnotation} from '../../../../core-layer/utility/contracts/IImageAnnotation';
-import {IRawImage} from '../../../../core-layer/utility/contracts/IRawImage';
+import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
+import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
 import {EditingOption} from '../image-canvas.component';
 
@@ -40,7 +40,7 @@ function setEditingFlagPolygon(item: IImageAnnotation, value: MouseEvent, canvas
 function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawImage,
                                    value: MouseEvent, canvasEl: HTMLCanvasElement,
                                    annotationFacade: AnnotationFacade, editingOptions: EditingOption) {
-  const spaceRatio = 0.2;
+  const spaceRatio = 0.15;
 
   const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
   const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;

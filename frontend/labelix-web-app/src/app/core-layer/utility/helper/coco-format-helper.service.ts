@@ -1,18 +1,18 @@
-import {ICocoFormat} from '../utility/contracts/cocoFormat/ICocoFormat';
-import {ICocoInfo} from '../utility/contracts/cocoFormat/ICocoInfo';
-import {ICocoCategory} from '../utility/contracts/cocoFormat/ICocoCategory';
-import {ICategory} from '../utility/contracts/ICategory';
-import {ICocoImage} from '../utility/contracts/cocoFormat/ICocoImage';
-import {IRawImage} from '../utility/contracts/IRawImage';
-import {ICocoLicense} from '../utility/contracts/cocoFormat/ICocoLicense';
-import {ICocoAnnotation} from '../utility/contracts/cocoFormat/ICocoAnnotation';
-import {IImageAnnotation} from '../utility/contracts/IImageAnnotation';
-import {IBoundingBox} from '../utility/contracts/IBoundingBox';
-import {ImageAnnotationHelper} from '../helper/image-annotation-helper';
+import {ICocoFormat} from '../../contracts/cocoFormat/ICocoFormat';
+import {ICocoInfo} from '../../contracts/cocoFormat/ICocoInfo';
+import {ICocoCategory} from '../../contracts/cocoFormat/ICocoCategory';
+import {ICategory} from '../../contracts/ICategory';
+import {ICocoImage} from '../../contracts/cocoFormat/ICocoImage';
+import {IRawImage} from '../../contracts/IRawImage';
+import {ICocoLicense} from '../../contracts/cocoFormat/ICocoLicense';
+import {ICocoAnnotation} from '../../contracts/cocoFormat/ICocoAnnotation';
+import {IImageAnnotation} from '../../contracts/IImageAnnotation';
+import {IBoundingBox} from '../../contracts/IBoundingBox';
+import {ImageAnnotationHelper} from './image-annotation-helper';
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class CocoFormatController {
+export class CocoFormatHelper {
 
   createICocoInfo(
     contributor: string,

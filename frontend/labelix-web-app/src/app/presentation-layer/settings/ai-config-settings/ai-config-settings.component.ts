@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
-import {IAIModelConfig} from '../../../core-layer/utility/contracts/IAIModelConfig';
+import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
 import {Subscription} from 'rxjs';
 
 @Component({

@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/utility/contracts/IProject';
+import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {Subscription} from 'rxjs';
+import {UserFacade} from '../../../abstraction-layer/UserFacade';
 
 @Component({
   selector: 'app-project-grid-view',
@@ -15,7 +16,8 @@ export class ProjectGridViewComponent implements OnInit, OnDestroy {
   projects: IProject[] = undefined;
   breakpoint: number;
 
-  constructor(private projectsFacade: ProjectsFacade) {
+  constructor(private projectsFacade: ProjectsFacade,
+              private userFacade: UserFacade) {
     this.subscription = new Subscription();
   }
 
@@ -32,6 +34,10 @@ export class ProjectGridViewComponent implements OnInit, OnDestroy {
 
   onResize(event) {
     this.changeRelation(event.target.innerWidth);
+  }
+
+  isAdmin(): boolean {
+    return this.userFacade.isAdmin();
   }
 
   private changeRelation(width) {

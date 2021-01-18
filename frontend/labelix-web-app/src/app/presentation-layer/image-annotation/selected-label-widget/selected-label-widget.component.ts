@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ICategory} from '../../../core-layer/utility/contracts/ICategory';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {Subscription} from 'rxjs';
 
