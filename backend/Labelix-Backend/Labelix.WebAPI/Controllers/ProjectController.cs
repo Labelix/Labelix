@@ -18,12 +18,15 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class ProjectController : GenericController<Contract, Model>
     {
-
-        
-
+        [Authorize(Roles = "user")]
         [HttpGet("{id}")]
         public async Task<Model> GetAsync(int id)
         {
+            var b = this.User.Claims.GetUserId();
+            //"fb9d2511-5114-4dbb-b974-4c12b6e25e88"
+            var userController = new UserController();
+            await userController.GetUserId(b);
+
             ImageController imageController = new ImageController();
             Project project = await GetModelByIdAsync(id);
             List<Image> images = (await imageController.GetByProjectId(project.Id)).ToList();
@@ -41,22 +44,29 @@ namespace Labelix.WebAPI.Controllers
             return GetModelByIdAsync(id);
         }
 
-        [Authorize]
+        [Authorize(Roles = "user")]
         [HttpGet("all")]
-        public Task<IEnumerable<Model>> GetAllAsync()
+        public async Task<IEnumerable<Model>> GetAllAsync()
         {
-            return GetModelsAsync();
+            var keycloakUser = this.User.Claims.GetUserId();
+            var userProjectController = new UserProjectController();
+            int[] projectsToGet = await userProjectController.GetByProjectForUser(keycloakUser);
+            return await GetAllWhereAsync(e => projectsToGet.Contains(e.Id));
         }
+
+        [Authorize(Roles = "user")]
         [HttpGet("count")]
         public Task<int> GetCountAsync()
         {
             return CountAsync();
         }
+
+        [Authorize(Roles = "admin")]
         [HttpPost("create")]
-        public async Task<IActionResult> PostAsync(ProjectInsert model)
+        public async Task<Project> PostAsync(ProjectInsert model)
         {
-            try
-            {
+                var keycloakUser = this.User.Claims.GetUserId();
+                var user = await new UserController().GetUserId(keycloakUser);
                 Project_AIModelConfigController aiModelConfigController = new Project_AIModelConfigController();
                 Project project = new Project();
                 project.CopyProperties(model);
@@ -74,15 +84,14 @@ namespace Labelix.WebAPI.Controllers
                     data.ProjectId = project.Id;
                 }
                 await Base64Controller.MultipleImageUpload(images);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return StatusCode(500);
-            }
+                await new UserProjectController().PostAsync(new ProjectUser
+                    {ProjectKey = project.Id, UserIdKey = user.Id});
+                return project;
+            
             
         }
+
+        [Authorize(Roles = "user")]
         [HttpPut("update")]
         public async Task<Model> PutAsync(Model model)
         {
@@ -151,12 +160,15 @@ namespace Labelix.WebAPI.Controllers
             if (System.IO.File.Exists(dir_path)) respondModel.LabeledPath = System.IO.File.ReadAllText(dir_path);
             return respondModel;
         }
+
+        [Authorize(Roles = "admin")]
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
         {
             return DeleteModelAsync(id);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost("uploadCoco")]
         public Task UploadSingleCoco(Data data)
         {
