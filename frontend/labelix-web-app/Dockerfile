@@ -4,10 +4,6 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
-RUN delete package-lock.json
-RUN delete node_modules
-npm cache clean --force
-npm install
 RUN npm run build
 
 ### STAGE 2: Run ###
