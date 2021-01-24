@@ -11,19 +11,19 @@
     <span>Labelix</span>
     <span class="example-spacer"></span>
     <span style="cursor: default">{{getUserName()}}</span>
-    <span *ngIf="isLoggedIn() === false">
+    <span *ngIf="isLoggedIn === false">
       <button mat-button (click)="login()" style="font-size: 1em">
         Login
       </button>
     </span>
-    <span *ngIf="isLoggedIn() === true">
+    <span *ngIf="isLoggedIn === true">
       <button mat-button (click)="logout()" style="font-size: 1em">
         Logout
       </button>
     </span>
   </mat-toolbar>
 
-  <div style="margin-top: 3.35%;" *ngIf="isLoggedIn() === true">
+  <div style="margin-top: 3.35%;" *ngIf="isLoggedIn === true">
     <router-outlet></router-outlet>
   </div>
 
