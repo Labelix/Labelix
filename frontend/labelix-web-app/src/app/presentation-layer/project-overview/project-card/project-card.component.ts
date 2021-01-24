@@ -11,6 +11,9 @@ import {ImageApi} from '../../../core-layer/services/image-api.service';
 import {Subscription} from 'rxjs';
 import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ProjectCreationDialogComponent} from '../project-creation-dialog/project-creation-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {ProjectEditDialogComponent} from '../project-edit-dialog/project-edit-dialog.component';
 
 @Component({
   selector: 'app-project-card',
@@ -33,7 +36,8 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
               private cocoController: CocoFormatHelper,
               private userFacade: UserFacade,
               private imageService: ImageApi,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
     this.subscription = new Subscription();
   }
 
@@ -126,6 +130,14 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
 
   isAdmin(): boolean {
     return this.userFacade.isAdmin();
+  }
+
+  onEditClicked() {
+    this.dialog.open(ProjectEditDialogComponent, {
+      height: '80%',
+      width: '60%',
+      data: this.myProject
+    });
   }
 
   onDeleteClicked() {
