@@ -34,7 +34,7 @@ services:
             - DB_PASSWORD=password
             - KEYCLOAK_IMPORT=/tmp/keycloak/realm.json
             - KEYCLOAK_USER=admin
-            - KEYCLOAK_PASSWORD=admin
+            - KEYCLOAK_PASSWORD=5pmna0
         ports:
             - 8180:8080
         volumes:
