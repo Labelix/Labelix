@@ -4,7 +4,7 @@ import { AuthConfig } from 'angular-oauth2-oidc';
 export const authConfig: AuthConfig = {
 
   // Url of the Identity Provider
-  issuer: 'http://46.101.252.19:8180/auth/realms/Labelix',
+  issuer: 'http://167.172.110.28:8180/auth/realms/Labelix',
 
   // URL of the SPA to redirect the user to after login
   redirectUri: window.location.origin,
