@@ -114,7 +114,7 @@ namespace Labelix.WebAPI.Controllers
             ImageController imageController = new ImageController();
             Project project = await projectController.GetAsync(data.ProjectId);
             string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
-            imageController.DeleteAsync(data.Id);
+            await imageController.DeleteAsync(data.Id);
             System.IO.File.Delete(img_path);
             return 200;
         }
