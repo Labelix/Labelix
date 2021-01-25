@@ -22,6 +22,8 @@ namespace Labelix.WebAPI.Controllers
                 var bytes = data.Base64.Base64ToByte();
                 Project project = await projectController.GetAsyncOnlyProject(data.ProjectId);
                 Image image = new Image();
+                image.Width = data.Width;
+                image.Height = data.Height;
 
                 //Queries whether the directory (for images) of the respective project exists and creates it if not.
                 string dir_path = $"./Ressources/Images/{project.Id}_{project.Name}";
