@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Contract = Labelix.Contracts.Persistence.ILabel;
 using Model = Labelix.Transfer.Persistence.Label;
 
 namespace Labelix.WebAPI.Controllers
 {
+    [Authorize(Roles = "user")]
     [Route("api/[controller]")]
     [ApiController]
     public class LabelController : GenericController<Contract, Model>

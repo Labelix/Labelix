@@ -1,0 +1,5 @@
+<div class="dropzone" appDragNDrop (fileDropped)="onFileDropped($event)">
+  <input type="file" #fileDropRef id="fileDropRef" multiple (change)="onFileDropped($event.target.files)" />
+  <img class="image" src="../../../../assets/img/dnd/ic-upload-file.svg" alt="">
+  <h3>Drag and drop here</h3>
+</div>
