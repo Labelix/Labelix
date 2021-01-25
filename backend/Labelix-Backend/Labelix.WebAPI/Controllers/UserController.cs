@@ -47,7 +47,7 @@ namespace Labelix.WebAPI.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpGet("allByProjectId")]
+        [HttpGet("allByProjectId-{id}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int id)
         {
             int[] users = await new UserProjectController().GetUsersOfProject(id);
