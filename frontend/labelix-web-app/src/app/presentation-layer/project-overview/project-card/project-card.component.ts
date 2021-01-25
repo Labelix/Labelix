@@ -11,7 +11,6 @@ import {ImageApi} from '../../../core-layer/services/image-api.service';
 import {Subscription} from 'rxjs';
 import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ProjectCreationDialogComponent} from '../project-creation-dialog/project-creation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {ProjectEditDialogComponent} from '../project-edit-dialog/project-edit-dialog.component';
 
@@ -136,7 +135,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
     this.dialog.open(ProjectEditDialogComponent, {
       height: '80%',
       width: '60%',
-      data: this.myProject
+      data: {project: this.myProject}
     });
   }
 
