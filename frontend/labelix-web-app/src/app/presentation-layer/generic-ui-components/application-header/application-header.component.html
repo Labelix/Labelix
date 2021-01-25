@@ -1,0 +1,30 @@
+<mat-drawer-container class="example-container" [hasBackdrop]="false" autosize>
+
+  <mat-drawer #drawer mode="push" class="example-sidenav">
+    <app-drawer-content></app-drawer-content>
+  </mat-drawer>
+
+  <mat-toolbar color="primary" class="header">
+    <button mat-icon-button class="example-icon" (click)="drawer.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Labelix</span>
+    <span class="example-spacer"></span>
+    <span style="cursor: default">{{getUserName()}}</span>
+    <span *ngIf="isLoggedIn === false">
+      <button mat-button (click)="login()" style="font-size: 1em">
+        Login
+      </button>
+    </span>
+    <span *ngIf="isLoggedIn === true">
+      <button mat-button (click)="logout()" style="font-size: 1em">
+        Logout
+      </button>
+    </span>
+  </mat-toolbar>
+
+  <div style="margin-top: 3.35%;" *ngIf="isLoggedIn === true">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-drawer-container>

@@ -1,0 +1,32 @@
+.example-full-width {
+  width: 100%;
+}
+
+.create-button{
+  width: 8em;
+  font-size: 1em;
+  margin: 2em;
+  position: fixed;
+  bottom: 10%;
+  right: 20%;
+}
+
+.image-header .maxPics{
+  margin-left: 88%;
+  width: 10%;
+  position: absolute;
+  top: 0px;
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+.image-input{
+  align-content: center;
+}
+
+.image-header{
+  margin-top: 2em;
+  position: relative;
+}
