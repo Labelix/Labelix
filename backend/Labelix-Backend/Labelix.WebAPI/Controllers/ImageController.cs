@@ -80,8 +80,6 @@ namespace Labelix.WebAPI.Controllers
         {
             return CountAsync();
         }
-        [Authorize(Roles = "user")]
-        [HttpGet("GetByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
             IEnumerable<Model> entities = await GetAllAsync();

@@ -52,11 +52,10 @@ namespace Labelix.WebAPI.Controllers
         {
             return DeleteModelAsync(id);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "user")]
         [HttpGet("ByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
-            Project_AIModelConfig configIdss = await project_AIConfig.GetAsync(1);
             IEnumerable<Project_AIModelConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
             List<int> ids = new List<int>();
             configIds.ToList().ForEach(e => ids.Add(e.AIConfigKey));
