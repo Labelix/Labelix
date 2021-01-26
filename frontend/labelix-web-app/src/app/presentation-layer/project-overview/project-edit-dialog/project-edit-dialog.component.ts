@@ -51,22 +51,46 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     this.changeRelation(window.innerWidth);
     this.rawImageFacade.clearRawImagesOnState();
 
-    this.aiModelConfigFacade.getConfigs();
+    this.aiModelConfigFacade.loadAllConfigsToState();
     this.userFacade.getUsers();
 
     this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+
+    this.projectFacade.getProjectById(this.project.id).subscribe(value => {
+      if (value !== undefined) {
+        this.rawImageFacade.clearRawImagesOnState();
+        value.images.forEach(image => this.rawImageFacade.addRawImageToState({
+          width: -1,
+          name: image.name,
+          id: image.imageId,
+          height: -1,
+          file: undefined,
+          base64Url: image.Data
+        }));
+      }
+    });
+
     this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => {
       this.allAiConfigs = value;
-      if (this.allAiConfigs !== undefined && this.project.AIModelConfig !== undefined) {
-        this.allAiConfigs.forEach(aiConfig => {
-          if (this.project.AIModelConfig.indexOf(aiConfig.id) !== -1) {
-            this.selectedAiConfigs.push(aiConfig);
-          }
-        });
-      }
-    }));
 
+      this.aiModelConfigFacade.getConfigsByProjectId(this.project.id).subscribe(projectConfigs => {
+
+        if (this.allAiConfigs !== undefined && projectConfigs !== undefined) {
+          this.allAiConfigs.forEach(aiConfig => {
+
+            projectConfigs.forEach(projectConfig => {
+
+              if (aiConfig.id === projectConfig.id) {
+                this.selectedAiConfigs.push(aiConfig);
+              }
+            });
+          });
+        }
+      });
+
+
+    }));
 
 
     this.rawImageFacade.loadImagesIntoStateByProjectId(this.project.id);
