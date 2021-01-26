@@ -30,7 +30,7 @@ export class ProjectsFacade {
     this.store.dispatch(new AddProjectAction(project));
   }
 
-  getProjectObservableNyId(id: number): Observable<IProject> {
+  getProjectById(id: number): Observable<IProject> {
     return this.projectApi.getItemById(id);
   }
 

@@ -64,7 +64,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   onStartAnnotating(): void {
     this.snackBar.open('Project loading...');
     this.annotationFacade.changeCurrentAnnotationImage(undefined);
-    this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
+    this.projectFacade.getProjectById(this.myProject.id).subscribe(value => {
       // sorry for that ugly thing but it works for now, I guess
       setTimeout(() => this.onProjectLoad(value), 10);
     });
