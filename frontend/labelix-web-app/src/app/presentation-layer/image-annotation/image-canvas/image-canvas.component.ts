@@ -124,6 +124,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.categoryLabelFacade.resetCategoryLabelState();
   }
 
+  // reads height and width of the images and saves it into the object
   readDataFromRawImage() {
     if (this.activeRawImage !== undefined) {
       if (this.activeRawImage.height === -1 || this.activeRawImage.width === -1) {
@@ -191,12 +192,18 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private redrawCanvas() {
+
     if (this.canvas !== undefined) {
+
       const canvasEl = this.canvas.nativeElement;
+
       setCanvasDimensions(canvasEl);
+
       drawExistingAnnotationsBoundingBoxes(canvasEl, this.currentImageAnnotations, this.ctx, this.activeRawImage, this.opacity);
+
       drawExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.currentlyDrawing, this.ctx);
       fillExistingPolygonAnnotations(canvasEl, this.currentImageAnnotations, this.activeRawImage, this.ctx, this.opacity);
+
       if (this.activeAnnotation !== undefined) {
         drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing,
           this.activeAnnotation.id + ': ' + this.activeAnnotation.categoryLabel.name);
