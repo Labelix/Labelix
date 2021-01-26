@@ -73,20 +73,8 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   onProjectLoad(input) {
     this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImagesOnState();
-    this.addRawImages(input);
-    let coco;
-    if (input.label !== null && input.label !== '') {
-      coco = JSON.parse(input.label);
-      this.cocoController.getCategoriesFromCocoFormat(coco).forEach(value => this.categoryFacade.addLabelCategory(value));
-    }
-    this.setActiveProject(input, coco);
-    this.setCurrentAnnotationImage(input);
-    this.snackBar.dismiss();
-    this.router.navigate(['/image-annotation/image-view']);
-  }
 
-  addRawImages(input) {
-    this.rawImageFacade.addRawImagesToState(input.images.map(entry => {
+    const rawImages = input.images.map(entry => {
       return {
         id: entry.id,
         base64Url: entry.Data,
@@ -95,7 +83,29 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
         file: undefined,
         name: entry.Name
       };
-    }));
+    });
+
+    let labelCategories;
+
+    this.rawImageFacade.addRawImagesToState(rawImages);
+
+    let coco;
+
+    if (input.label !== null && input.label !== '') {
+      coco = JSON.parse(input.label);
+      labelCategories = this.cocoController.getCategoriesFromCocoFormat(coco);
+      labelCategories.forEach(value => this.categoryFacade.addLabelCategory(value));
+
+      const annotations = this.cocoController.getAnnotationsFromCocoFormat(coco, rawImages, labelCategories);
+      console.log(annotations);
+      annotations.forEach(annotation => this.annotationFacade.addImageAnnotation(annotation));
+    }
+
+    this.setActiveProject(input, coco);
+    this.setCurrentAnnotationImage(input);
+
+    this.snackBar.dismiss();
+    this.router.navigate(['/image-annotation/image-view']);
   }
 
   setCurrentAnnotationImage(input) {
