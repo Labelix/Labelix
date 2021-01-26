@@ -22,6 +22,8 @@ namespace Labelix.WebAPI.Controllers
                 var bytes = data.Base64.Base64ToByte();
                 Project project = await projectController.GetAsyncOnlyProject(data.ProjectId);
                 Image image = new Image();
+                image.Width = data.Width;
+                image.Height = data.Height;
 
                 //Queries whether the directory (for images) of the respective project exists and creates it if not.
                 string dir_path = $"./Ressources/Images/{project.Id}_{project.Name}";
@@ -112,7 +114,7 @@ namespace Labelix.WebAPI.Controllers
             ImageController imageController = new ImageController();
             Project project = await projectController.GetAsync(data.ProjectId);
             string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
-            imageController.DeleteAsync(data.Id);
+            await imageController.DeleteAsync(data.Id);
             System.IO.File.Delete(img_path);
             return 200;
         }
