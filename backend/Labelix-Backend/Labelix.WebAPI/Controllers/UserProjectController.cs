@@ -35,5 +35,16 @@ namespace Labelix.WebAPI.Controllers
         {
             return PostAsync(new Model {UserIdKey = userId, ProjectKey = projectId});
         }
+
+        public async Task<int[]> GetUsersOfProject(int projectId)
+        {
+            IEnumerable<Model> projectUsers = await GetAllWhereAsync(e => e.ProjectKey == projectId);
+            List<int> result = new List<int>();
+            foreach (var projectUser in projectUsers)
+            {
+                result.Add(projectUser.UserIdKey);
+            }
+            return result.ToArray();
+        }
     }
 }

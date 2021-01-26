@@ -45,5 +45,13 @@ namespace Labelix.WebAPI.Controllers
         {
             return new UserProjectController().AddUserToProject(model.Id, projectId);
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpGet("allByProjectId-{id}")]
+        public async Task<IEnumerable<Model>> GetByProjectId(int id)
+        {
+            int[] users = await new UserProjectController().GetUsersOfProject(id);
+            return await GetAllWhereAsync(e => (users).Contains(e.Id));
+        }
     }
 }

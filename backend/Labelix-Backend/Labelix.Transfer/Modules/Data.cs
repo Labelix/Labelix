@@ -13,15 +13,22 @@ namespace Labelix.Transfer.Modules
         public string Format { get; set; }
         [JsonPropertyName("Data")]
         public string Base64 { get; set; }
+        [JsonPropertyName("WidthOfData")]
+        public double Width { get; set; }
+        [JsonPropertyName("HeightOfData")]
+        public double Height { get; set; }
+
 
         public Data(){}
 
-        public Data(int projectId, string name, string format, string base64)
+        public Data(int projectId, string name, string format, string base64, double height, double width)
         {
             ProjectId = projectId;
             Name = name;
             Format = format;
             Base64 = base64;
+            Width = width;
+            Height = height;
         }
     }
 }

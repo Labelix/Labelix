@@ -9,10 +9,11 @@ namespace Labelix.Logic.Entities.Persistence
         public Image(string imagePath)
         {
             ImagePath = imagePath;
-
         }
 
         public string ImagePath { get; set; }
+        public double Height { get; set; }
+        public double Width { get; set; }
 
         [ForeignKey("Project_Id")]
         public int ProjectId { get; set; }
@@ -22,6 +23,8 @@ namespace Labelix.Logic.Entities.Persistence
             Id = other.Id;
             ImagePath = other.ImagePath;
             ProjectId = other.ProjectId;
+            Width = other.Width;
+            Height = other.Height;
         }
     }
 
