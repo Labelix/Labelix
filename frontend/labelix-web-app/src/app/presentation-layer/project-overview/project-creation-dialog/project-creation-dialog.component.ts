@@ -112,6 +112,16 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
   }
 
+  filterUser(value: string) {
+    if (value.length !== 0) {
+      this.filteredUsers = Object
+        .assign([], this.allUsers)
+        .filter(item => item.keycloakId.toLowerCase().indexOf(value.toLowerCase()) > -1);
+    } else {
+      this.filteredUsers = this.allUsers;
+    }
+  }
+
   filterConfig(value: string) {
     if (value.length !== 0) {
       this.filteredAiConfigs = Object
