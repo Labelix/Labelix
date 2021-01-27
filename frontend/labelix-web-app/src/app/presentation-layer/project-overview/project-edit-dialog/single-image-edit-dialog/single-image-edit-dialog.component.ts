@@ -33,8 +33,8 @@ export class SingleImageEditDialogComponent implements OnInit, OnDestroy {
 
   onImageClick() {
     this.rawImageFacade.deleteImage({
-      HeightOfData: this.myImage.height,
-      WidthOfData: this.myImage.width,
+      Height: this.myImage.height,
+      Width: this.myImage.width,
       name: this.myImage.name,
       imageId: this.myImage.id,
       Data: this.myImage.base64Url,
