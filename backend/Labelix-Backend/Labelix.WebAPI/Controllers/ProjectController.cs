@@ -95,7 +95,7 @@ namespace Labelix.WebAPI.Controllers
             string labelPath= oldProject.LabeledPath;
             if (oldProjectConverted.LabeledPath != model.LabeledPath)
             {
-                labelPath = await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath));
+                labelPath = await Base64Controller.CocoUploadAsync(new Data(model.Id, model.Name, "", model.LabeledPath,0,0));
             }
             //List<Data> removes1 = new List<Data>();
             //List<Data> removes2 = new List<Data>();
