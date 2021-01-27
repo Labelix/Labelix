@@ -9,6 +9,7 @@ namespace Labelix.Transfer.Persistence
     {
         public void CopyProperties(IProject_User other)
         {
+            this.Id = other.Id;
             this.ProjectKey = other.ProjectKey;
             this.UserIdKey = other.UserIdKey;
         }
