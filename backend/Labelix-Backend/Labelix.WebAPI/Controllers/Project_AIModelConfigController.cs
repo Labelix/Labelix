@@ -40,5 +40,11 @@ namespace Labelix.WebAPI.Controllers
         {
             return (await GetAllAsync()).Where(e => e.ProjectKey == projectId);
         }
+        public async Task DeleteFromProject(Model model)
+        {
+            Model m = (await GetAllWhereAsync(e => e.AIConfigKey == model.AIConfigKey && e.ProjectKey == model.ProjectKey))
+                .FirstOrDefault();
+            if (m != null) await DeleteAsync(m.Id);
+        }
     }
 }

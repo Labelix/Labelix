@@ -12,6 +12,7 @@ namespace Labelix.Transfer.Persistence
 
         public void CopyProperties(IProject_AIModelConfig other)
         {
+            this.Id = other.Id;
             this.ProjectKey = other.ProjectKey;
             this.AIConfigKey = other.AIConfigKey;
         }
