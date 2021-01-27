@@ -53,12 +53,14 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     this.aiModelConfigFacade.loadAllConfigsToState();
     this.userFacade.loadUsersIntoState();
 
-    this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id).subscribe(value => this.selectedUsers = value));
+    this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id)
+      .subscribe(value => this.selectedUsers = value));
     this.subscription.add(this.aiModelConfigFacade.getConfigsByProjectId(this.project.id)
       .subscribe(value => this.selectedAiConfigs = value));
-    this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
 
+    this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => this.allAiConfigs = value));
 
     this.projectFacade.getProjectById(this.project.id).subscribe(value => {
       if (value !== undefined) {
@@ -74,29 +76,6 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => {
-      this.allAiConfigs = value;
-
-      this.aiModelConfigFacade.getConfigsByProjectId(this.project.id).subscribe(projectConfigs => {
-
-        if (this.allAiConfigs !== undefined && projectConfigs !== undefined) {
-          this.allAiConfigs.forEach(aiConfig => {
-
-            projectConfigs.forEach(projectConfig => {
-
-              if (aiConfig.id === projectConfig.id) {
-                this.selectedAiConfigs.push(aiConfig);
-              }
-            });
-          });
-        }
-      });
-
-
-    }));
-
-
-    this.rawImageFacade.loadImagesIntoStateByProjectId(this.project.id);
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
   }
 
