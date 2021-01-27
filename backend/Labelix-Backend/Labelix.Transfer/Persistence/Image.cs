@@ -21,6 +21,8 @@ namespace Labelix.Transfer.Persistence
             Id = other.Id;
             ImagePath = other.ImagePath;
             ProjectId = other.ProjectId;
+            Width = other.Width;
+            Height = other.Height;
         }
     }
 }

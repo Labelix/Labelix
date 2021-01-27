@@ -13,9 +13,9 @@ namespace Labelix.Transfer.Modules
         public string Format { get; set; }
         [JsonPropertyName("Data")]
         public string Base64 { get; set; }
-        [JsonPropertyName("WidthOfData")]
+        [JsonPropertyName("Width")]
         public double Width { get; set; }
-        [JsonPropertyName("HeightOfData")]
+        [JsonPropertyName("Height")]
         public double Height { get; set; }
 
 
