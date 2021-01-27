@@ -158,11 +158,11 @@
 <mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)">
 
   <mat-grid-tile>
-    <app-image-upload class="image-input"></app-image-upload>
+    <app-image-upload-edit-dialog class="image-input" [project]="project"></app-image-upload-edit-dialog>
   </mat-grid-tile>
 
   <mat-grid-tile *ngFor="let image of images">
-    <app-image-timeline-single-image [myImage]="image"></app-image-timeline-single-image>
+    <app-single-image-edit-dialog [myImage]="image" [project]="project"></app-single-image-edit-dialog>
   </mat-grid-tile>
 
 </mat-grid-list>

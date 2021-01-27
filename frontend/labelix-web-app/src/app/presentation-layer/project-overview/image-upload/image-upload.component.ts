@@ -46,6 +46,6 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       });
       reader.readAsDataURL(item);
     }
-
   }
+
 }
