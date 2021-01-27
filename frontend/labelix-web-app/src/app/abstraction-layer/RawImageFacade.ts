@@ -48,6 +48,25 @@ export class RawImageFacade {
     this.store.dispatch(new AddBase64CodeToIFile({id: input.id, baseCode: input.baseCode}));
   }
 
+  loadImagesIntoStateByProjectId(projectId: number) {
+    this.getImagesByProjectId(projectId).subscribe((response) => {
+      response.forEach(image => {
+        this.store.dispatch(new AddRawImage({
+          base64Url: image.Data,
+          file: undefined,
+          height: undefined,
+          id: image.imageId,
+          name: image.name,
+          width: undefined,
+        }));
+      });
+    });
+  }
+
+  getImagesByProjectId(projectId: number): Observable<IImage[]> {
+    return this.imageApi.getImagesByProjectId(projectId);
+  }
+
   postImage(image: IImage): Observable<IImage> {
     return this.imageApi.postItem(image);
   }

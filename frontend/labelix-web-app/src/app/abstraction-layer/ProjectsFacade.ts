@@ -30,14 +30,19 @@ export class ProjectsFacade {
     this.store.dispatch(new AddProjectAction(project));
   }
 
-  getProjectObservableNyId(id: number): Observable<IProject> {
+  getProjectById(id: number): Observable<IProject> {
     return this.projectApi.getItemById(id);
   }
 
-  putProject(data: IProject) {
-    this.projectApi.putItem(data).subscribe(value => console.log(value));
+  putProject(data: IProject): Observable<IProject> {
+    return this.projectApi.putItem(data);
   }
-  deleteProject(data: IProject){
-    this.projectApi.deleteItem(data).subscribe(() => {this.store.dispatch(new DeleteProjectAction(data)); });
+
+  deleteProject(data: IProject) {
+    this.projectApi.deleteItem(data).subscribe(() => this.removeProjectFromState(data));
+  }
+
+  removeProjectFromState(project: IProject) {
+    this.store.dispatch(new DeleteProjectAction(project));
   }
 }

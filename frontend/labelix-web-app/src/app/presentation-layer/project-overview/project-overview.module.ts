@@ -40,6 +40,7 @@ import {UserFacade} from '../../abstraction-layer/UserFacade';
 import {MatListModule} from '@angular/material/list';
 import {MatRadioModule} from '@angular/material/radio';
 import {userReducers, userStateName} from '../../core-layer/states/state-definitions/userState';
+import { ProjectEditDialogComponent } from './project-edit-dialog/project-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {userReducers, userStateName} from '../../core-layer/states/state-definit
     ImageUploadComponent,
     ImageTimelineComponent,
     ImageTimelineSingleImageComponent,
+    ProjectEditDialogComponent,
   ],
   imports: [
     CommonModule,

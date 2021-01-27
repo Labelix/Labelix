@@ -145,6 +145,7 @@ export class CocoFormatHelper {
     return result;
   }
 
+  // calculates every position of a polygon based on the given relation of the point and the image height and width
   getScalesOfSegmentations(segmentation: number[], rawImage: IRawImage): number[] {
     const result: number[] = [];
     for (let i = 0; i < segmentation.length; i++) {
