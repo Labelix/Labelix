@@ -8,7 +8,6 @@ import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
 import {IUser} from '../../../core-layer/contracts/IUser';
 import {IRawImage} from '../../../core-layer/contracts/IRawImage';
-import {IImage} from '../../../core-layer/contracts/IImage';
 import {MatListOption} from '@angular/material/list';
 import {Subscription} from 'rxjs';
 
@@ -43,7 +42,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
               private aiModelConfigFacade: AiModelConfigFacade,
               private rawImageFacade: RawImageFacade,
               private userFacade: UserFacade) {
-    this.project = data.project;
+    this.project = new Project(this.data.project);
     this.subscription = new Subscription();
   }
 
@@ -52,9 +51,13 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     this.rawImageFacade.clearRawImagesOnState();
 
     this.aiModelConfigFacade.loadAllConfigsToState();
-    this.userFacade.getUsers();
+    this.userFacade.loadUsersIntoState();
 
+    this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id).subscribe(value => this.selectedUsers = value));
+    this.subscription.add(this.aiModelConfigFacade.getConfigsByProjectId(this.project.id)
+      .subscribe(value => this.selectedAiConfigs = value));
     this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
+
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
 
     this.projectFacade.getProjectById(this.project.id).subscribe(value => {
@@ -98,35 +101,15 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onOkSubmit() {
-    const imageData: IImage[] = [];
-    for (const i of this.images) {
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
-    }
     const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
     console.log(aiConfigIdList);
 
-    this.projectFacade.postProject(this.project).subscribe(newProject => {
-
-      for (const image of imageData) {
-
-        image.projectId = newProject.id;
-
-        this.rawImageFacade.postImage(image).subscribe(value => {
-          if (value !== undefined && value !== null) {
-            this.rawImageFacade.addRawImageToState({
-              id: value.id,
-              height: undefined,
-              width: undefined,
-              base64Url: value.Data,
-              name: value.name,
-              file: undefined
-            });
-          }
-        });
-      }
+    this.projectFacade.putProject(this.project).subscribe(newProject => {
+      this.projectFacade.removeProjectFromState(this.project);
       this.projectFacade.addProjectToState(newProject);
       this.selectedUsers.forEach(value => this.userFacade.addUserToProjectViaId(newProject.id, value)
         .subscribe());
