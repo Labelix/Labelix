@@ -58,6 +58,8 @@ create table images
         constraint "PK_images"
             primary key,
     "ImagePath" text,
+	"Height"    double precision not null,
+    "Width"     double precision not null,
     "ProjectId" integer not null
         constraint "FK_images_projects_ProjectId"
             references projects
