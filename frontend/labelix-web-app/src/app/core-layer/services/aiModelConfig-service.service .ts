@@ -18,7 +18,7 @@ export class AiModelConfigServiceService extends GenericApiService<IAIModelConfi
   getAiConfigsByProjectId(projectId: number): Observable<IAIModelConfig[]> {
     this.setHeader();
     return this.httpClient.get<IAIModelConfig[]>(
-      `${this.urlRoot}/GetByProjectId-${projectId}`,
+      `${this.urlRoot}/ByProjectId-${projectId}`,
       {headers: this.headers, responseType: 'json'});
   }
 }

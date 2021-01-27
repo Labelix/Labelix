@@ -40,17 +40,17 @@ export class UserFacade {
   }
 
   login() {
-  this.oauthService.tryLogin()
-    .catch(err => {
-      console.error(err);
-    })
-    .then(() => {
-      if (!this.oauthService.hasValidAccessToken()) {
-        this.oauthService.initImplicitFlow();
-      } else {
-        this.isLoggedIn$.next(true);
-      }
-    });
+    this.oauthService.tryLogin()
+      .catch(err => {
+        console.error(err);
+      })
+      .then(() => {
+        if (!this.oauthService.hasValidAccessToken()) {
+          this.oauthService.initImplicitFlow();
+        } else {
+          this.isLoggedIn$.next(true);
+        }
+      });
   }
 
   logout() {
@@ -58,11 +58,15 @@ export class UserFacade {
     this.isLoggedIn$.next(false);
   }
 
-  getUsers() {
+  loadUsersIntoState() {
     this.userApi.getItems().subscribe(value => {
       this.store.dispatch(new ClearUsers());
       this.store.dispatch(new AddUsers(value));
     });
+  }
+
+  getUsersByProjectId(projectId: number): Observable<IUser[]> {
+    return this.userApi.getUsersByProjectId(projectId);
   }
 
   addUserToProjectViaId(projectId: number, other: IUser): Observable<any> {

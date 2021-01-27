@@ -52,7 +52,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     this.rawImageFacade.clearRawImagesOnState();
 
     this.aiModelConfigFacade.loadAllConfigsToState();
-    this.userFacade.getUsers();
+    this.userFacade.loadUsersIntoState();
 
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
     this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => this.allAiConfigs = value));

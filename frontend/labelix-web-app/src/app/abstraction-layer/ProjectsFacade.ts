@@ -34,10 +34,15 @@ export class ProjectsFacade {
     return this.projectApi.getItemById(id);
   }
 
-  putProject(data: IProject) {
-    this.projectApi.putItem(data).subscribe(value => console.log(value));
+  putProject(data: IProject): Observable<IProject> {
+    return this.projectApi.putItem(data);
   }
-  deleteProject(data: IProject){
-    this.projectApi.deleteItem(data).subscribe(() => {this.store.dispatch(new DeleteProjectAction(data)); });
+
+  deleteProject(data: IProject) {
+    this.projectApi.deleteItem(data).subscribe(() => this.removeProjectFromState(data));
+  }
+
+  removeProjectFromState(project: IProject) {
+    this.store.dispatch(new DeleteProjectAction(project));
   }
 }
