@@ -21,4 +21,12 @@ export class UserService extends GenericApiService<IUser> {
       `${this.urlRoot}/addUserToProject-` + projectId, user,
       {headers: this.headers, responseType: 'json'});
   }
+
+  getUsersByProjectId(projectId: number): Observable<IUser[]> {
+    this.setHeader();
+    return this.httpClient.get<IUser[]>(
+      `${this.urlRoot}/allByProjectId-` + projectId,
+      {headers: this.headers, responseType: 'json'}
+    );
+  }
 }

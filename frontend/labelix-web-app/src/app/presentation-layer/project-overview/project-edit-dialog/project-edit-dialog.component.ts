@@ -1,33 +1,30 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IProject} from '../../../core-layer/contracts/IProject';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {Project} from '../../../core-layer/models/Project';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
-import {IRawImage} from '../../../core-layer/contracts/IRawImage';
-import {IImage} from '../../../core-layer/contracts/IImage';
-import {MatDialogRef} from '@angular/material/dialog';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
-import {Subscription} from 'rxjs';
 import {UserFacade} from '../../../abstraction-layer/UserFacade';
-import {IUser} from '../../../core-layer/contracts/IUser';
-import {MatListOption} from '@angular/material/list';
 import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
+import {IUser} from '../../../core-layer/contracts/IUser';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
+import {MatListOption} from '@angular/material/list';
+import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-project-creation-dialog',
-  templateUrl: './project-creation-dialog.component.html',
-  styleUrls: ['./project-creation-dialog.component.css']
+  selector: 'app-project-edit-dialog',
+  templateUrl: './project-edit-dialog.component.html',
+  styleUrls: ['./project-edit-dialog.component.css']
 })
-export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
+export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
+
+  project: Project;
 
   images: IRawImage[];
   imageNumber = 5;
   breakpoint: number;
-
-  project: IProject;
-  newProjectName: string;
-  newProjectDescription: string;
 
   addConfigsMode = false;
   allAiConfigs: IAIModelConfig[];
@@ -39,11 +36,13 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   filteredUsers: IUser[];
   selectedUsers: IUser[] = [];
 
-  constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+              public dialogRef: MatDialogRef<ProjectEditDialogComponent>,
               private projectFacade: ProjectsFacade,
               private aiModelConfigFacade: AiModelConfigFacade,
               private rawImageFacade: RawImageFacade,
               private userFacade: UserFacade) {
+    this.project = new Project(this.data.project);
     this.subscription = new Subscription();
   }
 
@@ -54,10 +53,50 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     this.aiModelConfigFacade.loadAllConfigsToState();
     this.userFacade.loadUsersIntoState();
 
-    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
-    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => this.allAiConfigs = value));
+    this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id).subscribe(value => this.selectedUsers = value));
+    this.subscription.add(this.aiModelConfigFacade.getConfigsByProjectId(this.project.id)
+      .subscribe(value => this.selectedAiConfigs = value));
     this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
 
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+
+    this.projectFacade.getProjectById(this.project.id).subscribe(value => {
+      if (value !== undefined) {
+        this.rawImageFacade.clearRawImagesOnState();
+        value.images.forEach(image => this.rawImageFacade.addRawImageToState({
+          width: -1,
+          name: image.name,
+          id: image.imageId,
+          height: -1,
+          file: undefined,
+          base64Url: image.Data
+        }));
+      }
+    });
+
+    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => {
+      this.allAiConfigs = value;
+
+      this.aiModelConfigFacade.getConfigsByProjectId(this.project.id).subscribe(projectConfigs => {
+
+        if (this.allAiConfigs !== undefined && projectConfigs !== undefined) {
+          this.allAiConfigs.forEach(aiConfig => {
+
+            projectConfigs.forEach(projectConfig => {
+
+              if (aiConfig.id === projectConfig.id) {
+                this.selectedAiConfigs.push(aiConfig);
+              }
+            });
+          });
+        }
+      });
+
+
+    }));
+
+
+    this.rawImageFacade.loadImagesIntoStateByProjectId(this.project.id);
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
   }
 
@@ -66,44 +105,11 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   onOkSubmit() {
-    const imageData: IImage[] = [];
-    for (const i of this.images) {
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
-    }
-    const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
+    const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
     console.log(aiConfigIdList);
-    this.project = {
-      id: 0,
-      name: this.newProjectName,
-      description: this.newProjectDescription,
-      creationDate: new Date(),
-      finishedAnnotation: false,
-      images: [],
-      label: '',
-      timestamp: undefined,
-      AIModelConfig: aiConfigIdList,
-      cocoExport: undefined
-    };
 
-    this.projectFacade.postProject(this.project).subscribe(newProject => {
-
-      for (const image of imageData) {
-
-        image.projectId = newProject.id;
-
-        this.rawImageFacade.postImage(image).subscribe(value => {
-          if (value !== undefined && value !== null) {
-            this.rawImageFacade.addRawImageToState({
-              id: value.id,
-              height: undefined,
-              width: undefined,
-              base64Url: value.Data,
-              name: value.name,
-              file: undefined
-            });
-          }
-        });
-      }
+    this.projectFacade.putProject(this.project).subscribe(newProject => {
+      this.projectFacade.removeProjectFromState(this.project);
       this.projectFacade.addProjectToState(newProject);
       this.selectedUsers.forEach(value => this.userFacade.addUserToProjectViaId(newProject.id, value)
         .subscribe());
@@ -141,9 +147,9 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  checkIfConfigAlreadySelected(config: IAIModelConfig): boolean {
+  checkIfConfigAlreadySelected(aiConfig: IAIModelConfig): boolean {
     for (const item of this.selectedAiConfigs) {
-      if (item.id === config.id) {
+      if (item.id === aiConfig.id) {
         return true;
       }
     }
@@ -197,4 +203,5 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       this.breakpoint = 1;
     }
   }
+
 }

@@ -34,7 +34,7 @@ export class AiConfigSettingsComponent implements OnInit, OnDestroy {
 
     }));
 
-    this.aiConfigFacade.getConfigs();
+    this.aiConfigFacade.loadAllConfigsToState();
   }
 
   ngOnDestroy() {
