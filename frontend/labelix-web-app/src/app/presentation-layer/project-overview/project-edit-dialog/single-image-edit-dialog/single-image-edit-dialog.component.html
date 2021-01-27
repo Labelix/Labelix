@@ -1,1 +1,4 @@
-<p>single-image-edit-dialog works!</p>
+<div class="single-image" *ngIf="myImage != null">
+  <img class="close" (click)="onImageClick()" src="../../../../../assets/img/delete2.png">
+  <img class="image" [src]="myImage.base64Url"/>
+</div>

@@ -6,4 +6,6 @@ export interface IImage extends IIdentifiable{
   projectId: number;
   format: string;
   name: string;
+  HeightOfData: number;
+  WidthOfData: number;
 }

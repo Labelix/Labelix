@@ -1,0 +1,18 @@
+.single-image {
+  width: 16em;
+  height: 9em;
+  position: relative;
+}
+.single-image .close {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+}
+.single-image .image{
+  width: 16em;
+  height: 9em;
+  object-fit: fill;
+}

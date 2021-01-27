@@ -68,7 +68,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   onOkSubmit() {
     const imageData: IImage[] = [];
     for (const i of this.images) {
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
+      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, WidthOfData: i.width, HeightOfData: i.height});
     }
     const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
     console.log(aiConfigIdList);
