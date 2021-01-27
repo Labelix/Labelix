@@ -46,5 +46,12 @@ namespace Labelix.WebAPI.Controllers
             }
             return result.ToArray();
         }
+
+        public async Task RemoveUserFromProject(int userId, int projectId)
+        {
+            Model model = (await GetAllWhereAsync(e => e.UserIdKey == userId && e.ProjectKey == projectId))
+                .FirstOrDefault();
+            await DeleteModelAsync(model.Id);
+        }
     }
 }
