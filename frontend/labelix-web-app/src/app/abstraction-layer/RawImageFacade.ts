@@ -54,10 +54,10 @@ export class RawImageFacade {
         this.store.dispatch(new AddRawImage({
           base64Url: image.Data,
           file: undefined,
-          height: undefined,
+          height: image.Height,
           id: image.imageId,
           name: image.name,
-          width: undefined,
+          width: image.Width,
         }));
       });
     });

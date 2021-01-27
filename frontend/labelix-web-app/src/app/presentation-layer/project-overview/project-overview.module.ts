@@ -41,6 +41,8 @@ import {MatListModule} from '@angular/material/list';
 import {MatRadioModule} from '@angular/material/radio';
 import {userReducers, userStateName} from '../../core-layer/states/state-definitions/userState';
 import { ProjectEditDialogComponent } from './project-edit-dialog/project-edit-dialog.component';
+import { ImageUploadEditDialogComponent } from './project-edit-dialog/image-upload-edit-dialog/image-upload-edit-dialog.component';
+import { SingleImageEditDialogComponent } from './project-edit-dialog/single-image-edit-dialog/single-image-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import { ProjectEditDialogComponent } from './project-edit-dialog/project-edit-d
     ImageTimelineComponent,
     ImageTimelineSingleImageComponent,
     ProjectEditDialogComponent,
+    ImageUploadEditDialogComponent,
+    SingleImageEditDialogComponent,
   ],
   imports: [
     CommonModule,
