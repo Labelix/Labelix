@@ -78,8 +78,8 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
       return {
         id: entry.id,
         base64Url: entry.Data,
-        width: -1,
-        height: -1,
+        width: entry.Width,
+        height: entry.Height,
         file: undefined,
         name: entry.Name
       };

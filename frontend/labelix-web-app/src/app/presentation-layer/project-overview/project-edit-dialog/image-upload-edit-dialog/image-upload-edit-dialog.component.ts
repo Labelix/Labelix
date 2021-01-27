@@ -42,8 +42,8 @@ export class ImageUploadEditDialogComponent implements OnInit, OnDestroy {
         image.onload = () => {
           this.rawImageFacade.postImage({
             id: -1,
-            HeightOfData: image.height,
-            WidthOfData: image.width,
+            Height: image.height,
+            Width: image.width,
             Data: image.src,
             name: item.name,
             imageId: -1,
