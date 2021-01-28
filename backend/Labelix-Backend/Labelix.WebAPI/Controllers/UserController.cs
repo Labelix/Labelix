@@ -40,10 +40,16 @@ namespace Labelix.WebAPI.Controllers
         }
 
         [Authorize(Roles = "admin")]
-        [HttpPost("addUserToProject-{projectId}")]
+        [HttpPut("addUserToProject-{projectId}")]
         public Task AddUserToProject(int projectId , Model model)
         {
             return new UserProjectController().AddUserToProject(model.Id, projectId);
+        }
+        [Authorize(Roles = "admin")]
+        [HttpPut("removeUserFromProject-{projectId}")]
+        public Task RemoveUserFromProject(int projectId, Model model)
+        {
+            return new UserProjectController().RemoveUserFromProject(model.Id, projectId);
         }
 
         [Authorize(Roles = "admin")]

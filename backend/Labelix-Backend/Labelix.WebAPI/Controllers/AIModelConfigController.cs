@@ -63,5 +63,17 @@ namespace Labelix.WebAPI.Controllers
             return configs.Where(c => ids.Contains(c.Id));
         }
 
+        [Authorize(Roles = "admin")]
+        [HttpPut("AddToProject-{projectId}")]
+        public Task AddToProject(int projectId, Model model)
+        {
+            return new Project_AIModelConfigController().PostAsync(new Project_AIModelConfig(model.Id,projectId));
+        }
+        [Authorize(Roles = "admin")]
+        [HttpPut("RemoveFromProject-{projectId}")]
+        public Task RemoveFromProject(int projectId, Model model)
+        {
+            return new Project_AIModelConfigController().DeleteFromProject(new Project_AIModelConfig(model.Id, projectId));
+        }
     }
 }
