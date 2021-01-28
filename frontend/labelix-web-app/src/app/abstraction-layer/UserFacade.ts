@@ -72,4 +72,8 @@ export class UserFacade {
   addUserToProjectViaId(projectId: number, other: IUser): Observable<any> {
     return this.userApi.addUserToProject(projectId, other);
   }
+
+  removeUserFromProjectViaId(projectId: number, other: IUser): Observable<any> {
+    return this.userApi.removeUserFromProject(projectId, other);
+  }
 }

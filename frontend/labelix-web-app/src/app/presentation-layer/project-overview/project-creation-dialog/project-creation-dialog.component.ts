@@ -105,8 +105,6 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
         });
       }
       this.projectFacade.addProjectToState(newProject);
-      this.selectedUsers.forEach(value => this.userFacade.addUserToProjectViaId(newProject.id, value)
-        .subscribe());
     });
 
     this.dialogRef.close();

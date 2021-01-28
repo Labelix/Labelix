@@ -29,13 +29,13 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   addConfigsMode = false;
   allAiConfigs: IAIModelConfig[];
   filteredAiConfigs: IAIModelConfig[];
-  configsAlreadyInProject: IAIModelConfig[];
+  configsAlreadyInProject: IAIModelConfig[] = [];
   selectedAiConfigs: IAIModelConfig[] = [];
 
   addUserMode = false;
-  allUsers: IUser[];
+  allUsers: IUser[] = [];
   filteredUsers: IUser[];
-  usersAlreadyInProject: IUser[];
+  usersAlreadyInProject: IUser[] = [];
   selectedUsers: IUser[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -58,8 +58,12 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id)
       .subscribe(value => {
         value.forEach(user => {
-          this.usersAlreadyInProject.push(user);
-          this.selectedUsers.push(user);
+          // check if user is not myself
+          // @ts-ignore
+          if (user.keycloakId !== this.userFacade.getIdentityClaims().upn) {
+            this.usersAlreadyInProject.push(user);
+            this.selectedUsers.push(user);
+          }
         });
       }));
 
@@ -69,7 +73,16 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
         this.configsAlreadyInProject.push(aiConfig);
       })));
 
-    this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
+    this.subscription.add(this.userFacade.users$.subscribe((value) => {
+      this.allUsers = [];
+      value.forEach(user => {
+        // check if user is not myself
+        // @ts-ignore
+        if (user.keycloakId !== this.userFacade.getIdentityClaims().upn) {
+          this.allUsers.push(user);
+        }
+      });
+    }));
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
     this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => this.allAiConfigs = value));
 
@@ -86,6 +99,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
           base64Url: image.Data
         }));
       }
+      console.log(this.userFacade.getIdentityClaims());
     });
 
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
@@ -99,10 +113,35 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
 
     this.projectFacade.putProject(this.project).subscribe(newProject => {
+      // update project on state
       this.projectFacade.removeProjectFromState(this.project);
       this.projectFacade.addProjectToState(newProject);
-      this.selectedUsers.forEach(value => this.userFacade.addUserToProjectViaId(newProject.id, value)
-        .subscribe());
+
+      // checks if config was present from the beginning, if not, than it's added on the server
+      this.selectedAiConfigs.forEach(value => {
+        if (!this.checkIfConfigWasAlreadyPresent(value)) {
+          this.aiModelConfigFacade.addAiConfigToProjectViaId(this.project.id, value).subscribe();
+        }
+      });
+
+      // checks if user was present from the beginning, if not, than it's added on the server
+      this.selectedUsers.forEach(value => {
+        if (!this.checkIfUserWasAlreadyPresentInProject(value)) {
+          this.userFacade.addUserToProjectViaId(this.project.id, value).subscribe();
+        }
+      });
+
+      this.usersAlreadyInProject.forEach(value => {
+        if (!this.checkIfUserAlreadySelected(value)) {
+          this.userFacade.removeUserFromProjectViaId(this.project.id, value).subscribe();
+        }
+      });
+
+      this.configsAlreadyInProject.forEach(value => {
+        if (!this.checkIfConfigAlreadySelected(value)) {
+          this.aiModelConfigFacade.removeAiConfigFromProjectViaId(this.project.id, value).subscribe();
+        }
+      });
     });
 
     this.dialogRef.close();
@@ -130,7 +169,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   checkIfUserAlreadySelected(user: IUser): boolean {
     for (const item of this.selectedUsers) {
-      if (item.keycloakId === user.keycloakId) {
+      if (item.id === user.id) {
         return true;
       }
     }
@@ -139,6 +178,24 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   checkIfConfigAlreadySelected(aiConfig: IAIModelConfig): boolean {
     for (const item of this.selectedAiConfigs) {
+      if (item.id === aiConfig.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkIfUserWasAlreadyPresentInProject(user: IUser): boolean {
+    for (const item of this.usersAlreadyInProject) {
+      if (item.id === user.id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkIfConfigWasAlreadyPresent(aiConfig: IAIModelConfig): boolean {
+    for (const item of this.configsAlreadyInProject) {
       if (item.id === aiConfig.id) {
         return true;
       }

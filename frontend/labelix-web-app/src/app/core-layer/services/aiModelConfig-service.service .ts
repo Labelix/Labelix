@@ -21,4 +21,18 @@ export class AiModelConfigServiceService extends GenericApiService<IAIModelConfi
       `${this.urlRoot}/ByProjectId-${projectId}`,
       {headers: this.headers, responseType: 'json'});
   }
+
+  addAiConfigToProject(projectId: number, aiConfig: IAIModelConfig): Observable<any> {
+    this.setHeader();
+    return this.httpClient.put<IAIModelConfig[]>(
+      `${this.urlRoot}/AddToProject-${projectId}`, aiConfig,
+      {headers: this.headers, responseType: 'json'});
+  }
+
+  removeAiConfigFromProject(projectId: number, aiConfig: IAIModelConfig): Observable<any> {
+    this.setHeader();
+    return this.httpClient.put<IAIModelConfig[]>(
+      `${this.urlRoot}/RemoveFromProject-${projectId}`, aiConfig,
+      {headers: this.headers, responseType: 'json'});
+  }
 }
