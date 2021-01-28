@@ -90,7 +90,6 @@ namespace Labelix.WebAPI.Controllers
         public async Task<IActionResult> PostAsync(Data data)
         {
             await Base64Controller.ImageUploadAsync(data);
-
             return Ok();
         }
 
