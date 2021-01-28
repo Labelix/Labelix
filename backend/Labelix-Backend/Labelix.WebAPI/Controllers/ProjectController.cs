@@ -46,7 +46,9 @@ namespace Labelix.WebAPI.Controllers
             var keycloakUser = this.User.Claims.GetUserId();
             var userProjectController = new UserProjectController();
             int[] projectsToGet = await userProjectController.GetByProjectForUser(keycloakUser);
-            return await GetAllWhereAsync(e => projectsToGet.Contains(e.Id));
+            List<Model> models = (await GetAllWhereAsync(e => projectsToGet.Contains(e.Id))).ToList();
+            models.ForEach(e => e.LabeledPath = "");
+            return models;
         }
 
         [Authorize(Roles = "user")]
