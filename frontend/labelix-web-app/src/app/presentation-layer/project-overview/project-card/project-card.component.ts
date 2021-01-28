@@ -97,7 +97,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
       labelCategories.forEach(value => this.categoryFacade.addLabelCategory(value));
 
       const annotations = this.cocoController.getAnnotationsFromCocoFormat(coco, rawImages, labelCategories);
-      console.log(annotations);
+
       annotations.forEach(annotation => this.annotationFacade.addImageAnnotation(annotation));
     }
 

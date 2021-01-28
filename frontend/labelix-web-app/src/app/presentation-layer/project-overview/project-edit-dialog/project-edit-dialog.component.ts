@@ -29,11 +29,13 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   addConfigsMode = false;
   allAiConfigs: IAIModelConfig[];
   filteredAiConfigs: IAIModelConfig[];
+  configsAlreadyInProject: IAIModelConfig[];
   selectedAiConfigs: IAIModelConfig[] = [];
 
   addUserMode = false;
   allUsers: IUser[];
   filteredUsers: IUser[];
+  usersAlreadyInProject: IUser[];
   selectedUsers: IUser[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -54,9 +56,18 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     this.userFacade.loadUsersIntoState();
 
     this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id)
-      .subscribe(value => this.selectedUsers = value));
+      .subscribe(value => {
+        value.forEach(user => {
+          this.usersAlreadyInProject.push(user);
+          this.selectedUsers.push(user);
+        });
+      }));
+
     this.subscription.add(this.aiModelConfigFacade.getConfigsByProjectId(this.project.id)
-      .subscribe(value => this.selectedAiConfigs = value));
+      .subscribe(value => value.forEach(aiConfig => {
+        this.selectedAiConfigs.push(aiConfig);
+        this.configsAlreadyInProject.push(aiConfig);
+      })));
 
     this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
@@ -65,11 +76,12 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     this.projectFacade.getProjectById(this.project.id).subscribe(value => {
       if (value !== undefined) {
         this.rawImageFacade.clearRawImagesOnState();
+        this.project.label = value.label;
         value.images.forEach(image => this.rawImageFacade.addRawImageToState({
-          width: -1,
+          width: image.Width,
           name: image.name,
-          id: image.imageId,
-          height: -1,
+          id: image.id,
+          height: image.Height,
           file: undefined,
           base64Url: image.Data
         }));
@@ -85,7 +97,6 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   onOkSubmit() {
     const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
-    console.log(aiConfigIdList);
 
     this.projectFacade.putProject(this.project).subscribe(newProject => {
       this.projectFacade.removeProjectFromState(this.project);

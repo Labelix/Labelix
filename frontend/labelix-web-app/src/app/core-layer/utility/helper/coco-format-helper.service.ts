@@ -128,7 +128,7 @@ export class CocoFormatHelper {
 
     for (const current of input.annotations) {
       const currentImage = this.getRawImageById(current.imageId, rawImages);
-      if (currentImage.height !== -1 && currentImage.width !== -1) {
+      if (currentImage !== undefined && currentImage.height !== -1 && currentImage.width !== -1) {
         result.push({
           id: current.id,
           segmentations: this.getScalesOfSegmentations(current.segmentation, currentImage),

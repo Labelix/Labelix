@@ -40,7 +40,7 @@ export class SingleImageEditDialogComponent implements OnInit, OnDestroy {
       Data: this.myImage.base64Url,
       projectId: this.project.id,
       format: '',
-      id: -1
+      id: this.myImage.id
     }).subscribe(value => {
       this.rawImageFacade.deleteRawImageOnState(this.myImage);
     });
