@@ -48,4 +48,12 @@ export class AiModelConfigFacade {
   getConfigsByProjectId(projectId: number): Observable<IAIModelConfig[]> {
     return this.aiModelConfigApi.getAiConfigsByProjectId(projectId);
   }
+
+  addAiConfigToProjectViaId(projectId: number, other: IAIModelConfig): Observable<any> {
+    return this.aiModelConfigApi.addAiConfigToProject(projectId, other);
+  }
+
+  removeAiConfigFromProjectViaId(projectId: number, other: IAIModelConfig): Observable<any> {
+    return this.aiModelConfigApi.removeAiConfigFromProject(projectId, other);
+  }
 }

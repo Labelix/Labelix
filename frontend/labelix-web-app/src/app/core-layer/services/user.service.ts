@@ -18,7 +18,14 @@ export class UserService extends GenericApiService<IUser> {
   addUserToProject(projectId: number, user: IUser): Observable<any> {
     this.setHeader();
     return this.httpClient.put<IUser>(
-      `${this.urlRoot}/addUserToProject-` + projectId, user,
+      `${this.urlRoot}/AddUserToProject-` + projectId, user,
+      {headers: this.headers, responseType: 'json'});
+  }
+
+  removeUserFromProject(projectId: number, user: IUser): Observable<any> {
+    this.setHeader();
+    return this.httpClient.put<IUser>(
+      `${this.urlRoot}/RemoveUserFromProject-` + projectId, user,
       {headers: this.headers, responseType: 'json'});
   }
 
@@ -29,4 +36,5 @@ export class UserService extends GenericApiService<IUser> {
       {headers: this.headers, responseType: 'json'}
     );
   }
+
 }
