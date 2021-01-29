@@ -11,6 +11,8 @@ import {ImageApi} from '../../../core-layer/services/image-api.service';
 import {Subscription} from 'rxjs';
 import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
+import {ProjectEditDialogComponent} from '../project-edit-dialog/project-edit-dialog.component';
 
 @Component({
   selector: 'app-project-card',
@@ -33,7 +35,8 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
               private cocoController: CocoFormatHelper,
               private userFacade: UserFacade,
               private imageService: ImageApi,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
     this.subscription = new Subscription();
   }
 
@@ -61,7 +64,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   onStartAnnotating(): void {
     this.snackBar.open('Project loading...');
     this.annotationFacade.changeCurrentAnnotationImage(undefined);
-    this.projectFacade.getProjectObservableNyId(this.myProject.id).subscribe(value => {
+    this.projectFacade.getProjectById(this.myProject.id).subscribe(value => {
       // sorry for that ugly thing but it works for now, I guess
       setTimeout(() => this.onProjectLoad(value), 10);
     });
@@ -70,29 +73,39 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   onProjectLoad(input) {
     this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImagesOnState();
-    this.addRawImages(input);
-    let coco;
-    if (input.label !== null && input.label !== '') {
-      coco = JSON.parse(input.label);
-      this.cocoController.getCategoriesFromCocoFormat(coco).forEach(value => this.categoryFacade.addLabelCategory(value));
-    }
-    this.setActiveProject(input, coco);
-    this.setCurrentAnnotationImage(input);
-    this.snackBar.dismiss();
-    this.router.navigate(['/image-annotation/image-view']);
-  }
 
-  addRawImages(input) {
-    this.rawImageFacade.addRawImagesToState(input.images.map(entry => {
+    const rawImages = input.images.map(entry => {
       return {
         id: entry.id,
         base64Url: entry.Data,
-        width: -1,
-        height: -1,
+        width: entry.Width,
+        height: entry.Height,
         file: undefined,
         name: entry.Name
       };
-    }));
+    });
+
+    let labelCategories;
+
+    this.rawImageFacade.addRawImagesToState(rawImages);
+
+    let coco;
+
+    if (input.label !== null && input.label !== '') {
+      coco = JSON.parse(input.label);
+      labelCategories = this.cocoController.getCategoriesFromCocoFormat(coco);
+      labelCategories.forEach(value => this.categoryFacade.addLabelCategory(value));
+
+      const annotations = this.cocoController.getAnnotationsFromCocoFormat(coco, rawImages, labelCategories);
+
+      annotations.forEach(annotation => this.annotationFacade.addImageAnnotation(annotation));
+    }
+
+    this.setActiveProject(input, coco);
+    this.setCurrentAnnotationImage(input);
+
+    this.snackBar.dismiss();
+    this.router.navigate(['/image-annotation/image-view']);
   }
 
   setCurrentAnnotationImage(input) {
@@ -126,6 +139,14 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
 
   isAdmin(): boolean {
     return this.userFacade.isAdmin();
+  }
+
+  onEditClicked() {
+    this.dialog.open(ProjectEditDialogComponent, {
+      height: '80%',
+      width: '60%',
+      data: {project: this.myProject}
+    });
   }
 
   onDeleteClicked() {

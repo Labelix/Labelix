@@ -75,6 +75,25 @@ export function rawImageReducer(
       };
     }
 
+    case ActionTypes.DeleteRawImage: {
+      const tempImages: IRawImage[] = [];
+      state.rawImages.forEach(value => {
+        if (value.id !== action.payload.id) {
+          tempImages.push({
+            id: value.id,
+            base64Url: value.base64Url,
+            name: value.name,
+            width: value.width,
+            height: value.height,
+            file: value.file
+          });
+        }
+      });
+      return {
+        rawImages: tempImages
+      };
+    }
+
     case ActionTypes.DeleteAllImages: {
       return {
         rawImages: []

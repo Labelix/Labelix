@@ -15,22 +15,10 @@ export class AiModelConfigFacade {
     this.aiModelConfigs$ = this.store.pipe(select(GetConfigs));
   }
 
-  getConfigs() {
+  loadAllConfigsToState() {
     this.aiModelConfigApi.getItems().subscribe((value: IAIModelConfig[]) => {
       this.store.dispatch(new AddConfigs(value));
     });
-  }
-
-  postConfig(config: IAIModelConfig): Observable<IAIModelConfig> {
-    return this.aiModelConfigApi.postItem(config);
-  }
-
-  putConfig(config: IAIModelConfig): Observable<IAIModelConfig> {
-    return this.aiModelConfigApi.putItem(config);
-  }
-
-  deleteConfig(config: IAIModelConfig): Observable<any> {
-    return this.aiModelConfigApi.deleteItem(config);
   }
 
   addToState(config: IAIModelConfig) {
@@ -45,4 +33,27 @@ export class AiModelConfigFacade {
     this.store.dispatch(new DeleteConfig(config.id));
   }
 
+  postConfig(config: IAIModelConfig): Observable<IAIModelConfig> {
+    return this.aiModelConfigApi.postItem(config);
+  }
+
+  putConfig(config: IAIModelConfig): Observable<IAIModelConfig> {
+    return this.aiModelConfigApi.putItem(config);
+  }
+
+  deleteConfig(config: IAIModelConfig): Observable<any> {
+    return this.aiModelConfigApi.deleteItem(config);
+  }
+
+  getConfigsByProjectId(projectId: number): Observable<IAIModelConfig[]> {
+    return this.aiModelConfigApi.getAiConfigsByProjectId(projectId);
+  }
+
+  addAiConfigToProjectViaId(projectId: number, other: IAIModelConfig): Observable<any> {
+    return this.aiModelConfigApi.addAiConfigToProject(projectId, other);
+  }
+
+  removeAiConfigFromProjectViaId(projectId: number, other: IAIModelConfig): Observable<any> {
+    return this.aiModelConfigApi.removeAiConfigFromProject(projectId, other);
+  }
 }

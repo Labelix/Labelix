@@ -128,7 +128,7 @@ export class CocoFormatHelper {
 
     for (const current of input.annotations) {
       const currentImage = this.getRawImageById(current.imageId, rawImages);
-      if (currentImage.height !== -1 && currentImage.width !== -1) {
+      if (currentImage !== undefined && currentImage.height !== -1 && currentImage.width !== -1) {
         result.push({
           id: current.id,
           segmentations: this.getScalesOfSegmentations(current.segmentation, currentImage),
@@ -145,6 +145,7 @@ export class CocoFormatHelper {
     return result;
   }
 
+  // calculates every position of a polygon based on the given relation of the point and the image height and width
   getScalesOfSegmentations(segmentation: number[], rawImage: IRawImage): number[] {
     const result: number[] = [];
     for (let i = 0; i < segmentation.length; i++) {

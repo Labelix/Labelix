@@ -11,7 +11,6 @@ import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {IUser} from '../../../core-layer/contracts/IUser';
 import {MatListOption} from '@angular/material/list';
 import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
-import {takeUntil, takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -49,21 +48,17 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
-    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
-    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe(value => this.allAiConfigs = value));
-    this.subscription.add(this.userFacade.users$.subscribe(value => this.allUsers = value));
-    this.subscription.add(this.dialogRef.afterClosed().subscribe(() => {
-      this.rawImageFacade.clearRawImagesOnState();
-    }));
-
-    if (this.allUsers.length === 0) {
-      this.userFacade.getUsers();
-    }
-
     this.changeRelation(window.innerWidth);
     this.rawImageFacade.clearRawImagesOnState();
-    this.aiModelConfigFacade.getConfigs();
+
+    this.aiModelConfigFacade.loadAllConfigsToState();
+    this.userFacade.loadUsersIntoState();
+
+    this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
+    this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => this.allAiConfigs = value));
+    this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
+
+    this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
   }
 
   ngOnDestroy() {
@@ -73,7 +68,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   onOkSubmit() {
     const imageData: IImage[] = [];
     for (const i of this.images) {
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name});
+      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, Width: i.width, Height: i.height});
     }
     const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
     console.log(aiConfigIdList);
@@ -90,7 +85,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       cocoExport: undefined
     };
 
-    this.subscription.add(this.projectFacade.postProject(this.project).subscribe(newProject => {
+    this.projectFacade.postProject(this.project).subscribe(newProject => {
 
       for (const image of imageData) {
 
@@ -110,9 +105,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
         });
       }
       this.projectFacade.addProjectToState(newProject);
-      this.selectedUsers.forEach(value => this.userFacade.addUserToProjectViaId(newProject.id, value)
-        .subscribe());
-    }));
+    });
 
     this.dialogRef.close();
   }

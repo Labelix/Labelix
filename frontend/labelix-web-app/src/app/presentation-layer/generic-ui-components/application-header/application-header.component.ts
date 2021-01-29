@@ -28,14 +28,12 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   }
 
   delayedCheckForLoginCredentials() {
-    if (!this.isLoggedIn) {
-      this.interval = setInterval(() => {
-        this.isLoggedIn = this.userFacade.checkLoggedIn();
-        if (this.isLoggedIn === false) {
-          this.delayedCheckForLoginCredentials();
-        }
-      }, 100);
-    }
+    this.interval = setInterval(() => {
+      this.isLoggedIn = this.userFacade.checkLoggedIn();
+      if (!this.isLoggedIn) {
+        this.delayedCheckForLoginCredentials();
+      }
+    }, 100);
   }
 
   login() {

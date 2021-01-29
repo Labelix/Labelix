@@ -23,6 +23,9 @@ import {AnnotationMode} from '../core-layer/utility/annotaionModeEnum';
 import {IImageAnnotation} from '../core-layer/contracts/IImageAnnotation';
 import {ICategory} from '../core-layer/contracts/ICategory';
 import {IProject} from '../core-layer/contracts/IProject';
+import {IUser} from '../core-layer/contracts/IUser';
+import {IAIModelConfig} from '../core-layer/contracts/IAIModelConfig';
+import {AiModelConfigServiceService} from '../core-layer/services/aiModelConfig-service.service ';
 
 @Injectable()
 export class AnnotationFacade {
@@ -35,7 +38,7 @@ export class AnnotationFacade {
   activePolygonAnnotation: Observable<IImageAnnotation>;
   activeProject: Observable<IProject>;
 
-  constructor(private store: Store<AnnotationState>) {
+  constructor(private store: Store<AnnotationState>, private aiModelConfigService: AiModelConfigServiceService) {
     this.currentAnnotationImage = this.store.pipe(select(getCurrentAnnotatingImage));
     this.currentAnnotationMode = this.store.pipe(select(getCurrentAnnotationMode));
     this.currentImageAnnotations = this.store.pipe(select(getCurrentImageAnnotations));

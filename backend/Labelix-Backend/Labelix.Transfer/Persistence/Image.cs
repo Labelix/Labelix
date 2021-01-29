@@ -7,6 +7,10 @@ namespace Labelix.Transfer.Persistence
     {
         [JsonPropertyName("imagePath")]
         public string ImagePath { get; set; } = "";
+        [JsonPropertyName("height")]
+        public double Height { get; set; }
+        [JsonPropertyName("width")]
+        public double Width { get; set; }
 
         [JsonPropertyName("projectImageId")]
         public int ProjectId { get; set; }
@@ -17,6 +21,8 @@ namespace Labelix.Transfer.Persistence
             Id = other.Id;
             ImagePath = other.ImagePath;
             ProjectId = other.ProjectId;
+            Width = other.Width;
+            Height = other.Height;
         }
     }
 }

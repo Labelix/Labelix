@@ -33,7 +33,9 @@ namespace Labelix.WebAPI.Controllers
                 Id = id,
                 Base64 = base64,
                 Name = pathParts[^1],
-                ProjectId = image.ProjectId
+                ProjectId = image.ProjectId,
+                Width = image.Width,
+                Height = image.Height
             };
             data.Format = data.Name.Split('.')[1];
             return GetXMLOfBase(data);
@@ -59,12 +61,14 @@ namespace Labelix.WebAPI.Controllers
                 Id = image.Id,
                 Base64 = base64,
                 Name = pathParts[^1],
-                ProjectId = image.ProjectId
+                ProjectId = image.ProjectId,
+                Width = image.Width,
+                Height = image.Height
             };
             data.Format = data.Name.Split('.')[1];
             return GetXMLOfBase(data);
         }
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "admin")]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {
@@ -76,8 +80,6 @@ namespace Labelix.WebAPI.Controllers
         {
             return CountAsync();
         }
-        [Authorize(Roles = "user")]
-        [HttpGet("GetByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
             IEnumerable<Model> entities = await GetAllAsync();
@@ -88,7 +90,6 @@ namespace Labelix.WebAPI.Controllers
         public async Task<IActionResult> PostAsync(Data data)
         {
             await Base64Controller.ImageUploadAsync(data);
-
             return Ok();
         }
 
