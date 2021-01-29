@@ -35,8 +35,7 @@ export class UserFacade {
   checkLoggedIn(): boolean {
     const hasIdToken = this.oauthService.hasValidIdToken();
     const hasAccessToken = this.oauthService.hasValidAccessToken();
-
-    return (hasIdToken && hasAccessToken);
+    return (hasAccessToken || this.getIdentityClaims() !== null);
   }
 
   login() {
@@ -46,7 +45,7 @@ export class UserFacade {
       })
       .then(() => {
         if (!this.oauthService.hasValidAccessToken()) {
-          this.oauthService.initImplicitFlow();
+          this.oauthService.initLoginFlow();
         } else {
           this.isLoggedIn$.next(true);
         }
