@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {GenericApiService} from '../utility/logic/generic-api.service';
 import {HttpClient} from '@angular/common/http';
 import {IAIModelConfig} from '../contracts/IAIModelConfig';
-import {OAuthService} from 'angular-oauth2-oidc';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -10,29 +9,22 @@ import {Observable} from 'rxjs';
 })
 export class AiModelConfigServiceService extends GenericApiService<IAIModelConfig> {
 
-  constructor(protected  httpClient: HttpClient, protected oauthService: OAuthService) {
-    super(httpClient, oauthService);
+  constructor(protected  httpClient: HttpClient) {
+    super(httpClient);
     this.urlRoot = 'api/AIModelConfig';
   }
 
   getAiConfigsByProjectId(projectId: number): Observable<IAIModelConfig[]> {
-    this.setHeader();
-    return this.httpClient.get<IAIModelConfig[]>(
-      `${this.urlRoot}/ByProjectId-${projectId}`,
-      {headers: this.headers, responseType: 'json'});
+    return this.httpClient.get<IAIModelConfig[]>(`${this.urlRoot}/ByProjectId-${projectId}`);
   }
 
   addAiConfigToProject(projectId: number, aiConfig: IAIModelConfig): Observable<any> {
-    this.setHeader();
     return this.httpClient.put<IAIModelConfig[]>(
-      `${this.urlRoot}/AddToProject-${projectId}`, aiConfig,
-      {headers: this.headers, responseType: 'json'});
+      `${this.urlRoot}/AddToProject-${projectId}`, aiConfig);
   }
 
   removeAiConfigFromProject(projectId: number, aiConfig: IAIModelConfig): Observable<any> {
-    this.setHeader();
     return this.httpClient.put<IAIModelConfig[]>(
-      `${this.urlRoot}/RemoveFromProject-${projectId}`, aiConfig,
-      {headers: this.headers, responseType: 'json'});
+      `${this.urlRoot}/RemoveFromProject-${projectId}`, aiConfig);
   }
 }

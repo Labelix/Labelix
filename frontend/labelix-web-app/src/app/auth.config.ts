@@ -1,6 +1,6 @@
 
-import { AuthConfig } from 'angular-oauth2-oidc';
-
+// import { AuthConfig } from 'angular-oauth2-oidc';
+/*
 export const authConfig: AuthConfig = {
 
   // Url of the Identity Provider
@@ -22,3 +22,4 @@ export const authConfig: AuthConfig = {
   // IN PRODUCTION
   requireHttps: false
 };
+*/

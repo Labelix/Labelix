@@ -14,42 +14,36 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   interval;
 
   constructor(public router: Router, private userFacade: UserFacade) {
-    this.isLoggedIn = this.userFacade.checkLoggedIn();
   }
 
-  ngOnInit(): void {
-    this.isLoggedIn = this.userFacade.checkLoggedIn();
+  async ngOnInit(): Promise<void> {
     this.userFacade.isLoggedIn$.asObservable().subscribe(value => this.isLoggedIn = value);
     this.delayedCheckForLoginCredentials();
     this.router.navigate(['/projects']);
+    this.isLoggedIn = await this.userFacade.checkLoggedIn();
   }
 
   ngOnDestroy() {
   }
 
   delayedCheckForLoginCredentials() {
-    this.interval = setInterval(() => {
-      this.isLoggedIn = this.userFacade.checkLoggedIn();
-      if (!this.isLoggedIn) {
-        this.delayedCheckForLoginCredentials();
-      }
-    }, 100);
+
   }
 
-  login() {
-    this.isLoggedIn = this.userFacade.checkLoggedIn();
+  async login() {
+    this.isLoggedIn = await this.userFacade.checkLoggedIn();
     this.userFacade.login();
   }
 
-  logout() {
-    this.isLoggedIn = this.userFacade.checkLoggedIn();
+  async logout() {
+    this.isLoggedIn = await this.userFacade.checkLoggedIn();
     this.userFacade.logout();
   }
 
   getUserName(): string {
     if (this.isLoggedIn) {
       // @ts-ignore
-      return this.userFacade.getIdentityClaims().name;
+      return this.userFacade.getIdentityClaims().username;
     } else {
       return '';
     }
