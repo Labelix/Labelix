@@ -5,55 +5,47 @@ import {UserService} from '../core-layer/services/user.service';
 import {getAllUsers, UserState} from '../core-layer/states/state-definitions/userState';
 import {select, Store} from '@ngrx/store';
 import {AddUsers, ClearUsers} from '../core-layer/states/actions/user.actions';
-import {OAuthService} from 'angular-oauth2-oidc';
-import {tokenReference} from '@angular/compiler';
+import {KeycloakService} from 'keycloak-angular';
+import {KeycloakProfile} from 'keycloak-js';
 
 
 // is responsible for everything which has to do with users, this involves authentication and management of other users
 @Injectable()
 export class UserFacade {
 
+  currentUser: KeycloakProfile;
   users$: Observable<IUser[]>;
   isLoggedIn$: Subject<boolean>;
 
   constructor(private userApi: UserService,
-              private oauthService: OAuthService,
+              private keycloakService: KeycloakService,
               private store: Store<UserState>) {
+
+    this.keycloakService.loadUserProfile().then(value => this.currentUser = value);
     this.users$ = store.pipe(select(getAllUsers));
     this.isLoggedIn$ = new Subject<boolean>();
   }
 
-  getIdentityClaims(): object {
-    return this.oauthService.getIdentityClaims();
+  getIdentityClaims(): KeycloakProfile {
+    return this.currentUser;
   }
 
   isAdmin(): boolean {
-    // @ts-ignore
-    return this.oauthService.getIdentityClaims().roles.indexOf('admin') !== -1;
+    return this.keycloakService.getUserRoles().filter(value => value === 'admin').length === 1;
   }
 
-  checkLoggedIn(): boolean {
-    const hasIdToken = this.oauthService.hasValidIdToken();
-    const hasAccessToken = this.oauthService.hasValidAccessToken();
-    return (hasAccessToken || this.getIdentityClaims() !== null);
+  async checkLoggedIn(): Promise<boolean> {
+    return await this.keycloakService.isLoggedIn();
   }
 
-  login() {
-    this.oauthService.tryLogin()
-      .catch(err => {
-        console.error(err);
-      })
-      .then(() => {
-        if (!this.oauthService.hasValidAccessToken()) {
-          this.oauthService.initLoginFlow();
-        } else {
-          this.isLoggedIn$.next(true);
-        }
-      });
+  async login() {
+    await this.keycloakService.login({
+      redirectUri: window.location.origin,
+    });
   }
 
   logout() {
-    this.oauthService.logOut();
+    this.keycloakService.logout();
     this.isLoggedIn$.next(false);
   }
 

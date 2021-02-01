@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {GenericApiService} from '../utility/logic/generic-api.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {OAuthService} from 'angular-oauth2-oidc';
 import {IImage} from '../contracts/IImage';
 
 @Injectable({
@@ -10,19 +9,17 @@ import {IImage} from '../contracts/IImage';
 })
 export class ImageApi extends GenericApiService<IImage> {
 
-  constructor(protected httpClient: HttpClient, protected oauthService: OAuthService) {
-    super(httpClient, oauthService);
+  constructor(protected httpClient: HttpClient) {
+    super(httpClient);
     this.urlRoot = 'api/Image';
   }
 
   getImagesByProjectId(projectId: number): Observable<IImage[]> {
-    this.setHeader();
-    return this.httpClient.get<IImage[]>(`${this.urlRoot}/GetByProjectId-${projectId}`, {headers: this.headers, responseType: 'json'});
+    return this.httpClient.get<IImage[]>(`${this.urlRoot}/GetByProjectId-${projectId}`);
   }
 
   getImageByProjectId(projectId: number): Observable<IImage> {
-    this.setHeader();
-    return this.httpClient.get<IImage>(`${this.urlRoot}/FirstOfProject-${projectId}`, {headers: this.headers, responseType: 'json'});
+    return this.httpClient.get<IImage>(`${this.urlRoot}/FirstOfProject-${projectId}`);
   }
 
 }
