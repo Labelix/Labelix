@@ -11,9 +11,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
-import {authConfig} from './auth.config';
-import {JwksValidationHandler} from 'angular-oauth2-oidc-jwks';
+import {OAuthModule, OAuthService, OAuthStorage} from 'angular-oauth2-oidc';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
@@ -43,15 +41,12 @@ import {UserFacade} from './abstraction-layer/UserFacade';
   ],
   providers: [
     UserFacade,
+    { provide: OAuthStorage, useValue: localStorage },
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private oauthService: OAuthService) {
-    this.oauthService.configure(authConfig);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
-    this.oauthService.setupAutomaticSilentRefresh();
+  constructor() {
   }
 
 }

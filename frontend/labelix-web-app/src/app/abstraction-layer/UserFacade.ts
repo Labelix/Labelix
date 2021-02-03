@@ -7,6 +7,8 @@ import {select, Store} from '@ngrx/store';
 import {AddUsers, ClearUsers} from '../core-layer/states/actions/user.actions';
 import {OAuthService} from 'angular-oauth2-oidc';
 import {tokenReference} from '@angular/compiler';
+import {authConfig} from '../auth.config';
+import {JwksValidationHandler} from 'angular-oauth2-oidc-jwks';
 
 
 // is responsible for everything which has to do with users, this involves authentication and management of other users
@@ -19,6 +21,13 @@ export class UserFacade {
   constructor(private userApi: UserService,
               private oauthService: OAuthService,
               private store: Store<UserState>) {
+
+    this.oauthService.configure(authConfig);
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.setStorage(localStorage);
+
     this.users$ = store.pipe(select(getAllUsers));
     this.isLoggedIn$ = new Subject<boolean>();
   }
@@ -35,21 +44,14 @@ export class UserFacade {
   checkLoggedIn(): boolean {
     const hasIdToken = this.oauthService.hasValidIdToken();
     const hasAccessToken = this.oauthService.hasValidAccessToken();
-    return (hasAccessToken || this.getIdentityClaims() !== null);
+ 
+    return (this.getIdentityClaims() !== null);
   }
 
   login() {
-    this.oauthService.tryLogin()
-      .catch(err => {
-        console.error(err);
-      })
-      .then(() => {
-        if (!this.oauthService.hasValidAccessToken()) {
-          this.oauthService.initLoginFlow();
-        } else {
-          this.isLoggedIn$.next(true);
-        }
-      });
+    if(this.oauthService.getIdentityClaims() !== null){
+      this.oauthService.initImplicitFlow();
+    }
   }
 
   logout() {

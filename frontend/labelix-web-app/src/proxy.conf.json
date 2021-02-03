@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://labelix_webapi_1:80",
+    "target": "https://labelix_webapi_1:80",
     "secure": false,
     "loglevel": "debug"
   }

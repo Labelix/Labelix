@@ -21,8 +21,11 @@ services:
             - POSTGRES_PASSWORD=password
         networks:
             - labelixNetwork
+            
     keycloak:
-        image: jboss/keycloak:11.0.2
+        build:
+            context: ./docker/keycloak
+            dockerfile: ./Dockerfile
         command: -Dkeycloak.profile.feature.upload_scripts=enabled
         environment:
             - DB_VENDOR=POSTGRES
@@ -35,6 +38,7 @@ services:
             - KEYCLOAK_IMPORT=/tmp/keycloak/realm.json
             - KEYCLOAK_USER=admin
             - KEYCLOAK_PASSWORD=5pmna0
+            - PROXY_ADDRESS_FORWARDING=true  
         ports:
             - 8180:8080
         volumes:
@@ -71,15 +75,20 @@ services:
             - labelixNetwork
               
     reverseproxy:
-        build:
-            context: ./docker/reverseproxy
-            dockerfile: Dockerfile
+        image: nginx
         ports:
             - 80:80
+            - 443:443
         links:
             - webapi
         networks: 
             - labelixNetwork
+        volumes:
+          - /etc/letsencrypt:/etc/letsencrypt
+          - ./docker/reverseproxy/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+          - webapi
+          - keycloak
 
 volumes: 
     postgres_data:
