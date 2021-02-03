@@ -6,7 +6,7 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       try {
         await keycloak.init({
           config: {
-            url: 'http://localhost:8180/auth/',
+            url: 'http://labelix.me/auth/',
             realm: 'Labelix',
             clientId: 'frontend',
           },
