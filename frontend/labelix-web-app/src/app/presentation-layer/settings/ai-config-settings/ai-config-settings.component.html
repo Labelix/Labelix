@@ -50,7 +50,7 @@
         <mat-form-field appearance="fill" style="width: 90%">
           <mat-label>Name</mat-label>
           <label>
-            <input matInput [(ngModel)]="currentConfig.name">
+            <input matInput required minlength="1" maxlength="40" [(ngModel)]="currentConfig.name">
           </label>
         </mat-form-field>
 
@@ -59,7 +59,7 @@
         <mat-form-field appearance="fill" style="width: 90%">
           <mat-label>Docker Image</mat-label>
           <label>
-            <input matInput [(ngModel)]="currentConfig.dockerImageName">
+            <input matInput required minlength="1" maxlength="40" [(ngModel)]="currentConfig.dockerImageName">
           </label>
         </mat-form-field>
 
@@ -68,7 +68,7 @@
         <mat-form-field appearance="fill" style="width: 90%">
           <mat-label>Parameter</mat-label>
           <label>
-            <input matInput [(ngModel)]="currentConfig.parameter">
+            <input matInput maxlength="100" [(ngModel)]="currentConfig.parameter">
           </label>
         </mat-form-field>
 
@@ -77,7 +77,7 @@
         <mat-form-field appearance="fill" style="width: 90%">
           <mat-label>Input Directory</mat-label>
           <label>
-            <input matInput [(ngModel)]="currentConfig.inputDirectory">
+            <input matInput maxlength="200" [(ngModel)]="currentConfig.inputDirectory">
           </label>
         </mat-form-field>
 
@@ -86,7 +86,7 @@
         <mat-form-field appearance="fill" style="width: 90%">
           <mat-label>Output Directory</mat-label>
           <label>
-            <input matInput [(ngModel)]="currentConfig.outputDirectory">
+            <input matInput maxlength="200" [(ngModel)]="currentConfig.outputDirectory">
           </label>
         </mat-form-field>
 
@@ -95,7 +95,7 @@
         <mat-form-field appearance="fill" style="width: 90%">
           <mat-label>Options</mat-label>
           <label>
-            <input matInput [(ngModel)]="currentConfig.options">
+            <input matInput maxlength="100" [(ngModel)]="currentConfig.options">
           </label>
         </mat-form-field>
 

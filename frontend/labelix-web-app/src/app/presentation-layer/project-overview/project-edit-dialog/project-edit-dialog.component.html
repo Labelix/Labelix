@@ -7,7 +7,7 @@
     <mat-label>ProjectName</mat-label>
 
     <label>
-      <input matInput [(ngModel)]="project.name" #projectName maxlength="25" type="text" name="projectName">
+      <input matInput [(ngModel)]="project.name" #projectName required minlength="1" maxlength="25" type="text" name="projectName">
     </label>
 
     <mat-hint align="end">{{projectName.value.length}} / 25</mat-hint>
