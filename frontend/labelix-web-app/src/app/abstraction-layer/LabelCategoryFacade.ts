@@ -7,7 +7,12 @@ import {
 } from '../core-layer/states/state-definitions/labelCategoryState';
 import {Observable} from 'rxjs';
 import {ICategory} from '../core-layer/contracts/ICategory';
-import {AddAnnotationLabel, DeleteCategory, ResetCategoryLabelState, UpdateCategory} from '../core-layer/states/actions/image-annotation.actions';
+import {
+  AddAnnotationLabel,
+  DeleteCategory,
+  ResetCategoryLabelState,
+  UpdateCategory
+} from '../core-layer/states/actions/image-annotation.actions';
 
 @Injectable()
 export class LabelCategoryFacade {
@@ -36,5 +41,16 @@ export class LabelCategoryFacade {
 
   deleteCategory(input: number) {
     this.store.dispatch(new DeleteCategory(input));
+  }
+
+  checkIfNameIsAlreadyPresent(newName: string, categories: ICategory[]): boolean {
+
+    for (const current of categories) {
+      if (current.name === newName) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

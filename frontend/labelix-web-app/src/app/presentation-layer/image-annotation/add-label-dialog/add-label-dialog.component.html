@@ -1,0 +1,25 @@
+<div style="width: 100%; height: 100%; padding: 1em">
+
+  <h1>Add Label</h1>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Name</mat-label>
+    <label>
+      <input required matInput maxlength="30" [(ngModel)]="newLabelName">
+    </label>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Supercategory</mat-label>
+    <label>
+      <input required matInput maxlength="30" [(ngModel)]="newSupercategory">
+    </label>
+  </mat-form-field>
+
+  <br>
+
+  <button mat-raised-button class="add-button" color="primary" (click)="onSave()">Add</button>
+
+</div>

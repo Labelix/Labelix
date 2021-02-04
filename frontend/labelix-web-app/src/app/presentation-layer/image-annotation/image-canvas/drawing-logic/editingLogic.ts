@@ -9,9 +9,9 @@ import {EditingOption} from '../image-canvas.component';
 export function onMouseDownSizingTool(value: MouseEvent, canvasEl: HTMLCanvasElement, currentImageAnnotations: IImageAnnotation[],
                                       activeRawImage: IRawImage, annotationFacade: AnnotationFacade, editingOptions: EditingOption) {
   for (const item of currentImageAnnotations) {
-    if (item.annotationMode === AnnotationMode.BOUNDING_BOXES) {
+    if (item.annotationMode === AnnotationMode.BOUNDING_BOXES && item.image.id === activeRawImage.id) {
       setEditingFlagBoundingBox(item, activeRawImage, value, canvasEl, annotationFacade, editingOptions);
-    } else if (item.annotationMode === AnnotationMode.POLYGON) {
+    } else if (item.annotationMode === AnnotationMode.POLYGON && item.image.id === activeRawImage.id) {
       setEditingFlagPolygon(item, value, canvasEl, activeRawImage, editingOptions, annotationFacade);
     }
   }
