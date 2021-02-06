@@ -22,6 +22,10 @@
 
           <h1>Label Settings</h1>
 
+          <div *ngIf="selectedLabel.name === undefined">
+            <h4>At the moment no Label-Categories are present. Please create one!</h4>
+          </div>
+
           <div *ngIf="selectedLabel.name !== undefined">
 
             <mat-form-field appearance="fill">
