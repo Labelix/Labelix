@@ -122,6 +122,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.categoryLabelFacade.resetCategoryLabelState();
+    this.rawImageFacade.clearRawImagesOnState();
   }
 
   // reads height and width of the images and saves it into the object

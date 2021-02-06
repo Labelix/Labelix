@@ -14,16 +14,22 @@ export class Project implements IProject {
   name: string;
   timestamp: Date;
 
-  constructor(other: IProject) {
-    this.id = other.id;
-    this.AIModelConfig = other.AIModelConfig;
-    this.description = other.description;
-    this.cocoExport = other.cocoExport;
-    this.creationDate = other.creationDate;
-    this.images = other.images;
-    this.finishedAnnotation = other.finishedAnnotation;
-    this.label = other.label;
-    this.timestamp = other.timestamp;
-    this.name = other.name;
+  constructor() {
+
+  }
+
+  copyProperties(other: IProject) {
+    if (other !== undefined) {
+      this.id = other.id;
+      this.AIModelConfig = other.AIModelConfig;
+      this.description = other.description;
+      this.cocoExport = other.cocoExport;
+      this.creationDate = other.creationDate;
+      this.images = other.images;
+      this.finishedAnnotation = other.finishedAnnotation;
+      this.label = other.label;
+      this.timestamp = other.timestamp;
+      this.name = other.name;
+    }
   }
 }

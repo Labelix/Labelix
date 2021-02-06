@@ -6,6 +6,7 @@ import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Subscription} from 'rxjs';
+import {Category} from '../../../core-layer/models/Category';
 
 @Component({
   selector: 'app-label-settings-dialog',
@@ -18,12 +19,11 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
 
   currentLabelCategories: ICategory[];
   imageAnnotations: IImageAnnotation[];
-  selectedLabel: LocalLabel;
-  nextLabelId: number;
-  firstInit = true;
 
-  newLabelName: string;
-  newSupercategory: string;
+  initialName: string;
+  selectedLabel: Category;
+
+  firstInit = true;
 
   constructor(private labelFacade: LabelCategoryFacade,
               private annotationFacade: AnnotationFacade,
@@ -43,7 +43,6 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
 
     }));
 
-    this.subscription.add(this.labelFacade.nextLabelId$.subscribe(value => this.nextLabelId = value));
     this.subscription.add(this.annotationFacade.currentImageAnnotations.subscribe(value => this.imageAnnotations = value));
 
   }
@@ -53,26 +52,33 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
   }
 
   copyProperties(other: ICategory) {
-    this.selectedLabel = {
-      colorCode: other.colorCode,
-      name: other.name,
-      supercategory: other.supercategory,
-      id: other.id
-    };
+
+    const tmpCategory = new Category();
+    tmpCategory.copyProperties(other);
+    this.selectedLabel = tmpCategory;
+
+    this.initialName = this.selectedLabel.name;
+    console.log(this.initialName);
   }
 
   formatLabel(value: number) {
     if (this.selectedLabel !== undefined) {
       this.selectedLabel.colorCode = ImageAnnotationHelper.getHSLColor(value);
-      console.log(value);
     }
     return value;
   }
 
   updateCategory() {
-    this.labelFacade.updateCategory(this.selectedLabel);
-    this.annotationFacade.changeActiveLabel(undefined);
-    this.annotationFacade.updateCategoryOnAnnotations(this.selectedLabel);
+    if (this.selectedLabel.name === this.initialName
+      || !this.labelFacade.checkIfNameIsAlreadyPresent(this.selectedLabel.name, this.currentLabelCategories)) {
+
+      this.labelFacade.updateCategory(this.selectedLabel);
+      this.annotationFacade.changeActiveLabel(undefined);
+      this.annotationFacade.updateCategoryOnAnnotations(this.selectedLabel);
+
+    } else {
+      this.snackBar.open('Seems like a category with this name is already present', 'ok', {duration: 5000});
+    }
   }
 
   deleteCategory() {
@@ -86,32 +92,13 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
     deletable ? this.labelFacade.deleteCategory(this.selectedLabel.id) : this.snackBar.open(message, 'ok', {duration: 5000});
   }
 
-  onSave() {
-    this.labelFacade.addLabelCategory({
-      name: this.newLabelName,
-      supercategory: this.newSupercategory,
-      id: this.nextLabelId,
-      colorCode: ImageAnnotationHelper.getRandomColor()
-    });
-    this.newLabelName = '';
-    this.newSupercategory = '';
-  }
-
   getColor(value) {
-    console.log(value);
-    this.selectedLabel = {
+    this.selectedLabel.copyProperties({
       colorCode: value.color.hex,
       id: this.selectedLabel.id,
       name: this.selectedLabel.name,
       supercategory: this.selectedLabel.supercategory
-    };
+    });
   }
 
-}
-
-class LocalLabel implements ICategory {
-  colorCode: string;
-  id: number;
-  name: string;
-  supercategory: string;
 }

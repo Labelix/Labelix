@@ -11,6 +11,7 @@ import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {IUser} from '../../../core-layer/contracts/IUser';
 import {MatListOption} from '@angular/material/list';
 import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-project-creation-dialog',
@@ -39,7 +40,10 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   filteredUsers: IUser[];
   selectedUsers: IUser[] = [];
 
+  allProjects: IProject[] = [];
+
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
+              private snackBar: MatSnackBar,
               private projectFacade: ProjectsFacade,
               private aiModelConfigFacade: AiModelConfigFacade,
               private rawImageFacade: RawImageFacade,
@@ -54,6 +58,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     this.aiModelConfigFacade.loadAllConfigsToState();
     this.userFacade.loadUsersIntoState();
 
+    this.subscription.add(this.projectFacade.projects$.subscribe(value => this.allProjects = value));
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
     this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => this.allAiConfigs = value));
     this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
@@ -66,48 +71,50 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   onOkSubmit() {
-    const imageData: IImage[] = [];
-    for (const i of this.images) {
-      imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, Width: i.width, Height: i.height});
-    }
-    const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
-    console.log(aiConfigIdList);
-    this.project = {
-      id: 0,
-      name: this.newProjectName,
-      description: this.newProjectDescription,
-      creationDate: new Date(),
-      finishedAnnotation: false,
-      images: [],
-      label: '',
-      timestamp: undefined,
-      AIModelConfig: aiConfigIdList,
-      cocoExport: undefined
-    };
-
-    this.projectFacade.postProject(this.project).subscribe(newProject => {
-
-      for (const image of imageData) {
-
-        image.projectId = newProject.id;
-
-        this.rawImageFacade.postImage(image).subscribe(value => {
-          if (value !== undefined && value !== null) {
-            this.rawImageFacade.addRawImageToState({
-              id: value.id,
-              height: undefined,
-              width: undefined,
-              base64Url: value.Data,
-              name: value.name,
-              file: undefined
-            });
-          }
-        });
+    if (this.checkInputs()){
+      const imageData: IImage[] = [];
+      for (const i of this.images) {
+        imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, Width: i.width, Height: i.height});
       }
-      this.projectFacade.addProjectToState(newProject);
-    });
+      const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
+      console.log(aiConfigIdList);
+      this.project = {
+        id: 0,
+        name: this.newProjectName,
+        description: this.newProjectDescription,
+        creationDate: new Date(),
+        finishedAnnotation: false,
+        images: [],
+        label: '',
+        timestamp: undefined,
+        AIModelConfig: aiConfigIdList,
+        cocoExport: undefined
+      };
 
-    this.dialogRef.close();
+      this.projectFacade.postProject(this.project).subscribe(newProject => {
+
+        for (const image of imageData) {
+
+          image.projectId = newProject.id;
+
+          this.rawImageFacade.postImage(image).subscribe(value => {
+            if (value !== undefined && value !== null) {
+              this.rawImageFacade.addRawImageToState({
+                id: value.id,
+                height: undefined,
+                width: undefined,
+                base64Url: value.Data,
+                name: value.name,
+                file: undefined
+              });
+            }
+          });
+        }
+        this.projectFacade.addProjectToState(newProject);
+      });
+
+      this.dialogRef.close();
+    }
   }
 
   filterUser(value: string) {
@@ -146,6 +153,26 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  checkInputs(): boolean {
+    if (this.newProjectName.length === 0) {
+      this.snackBar.open('Project title cannot be empty', '', {
+        duration: 2000,
+      });
+      return false;
+    } else if (this.images.length === 0) {
+      this.snackBar.open('Please add pictures to the project', '', {
+        duration: 2000,
+      });
+      return false;
+    } else if (this.projectFacade.checkIfNameIsAlreadyPresent(this.newProjectName, this.allProjects)){
+      this.snackBar.open('A project with this name is already present', '', {
+        duration: 2000,
+      });
+      return false;
+    }
+    return true;
   }
 
   clickAddUser() {

@@ -10,6 +10,8 @@ import {IUser} from '../../../core-layer/contracts/IUser';
 import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {MatListOption} from '@angular/material/list';
 import {Subscription} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {IProject} from '../../../core-layer/contracts/IProject';
 
 @Component({
   selector: 'app-project-edit-dialog',
@@ -21,6 +23,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   project: Project;
+  initialName: string;
 
   images: IRawImage[];
   imageNumber = 5;
@@ -38,22 +41,29 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   usersAlreadyInProject: IUser[] = [];
   selectedUsers: IUser[] = [];
 
+  allProjects: IProject[] = [];
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<ProjectEditDialogComponent>,
+              private snackBar: MatSnackBar,
               private projectFacade: ProjectsFacade,
               private aiModelConfigFacade: AiModelConfigFacade,
               private rawImageFacade: RawImageFacade,
               private userFacade: UserFacade) {
-    this.project = new Project(this.data.project);
+    this.project = new Project();
+    this.project.copyProperties(this.data.project);
     this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
+    this.initialName = this.project.name;
     this.changeRelation(window.innerWidth);
     this.rawImageFacade.clearRawImagesOnState();
 
     this.aiModelConfigFacade.loadAllConfigsToState();
     this.userFacade.loadUsersIntoState();
+
+    this.subscription.add(this.projectFacade.projects$.subscribe(value => this.allProjects = value));
 
     this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id)
       .subscribe(value => {
@@ -99,7 +109,6 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
           base64Url: image.Data
         }));
       }
-      console.log(this.userFacade.getIdentityClaims());
     });
 
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
@@ -110,41 +119,43 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   }
 
   onOkSubmit() {
-    const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
+    if (this.checkInputs()) {
+      const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
 
-    this.projectFacade.putProject(this.project).subscribe(newProject => {
-      // update project on state
-      this.projectFacade.removeProjectFromState(this.project);
-      this.projectFacade.addProjectToState(newProject);
+      this.projectFacade.putProject(this.project).subscribe(newProject => {
+        // update project on state
+        this.projectFacade.removeProjectFromState(this.project);
+        this.projectFacade.addProjectToState(newProject);
 
-      // checks if config was present from the beginning, if not, than it's added on the server
-      this.selectedAiConfigs.forEach(value => {
-        if (!this.checkIfConfigWasAlreadyPresent(value)) {
-          this.aiModelConfigFacade.addAiConfigToProjectViaId(this.project.id, value).subscribe();
-        }
+        // checks if config was present from the beginning, if not, than it's added on the server
+        this.selectedAiConfigs.forEach(value => {
+          if (!this.checkIfConfigWasAlreadyPresent(value)) {
+            this.aiModelConfigFacade.addAiConfigToProjectViaId(this.project.id, value).subscribe();
+          }
+        });
+
+        // checks if user was present from the beginning, if not, than it's added on the server
+        this.selectedUsers.forEach(value => {
+          if (!this.checkIfUserWasAlreadyPresentInProject(value)) {
+            this.userFacade.addUserToProjectViaId(this.project.id, value).subscribe();
+          }
+        });
+
+        this.usersAlreadyInProject.forEach(value => {
+          if (!this.checkIfUserAlreadySelected(value)) {
+            this.userFacade.removeUserFromProjectViaId(this.project.id, value).subscribe();
+          }
+        });
+
+        this.configsAlreadyInProject.forEach(value => {
+          if (!this.checkIfConfigAlreadySelected(value)) {
+            this.aiModelConfigFacade.removeAiConfigFromProjectViaId(this.project.id, value).subscribe();
+          }
+        });
       });
 
-      // checks if user was present from the beginning, if not, than it's added on the server
-      this.selectedUsers.forEach(value => {
-        if (!this.checkIfUserWasAlreadyPresentInProject(value)) {
-          this.userFacade.addUserToProjectViaId(this.project.id, value).subscribe();
-        }
-      });
-
-      this.usersAlreadyInProject.forEach(value => {
-        if (!this.checkIfUserAlreadySelected(value)) {
-          this.userFacade.removeUserFromProjectViaId(this.project.id, value).subscribe();
-        }
-      });
-
-      this.configsAlreadyInProject.forEach(value => {
-        if (!this.checkIfConfigAlreadySelected(value)) {
-          this.aiModelConfigFacade.removeAiConfigFromProjectViaId(this.project.id, value).subscribe();
-        }
-      });
-    });
-
-    this.dialogRef.close();
+      this.dialogRef.close();
+    }
   }
 
   filterUser(value: string) {
@@ -201,6 +212,33 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  checkInputs(): boolean {
+    if (this.project.name.length === 0) {
+
+      this.snackBar.open('Project title cannot be empty', '', {
+        duration: 2000,
+      });
+      return false;
+
+    } else if (this.images.length === 0) {
+
+      this.snackBar.open('Please add pictures to the project', '', {
+        duration: 2000,
+      });
+      return false;
+
+    } else if (this.project.name !== this.initialName
+      && this.projectFacade.checkIfNameIsAlreadyPresent(this.project.name, this.allProjects)) {
+
+      this.snackBar.open('A project with this name is already present', '', {
+        duration: 2000,
+      });
+      return false;
+
+    }
+    return true;
   }
 
   clickAddUser() {

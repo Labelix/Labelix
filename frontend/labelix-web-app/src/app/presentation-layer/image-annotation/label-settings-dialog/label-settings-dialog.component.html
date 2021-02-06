@@ -1,10 +1,10 @@
-<div style="width: 70em; height: 40em">
+<div style="width: 35em; height: 40em">
 
-  <mat-grid-list cols="5" rowHeight="40em" style="height: 100%">
+  <mat-grid-list cols="3" rowHeight="40em" style="height: 100%">
 
     <mat-grid-tile [colspan]="1">
 
-      <mat-selection-list [multiple]="false">
+      <mat-selection-list class="vertical-list" [multiple]="false">
 
         <div *ngFor=" let item of currentLabelCategories">
           <mat-list-option (click)="copyProperties(item)">{{item.name}}</mat-list-option>
@@ -15,63 +15,71 @@
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="2" style="height: 100%">
+
       <div class="settings_body" style="width: 100%; padding: 1em">
+
         <section class="mat-typography">
+
           <h1>Label Settings</h1>
 
-          <div *ngIf="selectedLabel !== undefined">
+          <div *ngIf="selectedLabel.name === undefined">
+            <h4>At the moment no Label-Categories are present. Please create one!</h4>
+          </div>
+
+          <div *ngIf="selectedLabel.name !== undefined">
+
             <mat-form-field appearance="fill">
+
               <mat-label>Name</mat-label>
+
               <label>
-                <input matInput [(ngModel)]="selectedLabel.name">
+                <input matInput maxlength="30" [(ngModel)]="selectedLabel.name">
               </label>
+
+              <mat-hint align="end">{{selectedLabel.name.length}} / 30</mat-hint>
+
             </mat-form-field>
+
             <br>
+
             <mat-form-field appearance="fill">
+
               <mat-label>Supercategory</mat-label>
+
               <label>
-                <input matInput [(ngModel)]="selectedLabel.supercategory">
+                <input matInput maxlength="30" [(ngModel)]="selectedLabel.supercategory">
               </label>
+
+              <mat-hint align="end">{{selectedLabel.supercategory.length}} / 30</mat-hint>
+
             </mat-form-field>
+
             <br>
-            <h2>Farbe</h2>
+
+            <h2>Color</h2>
+
             <div style="height: 200px;">
               <color-chrome [color]="selectedLabel.colorCode" (onChangeComplete)="getColor($event)"></color-chrome>
             </div>
+
             <button mat-raised-button color="primary" style="bottom: 0; left: 1em; position: absolute"
                     (click)="updateCategory()">
               Update
             </button>
 
-            <button mat-raised-button color="warn" style="bottom: 0; right: 11em; position: absolute"
+            <button mat-raised-button color="warn" style="bottom: 0; right: 3em; position: absolute"
                     (click)="deleteCategory()">
               Delete
             </button>
+
           </div>
+
         </section>
-      </div>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="2">
-      <div style="width: 100%; height: 100%; padding: 1em">
-        <h1>Add Label</h1>
-        <mat-form-field appearance="fill">
-          <mat-label>Name</mat-label>
-          <label>
-            <input matInput [(ngModel)]="newLabelName">
-          </label>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
-          <mat-label>Supercategory</mat-label>
-          <label>
-            <input matInput [(ngModel)]="newSupercategory">
-          </label>
-        </mat-form-field>
-        <br>
-        <button mat-raised-button class="add-button" color="primary" (click)="onSave()">Safe</button>
+
       </div>
 
     </mat-grid-tile>
+
   </mat-grid-list>
 
 </div>

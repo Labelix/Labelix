@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AiModelConfigFacade} from '../../../abstraction-layer/AiModelConfigFacade';
 import {IAIModelConfig} from '../../../core-layer/contracts/IAIModelConfig';
 import {Subscription} from 'rxjs';
+import {AIModelConfig} from '../../../core-layer/models/AIModelConfig';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ai-config-settings',
@@ -13,12 +15,15 @@ export class AiConfigSettingsComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   configs: IAIModelConfig[];
-  currentConfig: LocalConfig;
+  currentConfig: AIModelConfig;
+
+  initialName: string;
 
   isInit = true;
   addMode = false;
 
-  constructor(private aiConfigFacade: AiModelConfigFacade) {
+  constructor(private aiConfigFacade: AiModelConfigFacade,
+              private snackbar: MatSnackBar) {
     this.subscription = new Subscription();
   }
 
@@ -55,13 +60,15 @@ export class AiConfigSettingsComponent implements OnInit, OnDestroy {
         parameter: other.parameter
       };
 
+      this.initialName = other.name;
+
     }
 
   }
 
   switchAddModeOn() {
     this.addMode = true;
-    this.currentConfig = new LocalConfig();
+    this.currentConfig = new AIModelConfig();
   }
 
   switchAddModOff() {
@@ -70,31 +77,62 @@ export class AiConfigSettingsComponent implements OnInit, OnDestroy {
   }
 
   addConfig() {
-    this.aiConfigFacade.postConfig(this.currentConfig).subscribe(value => {
-      this.aiConfigFacade.addToState(value);
-    });
+    if (this.checkIfInputsAreValid()) {
+      this.aiConfigFacade.postConfig(this.currentConfig).subscribe(value => {
+        this.aiConfigFacade.addToState(value);
+        this.addMode = false;
+        this.selectConfig(this.configs[this.configs.length - 1]);
+      });
+    }
   }
 
   updateConfig() {
-    this.aiConfigFacade.putConfig(this.currentConfig).subscribe(value => {
-      this.aiConfigFacade.updateToState(value);
-    });
+    if (this.checkIfInputsAreValid()) {
+      this.aiConfigFacade.putConfig(this.currentConfig).subscribe(value => {
+        this.aiConfigFacade.updateToState(value);
+      });
+    }
   }
 
   deleteConfig() {
     this.aiConfigFacade.deleteConfig(this.currentConfig).subscribe(value => {
+      const currentIndex = this.configs.findIndex(aiConfig => aiConfig.id === this.currentConfig.id);
+      const nextIndex = (currentIndex - 1) >= 0 ? currentIndex - 1 : currentIndex + 1;
+
       this.aiConfigFacade.deleteToState(this.currentConfig);
+
+      if (this.configs.length === 0) {
+        this.switchAddModeOn();
+      } else {
+        this.selectConfig(this.configs[nextIndex]);
+      }
     });
   }
 
-}
+  checkIfInputsAreValid(): boolean {
 
-class LocalConfig implements IAIModelConfig {
-  dockerImageName: string;
-  id: number;
-  inputDirectory: string;
-  name: string;
-  options: string;
-  outputDirectory: string;
-  parameter: string;
+    if (this.currentConfig.name === undefined || this.currentConfig.dockerImageName === undefined ||
+      this.currentConfig.name.length === 0 || this.currentConfig.dockerImageName.length === 0) {
+
+      this.snackbar.open('Name and Docker-Image are required!', 'ok', {duration: 5000});
+      return false;
+    } else if (this.initialName !== this.selectConfig.name && this.checkIfNameAlreadyExists(this.currentConfig.name, this.configs)) {
+      this.snackbar.open('An AI-Config with this name is already present!', 'ok', {duration: 5000});
+      return false;
+    }
+
+    return true;
+  }
+
+  checkIfNameAlreadyExists(newName: string, configs: IAIModelConfig[]): boolean {
+
+    for (const aiConfig of configs) {
+      if (newName === aiConfig.name) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }

@@ -43,7 +43,7 @@ export class ApplicationHeaderComponent implements OnInit, OnDestroy {
   getUserName(): string {
     if (this.isLoggedIn) {
       // @ts-ignore
-      return this.userFacade.getIdentityClaims().username;
+      return this.userFacade.getIdentityClaims().firstName + ' ' + this.userFacade.getIdentityClaims().lastName;
     } else {
       return '';
     }

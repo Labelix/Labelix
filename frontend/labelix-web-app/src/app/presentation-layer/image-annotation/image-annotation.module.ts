@@ -41,6 +41,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { AddLabelDialogComponent } from './add-label-dialog/add-label-dialog.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ImageTimelineSingleImageComponent,
     SelectedLabelWidgetComponent,
     LabelSettingsDialogComponent,
+    AddLabelDialogComponent,
   ],
   providers: [
     RawImageFacade,
