@@ -81,12 +81,13 @@ export class AiConfigSettingsComponent implements OnInit, OnDestroy {
       this.aiConfigFacade.postConfig(this.currentConfig).subscribe(value => {
         this.aiConfigFacade.addToState(value);
         this.addMode = false;
+        this.selectConfig(this.configs[this.configs.length - 1]);
       });
     }
   }
 
   updateConfig() {
-    if (this.checkIfInputsAreValid()){
+    if (this.checkIfInputsAreValid()) {
       this.aiConfigFacade.putConfig(this.currentConfig).subscribe(value => {
         this.aiConfigFacade.updateToState(value);
       });
@@ -95,7 +96,16 @@ export class AiConfigSettingsComponent implements OnInit, OnDestroy {
 
   deleteConfig() {
     this.aiConfigFacade.deleteConfig(this.currentConfig).subscribe(value => {
+      const currentIndex = this.configs.findIndex(aiConfig => aiConfig.id === this.currentConfig.id);
+      const nextIndex = (currentIndex - 1) >= 0 ? currentIndex - 1 : currentIndex + 1;
+
       this.aiConfigFacade.deleteToState(this.currentConfig);
+
+      if (this.configs.length === 0) {
+        this.switchAddModeOn();
+      } else {
+        this.selectConfig(this.configs[nextIndex]);
+      }
     });
   }
 

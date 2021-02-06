@@ -7,7 +7,7 @@
       <mat-divider></mat-divider>
       <p class="mat-subheading-1">{{activeProject.creationDate | date: 'dd/MM/yyyy:hh:mm'}}</p>
       <div class="mat-subheading-1">Description</div>
-      <p class="mat-body-1">{{activeProject.description}}</p>
+      <p class="mat-body-1" style="word-wrap: normal;">{{activeProject.description}}</p>
       <button mat-flat-button class="mat-primary" (click)="onSaveWork()"
               class="save-button">Save Work
       </button>
