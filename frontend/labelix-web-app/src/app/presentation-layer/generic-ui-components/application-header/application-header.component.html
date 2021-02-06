@@ -5,22 +5,29 @@
   </mat-drawer>
 
   <mat-toolbar color="primary" class="header">
+
     <button mat-icon-button class="example-icon" (click)="drawer.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+
     <span>Labelix</span>
+
     <span class="example-spacer"></span>
-    <span style="cursor: default">{{getUserName()}}</span>
+
+    <span style="cursor: default; position: fixed; right: 6em; text-align: right;">{{getUserName()}}</span>
+
     <span *ngIf="isLoggedIn === false">
-      <button mat-button (click)="login()" style="font-size: 1em">
+      <button mat-button (click)="login()" style="font-size: 1em; position: fixed; right: 1em; top: 0.7em">
         Login
       </button>
     </span>
+
     <span *ngIf="isLoggedIn === true">
-      <button mat-button (click)="logout()" style="font-size: 1em">
+      <button mat-button (click)="logout()" style="font-size: 1em; position: fixed; right: 1em; top: 0.7em">
         Logout
       </button>
     </span>
+
   </mat-toolbar>
 
   <div style="margin-top: 3.35%;" *ngIf="isLoggedIn === true">
