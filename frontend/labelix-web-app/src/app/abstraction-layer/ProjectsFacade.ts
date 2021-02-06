@@ -45,4 +45,15 @@ export class ProjectsFacade {
   removeProjectFromState(project: IProject) {
     this.store.dispatch(new DeleteProjectAction(project));
   }
+
+  checkIfNameIsAlreadyPresent(newName: string, projects: IProject[]): boolean {
+
+    for (const current of projects) {
+      if (current.name === newName) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

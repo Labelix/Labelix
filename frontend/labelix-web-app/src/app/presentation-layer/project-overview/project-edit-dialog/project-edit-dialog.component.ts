@@ -11,6 +11,7 @@ import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {MatListOption} from '@angular/material/list';
 import {Subscription} from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {IProject} from '../../../core-layer/contracts/IProject';
 
 @Component({
   selector: 'app-project-edit-dialog',
@@ -22,6 +23,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   project: Project;
+  initialName: string;
 
   images: IRawImage[];
   imageNumber = 5;
@@ -39,6 +41,8 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   usersAlreadyInProject: IUser[] = [];
   selectedUsers: IUser[] = [];
 
+  allProjects: IProject[] = [];
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<ProjectEditDialogComponent>,
               private snackBar: MatSnackBar,
@@ -52,11 +56,14 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initialName = this.project.name;
     this.changeRelation(window.innerWidth);
     this.rawImageFacade.clearRawImagesOnState();
 
     this.aiModelConfigFacade.loadAllConfigsToState();
     this.userFacade.loadUsersIntoState();
+
+    this.subscription.add(this.projectFacade.projects$.subscribe(value => this.allProjects = value));
 
     this.subscription.add(this.userFacade.getUsersByProjectId(this.project.id)
       .subscribe(value => {
@@ -210,15 +217,27 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   checkInputs(): boolean {
     if (this.project.name.length === 0) {
+
       this.snackBar.open('Project title cannot be empty', '', {
         duration: 2000,
       });
       return false;
-    } else if (this.project.images.length === 0) {
+
+    } else if (this.images.length === 0) {
+
       this.snackBar.open('Please add pictures to the project', '', {
         duration: 2000,
       });
       return false;
+
+    } else if (this.project.name !== this.initialName
+      && this.projectFacade.checkIfNameIsAlreadyPresent(this.project.name, this.allProjects)) {
+
+      this.snackBar.open('A project with this name is already present', '', {
+        duration: 2000,
+      });
+      return false;
+
     }
     return true;
   }

@@ -19,7 +19,10 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
 
   currentLabelCategories: ICategory[];
   imageAnnotations: IImageAnnotation[];
+
+  initialName: string;
   selectedLabel: Category;
+
   firstInit = true;
 
   constructor(private labelFacade: LabelCategoryFacade,
@@ -49,9 +52,13 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
   }
 
   copyProperties(other: ICategory) {
+
     const tmpCategory = new Category();
     tmpCategory.copyProperties(other);
     this.selectedLabel = tmpCategory;
+
+    this.initialName = this.selectedLabel.name;
+    console.log(this.initialName);
   }
 
   formatLabel(value: number) {
@@ -62,10 +69,13 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
   }
 
   updateCategory() {
-    if (!this.labelFacade.checkIfNameIsAlreadyPresent(this.selectedLabel.name, this.currentLabelCategories)) {
+    if (this.selectedLabel.name === this.initialName
+      || !this.labelFacade.checkIfNameIsAlreadyPresent(this.selectedLabel.name, this.currentLabelCategories)) {
+
       this.labelFacade.updateCategory(this.selectedLabel);
       this.annotationFacade.changeActiveLabel(undefined);
       this.annotationFacade.updateCategoryOnAnnotations(this.selectedLabel);
+
     } else {
       this.snackBar.open('Seems like a category with this name is already present', 'ok', {duration: 5000});
     }
