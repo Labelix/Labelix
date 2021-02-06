@@ -16,7 +16,7 @@
 
 <mat-grid-list cols="5" rowHeight="45em" style="height: 100%">
 
-  <mat-grid-tile [colspan]="1" style="height: 100%">
+  <mat-grid-tile [colspan]="1" style="height: 100%; top: 0; position: absolute">
 
     <mat-selection-list [multiple]="false">
 
@@ -30,17 +30,17 @@
 
   </mat-grid-tile>
 
-  <mat-grid-tile [colspan]="4" style="height: 100%">
+  <mat-grid-tile [colspan]="4" style="height: 44em">
 
     <div class="mat-typography" style="width: 100%">
 
-      <div *ngIf="addMode === false" style="top: 0; left: 0">
+      <div *ngIf="addMode === false" style="top: 0; left: 0; position: absolute">
         <button mat-stroked-button color="primary" style="margin-bottom: 1em" (click)="switchAddModeOn()">Create new
           Configuration
         </button>
       </div>
 
-      <div *ngIf="addMode === true" style="top: 0; left: 0">
+      <div *ngIf="addMode === true && configs.length > 0" style="top: 0; left: 0">
         <button mat-stroked-button color="warn" style="margin-bottom: 1em" (click)="switchAddModOff()">Cancel</button>
       </div>
 
@@ -115,9 +115,7 @@
         </div>
 
         <div *ngIf="addMode === true">
-          <button mat-raised-button color="primary" style="bottom: 0; left: 1em; position: absolute"
-                  (click)="addConfig()">Save
-          </button>
+          <button mat-raised-button color="primary" style="bottom: 0; left: 1em; position: absolute" (click)="addConfig()">Add</button>
         </div>
 
       </div>
