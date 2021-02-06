@@ -109,7 +109,6 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
           base64Url: image.Data
         }));
       }
-      console.log(this.userFacade.getIdentityClaims());
     });
 
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
