@@ -61,7 +61,10 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     this.subscription.add(this.projectFacade.projects$.subscribe(value => this.allProjects = value));
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe((m) => this.images = m));
     this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => this.allAiConfigs = value));
-    this.subscription.add(this.userFacade.users$.subscribe((value) => this.allUsers = value));
+    this.subscription.add(
+      this.userFacade.users$.subscribe((value) => this.allUsers = value
+        .filter(user => user.keycloakId !== this.userFacade.getIdentityClaims().username))
+    );
 
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
   }
@@ -71,7 +74,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   onOkSubmit() {
-    if (this.checkInputs()){
+    if (this.checkInputs()) {
       const imageData: IImage[] = [];
       for (const i of this.images) {
         imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, Width: i.width, Height: i.height});
@@ -166,7 +169,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
         duration: 2000,
       });
       return false;
-    } else if (this.projectFacade.checkIfNameIsAlreadyPresent(this.newProjectName, this.allProjects)){
+    } else if (this.projectFacade.checkIfNameIsAlreadyPresent(this.newProjectName, this.allProjects)) {
       this.snackBar.open('A project with this name is already present', '', {
         duration: 2000,
       });
