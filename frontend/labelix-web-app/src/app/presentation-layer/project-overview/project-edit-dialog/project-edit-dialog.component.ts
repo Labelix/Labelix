@@ -70,7 +70,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
         value.forEach(user => {
           // check if user is not myself
           // @ts-ignore
-          if (user.keycloakId !== this.userFacade.getIdentityClaims().upn) {
+          if (user.keycloakId !== this.userFacade.getIdentityClaims().username) {
             this.usersAlreadyInProject.push(user);
             this.selectedUsers.push(user);
           }
@@ -88,7 +88,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
       value.forEach(user => {
         // check if user is not myself
         // @ts-ignore
-        if (user.keycloakId !== this.userFacade.getIdentityClaims().upn) {
+        if (user.keycloakId !== this.userFacade.getIdentityClaims().username) {
           this.allUsers.push(user);
         }
       });
@@ -120,7 +120,6 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   onOkSubmit() {
     if (this.checkInputs()) {
-      const aiConfigIdList = this.selectedAiConfigs.map(aiConfig => aiConfig.id);
 
       this.projectFacade.putProject(this.project).subscribe(newProject => {
         // update project on state

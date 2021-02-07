@@ -22,7 +22,9 @@ export class ProjectGridViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscription.add(this.projectsFacade.projects$.subscribe((m) => this.projects = m));
+    this.subscription.add(this.projectsFacade.projects$.subscribe((m) => {
+      this.projects = m.slice(0).sort((a, b) => a.id - b.id);
+    }));
 
     this.changeRelation(window.innerWidth);
     this.projectsFacade.getProjects();
