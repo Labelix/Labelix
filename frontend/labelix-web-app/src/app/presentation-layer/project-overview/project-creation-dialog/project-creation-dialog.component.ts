@@ -156,7 +156,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   checkInputs(): boolean {
-    if (this.newProjectName.length === 0) {
+    if (this.newProjectName === undefined || this.newProjectName.length === 0) {
       this.snackBar.open('Project title cannot be empty', '', {
         duration: 2000,
       });
