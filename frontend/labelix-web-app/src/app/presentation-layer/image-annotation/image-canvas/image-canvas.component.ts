@@ -209,7 +209,9 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
 
       if (this.activeAnnotation !== undefined) {
         drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing,
-          this.activeAnnotation.id + ': ' + this.activeAnnotation.categoryLabel.name);
+          (this.currentImageAnnotations.indexOf(this.activeAnnotation) + 1  !== 0
+            ? (this.currentImageAnnotations.indexOf(this.activeAnnotation) + 1)
+            : '') + ': ' + this.activeAnnotation.categoryLabel.name);
         fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
       }
     }
