@@ -100,9 +100,10 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
       if (value !== undefined) {
         this.rawImageFacade.clearRawImagesOnState();
         this.project.label = value.label;
+
         value.images.forEach(image => this.rawImageFacade.addRawImageToState({
           width: image.Width,
-          name: image.name,
+          name: image.Name,
           id: image.id,
           height: image.Height,
           file: undefined,
