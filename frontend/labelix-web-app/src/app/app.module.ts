@@ -19,6 +19,7 @@ import {UserFacade} from './abstraction-layer/UserFacade';
 import {KeycloakAngularModule, KeycloakService} from 'keycloak-angular';
 import {initializer} from './core-layer/utility/init';
 import {AuthGuard} from './core-layer/guard/auth-guard';
+import {PendingChangesGuard} from './core-layer/guard/PendingChangesGuard';
 
 @NgModule({
   declarations: [
