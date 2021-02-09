@@ -58,7 +58,7 @@
 
     <div style="max-height: 20em">
 
-      <mat-selection-list #configSelectionList
+      <mat-selection-list #configSelectionList class="selection-list"
                           (selectionChange)="onSelectionListChangesConfig(configSelectionList.selectedOptions.selected)">
 
         <div *ngFor="let item of filteredAiConfigs">
@@ -117,7 +117,7 @@
 
     <div style="max-height: 20em">
 
-      <mat-selection-list #userSelectionList
+      <mat-selection-list #userSelectionList class="selection-list"
                           (selectionChange)="onSelectionListChangesUser(userSelectionList.selectedOptions.selected)">
 
         <div *ngFor="let item of filteredUsers">

@@ -56,7 +56,7 @@ export class RawImageFacade {
           file: undefined,
           height: image.Height,
           id: image.imageId,
-          name: image.name,
+          name: image.Name,
           width: image.Width,
         }));
       });
