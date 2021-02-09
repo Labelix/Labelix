@@ -40,56 +40,58 @@ function setEditingFlagPolygon(item: IImageAnnotation, value: MouseEvent, canvas
 function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawImage,
                                    value: MouseEvent, canvasEl: HTMLCanvasElement,
                                    annotationFacade: AnnotationFacade, editingOptions: EditingOption) {
-  const spaceRatio = 0.15;
+  if (item.boundingBox !== undefined) {
+    const spaceRatio = 0.15;
 
-  const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
-  const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
+    const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
+    const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
 
-  const leftBoxBoundary = getActualScale(item.boundingBox.xCoordinate, activeRawImage.width, canvasEl.width);
-  const topBoxBoundary = getActualScale(item.boundingBox.yCoordinate, activeRawImage.height, canvasEl.height);
-  const actualBoundingBoxWidth = getActualScale(item.boundingBox.width, activeRawImage.width, canvasEl.width);
-  const actualBoundingBoxHeight = getActualScale(item.boundingBox.height, activeRawImage.height, canvasEl.height);
+    const leftBoxBoundary = getActualScale(item.boundingBox.xCoordinate, activeRawImage.width, canvasEl.width);
+    const topBoxBoundary = getActualScale(item.boundingBox.yCoordinate, activeRawImage.height, canvasEl.height);
+    const actualBoundingBoxWidth = getActualScale(item.boundingBox.width, activeRawImage.width, canvasEl.width);
+    const actualBoundingBoxHeight = getActualScale(item.boundingBox.height, activeRawImage.height, canvasEl.height);
 
 
-  // check if the bounding box can be dragged around based on the mouse position
-  if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
-    && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
-    && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
-    && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos) {
-    annotationFacade.setActiveAnnotation(item);
-    editingOptions.annotationDragging = true;
-  }
+    // check if the bounding box can be dragged around based on the mouse position
+    if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
+      && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
+      && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
+      && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos) {
+      annotationFacade.setActiveAnnotation(item);
+      editingOptions.annotationDragging = true;
+    }
 
-  // check if top side can be modified
-  if (topBoxBoundary <= yMousePos
-    && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
-    && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
-    annotationFacade.setActiveAnnotation(item);
-    editingOptions.addTop = true;
-  }
+    // check if top side can be modified
+    if (topBoxBoundary <= yMousePos
+      && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) >= yMousePos
+      && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+      annotationFacade.setActiveAnnotation(item);
+      editingOptions.addTop = true;
+    }
 
-  // check if left side can be modified
-  if (leftBoxBoundary <= xMousePos
-    && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
-    && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
-    annotationFacade.setActiveAnnotation(item);
-    editingOptions.addLeft = true;
-  }
+    // check if left side can be modified
+    if (leftBoxBoundary <= xMousePos
+      && leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) >= xMousePos
+      && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+      annotationFacade.setActiveAnnotation(item);
+      editingOptions.addLeft = true;
+    }
 
-  // check if right side can be modified
-  if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
-    && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
-    && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
-    annotationFacade.setActiveAnnotation(item);
-    editingOptions.addRight = true;
-  }
+    // check if right side can be modified
+    if (leftBoxBoundary + actualBoundingBoxWidth >= xMousePos
+      && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) <= xMousePos
+      && checkInBound(yMousePos, topBoxBoundary, actualBoundingBoxHeight)) {
+      annotationFacade.setActiveAnnotation(item);
+      editingOptions.addRight = true;
+    }
 
-  // check if bottom side can be modified
-  if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
-    && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
-    && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
-    annotationFacade.setActiveAnnotation(item);
-    editingOptions.addBottom = true;
+    // check if bottom side can be modified
+    if (topBoxBoundary + actualBoundingBoxHeight >= yMousePos
+      && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) <= yMousePos
+      && checkInBound(xMousePos, leftBoxBoundary, actualBoundingBoxWidth)) {
+      annotationFacade.setActiveAnnotation(item);
+      editingOptions.addBottom = true;
+    }
   }
 }
 

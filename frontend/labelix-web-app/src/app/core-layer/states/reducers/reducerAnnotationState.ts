@@ -184,38 +184,55 @@ export function annotationReducer(state = initialAnnotationState,
     }
     case ActionTypes.AddWholeImageAnnotation: {
       const tmpAnnotations: IImageAnnotation[] = [];
-      let foundWholeImage = false;
+      // let foundWholeImage = false;
+      // state.currentImageAnnotations.forEach(value => {
+      //   if (value.annotationMode === AnnotationMode.WHOLE_IMAGE) {
+      //     tmpAnnotations.push({
+      //       image: value.image,
+      //       annotationMode: AnnotationMode.WHOLE_IMAGE,
+      //       categoryLabel: action.payload,
+      //       segmentations: [],
+      //       id: value.id,
+      //       boundingBox: undefined,
+      //       area: -1,
+      //       isCrowd: false,
+      //       isVisible: true
+      //     });
+      //     foundWholeImage = true;
+      //   } else {
+      //     tmpAnnotations.push(value);
+      //   }
+      // });
+      // if (!foundWholeImage) {
+      //   tmpAnnotations.push({
+      //     image: state.currentAnnotatingImage,
+      //     annotationMode: AnnotationMode.WHOLE_IMAGE,
+      //     categoryLabel: action.payload,
+      //     segmentations: [],
+      //     id: state.annotationCount,
+      //     boundingBox: undefined,
+      //     area: -1,
+      //     isCrowd: false,
+      //     isVisible: true
+      //   });
+      // }
+
       state.currentImageAnnotations.forEach(value => {
-        if (value.annotationMode === AnnotationMode.WHOLE_IMAGE) {
-          tmpAnnotations.push({
-            image: value.image,
-            annotationMode: AnnotationMode.WHOLE_IMAGE,
-            categoryLabel: action.payload,
-            segmentations: [],
-            id: value.id,
-            boundingBox: undefined,
-            area: -1,
-            isCrowd: false,
-            isVisible: true
-          });
-          foundWholeImage = true;
-        } else {
           tmpAnnotations.push(value);
-        }
       });
-      if (!foundWholeImage) {
-        tmpAnnotations.push({
-          image: state.currentAnnotatingImage,
-          annotationMode: AnnotationMode.WHOLE_IMAGE,
-          categoryLabel: action.payload,
-          segmentations: [],
-          id: state.annotationCount,
-          boundingBox: undefined,
-          area: -1,
-          isCrowd: false,
-          isVisible: true
-        });
-      }
+
+      tmpAnnotations.push({
+        image: state.currentAnnotatingImage,
+        annotationMode: AnnotationMode.WHOLE_IMAGE,
+        categoryLabel: action.payload,
+        segmentations: [],
+        id: state.annotationCount,
+        boundingBox: undefined,
+        area: -1,
+        isCrowd: false,
+        isVisible: true
+      });
+
       return {
         activeLabel: state.activeLabel,
         currentImageAnnotations: tmpAnnotations,

@@ -42,6 +42,8 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AddLabelDialogComponent } from './add-label-dialog/add-label-dialog.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {PendingChangesGuard} from '../../core-layer/guard/PendingChangesGuard';
 
 
 @NgModule({
@@ -60,7 +62,7 @@ import { AddLabelDialogComponent } from './add-label-dialog/add-label-dialog.com
     ImageTimelineSingleImageComponent,
     SelectedLabelWidgetComponent,
     LabelSettingsDialogComponent,
-    AddLabelDialogComponent,
+    AddLabelDialogComponent
   ],
   providers: [
     RawImageFacade,
@@ -70,7 +72,8 @@ import { AddLabelDialogComponent } from './add-label-dialog/add-label-dialog.com
     ProjectsFacade,
     CocoFormatHelper,
     MatDialog,
-    MatSnackBar
+    MatSnackBar,
+    PendingChangesGuard
   ],
   exports: [
     SingleAnnotationExportFormComponent,
@@ -96,7 +99,8 @@ import { AddLabelDialogComponent } from './add-label-dialog/add-label-dialog.com
         MatInputModule,
         MatDialogModule,
         MatSnackBarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatTooltipModule
     ]
 })
 export class ImageAnnotationModule {
