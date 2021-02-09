@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, V
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {fromEvent, Subscription} from 'rxjs';
+import {fromEvent, Observable, Subscription} from 'rxjs';
 import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
 import {ICategory} from '../../../core-layer/contracts/ICategory';
 import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
@@ -26,6 +26,7 @@ import {onMouseDownSizingTool, onMouseMoveSizingTool} from './drawing-logic/edit
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
 import {IProject} from '../../../core-layer/contracts/IProject';
 import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
+import {ComponentCanDeactivate} from '../../../core-layer/guard/PendingChangesGuard';
 
 @Component({
   selector: 'app-image-canvas',
@@ -33,7 +34,7 @@ import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-h
   styleUrls: ['./image-canvas.component.css']
 })
 
-export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, AfterViewInit, OnDestroy {
 
   constructor(private annotationFacade: AnnotationFacade,
               private rawImageFacade: RawImageFacade,
@@ -86,7 +87,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   ctx: CanvasRenderingContext2D;
 
   ngOnInit(): void {
-
+    this.annotationFacade.changesPresent = false;
     this.subscription.add(this.rawImageFacade.rawImages$.subscribe(value => {
       this.rawImages = value;
       this.setAnnotationsFromCoco();
@@ -223,6 +224,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
   captureEvents(canvasEl: HTMLCanvasElement) {
 
     const lastPos = {x: undefined, y: undefined};
+    this.annotationFacade.changesPresent = true;
 
     fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
       if (this.activeLabel !== undefined && this.activeRawImage !== undefined) {
@@ -265,7 +267,7 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
             const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
             const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
 
-            if (item.annotationMode === AnnotationMode.BOUNDING_BOXES) {
+            if (item.annotationMode === AnnotationMode.BOUNDING_BOXES && item.boundingBox !== undefined) {
               const leftBoxBoundary = this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width, canvasEl.width);
               const topBoxBoundary = this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height, canvasEl.height);
               const actualBoundingBoxWidth = this.getActualScale(item.boundingBox.width, this.activeRawImage.width, canvasEl.width);
@@ -456,6 +458,11 @@ export class ImageCanvasComponent implements OnInit, AfterViewInit, OnDestroy {
     this.imgWidth = this.imgWidth - this.repositioning;
     this.imagePosX = this.imagePosX + (this.repositioning * (xMousePos / this.canvas.nativeElement.getBoundingClientRect().width / 2));
     this.imagePosY = this.imagePosY + (this.repositioning * (yMousePos / this.canvas.nativeElement.getBoundingClientRect().height / 2));
+  }
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): boolean | Observable<boolean> {
+    return !this.annotationFacade.changesPresent;
   }
 }
 
