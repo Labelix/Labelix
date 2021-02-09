@@ -98,7 +98,7 @@ export function drawExistingAnnotationsBoundingBoxes(
       && item.image.id === activeRawImage.id) {
       ctx.strokeStyle = item.categoryLabel.colorCode;
       ctx.fillStyle = hexToRGB(item.categoryLabel.colorCode, opacity);
-      drawBoundingBox(item.boundingBox, canvasEl, ctx, activeRawImage, item.id + ': ' + item.categoryLabel.name);
+      drawBoundingBox(item.boundingBox, canvasEl, ctx, activeRawImage, (elements.indexOf(item) + 1) + ': ' + item.categoryLabel.name);
     }
   }
 }

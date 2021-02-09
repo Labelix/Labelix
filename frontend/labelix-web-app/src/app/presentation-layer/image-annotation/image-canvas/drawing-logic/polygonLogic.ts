@@ -105,7 +105,8 @@ export function drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
       && item.annotationMode === AnnotationMode.POLYGON
       && item.isVisible
       && item.image.id === activeRawImage.id) {
-      drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing, item.id + ': ' + item.categoryLabel.name);
+      drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing,
+        (currentImageAnnotations.indexOf(item) + 1) + ': ' + item.categoryLabel.name);
     }
   }
 }
