@@ -1,9 +1,29 @@
 <mat-grid-list [cols]="2" rowHeight="4:1">
-  <mat-grid-tile><mat-card-title>Labels</mat-card-title></mat-grid-tile>
+
   <mat-grid-tile>
-    <span><button mat-icon-button (click)="onAddLabelClick()"><mat-icon>add_circle</mat-icon></button></span>
-    <span><button mat-icon-button (click)="onSettings()"><mat-icon>settings</mat-icon></button></span>
+    <mat-card-title>Labels</mat-card-title>
   </mat-grid-tile>
+
+  <mat-grid-tile>
+    <span>
+      <button mat-icon-button
+              matTooltip="Add Labels"
+              matTooltipPosition="below"
+              (click)="onAddLabelClick()">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </span>
+
+    <span>
+      <button mat-icon-button
+              matTooltip="Edit Labels"
+              matTooltipPosition="below"
+              (click)="onSettings()">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </span>
+  </mat-grid-tile>
+
 </mat-grid-list>
 
 <mat-chip-list>
