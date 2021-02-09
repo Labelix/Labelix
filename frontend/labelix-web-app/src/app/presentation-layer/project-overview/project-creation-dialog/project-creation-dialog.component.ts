@@ -77,7 +77,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     if (this.checkInputs()) {
       const imageData: IImage[] = [];
       for (const i of this.images) {
-        imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, name: i.name, Width: i.width, Height: i.height});
+        imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, Name: i.name, Width: i.width, Height: i.height});
       }
       const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
       console.log(aiConfigIdList);
@@ -107,7 +107,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
                 height: undefined,
                 width: undefined,
                 base64Url: value.Data,
-                name: value.name,
+                name: value.Name,
                 file: undefined
               });
             }

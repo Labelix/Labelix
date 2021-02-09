@@ -78,7 +78,7 @@ export function rawImageReducer(
     case ActionTypes.DeleteRawImage: {
       const tempImages: IRawImage[] = [];
       state.rawImages.forEach(value => {
-        if (value.id !== action.payload.id) {
+        if (value.name !== action.payload.name) {
           tempImages.push({
             id: value.id,
             base64Url: value.base64Url,

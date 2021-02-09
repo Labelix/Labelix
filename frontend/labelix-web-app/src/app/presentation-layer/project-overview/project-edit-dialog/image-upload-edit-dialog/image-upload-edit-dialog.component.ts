@@ -45,7 +45,7 @@ export class ImageUploadEditDialogComponent implements OnInit, OnDestroy {
             Height: image.height,
             Width: image.width,
             Data: image.src,
-            name: item.name,
+            Name: item.name,
             imageId: -1,
             format: '',
             projectId: this.project.id
