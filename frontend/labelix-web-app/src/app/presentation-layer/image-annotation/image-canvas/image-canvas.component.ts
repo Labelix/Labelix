@@ -269,6 +269,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
             const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
 
             if (item.annotationMode === AnnotationMode.BOUNDING_BOXES && item.boundingBox !== undefined) {
+
               const leftBoxBoundary = this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width, canvasEl.width);
               const topBoxBoundary = this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height, canvasEl.height);
               const actualBoundingBoxWidth = this.getActualScale(item.boundingBox.width, this.activeRawImage.width, canvasEl.width);
