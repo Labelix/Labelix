@@ -23,8 +23,6 @@ export class LabelWidgetComponent implements OnInit, OnDestroy {
 
   currentlyAdding = false;
 
-  newLabelName: string;
-  newSupercategory: string;
   numExistingLabels: number;
 
   nextLabelId: number;

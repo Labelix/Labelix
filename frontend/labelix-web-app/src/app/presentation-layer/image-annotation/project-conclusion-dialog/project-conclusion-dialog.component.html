@@ -1,15 +1,20 @@
 <mat-tab-group>
 
   <mat-tab label="General">
+
     <div class="tab">
+
       <br>
       <p class="name-font">{{activeProject.name}}</p>
+
       <mat-divider></mat-divider>
+
       <p class="mat-subheading-1">{{activeProject.creationDate | date: 'dd/MM/yyyy:hh:mm'}}</p>
+
       <div class="mat-subheading-1">Description</div>
       <p class="mat-body-1" style="word-wrap: normal;">{{activeProject.description}}</p>
-      <button mat-flat-button class="mat-primary" (click)="onSaveWork()"
-              class="save-button">Save Work
+      <button mat-flat-button (click)="onSaveWork()"
+              class="save-button" color="primary">Save Work
       </button>
     </div>
   </mat-tab>

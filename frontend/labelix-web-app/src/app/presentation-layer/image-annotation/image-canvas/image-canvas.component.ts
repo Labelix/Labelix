@@ -50,6 +50,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
   imgWidth = 1400;
   imagePosX = 0;
   imagePosY = 0;
+
   // specifies if the image can be dragged around on the screen (by pressing ctrl)
   draggable = true;
 
