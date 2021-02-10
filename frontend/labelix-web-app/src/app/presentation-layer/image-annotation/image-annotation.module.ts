@@ -44,6 +44,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { AddLabelDialogComponent } from './add-label-dialog/add-label-dialog.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {PendingChangesGuard} from '../../core-layer/guard/PendingChangesGuard';
+import { LeavePageDialogComponent } from './leave-page-dialog/leave-page-dialog.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import {PendingChangesGuard} from '../../core-layer/guard/PendingChangesGuard';
     ImageTimelineSingleImageComponent,
     SelectedLabelWidgetComponent,
     LabelSettingsDialogComponent,
-    AddLabelDialogComponent
+    AddLabelDialogComponent,
+    LeavePageDialogComponent
   ],
   providers: [
     RawImageFacade,

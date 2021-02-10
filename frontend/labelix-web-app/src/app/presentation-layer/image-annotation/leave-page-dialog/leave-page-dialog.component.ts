@@ -1,23 +1,23 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
-import {ICategory} from '../../../core-layer/contracts/ICategory';
-import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
-import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
 import {CocoFormatHelper} from '../../../core-layer/utility/helper/coco-format-helper.service';
-import {Router} from '@angular/router';
-import {MatDialogRef} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
+import {IProject} from '../../../core-layer/contracts/IProject';
+import {ICategory} from '../../../core-layer/contracts/ICategory';
+import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
+import {IRawImage} from '../../../core-layer/contracts/IRawImage';
+import {Project} from '../../../core-layer/models/Project';
 
 @Component({
-  selector: 'app-project-conclusion-dialog',
-  templateUrl: './project-conclusion-dialog.component.html',
-  styleUrls: ['./project-conclusion-dialog.component.css']
+  selector: 'app-leave-page-dialog',
+  templateUrl: './leave-page-dialog.component.html',
+  styleUrls: ['./leave-page-dialog.component.css']
 })
-export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
+export class LeavePageDialogComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
@@ -26,13 +26,12 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
 
-  constructor(public dialogRef: MatDialogRef<ProjectConclusionDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<LeavePageDialogComponent>,
               private annotationFacade: AnnotationFacade,
               private projectFacade: ProjectsFacade,
               private rawImageFacade: RawImageFacade,
               private labelCategoryFacade: LabelCategoryFacade,
-              private cocoFormatter: CocoFormatHelper,
-              private router: Router) {
+              private cocoFormatter: CocoFormatHelper) {
     this.subscription = new Subscription();
   }
 
@@ -47,35 +46,22 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onSaveWork() {
-    const jsonObject: string = JSON.stringify({
-      categories: this.cocoFormatter.createListOfICocoCategory(this.currentCategoryLabels),
-      annotations: this.cocoFormatter.getCocoAnnotations(this.currentImageAnnotations),
-      licenses: [this.cocoFormatter.getTestLicense()],
-      images: this.cocoFormatter.createListOfICocoImages(this.currentRawImages),
-      info: {
-        year: 2020,
-        description: this.activeProject.description,
-        version: '1.0',
-        url: 'testurl',
-        dateCreated: new Date(Date.now()),
-        // TODO implement this when users are finished
-        contributor: 'yet to come'
-      }
-    });
+  onCancel() {
+    this.dialogRef.close(false);
+  }
 
-    this.annotationFacade.replaceActiveProject({
-      description: this.activeProject.description,
-      creationDate: this.activeProject.creationDate,
-      name: this.activeProject.name,
-      finishedAnnotation: this.activeProject.finishedAnnotation,
-      AIModelConfig: this.activeProject.AIModelConfig,
-      id: this.activeProject.id,
-      images: this.activeProject.images,
-      label: jsonObject,
-      timestamp: this.activeProject.timestamp,
-      cocoExport: undefined
-    });
+  onLeaveWithoutSaving() {
+    this.dialogRef.close(true);
+  }
+
+  onLeaveWithSaving() {
+    const jsonObject = this.cocoFormatter.getJsonObjectAsString(this.currentCategoryLabels, this.currentImageAnnotations,
+      this.currentRawImages, this.activeProject);
+
+    const newProject = new Project();
+    newProject.copyProperties(this.activeProject);
+    newProject.label = jsonObject;
+    this.annotationFacade.replaceActiveProject(newProject);
 
     // images always have to be transferred separately because the json object would become to large as it stands now 6.1.2020
     const transferObject: IProject = {
@@ -96,8 +82,7 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
 
     this.projectFacade.putProject(transferObject).subscribe();
 
-    this.router.navigate(['projects']);
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 
 }

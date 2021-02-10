@@ -263,7 +263,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
       }
       if (this.currentAnnotationMode === AnnotationMode.SIZING_TOOL) {
         for (const item of this.currentImageAnnotations) {
-          if (item.image.id === this.activeRawImage.id) {
+          if (item.image.id === this.activeRawImage.id && item.isVisible) {
             const spaceRatio = 0.15;
             const clickField = 10;
 

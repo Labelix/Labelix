@@ -10,6 +10,7 @@ import {IImageAnnotation} from '../../contracts/IImageAnnotation';
 import {IBoundingBox} from '../../contracts/IBoundingBox';
 import {ImageAnnotationHelper} from './image-annotation-helper';
 import {Injectable} from '@angular/core';
+import {IProject} from '../../contracts/IProject';
 
 @Injectable()
 export class CocoFormatHelper {
@@ -63,7 +64,7 @@ export class CocoFormatHelper {
           bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
             value.boundingBox.yCoordinate,
             value.boundingBox.height,
-            value.boundingBox.width] : [0, 0, 0, 0],
+            value.boundingBox.width] : undefined,
           categoryId: value.categoryLabel.id,
           id: value.id,
           imageId: value.image.id,
@@ -132,7 +133,7 @@ export class CocoFormatHelper {
         result.push({
           id: current.id,
           segmentations: this.getScalesOfSegmentations(current.segmentation, currentImage),
-          boundingBox: current.bbox[2] === 0 ? undefined : this.getBoundingBoxFromNumberArray(current.bbox),
+          boundingBox: current.bbox === undefined ? undefined : this.getBoundingBoxFromNumberArray(current.bbox),
           isCrowd: current.iscrowd,
           annotationMode: this.getFormatOfImageAnnotation(current),
           image: currentImage,
@@ -168,7 +169,7 @@ export class CocoFormatHelper {
   }
 
   getFormatOfImageAnnotation(annotation: ICocoAnnotation): number {
-    if (annotation.bbox.length === 0 && annotation.segmentation.length === 0) {
+    if (annotation.bbox === undefined && annotation.segmentation.length === 0) {
       return 0;
     } else if (annotation.segmentation.length === 0) {
       return 1;
@@ -193,6 +194,26 @@ export class CocoFormatHelper {
       height: input[2],
       width: input[3],
     };
+  }
+
+  getJsonObjectAsString(currentCategoryLabels: ICategory[],
+                        currentImageAnnotations: IImageAnnotation[],
+                        currentRawImages: IRawImage[],
+                        activeProject: IProject): string {
+    return JSON.stringify({
+      categories: this.createListOfICocoCategory(currentCategoryLabels),
+      annotations: this.getCocoAnnotations(currentImageAnnotations),
+      licenses: [this.getTestLicense()],
+      images: this.createListOfICocoImages(currentRawImages),
+      info: {
+        year: (new Date()).getFullYear(),
+        description: activeProject.description,
+        version: '1.0',
+        url: '',
+        dateCreated: new Date(Date.now()),
+        contributor: ''
+      }
+    });
   }
 
   createICocoFormat(info: ICocoInfo,

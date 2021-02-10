@@ -1,0 +1,13 @@
+
+<div style="width: 30em">
+  <h2>Warning! You may have made some unsaved changes. If you proceed all your changes will be gone!</h2>
+
+  <mat-divider style="margin-bottom: 1em"></mat-divider>
+
+  <button mat-stroked-button color="primary" (click)="onCancel()" class="menu-button">Cancel</button>
+
+  <button mat-raised-button color="warn" (click)="onLeaveWithoutSaving()" class="menu-button">Leave without saving</button>
+
+  <button mat-raised-button color="primary" class="menu-button" (click)="onLeaveWithSaving()"> Save and Leave</button>
+
+</div>
