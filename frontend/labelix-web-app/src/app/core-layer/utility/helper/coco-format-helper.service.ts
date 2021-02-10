@@ -63,7 +63,7 @@ export class CocoFormatHelper {
           bbox: value.boundingBox !== undefined ? [value.boundingBox.xCoordinate,
             value.boundingBox.yCoordinate,
             value.boundingBox.height,
-            value.boundingBox.width] : [0, 0, 0, 0],
+            value.boundingBox.width] : undefined,
           categoryId: value.categoryLabel.id,
           id: value.id,
           imageId: value.image.id,
@@ -132,7 +132,7 @@ export class CocoFormatHelper {
         result.push({
           id: current.id,
           segmentations: this.getScalesOfSegmentations(current.segmentation, currentImage),
-          boundingBox: current.bbox[2] === 0 ? undefined : this.getBoundingBoxFromNumberArray(current.bbox),
+          boundingBox: current.bbox === undefined ? undefined : this.getBoundingBoxFromNumberArray(current.bbox),
           isCrowd: current.iscrowd,
           annotationMode: this.getFormatOfImageAnnotation(current),
           image: currentImage,
@@ -168,7 +168,7 @@ export class CocoFormatHelper {
   }
 
   getFormatOfImageAnnotation(annotation: ICocoAnnotation): number {
-    if (annotation.bbox.length === 0 && annotation.segmentation.length === 0) {
+    if (annotation.bbox === undefined && annotation.segmentation.length === 0) {
       return 0;
     } else if (annotation.segmentation.length === 0) {
       return 1;
