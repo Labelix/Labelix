@@ -10,6 +10,7 @@ import {IImageAnnotation} from '../../contracts/IImageAnnotation';
 import {IBoundingBox} from '../../contracts/IBoundingBox';
 import {ImageAnnotationHelper} from './image-annotation-helper';
 import {Injectable} from '@angular/core';
+import {IProject} from '../../contracts/IProject';
 
 @Injectable()
 export class CocoFormatHelper {
@@ -193,6 +194,26 @@ export class CocoFormatHelper {
       height: input[2],
       width: input[3],
     };
+  }
+
+  getJsonObjectAsString(currentCategoryLabels: ICategory[],
+                        currentImageAnnotations: IImageAnnotation[],
+                        currentRawImages: IRawImage[],
+                        activeProject: IProject): string {
+    return JSON.stringify({
+      categories: this.createListOfICocoCategory(currentCategoryLabels),
+      annotations: this.getCocoAnnotations(currentImageAnnotations),
+      licenses: [this.getTestLicense()],
+      images: this.createListOfICocoImages(currentRawImages),
+      info: {
+        year: (new Date()).getFullYear(),
+        description: activeProject.description,
+        version: '1.0',
+        url: '',
+        dateCreated: new Date(Date.now()),
+        contributor: ''
+      }
+    });
   }
 
   createICocoFormat(info: ICocoInfo,
