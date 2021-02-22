@@ -1,0 +1,3 @@
+[submodule "EvaluationScript"]
+	path = EvaluationScript
+	url = https://github.com/Labelix/EvaluationScript
