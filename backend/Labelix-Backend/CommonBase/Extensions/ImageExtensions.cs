@@ -22,7 +22,7 @@ namespace CommonBase.Extensions
             return base64String;
         }
         
-        public static byte[] ConvertBitmapToBitmask(this Bitmap bmp, byte threshold)
+        public static byte[] ConvertBitmapToBitmask(this Bitmap bmp, byte threshold = 255)
         {
             BitmapData bitmapData = bmp.LockBits
             (
@@ -52,7 +52,7 @@ namespace CommonBase.Extensions
                 {
                     int oldBlue = pixels[currentLine + x];
 
-                    arr[n * bmp.Width + m] = oldBlue > threshold;
+                    arr[n * bmp.Width + m] = oldBlue >= threshold;
 
                     // calculate new pixel value
                     //pixels[currentLine + x] = (byte) (arr[n * bmp.Width + m] ? 255 : 0);
@@ -64,8 +64,13 @@ namespace CommonBase.Extensions
                 n++;
             }
             
-            // Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+            Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
+
             bmp.UnlockBits(bitmapData);
+            
+            // Save bitmap for debugging purposes
+            // bmp.Save("bitmap.jpg", ImageFormat.Png);
+
             var bytes = new byte[(arr.Length + 7) / 8];
             arr.CopyTo(bytes, 0);
             return bytes;

@@ -57,9 +57,11 @@ namespace Labelix.AIBackend.Controllers
             options.Add($"-v {outDir}:{info.config.OutputDirectory}");
             var optionsString = string.Join(" ", options.ToArray());
 
+            var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
 
-            //var res = await Docker.RunAsync(info.config.DockerImageName, optionsString, info.config.Parameter);
-
+            // Open Dolphin (file explorer) for debugging purposes
+            // await ProcessHelper.RunProcessAsync("dolphin", $"{inDir} {outDir}");
+            
             IActionResult actionResult;
 
             try
@@ -108,7 +110,7 @@ namespace Labelix.AIBackend.Controllers
             
             var bmp = new Bitmap(fileName);
 
-            var bytes = bmp.ConvertBitmapToBitmask(240);
+            var bytes = bmp.ConvertBitmapToBitmask();
             
             var data = new Data(projectId, Path.GetFileName(fileName), Path.GetExtension(fileName), bytes.ImageToBase64(), bmp.Width, bmp.Height );
             return data;
