@@ -83,6 +83,11 @@ namespace Labelix.Logic
             return new ImageController();
         }
 
+        public static IAIModelConfigController CreAiModelConfigController()
+        {
+            return new AIConfigController();
+        }
+
         #endregion
     }
 }
