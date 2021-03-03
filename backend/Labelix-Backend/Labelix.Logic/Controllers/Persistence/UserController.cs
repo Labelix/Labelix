@@ -1,10 +1,13 @@
-﻿using Labelix.Contracts.Persistence;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Labelix.Contracts.Persistence;
 using Labelix.Logic.DataContext;
 using Labelix.Logic.Entities.Persistence;
 
 namespace Labelix.Logic.Controllers.Persistence
 {
-    internal class UserController : GenericController<IUser, User>
+    class UserController : GenericController<IUser, User>
     {
         public UserController(IContext context) : base(context)
         {

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Labelix.Logic;
+﻿using Labelix.Transfer.Persistence;
 using Labelix.WebApi.Controllers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using Labelix.Logic;
+using Microsoft.AspNetCore.Authorization;
 using Contract = Labelix.Contracts.Persistence.IAIModelConfig;
 using Model = Labelix.Transfer.Persistence.AIModelConfig;
 
@@ -14,6 +15,8 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class AIModelConfigController : GenericController<Contract, Model>
     {
+        readonly Project_AIModelConfigController project_AIConfig = new Project_AIModelConfigController();
+
         [Authorize(Roles = "user")]
         [HttpGet("{id}")]
         public Task<Model> GetAsync(int id)
@@ -60,8 +63,7 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("ByProjectId-{projectId}")]
         public async Task<IEnumerable<Model>> GetAIConfigByProjectIdAsync(int projectId)
         {
-            return (await Factory.CreateAiModelConfigController().GetAIConfigByProjectIdAsync(projectId))
-                .Select(ToModel);
+            return (await Factory.CreateAiModelConfigController().GetAIConfigByProjectIdAsync(projectId)).Select(ToModel);
         }
 
         [Authorize(Roles = "admin")]

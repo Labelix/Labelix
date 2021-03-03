@@ -14,6 +14,7 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class UserController : GenericController<Contract, Model>
     {
+        
         [Authorize(Roles = "admin")]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetUsers()
@@ -23,11 +24,10 @@ namespace Labelix.WebAPI.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpPut("addUserToProject-{projectId}")]
-        public Task AddUserToProject(int projectId, Model model)
+        public Task AddUserToProject(int projectId , Model model)
         {
             return Factory.CreateUserManagementController().AddUserToProject(projectId, model);
         }
-
         [Authorize(Roles = "admin")]
         [HttpPut("removeUserFromProject-{projectId}")]
         public Task RemoveUserFromProject(int projectId, Model model)

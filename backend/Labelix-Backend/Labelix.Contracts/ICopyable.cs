@@ -1,6 +1,6 @@
 ﻿namespace Labelix.Contracts
 {
-    public interface ICopyable<T>
+    public partial interface ICopyable<T>
     {
         void CopyProperties(T other);
     }
