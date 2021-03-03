@@ -24,6 +24,7 @@ namespace Labelix.Logic.Controllers.Buisiness
         private readonly IControllerAccess<IProject_AIModelConfig> projectAIModelConfigController =
             Factory.Create<IProject_AIModelConfig>();
         private readonly UserManagementController userManagementController = new UserManagementController();
+
         #region API-Methods
 
         public async Task<IProject> GetProjectWithLabelAsync(int id)
