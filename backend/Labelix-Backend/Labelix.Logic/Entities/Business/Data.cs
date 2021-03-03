@@ -1,7 +1,10 @@
-﻿namespace Labelix.Contracts.Persistence
+﻿using Labelix.Contracts.Persistence;
+
+namespace Labelix.Logic.Entities.Business
 {
-    public interface IData : IIdentifiable
+    internal class Data : IData
     {
+        public int Id { get; set; }
         public int ProjectId { get; set; }
         public string Name { get; set; }
         public string Format { get; set; }

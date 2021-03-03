@@ -1,12 +1,13 @@
-﻿using Labelix.Logic.Entities.Persistence;
+﻿using System;
+using Labelix.Contracts.Persistence;
+using Labelix.Logic.Entities.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Labelix.Logic.DataContext.Db
 {
-    partial class LabelixDbContext : GenericDbContext
+    internal class LabelixDbContext : GenericDbContext
     {
-
         protected DbSet<Image> ImageSet { get; set; }
         protected DbSet<Label> LabelSet { get; set; }
 
@@ -20,35 +21,20 @@ namespace Labelix.Logic.DataContext.Db
         public override DbSet<E> Set<I, E>()
         {
             DbSet<E> result = null;
-            if (typeof(I) == typeof(Labelix.Contracts.Persistence.IImage))
-            {
+            if (typeof(I) == typeof(IImage))
                 result = ImageSet as DbSet<E>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.ILabel))
-            {
+            else if (typeof(I) == typeof(ILabel))
                 result = LabelSet as DbSet<E>;
-            }
 
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject))
-            {
+            else if (typeof(I) == typeof(IProject))
                 result = ProjectSet as DbSet<E>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIModelConfig))
-            {
+            else if (typeof(I) == typeof(IAIModelConfig))
                 result = AIConfigSet as DbSet<E>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIModelConfig))
-            {
+            else if (typeof(I) == typeof(IProject_AIModelConfig))
                 result = Project_AIConfigSet as DbSet<E>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IUser))
-            {
+            else if (typeof(I) == typeof(IUser))
                 result = UserSet as DbSet<E>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_User))
-            {
-                result = Project_UserSet as DbSet<E>;
-            }
+            else if (typeof(I) == typeof(IProject_User)) result = Project_UserSet as DbSet<E>;
 
 
             return result;
@@ -59,15 +45,26 @@ namespace Labelix.Logic.DataContext.Db
         {
             base.OnConfiguring(optionsBuilder);
             BeforeConfiguring(optionsBuilder);
-            string connectionString = "Host=labelix_postgresdb_1;Port=5432;Database=postgres;Username=postgres;Password=sicheres123Passwort";
+            var connectionString =
+                "Host=labelix_postgresdb_1;Port=5432;Database=postgres;Username=postgres;Password=sicheres123Passwort";
 #if DEBUG
-            connectionString = "Host = localhost; Port = 5422; Database = postgres; Username = postgres; Password = sicheres123Passwort";
+            connectionString =
+                "Host = localhost; Port = 5422; Database = postgres; Username = postgres; Password = sicheres123Passwort";
 #endif
             optionsBuilder.UseNpgsql(connectionString);
             AfterConfiguring(optionsBuilder);
         }
-        partial void BeforeConfiguring(DbContextOptionsBuilder optionsBuilder);
-        partial void AfterConfiguring(DbContextOptionsBuilder optionsBuilder);
+
+        private void BeforeConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void AfterConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -84,25 +81,26 @@ namespace Labelix.Logic.DataContext.Db
         {
             entityTypeBuilder.ToTable("images");
         }
+
         private void ConfigureEntityType(EntityTypeBuilder<Label> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("labels");
         }
+
         private void ConfigureEntityType(EntityTypeBuilder<Project> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("projects");
             entityTypeBuilder
-                .HasMany<Project_AIModelConfig>(e => e.AIConfigs)
+                .HasMany(e => e.AIConfigs)
                 .WithOne()
                 .HasForeignKey(i => i.ProjectKey);
-
-            
         }
+
         private void ConfigureEntityType(EntityTypeBuilder<AIModelConfig> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("ai_model_configs");
             entityTypeBuilder
-                .HasMany<Project_AIModelConfig>(e => e.Projects)
+                .HasMany(e => e.Projects)
                 .WithOne()
                 .HasForeignKey(i => i.AIConfigKey);
         }
@@ -116,6 +114,7 @@ namespace Labelix.Logic.DataContext.Db
         {
             entityTypeBuilder.ToTable("users");
         }
+
         private void ConfigureEntityType(EntityTypeBuilder<Project_User> entityTypeBuilder)
         {
             entityTypeBuilder.ToTable("project_users");

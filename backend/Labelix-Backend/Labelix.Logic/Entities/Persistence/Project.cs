@@ -1,14 +1,17 @@
-﻿using Labelix.Contracts.Persistence;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Labelix.Contracts.Persistence;
 
 namespace Labelix.Logic.Entities.Persistence
 {
-    class Project : IdentityObject, IProject
+    internal class Project : IdentityObject, IProject
     {
-        public Project() { }
+        public Project()
+        {
+        }
 
-        public Project(string name, string description, DateTime creationDate, bool finishedAnnotation, ICollection<Image> images, ICollection<Label> labels, string labeledPath)
+        public Project(string name, string description, DateTime creationDate, bool finishedAnnotation,
+            ICollection<Image> images, ICollection<Label> labels, string labeledPath)
         {
             Name = name;
             Description = description;
@@ -18,14 +21,15 @@ namespace Labelix.Logic.Entities.Persistence
             ListOfLabel = labels;
             LabeledPath = labeledPath;
         }
+
+        public ICollection<Image> ListOfImages { get; set; }
+        public ICollection<Label> ListOfLabel { get; set; }
+        public ICollection<Project_AIModelConfig> AIConfigs { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
         public bool FinishedAnnotation { get; set; }
         public string LabeledPath { get; set; }
-        public ICollection<Image> ListOfImages { get; set; }
-        public ICollection<Label> ListOfLabel { get; set; }
-        public ICollection<Project_AIModelConfig> AIConfigs { get; set; }
 
         public void CopyProperties(IProject other)
         {

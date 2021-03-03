@@ -19,9 +19,4 @@
     <ProjectReference Include="..\Labelix.Contracts\Labelix.Contracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Business\" />
-    <Folder Include="Entities\Business\" />
-  </ItemGroup>
-
 </Project>

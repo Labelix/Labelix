@@ -1,12 +1,16 @@
-﻿namespace Labelix.Logic.Controllers.Persistence
+﻿using Labelix.Contracts.Persistence;
+using Labelix.Logic.DataContext;
+using Labelix.Logic.Entities.Persistence;
+
+namespace Labelix.Logic.Controllers.Persistence
 {
-    class ProjectController : GenericController<Contracts.Persistence.IProject, Entities.Persistence.Project>
+    internal class ProjectController : GenericController<IProject, Project>
     {
         public ProjectController(ControllerObject controller) : base(controller)
         {
         }
 
-        public ProjectController(DataContext.IContext context) : base(context)
+        public ProjectController(IContext context) : base(context)
         {
         }
     }

@@ -1,22 +1,25 @@
-﻿using Labelix.Contracts.Persistence;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Labelix.Contracts.Persistence;
 
 namespace Labelix.Logic.Entities.Persistence
 {
-    class Label : IdentityObject, ILabel
+    internal class Label : IdentityObject, ILabel
     {
-        public Label() { }
+        public Label()
+        {
+        }
+
         public Label(string name, string color)
         {
             Name = name;
             Color = color;
         }
+
+        [ForeignKey("Project_Id")] public int ProjectId { get; set; }
+
+        public Project Project { get; set; }
         public string Name { get; set; }
         public string Color { get; set; }
-
-        [ForeignKey("Project_Id")]
-        public int ProjectId { get; set; }
-        public Project Project { get; set; }
 
 
         public void CopyProperties(ILabel other)

@@ -1,17 +1,19 @@
-﻿using Labelix.Contracts;
-using Labelix.Logic.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Labelix.Contracts;
+using Labelix.Logic.Entities;
 
 namespace Labelix.Logic.DataContext
 {
-    internal partial interface IContext : IDisposable
+    internal interface IContext : IDisposable
     {
         IEnumerable<E> Set<I, E>()
             where I : IIdentifiable
             where E : IdentityObject, I;
+
         #region Async-Methods
+
         Task<int> CountAsync<I, E>()
             where I : IIdentifiable
             where E : IdentityObject, I;
@@ -33,6 +35,7 @@ namespace Labelix.Logic.DataContext
             where E : IdentityObject, I;
 
         Task SaveAsync();
+
         #endregion Async-Methods
     }
 }

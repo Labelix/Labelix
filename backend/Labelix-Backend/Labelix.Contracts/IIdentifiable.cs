@@ -1,6 +1,6 @@
 ﻿namespace Labelix.Contracts
 {
-    public partial interface IIdentifiable
+    public interface IIdentifiable
     {
         int Id { get; }
     }

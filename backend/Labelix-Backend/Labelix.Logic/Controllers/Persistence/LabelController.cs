@@ -1,12 +1,16 @@
-﻿namespace Labelix.Logic.Controllers.Persistence
+﻿using Labelix.Contracts.Persistence;
+using Labelix.Logic.DataContext;
+using Labelix.Logic.Entities.Persistence;
+
+namespace Labelix.Logic.Controllers.Persistence
 {
-    class LabelController : GenericController<Contracts.Persistence.ILabel, Entities.Persistence.Label>
+    internal class LabelController : GenericController<ILabel, Label>
     {
         public LabelController(ControllerObject controller) : base(controller)
         {
         }
 
-        public LabelController(DataContext.IContext context) : base(context)
+        public LabelController(IContext context) : base(context)
         {
         }
     }
