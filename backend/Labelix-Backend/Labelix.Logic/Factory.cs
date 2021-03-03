@@ -1,67 +1,70 @@
-﻿using Labelix.Contracts.Client.Buisiness;
+﻿using System;
+using Labelix.Contracts;
+using Labelix.Contracts.Client;
+using Labelix.Contracts.Client.Buisiness;
+using Labelix.Contracts.Persistence;
 using Labelix.Logic.Controllers.Buisiness;
 using Labelix.Logic.Controllers.Business;
+using Labelix.Logic.Controllers.Persistence;
+using Labelix.Logic.DataContext;
 using Labelix.Logic.DataContext.Db;
+using ImageController = Labelix.Logic.Controllers.Persistence.ImageController;
+using ProjectController = Labelix.Logic.Controllers.Persistence.ProjectController;
 
 namespace Labelix.Logic
 {
-    public static partial class Factory
+    public static class Factory
     {
+        public enum PersistenceType
+        {
+            Db
+            //Csv,
+            //Ser,
+        }
+
         static Factory()
         {
             ClassConstructing();
             ClassConstructed();
         }
-        static partial void ClassConstructing();
-        static partial void ClassConstructed();
-        public enum PersistenceType
-        {
-            Db,
-            //Csv,
-            //Ser,
-        }
-        public static PersistenceType Persistence { get; set; } = Factory.PersistenceType.Db;
-        internal static DataContext.IContext CreateContext()
-        {
-            DataContext.IContext result = null;
 
-            if (Persistence == PersistenceType.Db)
-            {
-                result = new LabelixDbContext();
-            }
+        public static PersistenceType Persistence { get; set; } = PersistenceType.Db;
+
+        private static void ClassConstructing()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ClassConstructed()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static IContext CreateContext()
+        {
+            IContext result = null;
+
+            if (Persistence == PersistenceType.Db) result = new LabelixDbContext();
             return result;
         }
-        public static Contracts.Client.IControllerAccess<I> Create<I>() where I : Contracts.IIdentifiable
+
+        public static IControllerAccess<I> Create<I>() where I : IIdentifiable
         {
-            Contracts.Client.IControllerAccess<I> result = null;
-            if (typeof(I) == typeof(Labelix.Contracts.Persistence.IImage))
-            {
-                result = new Controllers.Persistence.ImageController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.ILabel))
-            {
-                result = new Controllers.Persistence.LabelController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject))
-            {
-                result = new Controllers.Persistence.ProjectController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IAIModelConfig))
-            {
-                result = new Controllers.Persistence.AIModelConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_AIModelConfig))
-            {
-                result = new Controllers.Persistence.Project_AIModelConfigController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IUser))
-            {
-                result = new Controllers.Persistence.UserController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
-            else if (typeof(I) == typeof(Labelix.Contracts.Persistence.IProject_User))
-            {
-                result = new Controllers.Persistence.UserProjectController(CreateContext()) as Contracts.Client.IControllerAccess<I>;
-            }
+            IControllerAccess<I> result = null;
+            if (typeof(I) == typeof(IImage))
+                result = new ImageController(CreateContext()) as IControllerAccess<I>;
+            else if (typeof(I) == typeof(ILabel))
+                result = new LabelController(CreateContext()) as IControllerAccess<I>;
+            else if (typeof(I) == typeof(IProject))
+                result = new ProjectController(CreateContext()) as IControllerAccess<I>;
+            else if (typeof(I) == typeof(IAIModelConfig))
+                result = new AIModelConfigController(CreateContext()) as IControllerAccess<I>;
+            else if (typeof(I) == typeof(IProject_AIModelConfig))
+                result = new Project_AIModelConfigController(CreateContext()) as IControllerAccess<I>;
+            else if (typeof(I) == typeof(IUser))
+                result = new UserController(CreateContext()) as IControllerAccess<I>;
+            else if (typeof(I) == typeof(IProject_User))
+                result = new UserProjectController(CreateContext()) as IControllerAccess<I>;
 
             return result;
         }
@@ -75,15 +78,15 @@ namespace Labelix.Logic
 
         public static IProjectController CreateProjectController()
         {
-            return new ProjectController();
+            return new Controllers.Buisiness.ProjectController();
         }
 
         public static IImageController CreateImageController()
         {
-            return new ImageController();
+            return new Controllers.Buisiness.ImageController();
         }
 
-        public static IAIModelConfigController CreAiModelConfigController()
+        public static IAIModelConfigController CreateAiModelConfigController()
         {
             return new AIConfigController();
         }

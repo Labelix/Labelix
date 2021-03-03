@@ -1,46 +1,53 @@
-using CommonBase.Extensions;
-using Labelix.Contracts.Client;
-using Labelix.Logic.DataContext;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Threading.Tasks;
+using CommonBase.Extensions;
+using Labelix.Contracts;
+using Labelix.Contracts.Client;
+using Labelix.Logic.DataContext;
+using Labelix.Logic.Entities;
 
 namespace Labelix.Logic.Controllers
 {
-    /// <inheritdoc cref="IControllerAccess{T}"/>
+    /// <inheritdoc cref="IControllerAccess{T}" />
     /// <summary>
-    /// This generic class implements the base properties and operations defined in the interface. 
+    ///     This generic class implements the base properties and operations defined in the interface.
     /// </summary>
     /// <typeparam name="E">The entity type of element in the controller.</typeparam>
     /// <typeparam name="I">The interface type which implements the entity.</typeparam>
-    internal abstract partial class GenericController<I, E> : ControllerObject, IControllerAccess<I>
-        where I : Contracts.IIdentifiable
-        where E : Entities.IdentityObject, I, Contracts.ICopyable<I>, new()
+    internal abstract class GenericController<I, E> : ControllerObject, IControllerAccess<I>
+        where I : IIdentifiable
+        where E : IdentityObject, I, ICopyable<I>, new()
     {
-        public int MaxPageSize => 500;
-
-        protected IEnumerable<E> Set() => Context.Set<I, E>();
-
         protected GenericController(IContext context)
             : base(context)
         {
-
         }
+
         protected GenericController(ControllerObject controllerObject)
             : base(controllerObject)
         {
         }
 
+        public int MaxPageSize => 500;
+
+        protected IEnumerable<E> Set()
+        {
+            return Context.Set<I, E>();
+        }
+
         #region Async-Methods
+
         public Task<int> CountAsync()
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
 
             return Context.CountAsync<I, E>();
         }
+
         public virtual Task<I> GetByIdAsync(int id)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -53,12 +60,12 @@ namespace Labelix.Logic.Controllers
             return Task.Run(() => Set().Where(whereFunc));
         }
 
-        public async virtual Task<IEnumerable<I>> GetAllAsync()
+        public virtual async Task<IEnumerable<I>> GetAllAsync()
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
 
-            int idx = 0;
-            List<I> result = new List<I>();
+            var idx = 0;
+            var result = new List<I>();
             int qryCount;
 
             do
@@ -68,8 +75,10 @@ namespace Labelix.Logic.Controllers
                 qryCount = qry.Count();
                 result.AddRange(qry);
             } while (qryCount == MaxPageSize);
+
             return result;
         }
+
         public virtual Task<IEnumerable<I>> GetPageListAsync(int pageIndex, int pageSize)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -79,8 +88,9 @@ namespace Labelix.Logic.Controllers
 
             return Task.Run<IEnumerable<I>>(() =>
                 Set().Skip(pageIndex * pageSize)
-                     .Take(pageSize));
+                    .Take(pageSize));
         }
+
         public virtual Task<IEnumerable<I>> QueryPageListAsync(string predicate, int pageIndex, int pageSize)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -90,10 +100,11 @@ namespace Labelix.Logic.Controllers
 
             return Task.Run<IEnumerable<I>>(() =>
                 Set().AsQueryable()
-                     .Where(predicate)
-                     .Skip(pageIndex * pageSize)
-                     .Take(pageSize));
+                    .Where(predicate)
+                    .Skip(pageIndex * pageSize)
+                    .Take(pageSize));
         }
+
         public virtual Task<I> CreateAsync()
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -107,6 +118,7 @@ namespace Labelix.Logic.Controllers
 
             return Task.FromResult(0);
         }
+
         public virtual Task<I> InsertAsync(I entity)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -118,6 +130,7 @@ namespace Labelix.Logic.Controllers
             entityModel.CopyProperties(entity);
             return InsertAsync(entityModel);
         }
+
         public virtual async Task<I> InsertAsync(E entity)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -129,6 +142,7 @@ namespace Labelix.Logic.Controllers
             await AfterInsertedAsync(result);
             return result;
         }
+
         protected virtual Task AfterInsertedAsync(E entity)
         {
             return Task.FromResult(0);
@@ -138,6 +152,7 @@ namespace Labelix.Logic.Controllers
         {
             return Task.FromResult(0);
         }
+
         public virtual async Task<I> UpdateAsync(I entity)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -152,11 +167,10 @@ namespace Labelix.Logic.Controllers
                 var result = await UpdateAsync(entityModel);
                 return result;
             }
-            else
-            {
-                throw new Exception("Entity can't find!");
-            }
+
+            throw new Exception("Entity can't find!");
         }
+
         public virtual async Task<I> UpdateAsync(E entity)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -168,6 +182,7 @@ namespace Labelix.Logic.Controllers
             await AfterUpdatedAsync(entity);
             return result;
         }
+
         protected virtual Task AfterUpdatedAsync(E entity)
         {
             return Task.FromResult(0);
@@ -177,6 +192,7 @@ namespace Labelix.Logic.Controllers
         {
             return Task.FromResult(0);
         }
+
         public async Task DeleteAsync(int id)
         {
             CheckAuthorization(GetType(), MethodBase.GetCurrentMethod());
@@ -184,11 +200,9 @@ namespace Labelix.Logic.Controllers
             await BeforeDeletingAsync(id);
             var item = await Context.DeleteAsync<I, E>(id);
 
-            if (item != null)
-            {
-                await AfterDeletedAsync(item);
-            }
+            if (item != null) await AfterDeletedAsync(item);
         }
+
         protected virtual Task AfterDeletedAsync(E entity)
         {
             return Task.FromResult(0);
@@ -200,13 +214,16 @@ namespace Labelix.Logic.Controllers
 
             return Context.SaveAsync();
         }
+
         #endregion Async-Methods
 
         #region Internal-Methods
+
         internal virtual Task<IEnumerable<E>> QueryAsync(Func<E, bool> predicate)
         {
             return Task.Run(() => Set().Where(predicate));
         }
+
         internal virtual Task<IEnumerable<E>> QueryAsync(string predicate, int pageIndex, int pageSize)
         {
             if (pageSize < 1 && pageSize > MaxPageSize)
@@ -214,10 +231,11 @@ namespace Labelix.Logic.Controllers
 
             return Task.Run<IEnumerable<E>>(() =>
                 Set().AsQueryable()
-                     .Where(predicate)
-                     .Skip(pageIndex * pageSize)
-                     .Take(pageSize));
+                    .Where(predicate)
+                    .Skip(pageIndex * pageSize)
+                    .Take(pageSize));
         }
+
         #endregion Internal-Methods
     }
 }

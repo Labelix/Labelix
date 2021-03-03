@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Labelix.Contracts.Persistence;
+﻿using Labelix.Contracts.Persistence;
 
 namespace Labelix.Logic.Entities.Business
 {
-    class Data : IData
+    internal class Data : IData
     {
         public int Id { get; set; }
         public int ProjectId { get; set; }

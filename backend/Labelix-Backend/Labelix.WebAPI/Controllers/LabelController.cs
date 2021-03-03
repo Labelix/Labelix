@@ -1,8 +1,8 @@
-﻿using Labelix.WebApi.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Contract = Labelix.Contracts.Persistence.ILabel;
 using Model = Labelix.Transfer.Persistence.Label;
 
@@ -18,26 +18,31 @@ namespace Labelix.WebAPI.Controllers
         {
             return GetModelByIdAsync(id);
         }
+
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetAllAsync()
         {
             return GetModelsAsync();
         }
+
         [HttpGet("count")]
         public Task<int> GetCountAsync()
         {
             return CountAsync();
         }
+
         [HttpPost("create")]
         public Task<Model> PostAsync(Model model)
         {
             return InsertModelAsync(model);
         }
+
         [HttpPut("update")]
         public Task<Model> PutAsync(Model model)
         {
             return UpdateModelAsync(model);
         }
+
         [HttpDelete("delete-{id}")]
         public Task DeleteAsync(int id)
         {

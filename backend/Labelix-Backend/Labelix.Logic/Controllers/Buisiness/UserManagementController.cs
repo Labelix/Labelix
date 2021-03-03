@@ -15,7 +15,6 @@ namespace Labelix.Logic.Controllers.Business
 
         #region API-Methods
 
-
         public Task AddUserToProject(int projectId, IUser model)
         {
             return project_userController.InsertAsync(new Project_User {UserIdKey = model.Id, ProjectKey = projectId});
