@@ -30,5 +30,17 @@ namespace Labelix.Transfer.Modules
             Width = width;
             Height = height;
         }
+
+        public Data CopyProperties(IData other)
+        {
+            this.Base64 = other.Base64;
+            this.Format = other.Format;
+            this.Height = other.Height;
+            this.Name = other.Name;
+            this.ProjectId = other.ProjectId;
+            this.Width = other.Width;
+            this.Id = other.Id;
+            return this;
+        }
     }
 }

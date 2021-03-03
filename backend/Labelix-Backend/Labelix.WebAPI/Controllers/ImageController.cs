@@ -20,33 +20,33 @@ namespace Labelix.WebAPI.Controllers
         {
             return await GetModelByIdAsync(id);
         }
-        [Authorize(Roles = "user")]
-        [HttpGet("picture-{id}")]
-        public async Task<Data> GetAsyncPicture(int id)
-        {
-            Model image = await GetModelByIdAsync(id);
-            byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
-            string base64 = bytes.ImageToBase64();
-            string[] pathParts = image.ImagePath.Split('/');
-            Data data = new Data
-            {
-                Id = id,
-                Base64 = base64,
-                Name = pathParts[^1],
-                ProjectId = image.ProjectId,
-                Width = image.Width,
-                Height = image.Height
-            };
-            data.Format = data.Name.Split('.')[1];
-            return GetXMLOfBase(data);
-        }
+        //[Authorize(Roles = "user")]
+        //[HttpGet("picture-{id}")]
+        //public async Task<Data> GetAsyncPicture(int id)
+        //{
+        //    Model image = await GetModelByIdAsync(id);
+        //    byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
+        //    string base64 = bytes.ImageToBase64();
+        //    string[] pathParts = image.ImagePath.Split('/');
+        //    Data data = new Data
+        //    {
+        //        Id = id,
+        //        Base64 = base64,
+        //        Name = pathParts[^1],
+        //        ProjectId = image.ProjectId,
+        //        Width = image.Width,
+        //        Height = image.Height
+        //    };
+        //    data.Format = data.Name.Split('.')[1];
+        //    return GetXMLOfBase(data);
+        //}
 
-        //Sets the base64 to xml variant
-        private Data GetXMLOfBase(Data data)
-        {
-            data.Base64 = $"data:image/{data.Format};base64,{data.Base64}";
-            return data;
-        }
+        ////Sets the base64 to xml variant
+        //private Data GetXMLOfBase(Data data)
+        //{
+        //    data.Base64 = $"data:image/{data.Format};base64,{data.Base64}";
+        //    return data;
+        //}
 
         [Authorize(Roles = "user")]
         [HttpGet("FirstOfProject-{projectId}")]
@@ -80,11 +80,11 @@ namespace Labelix.WebAPI.Controllers
         {
             return CountAsync();
         }
-        public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
-        {
-            IEnumerable<Model> entities = await GetAllAsync();
-            return entities.Where(i => i.ProjectId == projectId);
-        }
+        //public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
+        //{
+        //    IEnumerable<Model> entities = await GetAllAsync();
+        //    return entities.Where(i => i.ProjectId == projectId);
+        //}
         [Authorize(Roles = "admin")]
         [HttpPost("create")]
         public async Task<IActionResult> PostAsync(Data data)
@@ -113,16 +113,16 @@ namespace Labelix.WebAPI.Controllers
             return DeleteModelAsync(id);
         }
 
-        public async Task<IActionResult> DeleteByProjectId(int projectId)
-        {
-            IEnumerable<Model> entities = await GetByProjectId(projectId);
-            foreach (var img in entities)
-            {
-                System.IO.File.Delete(img.ImagePath);
-                await DeleteAsync(img.Id);
-            }
+        //public async Task<IActionResult> DeleteByProjectId(int projectId)
+        //{
+        //    IEnumerable<Model> entities = await GetByProjectId(projectId);
+        //    foreach (var img in entities)
+        //    {
+        //        System.IO.File.Delete(img.ImagePath);
+        //        await DeleteAsync(img.Id);
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
     }
 }

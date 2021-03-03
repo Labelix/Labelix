@@ -1,26 +1,30 @@
 ﻿using CommonBase.Extensions;
-using Labelix.Transfer.Modules;
-using Labelix.Transfer.Persistence;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Labelix.Contracts.Client;
+using Labelix.Contracts.Persistence;
+using Labelix.Logic.Controllers.Persistence;
+using Labelix.Logic.Entities.Business;
+using Labelix.Logic.Entities.Persistence;
 
-namespace Labelix.WebAPI.Controllers
+namespace Labelix.Logic.Controllers.Buisiness
 {
-    public static class Base64Controller
+    internal static class Base64Controller
     {
-        
-        public static async Task<Image> ImageUploadAsync(Data data)
+        private static IControllerAccess<IProject> projectController = Factory.Create<IProject>();
+        private static IControllerAccess<IImage> imageController = Factory.Create<IImage>();
+
+        #region CRUD
+
+        public static async Task<IImage> ImageUploadAsync(IData data)
         {
             try
             {
-                ProjectController projectController = new ProjectController();
-                ImageController imageController = new ImageController();
                 data = GetBase64OutOfXML(data);
                 var bytes = data.Base64.Base64ToByte();
-                Project project = await projectController.GetOnlyProjectAsync(data.ProjectId);
+                IProject project = await projectController.GetByIdAsync(data.ProjectId);
                 Image image = new Image();
                 image.Width = data.Width;
                 image.Height = data.Height;
@@ -41,10 +45,10 @@ namespace Labelix.WebAPI.Controllers
                     image.ImagePath = img_path;
                     image.ProjectId = data.ProjectId;
                 }
-                
+
                 //the image is saved
                 await System.IO.File.WriteAllBytesAsync(img_path, bytes);
-                await imageController.SetImage(image);
+                await imageController.InsertAsync(image);
                 return image;
             }
             catch (Exception er)
@@ -54,39 +58,20 @@ namespace Labelix.WebAPI.Controllers
             }
         }
 
-        public static async Task MultipleImageUpload(MultipleData datas)
+        public static async Task<string> CocoUploadAsync(IData data)
         {
-            foreach (var item in datas.Data)
-            {
-                await ImageUploadAsync(item);
-            }
-
-        }
-        
-        //Reads Base64Code and Image Format out of XML
-        private static Data GetBase64OutOfXML(Data data)
-        {
-            string[] text = data.Base64.Split(';');
-            data.Base64 = text[1].Split(',')[1];
-            data.Format = text[0].Split('/')[1];
-            return data;
-        }
-
-        public static async Task<string> CocoUploadAsync(Data data)
-        {
-            ProjectController projectController = new ProjectController();
             try
             {
-                Project project = await projectController.GetAsync(data.ProjectId);
+                IProject project = await projectController.GetByIdAsync(data.ProjectId);
                 if (data.Format == "")
                 {
                     data.Format = "Coco";
                 }
-                if(data.Name == "")
+                if (data.Name == "")
                 {
                     data.Name = data.Format;
                 }
-                
+
                 //Queries whether the directory (for labels) of the respective project exists and creates it if not.
                 string dir_path = $"./Ressources/Labels/{project.Id}_{project.Name}";
                 if (!System.IO.Directory.Exists(dir_path))
@@ -108,16 +93,55 @@ namespace Labelix.WebAPI.Controllers
             }
         }
 
-        public static async Task<int> RemoveImageAsync(Data data)
+        public static async Task<IData> GetPictureAsync(int id)
         {
-            ProjectController projectController = new ProjectController();
-            ImageController imageController = new ImageController();
-            Project project = await projectController.GetAsync(data.ProjectId);
+            IImage image = await imageController.GetByIdAsync(id);
+            byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
+            string base64 = bytes.ImageToBase64();
+            string[] pathParts = image.ImagePath.Split('/');
+            IData data = new Data
+            {
+                Id = id,
+                Base64 = base64,
+                Name = pathParts[^1],
+                ProjectId = image.ProjectId,
+                Width = image.Width,
+                Height = image.Height
+            };
+            data.Format = data.Name.Split('.')[1];
+            return GetXMLOfBase(data);
+        }
+
+        public static async Task<int> RemoveImageAsync(IData data)
+        {
+            IProject project = await projectController.GetByIdAsync(data.ProjectId);
             string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
             await imageController.DeleteAsync(data.Id);
             System.IO.File.Delete(img_path);
             return 200;
         }
+
+        #endregion
+
+        #region Converter
+
+        //Reads Base64Code and Image Format out of XML
+        private static IData GetBase64OutOfXML(IData data)
+        {
+            string[] text = data.Base64.Split(';');
+            data.Base64 = text[1].Split(',')[1];
+            data.Format = text[0].Split('/')[1];
+            return data;
+        }
+        //Sets the base64 to xml variant
+        private static IData GetXMLOfBase(IData data)
+        {
+            data.Base64 = $"data:image/{data.Format};base64,{data.Base64}";
+            return data;
+        }
+
+        #endregion
+
     }
 
 

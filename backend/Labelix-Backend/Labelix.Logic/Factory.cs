@@ -1,4 +1,5 @@
 ﻿using Labelix.Contracts.Client.Buisiness;
+using Labelix.Logic.Controllers.Buisiness;
 using Labelix.Logic.Controllers.Business;
 using Labelix.Logic.DataContext.Db;
 
@@ -70,6 +71,11 @@ namespace Labelix.Logic
         public static IUserManagementController CreateUserManagementController()
         {
             return new UserManagementController();
+        }
+
+        public static IProjectController CreateProjectController()
+        {
+            return new ProjectController();
         }
 
         #endregion
