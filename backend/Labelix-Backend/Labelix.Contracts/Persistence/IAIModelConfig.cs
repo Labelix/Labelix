@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace Labelix.Contracts.Persistence
+﻿namespace Labelix.Contracts.Persistence
 {
     public interface IAIModelConfig : IIdentifiable, ICopyable<IAIModelConfig>
     {

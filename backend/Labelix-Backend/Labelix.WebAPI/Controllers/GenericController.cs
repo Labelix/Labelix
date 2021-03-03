@@ -1,18 +1,22 @@
 using System;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Labelix.Contracts;
+using Labelix.Contracts.Client;
+using Labelix.Logic;
+using Labelix.Transfer;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Labelix.WebApi.Controllers
 {
     public abstract class GenericController<I, M> : Controller
-        where I : Contracts.IIdentifiable
-        where M : Transfer.TransferObject, I, Contracts.ICopyable<I>, new()
+        where I : IIdentifiable
+        where M : TransferObject, I, ICopyable<I>, new()
     {
-        protected Contracts.Client.IControllerAccess<I> CreateController()
+        protected IControllerAccess<I> CreateController()
         {
-            return Logic.Factory.Create<I>();
+            return Factory.Create<I>();
         }
 
         protected M ToModel(I entity)
@@ -55,7 +59,7 @@ namespace Labelix.WebApi.Controllers
         {
             using var ctrl = CreateController();
 
-            var entity = (await ctrl.GetByIdAsync(id));
+            var entity = await ctrl.GetByIdAsync(id);
             return ToModel(entity);
         }
 

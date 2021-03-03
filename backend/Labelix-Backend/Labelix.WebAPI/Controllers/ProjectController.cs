@@ -1,16 +1,12 @@
-﻿using System;
-using Labelix.Transfer.Modules;
-using Labelix.Transfer.Persistence;
-using Labelix.WebApi.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonBase.Extensions;
-using Labelix.Contracts.Persistence;
 using Labelix.Logic;
+using Labelix.Transfer.Modules;
+using Labelix.WebApi.Controllers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.AspNetCore.Mvc;
 using Contract = Labelix.Contracts.Persistence.IProject;
 using Model = Labelix.Transfer.Persistence.Project;
 
@@ -24,9 +20,10 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<Model> GetWithImagesAsync(int id)
         {
-            Project project = ToModel(await Factory.CreateProjectController().GetProjectWithLabelAsync(id));
+            var project = ToModel(await Factory.CreateProjectController().GetProjectWithLabelAsync(id));
             project.Images =
-                (await Factory.CreateProjectController().GetImagesForProject(project.Id)).Select(new Data().CopyProperties).ToList();
+                (await Factory.CreateProjectController().GetImagesForProject(project.Id))
+                .Select(new Data().CopyProperties).ToList();
             return project;
         }
 
@@ -34,16 +31,17 @@ namespace Labelix.WebAPI.Controllers
         [HttpGet("all")]
         public async Task<IEnumerable<Model>> GetAllAsync()
         {
-            var keycloakUser = this.User.Claims.GetUserId();
+            var keycloakUser = User.Claims.GetUserId();
             return (await Factory.CreateProjectController().GetAllAsync(keycloakUser)).Select(ToModel);
         }
 
         [Authorize(Roles = "admin")]
         [HttpPost("create")]
-        public async Task<Project> PostAsync(ProjectInsert model)
+        public async Task<Model> PostAsync(ProjectInsert model)
         {
-                var keycloakUser = this.User.Claims.GetUserId();
-                return ToModel(await Factory.CreateProjectController().CreateAsync(model, model.AiModelConfigIds, model.Images, keycloakUser));
+            var keycloakUser = User.Claims.GetUserId();
+            return ToModel(await Factory.CreateProjectController()
+                .CreateAsync(model, model.AiModelConfigIds, model.Images, keycloakUser));
         }
 
         [Authorize(Roles = "user")]

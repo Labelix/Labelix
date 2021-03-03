@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Labelix.Contracts.Persistence;
+﻿using Labelix.Contracts.Persistence;
 
 namespace Labelix.Logic.Entities.Persistence
 {
-    class Project_User : IdentityObject, IProject_User
+    internal class Project_User : IdentityObject, IProject_User
     {
         public void CopyProperties(IProject_User other)
         {

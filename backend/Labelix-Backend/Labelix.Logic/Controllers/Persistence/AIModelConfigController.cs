@@ -1,12 +1,16 @@
-﻿namespace Labelix.Logic.Controllers.Persistence
+﻿using Labelix.Contracts.Persistence;
+using Labelix.Logic.DataContext;
+using Labelix.Logic.Entities.Persistence;
+
+namespace Labelix.Logic.Controllers.Persistence
 {
-    sealed class AIModelConfigController : GenericController<Contracts.Persistence.IAIModelConfig, Entities.Persistence.AIModelConfig>
+    internal sealed class AIModelConfigController : GenericController<IAIModelConfig, AIModelConfig>
     {
         public AIModelConfigController(ControllerObject controller) : base(controller)
         {
         }
 
-        public AIModelConfigController(DataContext.IContext context) : base(context)
+        public AIModelConfigController(IContext context) : base(context)
         {
         }
     }

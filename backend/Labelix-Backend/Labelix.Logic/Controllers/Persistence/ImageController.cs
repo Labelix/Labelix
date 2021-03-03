@@ -1,13 +1,16 @@
-﻿namespace Labelix.Logic.Controllers.Persistence
-{
-    sealed class ImageController : GenericController<Contracts.Persistence.IImage, Entities.Persistence.Image>
-    {
+﻿using Labelix.Contracts.Persistence;
+using Labelix.Logic.DataContext;
+using Labelix.Logic.Entities.Persistence;
 
+namespace Labelix.Logic.Controllers.Persistence
+{
+    internal sealed class ImageController : GenericController<IImage, Image>
+    {
         public ImageController(ControllerObject controller) : base(controller)
         {
         }
 
-        public ImageController(DataContext.IContext context) : base(context)
+        public ImageController(IContext context) : base(context)
         {
         }
     }
