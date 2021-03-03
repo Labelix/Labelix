@@ -12,7 +12,9 @@ export const initialProjectState: ReducerProjectState = {
 export function projectReducer(
   state = initialProjectState,
   action: ProjectActions): ReducerProjectState {
+
   switch (action.type) {
+
     case ActionTypes.AddProject: {
       const tempActions: IProject[] = [];
 

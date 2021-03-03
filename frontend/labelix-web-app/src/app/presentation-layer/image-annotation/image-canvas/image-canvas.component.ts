@@ -3,7 +3,7 @@ import {RawImageFacade} from '../../../abstraction-layer/RawImageFacade';
 import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {fromEvent, Observable, Subscription} from 'rxjs';
-import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotation-mode-enum';
 import {ICategory} from '../../../core-layer/contracts/ICategory';
 import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
 import {

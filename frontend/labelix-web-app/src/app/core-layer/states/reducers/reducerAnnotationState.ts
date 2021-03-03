@@ -1,5 +1,5 @@
 import {IRawImage} from '../../contracts/IRawImage';
-import {AnnotationMode} from '../../utility/annotaionModeEnum';
+import {AnnotationMode} from '../../utility/annotation-mode-enum';
 import {IImageAnnotation} from '../../contracts/IImageAnnotation';
 import {ActionTypes, ImageAnnotationActions} from '../actions/image-annotation.actions';
 import {ICategory} from '../../contracts/ICategory';

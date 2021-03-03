@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {MatDialogRef} from '@angular/material/dialog';
 import {ICategory} from '../../../core-layer/contracts/ICategory';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-add-label-dialog',
@@ -21,10 +22,17 @@ export class AddLabelDialogComponent implements OnInit, OnDestroy {
   nextLabelId: number;
   allCategories: ICategory[];
 
+  formGroup: FormGroup;
+
   constructor(private labelFacade: LabelCategoryFacade,
               public dialogRef: MatDialogRef<AddLabelDialogComponent>,
               private snackBar: MatSnackBar) {
     this.subscription = new Subscription();
+
+    this.formGroup = new FormGroup({
+      category: new FormControl('', [Validators.required]),
+      supercategory: new FormControl('', [Validators.required]),
+    });
   }
 
   ngOnInit(): void {

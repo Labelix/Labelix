@@ -1,17 +1,20 @@
 <div class="side-location">
+
   <div *ngIf="activeLabel !== undefined">
     <app-selected-label-widget></app-selected-label-widget>
   </div>
 
   <mat-list>
+
     <div>
       <app-label-widget></app-label-widget>
       <br>
       <mat-divider></mat-divider>
       <br>
     </div>
+
     <div>
-      <app-whole-image-annotation-widget></app-whole-image-annotation-widget>
+      <app-drawed-annotation-list-widget></app-drawed-annotation-list-widget>
       <mat-divider></mat-divider>
       <br>
     </div>
@@ -21,7 +24,9 @@
   <div *ngIf="activeProject === undefined">
     <button mat-raised-button class="finish-next-button" (click)="openExportDialog()">Export</button>
   </div>
+
   <div *ngIf="activeProject !== undefined">
     <button mat-raised-button class="finish-next-button" (click)="openProjectSavingDialog()">Finish</button>
   </div>
+
 </div>

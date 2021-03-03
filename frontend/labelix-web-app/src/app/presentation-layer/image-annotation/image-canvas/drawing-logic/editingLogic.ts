@@ -1,4 +1,4 @@
-import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../../../../core-layer/utility/annotation-mode-enum';
 import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
 import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';

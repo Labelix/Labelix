@@ -1,7 +1,7 @@
 import {Action} from '@ngrx/store';
 import {IRawImage} from '../../contracts/IRawImage';
 import {ICategory} from '../../contracts/ICategory';
-import {AnnotationMode} from '../../utility/annotaionModeEnum';
+import {AnnotationMode} from '../../utility/annotation-mode-enum';
 import {IImageAnnotation} from '../../contracts/IImageAnnotation';
 import {IProject} from '../../contracts/IProject';
 
