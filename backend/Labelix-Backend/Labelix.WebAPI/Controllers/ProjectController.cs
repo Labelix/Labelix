@@ -8,10 +8,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommonBase.Extensions;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Labelix.Contracts.Persistence;
 using Labelix.Logic;
 =======
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+using Labelix.Contracts.Persistence;
+using Labelix.Logic;
+>>>>>>> backend-refactor
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Contract = Labelix.Contracts.Persistence.IProject;
@@ -28,6 +33,7 @@ namespace Labelix.WebAPI.Controllers
         public async Task<Model> GetAsync(int id)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             Project project = ToModel(await Factory.CreateProjectController().GetProjectWithLabelAsync(id));
             project.Images =
                 (await Factory.CreateProjectController().GetImagesForProject(project.Id)).Select(new Data().CopyProperties).ToList();
@@ -43,6 +49,11 @@ namespace Labelix.WebAPI.Controllers
             if (!project.LabeledPath.IsNullOrEmpty()) project.LabeledPath = System.IO.File.ReadAllText(project.LabeledPath);
             project.Images = projectImages;
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+            Project project = ToModel(await Factory.CreateProjectController().GetProjectWithLabelAsync(id));
+            project.Images =
+                (await Factory.CreateProjectController().GetImagesForProject(project.Id)).Select(new Data().CopyProperties).ToList();
+>>>>>>> backend-refactor
             return project;
         }
         public Task<Model> GetAsyncOnlyProject(int id)
@@ -56,6 +67,9 @@ namespace Labelix.WebAPI.Controllers
         {
             var keycloakUser = this.User.Claims.GetUserId();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> backend-refactor
             return (await Factory.CreateProjectController().GetAllAsync(keycloakUser)).Select(ToModel);
 =======
             var userProjectController = new UserProjectController();
@@ -78,6 +92,7 @@ namespace Labelix.WebAPI.Controllers
         public async Task<Project> PostAsync(ProjectInsert model)
         {
                 var keycloakUser = this.User.Claims.GetUserId();
+<<<<<<< HEAD
 <<<<<<< HEAD
                 return ToModel(await Factory.CreateProjectController().CreateAsync(model, model.AiModelConfigIds, model.Images, keycloakUser));
 =======
@@ -105,6 +120,9 @@ namespace Labelix.WebAPI.Controllers
             
             
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+                return ToModel(await Factory.CreateProjectController().CreateAsync(model, model.AiModelConfigIds, model.Images, keycloakUser));
+>>>>>>> backend-refactor
         }
 
         [Authorize(Roles = "user")]

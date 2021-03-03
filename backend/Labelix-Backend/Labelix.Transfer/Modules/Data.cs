@@ -31,6 +31,9 @@ namespace Labelix.Transfer.Modules
             Height = height;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> backend-refactor
 
         public Data CopyProperties(IData other)
         {

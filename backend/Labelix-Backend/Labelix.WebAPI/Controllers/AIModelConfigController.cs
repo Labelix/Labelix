@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Labelix.Logic;
 =======
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+using Labelix.Logic;
+>>>>>>> backend-refactor
 using Microsoft.AspNetCore.Authorization;
 using Contract = Labelix.Contracts.Persistence.IAIModelConfig;
 using Model = Labelix.Transfer.Persistence.AIModelConfig;
@@ -67,6 +71,7 @@ namespace Labelix.WebAPI.Controllers
         public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             return (await Factory.CreateAiModelConfigController().GetAIConfigByProjectIdAsync(projectId)).Select(ToModel);
 =======
             IEnumerable<Project_AIModelConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
@@ -75,6 +80,9 @@ namespace Labelix.WebAPI.Controllers
             IEnumerable<Model> configs = await GetAllAsync();
             return configs.Where(c => ids.Contains(c.Id));
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+            return (await Factory.CreateAiModelConfigController().GetAIConfigByProjectIdAsync(projectId)).Select(ToModel);
+>>>>>>> backend-refactor
         }
 
         [Authorize(Roles = "admin")]

@@ -20,6 +20,7 @@
   </ItemGroup>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   <ItemGroup>
     <Folder Include="Controllers\Business\" />
@@ -27,4 +28,6 @@
   </ItemGroup>
 
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+>>>>>>> backend-refactor
 </Project>

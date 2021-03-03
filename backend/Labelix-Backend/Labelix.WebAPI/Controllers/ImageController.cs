@@ -6,9 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 <<<<<<< HEAD
+<<<<<<< HEAD
 using Labelix.Logic;
 =======
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+using Labelix.Logic;
+>>>>>>> backend-refactor
 using Microsoft.AspNetCore.Authorization;
 using Contract = Labelix.Contracts.Persistence.IImage;
 using Model = Labelix.Transfer.Persistence.Image;

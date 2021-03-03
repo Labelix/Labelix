@@ -1,11 +1,17 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> backend-refactor
 ﻿using Labelix.Contracts.Client.Buisiness;
 using Labelix.Logic.Controllers.Buisiness;
 using Labelix.Logic.Controllers.Business;
 using Labelix.Logic.DataContext.Db;
+<<<<<<< HEAD
 =======
 ﻿using Labelix.Logic.DataContext.Db;
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
+=======
+>>>>>>> backend-refactor
 
 namespace Labelix.Logic
 {
