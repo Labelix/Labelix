@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+<<<<<<< HEAD
 using Labelix.Logic;
+=======
+>>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
 using Microsoft.AspNetCore.Authorization;
 using Contract = Labelix.Contracts.Persistence.IAIModelConfig;
 using Model = Labelix.Transfer.Persistence.AIModelConfig;
@@ -61,23 +64,32 @@ namespace Labelix.WebAPI.Controllers
 
         [Authorize(Roles = "user")]
         [HttpGet("ByProjectId-{projectId}")]
-        public async Task<IEnumerable<Model>> GetAIConfigByProjectIdAsync(int projectId)
+        public async Task<IEnumerable<Model>> GetByProjectId(int projectId)
         {
+<<<<<<< HEAD
             return (await Factory.CreateAiModelConfigController().GetAIConfigByProjectIdAsync(projectId)).Select(ToModel);
+=======
+            IEnumerable<Project_AIModelConfig> configIds = await project_AIConfig.GetByProjectIdAsync(projectId);
+            List<int> ids = new List<int>();
+            configIds.ToList().ForEach(e => ids.Add(e.AIConfigKey));
+            IEnumerable<Model> configs = await GetAllAsync();
+            return configs.Where(c => ids.Contains(c.Id));
+>>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
         }
 
         [Authorize(Roles = "admin")]
         [HttpPut("AddToProject-{projectId}")]
-        public Task AddAIConfigToProjectAsync(int projectId, Model model)
+        public Task AddToProject(int projectId, Model model)
         {
-            return Factory.CreateAiModelConfigController().AddAIConfigToProjectAsync(projectId, model);
+            return new Project_AIModelConfigController().PostAsync(new Project_AIModelConfig(model.Id, projectId));
         }
 
         [Authorize(Roles = "admin")]
         [HttpPut("RemoveFromProject-{projectId}")]
-        public Task RemoveAIConfigFromProjectAsync(int projectId, Model model)
+        public Task RemoveFromProject(int projectId, Model model)
         {
-            return Factory.CreateAiModelConfigController().RemoveAIConfigFromProjectAsync(projectId, model);
+            return new Project_AIModelConfigController().DeleteFromProject(
+                new Project_AIModelConfig(model.Id, projectId));
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Labelix.Transfer.Modules
             Width = width;
             Height = height;
         }
+<<<<<<< HEAD
 
         public Data CopyProperties(IData other)
         {
@@ -42,5 +43,7 @@ namespace Labelix.Transfer.Modules
             this.Id = other.Id;
             return this;
         }
+=======
+>>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
     }
 }

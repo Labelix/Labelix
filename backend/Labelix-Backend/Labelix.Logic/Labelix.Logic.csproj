@@ -19,4 +19,12 @@
     <ProjectReference Include="..\Labelix.Contracts\Labelix.Contracts.csproj" />
   </ItemGroup>
 
+<<<<<<< HEAD
+=======
+  <ItemGroup>
+    <Folder Include="Controllers\Business\" />
+    <Folder Include="Entities\Business\" />
+  </ItemGroup>
+
+>>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
 </Project>

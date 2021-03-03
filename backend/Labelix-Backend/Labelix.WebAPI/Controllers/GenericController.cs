@@ -34,21 +34,21 @@ namespace Labelix.WebApi.Controllers
         {
             using var ctrl = CreateController();
 
-            return (await ctrl.GetAllAsync()).ToList().Select(ToModel);
+            return (await ctrl.GetAllAsync()).ToList().Select(i => ToModel(i));
         }
 
         protected async Task<IEnumerable<M>> GetPageModelsAsync(int index, int size)
         {
             using var ctrl = CreateController();
 
-            return (await ctrl.GetPageListAsync(index, size)).ToList().Select(ToModel);
+            return (await ctrl.GetPageListAsync(index, size)).ToList().Select(i => ToModel(i));
         }
 
         protected async Task<IEnumerable<M>> QueryPageModelsAsync(string predicate, int index, int size)
         {
             using var ctrl = CreateController();
 
-            return (await ctrl.QueryPageListAsync(predicate, index, size)).ToList().Select(ToModel);
+            return (await ctrl.QueryPageListAsync(predicate, index, size)).ToList().Select(i => ToModel(i));
         }
 
         protected async Task<M> GetModelByIdAsync(int id)
@@ -100,7 +100,7 @@ namespace Labelix.WebApi.Controllers
         {
             using var ctrl = CreateController();
 
-            return (await ctrl.GetAllWhereAsync(whereFunc)).ToList().Select(ToModel);
+            return (await ctrl.GetAllWhereAsync(whereFunc)).ToList().Select(i => ToModel(i));
         }
     }
 }

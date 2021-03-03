@@ -1,7 +1,11 @@
+<<<<<<< HEAD
 ﻿using Labelix.Contracts.Client.Buisiness;
 using Labelix.Logic.Controllers.Buisiness;
 using Labelix.Logic.Controllers.Business;
 using Labelix.Logic.DataContext.Db;
+=======
+﻿using Labelix.Logic.DataContext.Db;
+>>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
 
 namespace Labelix.Logic
 {
@@ -65,6 +69,7 @@ namespace Labelix.Logic
 
             return result;
         }
+<<<<<<< HEAD
 
         #region BuisinessController
 
@@ -89,5 +94,7 @@ namespace Labelix.Logic
         }
 
         #endregion
+=======
+>>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
     }
 }
