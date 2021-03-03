@@ -14,7 +14,6 @@ namespace Labelix.WebAPI.Controllers
     public class UserController : GenericController<Contract, Model>
     {
 <<<<<<< HEAD
-<<<<<<< HEAD
         
 =======
         public async Task<Contract> GetUserId(string userKeyCloakId)
@@ -37,9 +36,6 @@ namespace Labelix.WebAPI.Controllers
         }
 
 >>>>>>> parent of 5deac1c... Merge branch 'backend-refactor'
-=======
-        
->>>>>>> backend-refactor
         [Authorize(Roles = "admin")]
         [HttpGet("all")]
         public Task<IEnumerable<Model>> GetUsers()
