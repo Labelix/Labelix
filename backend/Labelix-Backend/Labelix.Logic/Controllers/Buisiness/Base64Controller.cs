@@ -1,6 +1,7 @@
 ﻿using CommonBase.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Labelix.Contracts.Client;
@@ -112,13 +113,17 @@ namespace Labelix.Logic.Controllers.Buisiness
             return GetXMLOfBase(data);
         }
 
-        public static async Task<int> RemoveImageAsync(IData data)
+        public static async Task RemoveImageAsync(int id)
+        {
+            var image = await imageController.GetByIdAsync(id);
+            File.Delete(image.ImagePath);
+        }
+        public static async Task RemoveImageAsync(IData data)
         {
             IProject project = await projectController.GetByIdAsync(data.ProjectId);
             string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
             await imageController.DeleteAsync(data.Id);
             System.IO.File.Delete(img_path);
-            return 200;
         }
 
         #endregion

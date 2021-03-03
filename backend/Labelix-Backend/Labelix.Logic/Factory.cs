@@ -78,6 +78,11 @@ namespace Labelix.Logic
             return new ProjectController();
         }
 
+        public static IImageController CreateImageController()
+        {
+            return new ImageController();
+        }
+
         #endregion
     }
 }
