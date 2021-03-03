@@ -15,7 +15,6 @@ namespace Labelix.WebAPI.Controllers
     [ApiController]
     public class AIModelConfigController : GenericController<Contract, Model>
     {
-        readonly Project_AIModelConfigController project_AIConfig = new Project_AIModelConfigController();
 
         [Authorize(Roles = "user")]
         [HttpGet("{id}")]
