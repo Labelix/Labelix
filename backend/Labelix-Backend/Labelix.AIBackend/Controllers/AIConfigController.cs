@@ -108,7 +108,7 @@ namespace Labelix.AIBackend.Controllers
         private static async Task<Data> EncodeImage(int projectId, string fileName)
         {
             var file = (await System.IO.File.ReadAllBytesAsync(fileName)).ImageToBase64();
-            var data = new Data(projectId, Path.GetFileName(fileName), Path.GetExtension(fileName), file);
+            var data = new Data(projectId, Path.GetFileName(fileName), Path.GetExtension(fileName), file,0,0);
             return data;
         }
 
