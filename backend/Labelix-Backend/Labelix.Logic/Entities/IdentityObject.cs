@@ -2,7 +2,7 @@
 
 namespace Labelix.Logic.Entities
 {
-    internal class IdentityObject : IIdentifiable
+    internal partial class IdentityObject : IIdentifiable
     {
         public int Id { get; set; }
     }

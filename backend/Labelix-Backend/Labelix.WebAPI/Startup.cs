@@ -1,12 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Labelix.WebAPI
 {
@@ -26,7 +34,7 @@ namespace Labelix.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
+            
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -37,7 +45,7 @@ namespace Labelix.WebAPI
                 o.Audience = Configuration["Jwt:Audience"];
                 o.RequireHttpsMetadata = false;
 
-                o.Events = new JwtBearerEvents
+                o.Events = new JwtBearerEvents()
                 {
                     OnAuthenticationFailed = c =>
                     {
@@ -46,7 +54,10 @@ namespace Labelix.WebAPI
                         c.Response.StatusCode = 500;
                         c.Response.ContentType = "text/plain";
 
-                        if (Environment.IsDevelopment()) return c.Response.WriteAsync(c.Exception.ToString());
+                        if (Environment.IsDevelopment())
+                        {
+                            return c.Response.WriteAsync(c.Exception.ToString());
+                        }
                         o.TokenValidationParameters.ValidIssuers = new[]
                         {
                             "http://localhost:8180/auth/realms/Labelix",
@@ -60,7 +71,7 @@ namespace Labelix.WebAPI
                 };
 
                 o.TokenValidationParameters = new
-                    TokenValidationParameters
+                    TokenValidationParameters()
                     {
                         ValidateAudience = false
                     };
@@ -70,7 +81,10 @@ namespace Labelix.WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseHttpsRedirection();
 
@@ -79,8 +93,11 @@ namespace Labelix.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseResponseCaching();
             app.UseStaticFiles();
         }

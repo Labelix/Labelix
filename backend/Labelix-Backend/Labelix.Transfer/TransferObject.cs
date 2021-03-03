@@ -1,10 +1,9 @@
-﻿using Labelix.Contracts;
-
-namespace Labelix.Transfer
+﻿namespace Labelix.Transfer
 {
-    public class TransferObject : IIdentifiable
+    public class TransferObject : Contracts.IIdentifiable
     {
-        public byte[] Timestamp { get; set; }
         public int Id { get; set; }
+
+        public byte[] Timestamp { get; set; }
     }
 }

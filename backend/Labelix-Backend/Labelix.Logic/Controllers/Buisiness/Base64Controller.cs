@@ -1,9 +1,12 @@
-﻿using System;
+﻿using CommonBase.Extensions;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using CommonBase.Extensions;
 using Labelix.Contracts.Client;
 using Labelix.Contracts.Persistence;
+using Labelix.Logic.Controllers.Persistence;
 using Labelix.Logic.Entities.Business;
 using Labelix.Logic.Entities.Persistence;
 
@@ -11,8 +14,8 @@ namespace Labelix.Logic.Controllers.Buisiness
 {
     internal static class Base64Controller
     {
-        private static readonly IControllerAccess<IProject> projectController = Factory.Create<IProject>();
-        private static readonly IControllerAccess<IImage> imageController = Factory.Create<IImage>();
+        private static IControllerAccess<IProject> projectController = Factory.Create<IProject>();
+        private static IControllerAccess<IImage> imageController = Factory.Create<IImage>();
 
         #region CRUD
 
@@ -22,27 +25,30 @@ namespace Labelix.Logic.Controllers.Buisiness
             {
                 data = GetBase64OutOfXML(data);
                 var bytes = data.Base64.Base64ToByte();
-                var project = await projectController.GetByIdAsync(data.ProjectId);
-                var image = new Image();
+                IProject project = await projectController.GetByIdAsync(data.ProjectId);
+                Image image = new Image();
                 image.Width = data.Width;
                 image.Height = data.Height;
 
                 //Queries whether the directory (for images) of the respective project exists and creates it if not.
-                var dir_path = $"./Ressources/Images/{project.Id}_{project.Name}";
-                if (!Directory.Exists(dir_path)) Directory.CreateDirectory(dir_path);
+                string dir_path = $"./Ressources/Images/{project.Id}_{project.Name}";
+                if (!System.IO.Directory.Exists(dir_path))
+                {
+                    System.IO.Directory.CreateDirectory(dir_path);
+                }
 
                 //Queries whether the image exists 
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
-                var img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
-                if (!File.Exists(img_path))
+                string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
+                if (!System.IO.File.Exists(img_path))
                 {
                     image.ImagePath = img_path;
                     image.ProjectId = data.ProjectId;
                 }
 
                 //the image is saved
-                await File.WriteAllBytesAsync(img_path, bytes);
+                await System.IO.File.WriteAllBytesAsync(img_path, bytes);
                 await imageController.InsertAsync(image);
                 return image;
             }
@@ -57,19 +63,28 @@ namespace Labelix.Logic.Controllers.Buisiness
         {
             try
             {
-                var project = await projectController.GetByIdAsync(data.ProjectId);
-                if (data.Format == "") data.Format = "Coco";
-                if (data.Name == "") data.Name = data.Format;
+                IProject project = await projectController.GetByIdAsync(data.ProjectId);
+                if (data.Format == "")
+                {
+                    data.Format = "Coco";
+                }
+                if (data.Name == "")
+                {
+                    data.Name = data.Format;
+                }
 
                 //Queries whether the directory (for labels) of the respective project exists and creates it if not.
-                var dir_path = $"./Ressources/Labels/{project.Id}_{project.Name}";
-                if (!Directory.Exists(dir_path)) Directory.CreateDirectory(dir_path);
+                string dir_path = $"./Ressources/Labels/{project.Id}_{project.Name}";
+                if (!System.IO.Directory.Exists(dir_path))
+                {
+                    System.IO.Directory.CreateDirectory(dir_path);
+                }
 
                 //Queries whether the label exists 
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
-                var label_path = $"{dir_path}/{data.Name}.json";
-                File.WriteAllText(label_path, data.Base64);
+                string label_path = $"{dir_path}/{data.Name}.json";
+                System.IO.File.WriteAllText(label_path, data.Base64);
                 return label_path;
             }
             catch (Exception er)
@@ -81,10 +96,10 @@ namespace Labelix.Logic.Controllers.Buisiness
 
         public static async Task<IData> GetPictureAsync(int id)
         {
-            var image = await imageController.GetByIdAsync(id);
-            var bytes = File.ReadAllBytes(image.ImagePath);
-            var base64 = bytes.ImageToBase64();
-            var pathParts = image.ImagePath.Split('/');
+            IImage image = await imageController.GetByIdAsync(id);
+            byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
+            string base64 = bytes.ImageToBase64();
+            string[] pathParts = image.ImagePath.Split('/');
             IData data = new Data
             {
                 Id = id,
@@ -103,13 +118,12 @@ namespace Labelix.Logic.Controllers.Buisiness
             var image = await imageController.GetByIdAsync(id);
             File.Delete(image.ImagePath);
         }
-
         public static async Task RemoveImageAsync(IData data)
         {
-            var project = await projectController.GetByIdAsync(data.ProjectId);
-            var img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
+            IProject project = await projectController.GetByIdAsync(data.ProjectId);
+            string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
             await imageController.DeleteAsync(data.Id);
-            File.Delete(img_path);
+            System.IO.File.Delete(img_path);
         }
 
         #endregion
@@ -119,12 +133,11 @@ namespace Labelix.Logic.Controllers.Buisiness
         //Reads Base64Code and Image Format out of XML
         private static IData GetBase64OutOfXML(IData data)
         {
-            var text = data.Base64.Split(';');
+            string[] text = data.Base64.Split(';');
             data.Base64 = text[1].Split(',')[1];
             data.Format = text[0].Split('/')[1];
             return data;
         }
-
         //Sets the base64 to xml variant
         private static IData GetXMLOfBase(IData data)
         {
@@ -133,5 +146,8 @@ namespace Labelix.Logic.Controllers.Buisiness
         }
 
         #endregion
+
     }
+
+
 }
