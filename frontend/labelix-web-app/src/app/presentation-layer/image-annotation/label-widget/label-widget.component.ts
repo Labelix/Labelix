@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LabelCategoryFacade} from '../../../abstraction-layer/LabelCategoryFacade';
 import {ICategory} from '../../../core-layer/contracts/ICategory';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotation-mode-enum';
 import {LabelSettingsDialogComponent} from '../label-settings-dialog/label-settings-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';

@@ -1,18 +1,18 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
 import {IImageAnnotation} from '../../../core-layer/contracts/IImageAnnotation';
-import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotation-mode-enum';
 import {DeleteImageAnnotationDialogComponent} from '../delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {IRawImage} from '../../../core-layer/contracts/IRawImage';
 import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-whole-image-annotation-widget',
-  templateUrl: './whole-image-annotation-widget.component.html',
-  styleUrls: ['./whole-image-annotation-widget.component.css']
+  selector: 'app-drawed-annotation-list-widget',
+  templateUrl: './drawed-annotation-list-widget.component.html',
+  styleUrls: ['./drawed-annotation-list-widget.component.css']
 })
-export class WholeImageAnnotationWidgetComponent implements OnInit, OnDestroy {
+export class DrawedAnnotationListWidgetComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 

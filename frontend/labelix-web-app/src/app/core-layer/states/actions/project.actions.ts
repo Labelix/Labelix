@@ -13,12 +13,14 @@ export class AddProjectAction implements Action {
   constructor(public payload: IProject) {
   }
 }
+
 export class DeleteProjectAction implements Action {
   readonly type = ActionTypes.DeleteProject;
 
   constructor(public payload: IProject) {
   }
 }
+
 export class GetProjectsAction implements Action {
   readonly type = ActionTypes.GetProjects;
 

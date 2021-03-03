@@ -1,14 +1,14 @@
 <div class="side-location">
-  <mat-list>
+
     <button mat-icon-button class="side-icon-button"
+            style="margin-top: 0.5em"
             [ngClass]="{'selected-icon': currentAnnotationMode === 0}"
             matTooltip="Whole Image Annotation"
             matTooltipPosition="right"
             (click)="clickToolbarItem(0)">
       <mat-icon>format_color_text</mat-icon>
     </button>
-  </mat-list>
-  <mat-list>
+
     <button mat-icon-button class="side-icon-button"
             [ngClass]="{'selected-icon': currentAnnotationMode === 1}"
             matTooltip="Bounding Box Annotation"
@@ -16,8 +16,7 @@
             (click)="clickToolbarItem(1)">
       <mat-icon>crop_din</mat-icon>
     </button>
-  </mat-list>
-  <mat-list>
+
     <button mat-icon-button class="side-icon-button"
             matTooltip="Polygon Annotation"
             matTooltipPosition="right"
@@ -25,8 +24,7 @@
             (click)="clickToolbarItem(2)">
       <mat-icon>create</mat-icon>
     </button>
-  </mat-list>
-  <mat-list>
+
     <button mat-icon-button class="side-icon-button"
             matTooltip="Editing Tool"
             matTooltipPosition="right"
@@ -34,5 +32,5 @@
             (click)="clickToolbarItem(3)">
       <mat-icon>zoom_out_map</mat-icon>
     </button>
-  </mat-list>
+
 </div>

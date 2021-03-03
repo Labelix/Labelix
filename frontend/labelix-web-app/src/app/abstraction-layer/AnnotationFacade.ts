@@ -30,7 +30,7 @@ import {
   UpdateCategoryOInAnnotations,
   UpdateImageAnnotation
 } from '../core-layer/states/actions/image-annotation.actions';
-import {AnnotationMode} from '../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../core-layer/utility/annotation-mode-enum';
 import {IImageAnnotation} from '../core-layer/contracts/IImageAnnotation';
 import {ICategory} from '../core-layer/contracts/ICategory';
 import {IProject} from '../core-layer/contracts/IProject';
@@ -60,7 +60,7 @@ export class AnnotationFacade {
   }
 
   changeCurrentAnnotationImage(input: IRawImage) {
-    this.store.dispatch(new SetCurrentAnnotationPicture(input));
+      this.store.dispatch(new SetCurrentAnnotationPicture(input));
   }
 
   changeCurrentAnnotationMode(input: AnnotationMode) {

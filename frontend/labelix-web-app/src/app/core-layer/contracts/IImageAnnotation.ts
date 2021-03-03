@@ -1,5 +1,5 @@
 import {IIdentifiable} from './IIdentifiable';
-import {AnnotationMode} from '../utility/annotaionModeEnum';
+import {AnnotationMode} from '../utility/annotation-mode-enum';
 import {ICategory} from './ICategory';
 import {IRawImage} from './IRawImage';
 import {IBoundingBox} from './IBoundingBox';

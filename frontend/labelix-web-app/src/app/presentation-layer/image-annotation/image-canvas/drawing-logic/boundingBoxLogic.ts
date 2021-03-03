@@ -1,5 +1,5 @@
 import {AnnotationFacade} from '../../../../abstraction-layer/AnnotationFacade';
-import {AnnotationMode} from '../../../../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../../../../core-layer/utility/annotation-mode-enum';
 import {ICategory} from '../../../../core-layer/contracts/ICategory';
 import {drawAnnotationHeader, hexToRGB, setCanvasDimensions} from './drawingUtilLogic';
 import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
