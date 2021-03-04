@@ -24,15 +24,17 @@ namespace Labelix.Logic.Controllers.Buisiness
             return await aiModelConfigController.GetAllWhereAsync(e => configIds.Any(c => c.AIConfigKey == e.Id));
         }
 
-        public Task AddAIConfigToProjectAsync(int projectId, IAIModelConfig model)
+        public async Task AddAIConfigToProjectAsync(int projectId, IAIModelConfig model)
         {
-            return project_AiModelConfigController.InsertAsync(new Project_AIModelConfig{AIConfigKey = model.Id, ProjectKey = projectId});
+            await project_AiModelConfigController.InsertAsync(new Project_AIModelConfig{AIConfigKey = model.Id, ProjectKey = projectId});
+            await project_AiModelConfigController.SaveChangesAsync();
         }
         public async Task RemoveAIConfigFromProjectAsync(int projectId, IAIModelConfig model)
         {
             var item = (await project_AiModelConfigController.GetAllWhereAsync(e =>
                 e.ProjectKey == projectId && e.AIConfigKey == model.Id)).FirstOrDefault();
             if (item != null) await project_AiModelConfigController.DeleteAsync(item.Id);
+            await project_AiModelConfigController.SaveChangesAsync();
         }
 
         #endregion

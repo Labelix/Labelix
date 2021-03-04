@@ -68,7 +68,10 @@ namespace Labelix.Logic.Controllers.Buisiness
                 await Base64Controller.ImageUploadAsync(image);
             }
             await projectUserController.InsertAsync(new Project_User { ProjectKey = project.Id, UserIdKey = user.Id });
-            return project;
+            await projectController.SaveChangesAsync();
+            await projectAIModelConfigController.SaveChangesAsync();
+            await projectUserController.SaveChangesAsync();
+            return result;
         }
 
         public async Task<IProject> UpdateProjectAsync(IProject project)
@@ -89,6 +92,7 @@ namespace Labelix.Logic.Controllers.Buisiness
                 File.Delete(oldProject.LabeledPath);
             }
             IProject respondModel = await projectController.UpdateAsync(project);
+            await projectController.SaveChangesAsync();
             return respondModel;
         }
 
@@ -98,6 +102,7 @@ namespace Labelix.Logic.Controllers.Buisiness
             File.Delete(project.LabeledPath);
             Directory.Delete($"./Ressources/Images/{project.Id}_{project.Name}", true);
             await projectController.DeleteAsync(id);
+            await projectController.SaveChangesAsync();
         }
 
         #endregion

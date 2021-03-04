@@ -50,6 +50,7 @@ namespace Labelix.Logic.Controllers.Buisiness
                 //the image is saved
                 await System.IO.File.WriteAllBytesAsync(img_path, bytes);
                 await imageController.InsertAsync(image);
+                await imageController.SaveChangesAsync();
                 return image;
             }
             catch (Exception er)
@@ -117,6 +118,7 @@ namespace Labelix.Logic.Controllers.Buisiness
         {
             var image = await imageController.GetByIdAsync(id);
             File.Delete(image.ImagePath);
+            await imageController.SaveChangesAsync();
         }
         public static async Task RemoveImageAsync(IData data)
         {
@@ -124,6 +126,7 @@ namespace Labelix.Logic.Controllers.Buisiness
             string img_path = $"./Ressources/Images/{project.Id}_{project.Name}/{data.Name}";
             await imageController.DeleteAsync(data.Id);
             System.IO.File.Delete(img_path);
+            await imageController.SaveChangesAsync();
         }
 
         #endregion

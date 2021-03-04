@@ -16,9 +16,10 @@ namespace Labelix.Logic.Controllers.Business
         #region API-Methods
 
 
-        public Task AddUserToProject(int projectId, IUser model)
+        public async Task AddUserToProject(int projectId, IUser model)
         {
-            return project_userController.InsertAsync(new Project_User {UserIdKey = model.Id, ProjectKey = projectId});
+            await project_userController.InsertAsync(new Project_User { UserIdKey = model.Id, ProjectKey = projectId });
+            await project_userController.SaveChangesAsync();
         }
 
         public async Task RemoveUserFromProject(int projectId, IUser model)
@@ -28,6 +29,7 @@ namespace Labelix.Logic.Controllers.Business
                     e => e.UserIdKey == model.Id && e.ProjectKey == projectId))
                 .FirstOrDefault();
             if (model != null) await project_userController.DeleteAsync(model.Id);
+            await project_userController.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<IUser>> GetByProjectId(int id)
@@ -51,7 +53,9 @@ namespace Labelix.Logic.Controllers.Business
         public async Task<IUser> CreateNewUser(string userKeyCloakId)
         {
             IUser model = new User {KeycloakId = userKeyCloakId};
-            return await userController.InsertAsync(model);
+            model = await userController.InsertAsync(model);
+            await userController.SaveChangesAsync();
+            return model;
         }
 
         public async Task<int[]> GetUsersOfProject(int projectId)
