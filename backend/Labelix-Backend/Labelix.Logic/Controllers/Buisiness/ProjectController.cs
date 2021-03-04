@@ -35,12 +35,11 @@ namespace Labelix.Logic.Controllers.Buisiness
 
         public async Task<IEnumerable<IData>> GetImagesForProject(int projectId)
         {
-            List<IImage> images = (await imageController.GetAllWhereAsync(i => i.ProjectId == projectId)).ToList();
             List<IData> projectImages = new List<IData>();
-            foreach (var item in images)
-            {
-                projectImages.Add(await Base64Controller.GetPictureAsync(item.Id));
-            }
+            (await imageController.GetAllWhereAsync(i => i.ProjectId == projectId)).ToList().ForEach(e => projectImages.Add(Base64Controller.GetPictureAsync(e)));
+                //projectImages.Add(Base64Controller.GetPictureAsync(item));
+                //projectImages.Add(new Data{Id = image.Id, Name = $"{images[0].Id} + {images[1].Id}"});
+            
 
             return projectImages;
         }
@@ -57,19 +56,19 @@ namespace Labelix.Logic.Controllers.Buisiness
         {
             var user = await userManagementController.GetUserId(keycloakUser);
             IProject result = await projectController.InsertAsync(project);
+            await projectController.SaveChangesAsync();
 
             foreach (var item in aiConfigs)
             {
-                await projectAIModelConfigController.InsertAsync(new Project_AIModelConfig{AIConfigKey = item, ProjectKey = project.Id});
+                await projectAIModelConfigController.InsertAsync(new Project_AIModelConfig{AIConfigKey = item, ProjectKey = result.Id});
+                await projectAIModelConfigController.SaveChangesAsync();
             }
             foreach (var image in images)
             {
-                image.ProjectId = project.Id;
+                image.ProjectId = result.Id;
                 await Base64Controller.ImageUploadAsync(image);
             }
-            await projectUserController.InsertAsync(new Project_User { ProjectKey = project.Id, UserIdKey = user.Id });
-            await projectController.SaveChangesAsync();
-            await projectAIModelConfigController.SaveChangesAsync();
+            await projectUserController.InsertAsync(new Project_User { ProjectKey = result.Id, UserIdKey = user.Id });
             await projectUserController.SaveChangesAsync();
             return result;
         }
@@ -78,18 +77,15 @@ namespace Labelix.Logic.Controllers.Buisiness
         {
             IProject oldProject = await projectController.GetByIdAsync(project.Id);
             IProject oldProjectWithLabel = await GetProjectWithLabelAsync(project.Id);
-            project.LabeledPath = oldProject.LabeledPath;
-            if (oldProjectWithLabel.LabeledPath != project.LabeledPath)
-            { 
-                project.LabeledPath = await Base64Controller.CocoUploadAsync(new Data
-                {
-                    ProjectId = project.Id, Name = project.Name, Format = "", Base64 = project.LabeledPath,
-                    Height = 0, Width = 0
-                });
-            }
+            project.LabeledPath = await Base64Controller.CocoUploadAsync(new Data
+            {
+                ProjectId = project.Id, Name = project.Name, Format = "", Base64 = project.LabeledPath,
+                Height = 0, Width = 0
+            });
+
             if (oldProject.LabeledPath != project.LabeledPath)
             {
-                File.Delete(oldProject.LabeledPath);
+                if(File.Exists(oldProject.LabeledPath)) File.Delete(oldProject.LabeledPath);
             }
             IProject respondModel = await projectController.UpdateAsync(project);
             await projectController.SaveChangesAsync();
@@ -99,7 +95,7 @@ namespace Labelix.Logic.Controllers.Buisiness
         public async Task DeleteAsync(int id)
         {
             var project = await projectController.GetByIdAsync(id);
-            File.Delete(project.LabeledPath);
+            if(File.Exists(project.LabeledPath)) File.Delete(project.LabeledPath);
             Directory.Delete($"./Ressources/Images/{project.Id}_{project.Name}", true);
             await projectController.DeleteAsync(id);
             await projectController.SaveChangesAsync();

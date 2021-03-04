@@ -18,13 +18,13 @@ namespace Labelix.Logic.Controllers.Buisiness
         #region API-Methods
         public Task<IData> GetImageAsync(int id)
         {
-            return Base64Controller.GetPictureAsync(id);
+            return Base64Controller.GetPictureByIdAsync(id);
         }
 
         public async Task<IData> GetFirstImageOfProject(int projectId)
         {
             IImage image = (await imageController.GetAllWhereAsync(e => e.ProjectId == projectId)).FirstOrDefault();
-            return await GetImageAsync(image.Id);
+            return Base64Controller.GetPictureAsync(image);
         }
 
         public Task UploadImageAsync(IData data)

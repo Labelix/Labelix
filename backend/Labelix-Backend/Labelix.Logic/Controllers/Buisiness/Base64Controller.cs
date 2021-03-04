@@ -84,7 +84,7 @@ namespace Labelix.Logic.Controllers.Buisiness
                 //Queries whether the label exists 
                 //  -if so, it will only be updated
                 //  -if no, a database entry is made with the respective path
-                string label_path = $"{dir_path}/{data.Name}.json";
+                string label_path = $"{dir_path}/{project.Name}.json";
                 System.IO.File.WriteAllText(label_path, data.Base64);
                 return label_path;
             }
@@ -95,7 +95,7 @@ namespace Labelix.Logic.Controllers.Buisiness
             }
         }
 
-        public static async Task<IData> GetPictureAsync(int id)
+        public static async Task<IData> GetPictureByIdAsync(int id)
         {
             IImage image = await imageController.GetByIdAsync(id);
             byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
@@ -104,6 +104,24 @@ namespace Labelix.Logic.Controllers.Buisiness
             IData data = new Data
             {
                 Id = id,
+                Base64 = base64,
+                Name = pathParts[^1],
+                ProjectId = image.ProjectId,
+                Width = image.Width,
+                Height = image.Height
+            };
+            data.Format = data.Name.Split('.')[1];
+            return GetXMLOfBase(data);
+        }
+
+        public static IData GetPictureAsync(IImage image)
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(image.ImagePath);
+            string base64 = bytes.ImageToBase64();
+            string[] pathParts = image.ImagePath.Split('/');
+            IData data = new Data
+            {
+                Id = image.Id,
                 Base64 = base64,
                 Name = pathParts[^1],
                 ProjectId = image.ProjectId,
