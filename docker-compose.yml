@@ -9,10 +9,13 @@ services:
         volumes:
             - ./docker/database/dbscripts:/docker-entrypoint-initdb.d
             - postgres_data:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
         networks: 
             - labelixNetwork
     postgres-keycloak:
         image: postgres
+        restart: always
         volumes:
             - postgres-keycloak_data:/var/lib/postgresql/data
         environment:
@@ -26,6 +29,7 @@ services:
         build:
             context: ./docker/keycloak
             dockerfile: ./Dockerfile
+        restart: always
         command: -Dkeycloak.profile.feature.upload_scripts=enabled
         environment:
             - DB_VENDOR=POSTGRES
@@ -53,6 +57,7 @@ services:
         build:
             context: ./backend/Labelix-Backend
             dockerfile: ./Labelix.WebAPI/Dockerfile
+        restart: always
         ports:
             - 8080:80
         links: 
@@ -67,6 +72,7 @@ services:
         build: 
             context: ./frontend/labelix-web-app
             dockerfile: ./Dockerfile
+        restart: always
         ports: 
             - 4200:80
         links:
@@ -76,6 +82,7 @@ services:
               
     reverseproxy:
         image: nginx
+        restart: always
         ports:
             - 80:80
             - 443:443

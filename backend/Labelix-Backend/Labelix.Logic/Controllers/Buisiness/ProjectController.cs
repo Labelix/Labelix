@@ -80,7 +80,7 @@ namespace Labelix.Logic.Controllers.Buisiness
             { 
                 project.LabeledPath = await Base64Controller.CocoUploadAsync(new Data
                 {
-                    ProjectId = project.Id, Name = project.Name, Format = "json", Base64 = project.LabeledPath,
+                    ProjectId = project.Id, Name = project.Name, Format = "", Base64 = project.LabeledPath,
                     Height = 0, Width = 0
                 });
             }
