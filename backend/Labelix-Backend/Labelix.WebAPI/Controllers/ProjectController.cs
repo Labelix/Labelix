@@ -26,7 +26,7 @@ namespace Labelix.WebAPI.Controllers
         {
             Project project = ToModel(await Factory.CreateProjectController().GetProjectWithLabelAsync(id));
             project.Images =
-                (await Factory.CreateProjectController().GetImagesForProject(project.Id)).Select(new Data().CopyProperties).ToList();
+                (await Factory.CreateProjectController().GetImagesForProject(project.Id)).Select(e => new Data().CopyProperties(e)).ToList();
             return project;
         }
 

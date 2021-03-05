@@ -36,11 +36,11 @@ namespace Labelix.Logic.Controllers.Buisiness
         public async Task<IEnumerable<IData>> GetImagesForProject(int projectId)
         {
             List<IData> projectImages = new List<IData>();
-            (await imageController.GetAllWhereAsync(i => i.ProjectId == projectId)).ToList().ForEach(e => projectImages.Add(Base64Controller.GetPictureAsync(e)));
-                //projectImages.Add(Base64Controller.GetPictureAsync(item));
-                //projectImages.Add(new Data{Id = image.Id, Name = $"{images[0].Id} + {images[1].Id}"});
-            
-
+            IImage[] images = (await imageController.GetAllWhereAsync(i => i.ProjectId == projectId)).ToArray();
+            foreach (var image in images)
+            {
+                projectImages.Add(Base64Controller.GetPictureAsync(image));
+            }
             return projectImages;
         }
 
