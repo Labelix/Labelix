@@ -3,10 +3,14 @@ import {ActionTypes, ProjectActions} from '../actions/project.actions';
 
 export interface ReducerProjectState {
   projects: IProject[];
+  numberOfImagesToUpload: number;
+  numberOfUploadedImages: number;
 }
 
 export const initialProjectState: ReducerProjectState = {
   projects: [],
+  numberOfImagesToUpload: undefined,
+  numberOfUploadedImages: undefined
 };
 
 export function projectReducer(
@@ -21,7 +25,9 @@ export function projectReducer(
       state.projects.forEach(value => tempActions.push(value));
       tempActions.push(action.payload);
       return {
-        projects: tempActions
+        projects: tempActions,
+        numberOfImagesToUpload: state.numberOfImagesToUpload,
+        numberOfUploadedImages: state.numberOfImagesToUpload
       };
     }
     case ActionTypes.DeleteProject: {
@@ -33,7 +39,9 @@ export function projectReducer(
         }
       });
       return {
-        projects: tempActions
+        projects: tempActions,
+        numberOfImagesToUpload: state.numberOfImagesToUpload,
+        numberOfUploadedImages: state.numberOfImagesToUpload
       };
     }
     case ActionTypes.GetProjects: {
@@ -42,7 +50,9 @@ export function projectReducer(
       // state.projects.forEach(value => tempActions.push(value));
       action.payload.forEach(value => tempActions.push(value));
       return {
-        projects: tempActions
+        projects: tempActions,
+        numberOfImagesToUpload: state.numberOfImagesToUpload,
+        numberOfUploadedImages: state.numberOfImagesToUpload
       };
     }
     default:
