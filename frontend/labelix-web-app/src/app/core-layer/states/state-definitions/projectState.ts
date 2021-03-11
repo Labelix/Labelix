@@ -35,3 +35,8 @@ export const getNumberOfUploadedImages = createSelector(
   getProjectFeatureState,
   (state: ProjectState) => state.project.numberOfUploadedImages
 );
+
+export const getCurrentUploadProjectName = createSelector(
+  getProjectFeatureState,
+  (state: ProjectState) => state.project.uploadProjectName
+);

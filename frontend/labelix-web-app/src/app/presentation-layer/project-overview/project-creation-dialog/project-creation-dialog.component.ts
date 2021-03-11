@@ -42,6 +42,9 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
 
   allProjects: IProject[] = [];
 
+  numberOfUploadedImages: number;
+  numberOfImagesToUpload: number;
+
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
               private snackBar: MatSnackBar,
               private projectFacade: ProjectsFacade,
@@ -67,6 +70,9 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     );
 
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
+
+    this.subscription.add(this.projectFacade.numberOfImagesToUpload$.subscribe(value => this.numberOfImagesToUpload = value));
+    this.subscription.add(this.projectFacade.numberOfUploadedImages$.subscribe(value => this.numberOfUploadedImages = value));
   }
 
   ngOnDestroy() {
@@ -75,12 +81,15 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
 
   onOkSubmit() {
     if (this.checkInputs()) {
+
       const imageData: IImage[] = [];
+
       for (const i of this.images) {
         imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, Name: i.name, Width: i.width, Height: i.height});
       }
+
       const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
-      console.log(aiConfigIdList);
+
       this.project = {
         id: 0,
         name: this.newProjectName,
@@ -96,11 +105,17 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
 
       this.projectFacade.postProject(this.project).subscribe(newProject => {
 
+        this.projectFacade.setCurrentlyUploadingProjectNameOnState(newProject.name);
+        this.projectFacade.setNumberOfImagesToUpload(imageData.length);
+
+        console.log('uploaded: ' + this.numberOfUploadedImages + 'toUpload: ' + this.numberOfImagesToUpload);
+
         for (const image of imageData) {
 
           image.projectId = newProject.id;
 
           this.rawImageFacade.postImage(image).subscribe(value => {
+
             if (value !== undefined && value !== null) {
               this.rawImageFacade.addRawImageToState({
                 id: value.id,
@@ -110,6 +125,15 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
                 name: value.Name,
                 file: undefined
               });
+            }
+
+            this.projectFacade.increaseUploadedImagesOnState();
+
+            console.log('uploaded: ' + this.numberOfUploadedImages + 'toUpload: ' + this.numberOfImagesToUpload);
+
+            if (this.numberOfUploadedImages === this.numberOfImagesToUpload) {
+              console.log('yes');
+              this.projectFacade.clearProjectUploadInformationOnState();
             }
           });
         }

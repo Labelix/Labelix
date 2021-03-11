@@ -5,6 +5,7 @@ export enum ActionTypes {
   AddProject = '[Project] Add Projects',
   DeleteProject = '[Project] Delete Projects',
   GetProjects = '[Project] Get Projects',
+  SetNameOfUploadProject = '[Project] set name of uploading project to recognise which project should not be displayed',
   SetNumberOfImagesToUpload = '[Project] Set Images to upload on a project',
   IncreaseNumberOfUploadedImages = '[Project] Increase number of uploaded images on state',
   ClearUploadInformation = '[Project] Clear both upload information variables'
@@ -38,17 +39,24 @@ export class SetNumberOfImagesToUploadAction implements Action {
   }
 }
 
-export class IncreaseNumberOfUploadedImages implements Action {
+export class IncreaseNumberOfUploadedImagesAction implements Action {
   readonly type = ActionTypes.IncreaseNumberOfUploadedImages;
 
   constructor() {
   }
 }
 
-export class ClearUploadInformation implements Action {
+export class ClearUploadInformationAction implements Action {
   readonly type = ActionTypes.ClearUploadInformation;
 
   constructor() {
+  }
+}
+
+export class SetNameOfUploadProjectAction implements Action {
+  readonly type = ActionTypes.SetNameOfUploadProject;
+
+  constructor(public payload: string) {
   }
 }
 
@@ -57,5 +65,6 @@ export type ProjectActions =
   | DeleteProjectAction
   | GetProjectsAction
   | SetNumberOfImagesToUploadAction
-  | IncreaseNumberOfUploadedImages
-  | ClearUploadInformation;
+  | IncreaseNumberOfUploadedImagesAction
+  | ClearUploadInformationAction
+  | SetNameOfUploadProjectAction;

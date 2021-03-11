@@ -28,11 +28,16 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   onFileDropped($event) {
+
     for (const item of $event) {
+
       const reader = new FileReader();
       const image = new Image();
+
       reader.addEventListener('load', (event: any) => {
+
         image.src = event.target.result;
+
         image.onload = () => {
           this.rawImageFacade.addRawImageToState({
             id: -1,
@@ -44,6 +49,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
           });
         };
       });
+
       reader.readAsDataURL(item);
     }
   }
