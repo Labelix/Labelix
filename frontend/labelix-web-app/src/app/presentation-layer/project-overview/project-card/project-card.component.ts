@@ -22,10 +22,16 @@ import {ProjectEditDialogComponent} from '../project-edit-dialog/project-edit-di
 export class ProjectCardComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
+
   @Input()
   myProject: IProject;
+
   firstImage: IImage;
   countTries = 0;
+
+  numberOfImagesToUpload: number;
+  numberOfUploadedImages: number;
+  nameOfUploadingProject: string;
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
@@ -42,10 +48,13 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getFirstImageAndLoadIntoState();
+
+    this.subscription.add(this.projectFacade.numberOfUploadedImages$.subscribe(value => this.numberOfUploadedImages = value));
+    this.subscription.add(this.projectFacade.numberOfImagesToUpload$.subscribe(value => this.numberOfImagesToUpload = value));
+    this.subscription.add(this.projectFacade.nameOfUploadingProject$.subscribe(value => this.nameOfUploadingProject = value));
   }
 
   getFirstImageAndLoadIntoState() {
-
     this.subscription.add(this.imageService.getImageByProjectId(this.myProject.id)
       .subscribe(value => {
         this.firstImage = value;

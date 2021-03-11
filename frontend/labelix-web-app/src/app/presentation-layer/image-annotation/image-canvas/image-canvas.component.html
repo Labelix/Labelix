@@ -5,6 +5,7 @@
 
   <div cdkDrag [cdkDragDisabled]="draggable" class="example-box"
        (keydown)="canvasKeyDown($event)" (keyup)="canvasKeyUp($event)" tabindex="0">
+
     <canvas #canvas id="canvas" [style.width]="imgWidth + 'px'"
             [style.height]="imgWidth * activeRawImage.height / activeRawImage.width + 'px'" appMouseWheel
             [ngStyle]="{backgroundImage: activeRawImage != undefined
@@ -12,7 +13,9 @@
                       : 'url()', backgroundSize: 'cover'}"
             (mouseWheelUp)="mouseWheelUpFunc($event)"
             (mouseWheelDown)="mouseWheelDownFunc($event)"></canvas>
+
   </div>
+
 </div>
 
 <app-image-timeline></app-image-timeline>

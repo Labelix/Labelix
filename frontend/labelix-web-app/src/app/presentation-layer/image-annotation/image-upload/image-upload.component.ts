@@ -34,6 +34,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   onFileDropped($event) {
+
     const tmp: IRawImage[] = [];
 
     let count = 1;
@@ -42,6 +43,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       tmp.push({id: count, file: item, height: -1, width: -1, base64Url: '', name: item.name});
       count++;
     }
+
     this.annotationFacade.resetAnnotationState();
     this.facade.addRawImagesToState(tmp);
     this.annotationFacade.changeCurrentAnnotationImage(tmp[0]);
