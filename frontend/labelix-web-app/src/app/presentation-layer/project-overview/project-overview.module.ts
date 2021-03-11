@@ -43,6 +43,7 @@ import {userReducers, userStateName} from '../../core-layer/states/state-definit
 import { ProjectEditDialogComponent } from './project-edit-dialog/project-edit-dialog.component';
 import { ImageUploadEditDialogComponent } from './project-edit-dialog/image-upload-edit-dialog/image-upload-edit-dialog.component';
 import { SingleImageEditDialogComponent } from './project-edit-dialog/single-image-edit-dialog/single-image-edit-dialog.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -59,35 +60,36 @@ import { SingleImageEditDialogComponent } from './project-edit-dialog/single-ima
     ImageUploadEditDialogComponent,
     SingleImageEditDialogComponent,
   ],
-  imports: [
-    CommonModule,
-    ProjectOverviewRoutingModule,
-    MatGridListModule,
-    MatCardModule,
-    StoreModule.forFeature(featureStateName, projectReducers),
-    StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
-    StoreModule.forFeature(projectImageUploadStateName, projectImageUploadReducers),
-    StoreModule.forFeature(userStateName, userReducers),
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ImageAnnotationModule,
-    DragDropModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatSliderModule,
-    _MatMenuDirectivesModule,
-    MatMenuModule,
-    MatInputModule,
-    MatDialogModule,
-    MatChipsModule,
-    MatListModule,
-    MatRadioModule
-  ],
+    imports: [
+        CommonModule,
+        ProjectOverviewRoutingModule,
+        MatGridListModule,
+        MatCardModule,
+        StoreModule.forFeature(featureStateName, projectReducers),
+        StoreModule.forFeature(featureAiModelConfigStateName, aiModelConfigReducers),
+        StoreModule.forFeature(projectImageUploadStateName, projectImageUploadReducers),
+        StoreModule.forFeature(userStateName, userReducers),
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ImageAnnotationModule,
+        DragDropModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatSliderModule,
+        _MatMenuDirectivesModule,
+        MatMenuModule,
+        MatInputModule,
+        MatDialogModule,
+        MatChipsModule,
+        MatListModule,
+        MatRadioModule,
+        MatProgressBarModule
+    ],
   providers: [
     ProjectsFacade,
     AiModelConfigFacade,

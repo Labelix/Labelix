@@ -1,43 +1,53 @@
 <mat-card class="card">
 
-  <img class="img" mat-card-image *ngIf="firstImage != null" [src]="firstImage.Data" (click)="onStartAnnotating()">
-  <img class="img" mat-card-image *ngIf="firstImage == null" (click)="onStartAnnotating()">
+  <div *ngIf="nameOfUploadingProject === myProject.name" style="height: 100%">
 
-  <div class="wrap">
+    <mat-progress-bar style="margin-left: 10%; margin-right: 10%; width: 80%; margin-top: 30%"
+                      mode="indeterminate"></mat-progress-bar>
 
-    <mat-card-header>
+  </div>
 
-      <div mat-card-avatar class="example-header-image" (click)="onStartAnnotating()"></div>
+  <div *ngIf="nameOfUploadingProject !== myProject.name">
 
-      <mat-card-title (click)="onStartAnnotating()">{{myProject.name}}</mat-card-title>
+    <img class="img" mat-card-image *ngIf="firstImage != null" [src]="firstImage.Data" (click)="onStartAnnotating()">
+    <img class="img" mat-card-image *ngIf="firstImage == null" (click)="onStartAnnotating()">
 
-      <mat-card-subtitle
-        (click)="onStartAnnotating()">{{myProject.description !== null ? myProject.description.slice(0, 25) : ''}}
-      </mat-card-subtitle>
+    <div class="wrap">
 
-    </mat-card-header>
+      <mat-card-header>
 
-    <div *ngIf="isAdmin()">
+        <div mat-card-avatar class="example-header-image" (click)="onStartAnnotating()"></div>
 
-      <button mat-icon-button [matMenuTriggerFor]="menu" class="option">
-        <mat-icon class="moreIcon">more_vert</mat-icon>
-      </button>
+        <mat-card-title (click)="onStartAnnotating()">{{myProject.name}}</mat-card-title>
 
-      <mat-menu #menu="matMenu">
+        <mat-card-subtitle
+          (click)="onStartAnnotating()">{{myProject.description !== null ? myProject.description.slice(0, 25) : ''}}
+        </mat-card-subtitle>
 
-        <button mat-menu-item (click)="onEditClicked()">
-          <mat-icon>edit</mat-icon>
-          <span>Edit</span>
+      </mat-card-header>
+
+      <div *ngIf="isAdmin()">
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="option">
+          <mat-icon class="moreIcon">more_vert</mat-icon>
         </button>
 
-        <button mat-menu-item (click)="onDeleteClicked()">
-          <mat-icon>delete</mat-icon>
-          <span>Delete</span>
-        </button>
+        <mat-menu #menu="matMenu">
 
-      </mat-menu>
+          <button mat-menu-item (click)="onEditClicked()">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+
+          <button mat-menu-item (click)="onDeleteClicked()">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+
+        </mat-menu>
+      </div>
+
     </div>
-
   </div>
 
 </mat-card>

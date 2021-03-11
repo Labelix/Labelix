@@ -1,10 +1,10 @@
 
 #toolBarTitle {
   writing-mode: tb-rl;
-  color: rgba(255,255,255,0.87);
+  color: rgba(255, 255, 255, 0.87);
 }
 
-.side-location{
+.side-location {
   margin-top: 4.5em;
   position: fixed;
   left: 0;
@@ -16,10 +16,11 @@
   z-index: 1999;
 }
 
-.side-icon-button{
+.side-icon-button {
   margin-left: 0.5em;
+  margin-bottom: 0.5em;
 }
 
-.selected-icon{
+.selected-icon {
   background-color: #d0cecc;
 }

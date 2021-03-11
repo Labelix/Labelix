@@ -2,24 +2,29 @@
 
   <h1>Add Label</h1>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Name</mat-label>
-    <label>
-      <input required matInput maxlength="30" [(ngModel)]="newLabelName">
-    </label>
-  </mat-form-field>
+  <form [formGroup]="formGroup" (ngSubmit)="onSave()">
 
-  <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <label>
+        <input formControlName="category" required matInput maxlength="30" [(ngModel)]="newLabelName">
+      </label>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Supercategory</mat-label>
-    <label>
-      <input required matInput maxlength="30" [(ngModel)]="newSupercategory">
-    </label>
-  </mat-form-field>
+    <br>
 
-  <br>
+    <mat-form-field appearance="fill">
+      <mat-label>Supercategory</mat-label>
+      <label>
+        <input formControlName="supercategory" required matInput maxlength="30" [(ngModel)]="newSupercategory">
+      </label>
+    </mat-form-field>
 
-  <button mat-raised-button class="add-button" color="primary" (click)="onSave()">Add</button>
+    <br>
+
+    <button mat-raised-button type="submit" [disabled]="!formGroup.valid" class="add-button" color="primary">Add
+    </button>
+
+  </form>
 
 </div>

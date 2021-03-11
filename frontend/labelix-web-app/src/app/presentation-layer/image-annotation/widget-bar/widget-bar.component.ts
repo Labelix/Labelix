@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AnnotationFacade} from '../../../abstraction-layer/AnnotationFacade';
-import {AnnotationMode} from '../../../core-layer/utility/annotaionModeEnum';
+import {AnnotationMode} from '../../../core-layer/utility/annotation-mode-enum';
 import {MatDialog} from '@angular/material/dialog';
 import {SingleAnnotationExportFormComponent} from '../single-annotation-export-form/single-annotation-export-form.component';
 import {IProject} from '../../../core-layer/contracts/IProject';

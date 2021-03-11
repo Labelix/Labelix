@@ -3,10 +3,9 @@ import {CommonModule} from '@angular/common';
 
 import {ImageAnnotationRoutingModule} from './image-annotation-routing.module';
 import {ImageUploadComponent} from './image-upload/image-upload.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DragNDropDirective} from './directives/drag-ndrop.directive';
 import {RawImageFacade} from '../../abstraction-layer/RawImageFacade';
-import {RawImageEffects} from '../../core-layer/states/effects/RawImageEffects';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {featureStateName, rawImageReducers} from '../../core-layer/states/state-definitions/rawImageState';
@@ -20,7 +19,7 @@ import { WidgetBarComponent } from './widget-bar/widget-bar.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {AnnotationFacade} from '../../abstraction-layer/AnnotationFacade';
 import {annotationStateName, annotationStateReducers} from '../../core-layer/states/state-definitions/annotationState';
-import { WholeImageAnnotationWidgetComponent } from './whole-image-annotation-widget/whole-image-annotation-widget.component';
+import { DrawedAnnotationListWidgetComponent } from './drawed-annotation-list-widget/drawed-annotation-list-widget.component';
 import { SingleAnnotationExportFormComponent } from './single-annotation-export-form/single-annotation-export-form.component';
 import { DeleteImageAnnotationDialogComponent } from './delete-image-annotation-dialog/delete-image-annotation-dialog.component';
 import { ImageTimelineComponent } from './image-timeline/image-timeline.component';
@@ -56,7 +55,7 @@ import { LeavePageDialogComponent } from './leave-page-dialog/leave-page-dialog.
     MouseWheelDirective,
     LabelWidgetComponent,
     WidgetBarComponent,
-    WholeImageAnnotationWidgetComponent,
+    DrawedAnnotationListWidgetComponent,
     SingleAnnotationExportFormComponent,
     DeleteImageAnnotationDialogComponent,
     ImageTimelineComponent,
@@ -68,7 +67,6 @@ import { LeavePageDialogComponent } from './leave-page-dialog/leave-page-dialog.
   ],
   providers: [
     RawImageFacade,
-    RawImageEffects,
     LabelCategoryFacade,
     AnnotationFacade,
     ProjectsFacade,
@@ -89,7 +87,6 @@ import { LeavePageDialogComponent } from './leave-page-dialog/leave-page-dialog.
         StoreModule.forFeature(featureStateName, rawImageReducers),
         StoreModule.forFeature(labelCategoryName, labelCategoryReducers),
         StoreModule.forFeature(annotationStateName, annotationStateReducers),
-        EffectsModule.forFeature([RawImageEffects]),
         ColorChromeModule,
         MatCardModule,
         MatListModule,
@@ -102,7 +99,8 @@ import { LeavePageDialogComponent } from './leave-page-dialog/leave-page-dialog.
         MatDialogModule,
         MatSnackBarModule,
         MatProgressSpinnerModule,
-        MatTooltipModule
+        MatTooltipModule,
+        ReactiveFormsModule
     ]
 })
 export class ImageAnnotationModule {
