@@ -6,11 +6,13 @@ import {IRawImage} from '../../../../core-layer/contracts/IRawImage';
 import {IBoundingBox} from '../../../../core-layer/contracts/IBoundingBox';
 import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
 
+// set the starting position of the bounding box
 export function onMouseDownBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
   lastPos.x = (value.clientX - canvasEl.getBoundingClientRect().left);
   lastPos.y = (value.clientY - canvasEl.getBoundingClientRect().top);
 }
 
+// this function is responsible for drawing the bounding box while the user manually drawing the bounding box
 export function onMouseMoveBoundingBoxen(
   lastPos,
   value: MouseEvent,

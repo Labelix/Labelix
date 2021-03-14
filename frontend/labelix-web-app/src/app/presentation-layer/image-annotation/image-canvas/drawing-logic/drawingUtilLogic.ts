@@ -25,6 +25,7 @@ export function  drawHandle(x: number, y: number, ctx: CanvasRenderingContext2D)
   ctx.stroke();
 }
 
+// this function is responsible for drawing the text on top of the annotation to display the identity of the annotation
 export function drawAnnotationHeader(ctx: CanvasRenderingContext2D, actualX: number, actualY: number, colorCode: string, name: string) {
   ctx.beginPath();
   ctx.font = '16px Roboto';

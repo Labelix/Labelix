@@ -125,14 +125,10 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
                 name: value.Name,
                 file: undefined
               });
+              this.projectFacade.increaseUploadedImagesOnState();
             }
 
-            this.projectFacade.increaseUploadedImagesOnState();
-
-            console.log('uploaded: ' + this.numberOfUploadedImages + 'toUpload: ' + this.numberOfImagesToUpload);
-
             if (this.numberOfUploadedImages === this.numberOfImagesToUpload) {
-              console.log('yes');
               this.projectFacade.clearProjectUploadInformationOnState();
             }
           });
