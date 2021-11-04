@@ -63,12 +63,12 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
   // state data placeholders
   private currentImageAnnotations: IImageAnnotation[];
   private currentAnnotationMode: AnnotationMode;
-  private activeLabel: ICategory;
+  private activeLabel: ICategory | undefined;
   rawImages: IRawImage[];
   private categories: ICategory[];
   activeRawImage: IRawImage;
-  private activeAnnotation: IImageAnnotation;
-  private activeProject: IProject;
+  private activeAnnotation: IImageAnnotation | undefined;
+  private activeProject: IProject | undefined;
   // for zooming
   repositioning = 40;
 
@@ -123,7 +123,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
 
   ngAfterViewInit() {
     const canvasEl: HTMLCanvasElement = this.canvas.nativeElement;
-    this.ctx = canvasEl.getContext('2d');
+    this.ctx = canvasEl.getContext('2d')!;
     this.ctx.lineWidth = 2;
     this.captureEvents(canvasEl);
   }
@@ -167,14 +167,14 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
           width: image.width,
           height: image.height,
           base64Url: image.src,
-          name: this.activeRawImage.file.name
+          name: this.activeRawImage.file!.name
         };
-        this.rawImageFacade.updateRawImagesOnState(newRawImage);
-        this.annotationFacade.changeCurrentAnnotationImage(newRawImage);
+        this.rawImageFacade.updateRawImagesOnState(newRawImage!);
+        this.annotationFacade.changeCurrentAnnotationImage(newRawImage!);
       };
     });
 
-    reader.readAsDataURL(this.activeRawImage.file);
+    reader.readAsDataURL(this.activeRawImage.file!);
   }
 
   getDimensionsOfBase64() {
@@ -199,7 +199,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
   }
 
 // hier ist jehweils immer die Breite oder die Höhe bei rawImageValue und canvasValue anzugeben
-  getActualScale(value, rawImageValue, canvasValue): number {
+  getActualScale(value: number, rawImageValue: number, canvasValue: number): number {
     return value / rawImageValue * canvasValue;
   }
 
@@ -221,7 +221,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
         drawPointsOfPolygonAnnotation(canvasEl, this.activeAnnotation, this.ctx, this.currentlyDrawing,
           (this.currentImageAnnotations.indexOf(this.activeAnnotation) + 1 !== 0
             ? (this.currentImageAnnotations.indexOf(this.activeAnnotation) + 1)
-            : '') + ': ' + this.activeAnnotation.categoryLabel.name);
+            : '') + ': ' + this.activeAnnotation.categoryLabel!.name);
         fillShape(canvasEl, this.activeAnnotation, this.ctx, this.opacity);
       }
     }
@@ -232,7 +232,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
     const lastPos = {x: undefined, y: undefined};
     this.annotationFacade.changesPresent = true;
 
-    fromEvent(canvasEl, 'mousedown').subscribe((value: MouseEvent) => {
+    fromEvent(canvasEl, 'mousedown').subscribe((value: Event) => {
 
       if (this.activeLabel !== undefined && this.activeRawImage !== undefined) {
         this.currentlyDrawing = true;
@@ -243,24 +243,26 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
           this.activeRawImage, this.currentlyDrawing, this.ctx);
 
         if (this.currentAnnotationMode === AnnotationMode.BOUNDING_BOXES) {
-          onMouseDownBoundingBoxen(lastPos, value, canvasEl);
+          onMouseDownBoundingBoxen(lastPos, value as MouseEvent, canvasEl);
         } else if (this.currentAnnotationMode === AnnotationMode.POLYGON) {
-          onMouseDownPolygon(value, canvasEl, this.activeAnnotation,
+          onMouseDownPolygon(value as MouseEvent, canvasEl, this.activeAnnotation!,
             this.annotationFacade, this.activeRawImage, this.nextAnnotationId, this.activeLabel);
         }
         this.redrawCanvas();
       }
       if (this.currentAnnotationMode === AnnotationMode.SIZING_TOOL) {
-        onMouseDownSizingTool(value, canvasEl,
+        onMouseDownSizingTool(value as MouseEvent, canvasEl,
           this.currentImageAnnotations, this.activeRawImage,
           this.annotationFacade,
           this.editingOptions);
       }
     });
 
-    fromEvent(canvasEl, 'mousemove').subscribe((value: MouseEvent) => {
+    fromEvent(canvasEl, 'mousemove').subscribe((value: Event) => {
 
       let noAnnotation = true;
+
+      let mouseEvent = value as MouseEvent;
 
       if (this.currentAnnotationMode === AnnotationMode.POLYGON || this.currentAnnotationMode === AnnotationMode.BOUNDING_BOXES) {
         this.canvas.nativeElement.style.cursor = 'crosshair';
@@ -272,19 +274,19 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
             const spaceRatio = 0.15;
             const clickField = 10;
 
-            const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
-            const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
+            const xMousePos = mouseEvent.clientX - canvasEl.getBoundingClientRect().left;
+            const yMousePos = mouseEvent.clientY - canvasEl.getBoundingClientRect().top;
 
             if (item.annotationMode === AnnotationMode.BOUNDING_BOXES && item.boundingBox !== undefined) {
 
               const leftBoxBoundary =
-                this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width, canvasEl.width);
+                this.getActualScale(item.boundingBox.xCoordinate, this.activeRawImage.width!, canvasEl.width);
               const topBoxBoundary =
-                this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height, canvasEl.height);
+                this.getActualScale(item.boundingBox.yCoordinate, this.activeRawImage.height!, canvasEl.height);
               const actualBoundingBoxWidth =
-                this.getActualScale(item.boundingBox.width, this.activeRawImage.width, canvasEl.width);
+                this.getActualScale(item.boundingBox.width, this.activeRawImage.width!, canvasEl.width);
               const actualBoundingBoxHeight =
-                this.getActualScale(item.boundingBox.height, this.activeRawImage.height, canvasEl.height);
+                this.getActualScale(item.boundingBox.height, this.activeRawImage.height!, canvasEl.height);
 
               // check if the bounding box can be dragged around based on the mouse position
               if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
@@ -355,33 +357,33 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
           this.activeRawImage, this.currentlyDrawing, this.ctx);
 
         if (this.currentAnnotationMode === AnnotationMode.BOUNDING_BOXES) {
-          onMouseMoveBoundingBoxen(lastPos, value, canvasEl, this.ctx, this.activeLabel, this.opacity);
+          onMouseMoveBoundingBoxen(lastPos, mouseEvent, canvasEl, this.ctx, this.activeLabel, this.opacity);
         } else if (this.currentAnnotationMode === AnnotationMode.POLYGON) {
-          onMouseMovePolygon(value, canvasEl,
-            this.ctx, this.activeAnnotation, this.currentImageAnnotations,
+          onMouseMovePolygon(mouseEvent, canvasEl,
+            this.ctx, this.activeAnnotation!, this.currentImageAnnotations,
             this.activeRawImage, this.activeLabel, this.currentlyDrawing);
         }
       }
       if (this.currentAnnotationMode === AnnotationMode.SIZING_TOOL) {
-        onMouseMoveSizingTool(value, canvasEl,
+        onMouseMoveSizingTool(mouseEvent, canvasEl,
           this.editingOptions, this.mousePositions,
-          this.annotationFacade, this.activeAnnotation,
+          this.annotationFacade, this.activeAnnotation!,
           this.activeRawImage);
 
         this.redrawCanvas();
       }
     });
 
-    fromEvent(canvasEl, 'mouseup').subscribe((value: MouseEvent) => {
+    fromEvent(canvasEl, 'mouseup').subscribe( (value: Event) => {
 
       if (this.activeLabel !== undefined) {
         this.currentlyDrawing = false;
 
         if (this.currentAnnotationMode === AnnotationMode.BOUNDING_BOXES) {
-          onMouseUpBoundingBoxen(lastPos, value, canvasEl, this.annotationFacade,
+          onMouseUpBoundingBoxen(lastPos, value as MouseEvent, canvasEl, this.annotationFacade,
             this.activeRawImage, this.nextAnnotationId, this.activeLabel);
         } else if (this.currentAnnotationMode === AnnotationMode.POLYGON) {
-          onMouseUpPolygon(lastPos, value, canvasEl, this.currentImageAnnotations, this.annotationFacade);
+          onMouseUpPolygon(lastPos, value as MouseEvent, canvasEl, this.currentImageAnnotations, this.annotationFacade);
         }
         this.redrawCanvas();
       }
@@ -437,7 +439,7 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
 
   onEscapeWhenDrawingPolygon() {
     const tmpSegmentations = [];
-    for (const segmentation of this.activeAnnotation.segmentations) {
+    for (const segmentation of this.activeAnnotation!.segmentations) {
       tmpSegmentations.push(segmentation);
     }
     // pop twice so the last action (last drawn line)  is  deleted
@@ -445,14 +447,14 @@ export class ImageCanvasComponent implements ComponentCanDeactivate, OnInit, Aft
     tmpSegmentations.pop();
     this.annotationFacade.updateImageAnnotation({
       segmentations: tmpSegmentations,
-      boundingBox: this.activeAnnotation.boundingBox,
-      annotationMode: this.activeAnnotation.annotationMode,
-      area: this.activeAnnotation.area,
-      categoryLabel: this.activeAnnotation.categoryLabel,
-      id: this.activeAnnotation.id,
-      image: this.activeAnnotation.image,
-      isCrowd: this.activeAnnotation.isCrowd,
-      isVisible: this.activeAnnotation.isVisible
+      boundingBox: this.activeAnnotation!.boundingBox,
+      annotationMode: this.activeAnnotation!.annotationMode,
+      area: this.activeAnnotation!.area,
+      categoryLabel: this.activeAnnotation!.categoryLabel,
+      id: this.activeAnnotation!.id,
+      image: this.activeAnnotation!.image,
+      isCrowd: this.activeAnnotation!.isCrowd,
+      isVisible: this.activeAnnotation!.isVisible
     });
   }
 

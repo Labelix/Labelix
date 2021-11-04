@@ -33,12 +33,14 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onFileDropped($event) {
+  onFileDropped($event: any) {
+
+    let files = $event.target.files;
 
     const tmp: IRawImage[] = [];
 
     let count = 1;
-    for (const item of $event) {
+    for (const item of files) {
       // base 64 encoding wird später hinzugefügt
       tmp.push({id: count, file: item, height: -1, width: -1, base64Url: '', name: item.name});
       count++;

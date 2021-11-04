@@ -44,8 +44,8 @@ export class CocoFormatHelper {
     input.forEach(value => result.push({
       dateCaptured: value.file !== undefined ? new Date(value.file.lastModified * 1000) : new Date(Date.now()),
       fileName: value.name,
-      heigth: value.height,
-      width: value.width,
+      height: value.height!,
+      width: value.width!,
       id: value.id,
       license: this.getTestLicense()
     }));
@@ -92,8 +92,8 @@ export class CocoFormatHelper {
     const result: number[] = [];
 
     for (let i = 2; i <= percentagePositions.length; i += 2) {
-      result.push(percentagePositions[i - 2] * image.width);
-      result.push(percentagePositions[i - 1] * image.height);
+      result.push(percentagePositions[i - 2] * image.width!);
+      result.push(percentagePositions[i - 1] * image.height!);
     }
 
     return result;
@@ -151,15 +151,15 @@ export class CocoFormatHelper {
     const result: number[] = [];
     for (let i = 0; i < segmentation.length; i++) {
       if (i % 2 === 0) {
-        result.push(segmentation[i] / rawImage.width);
+        result.push(segmentation[i] / rawImage.width!);
       } else {
-        result.push(segmentation[i] / rawImage.height);
+        result.push(segmentation[i] / rawImage.height!);
       }
     }
     return result;
   }
 
-  getRawImageById(id: number, rawImages: IRawImage[]): IRawImage {
+  getRawImageById(id: number, rawImages: IRawImage[]): IRawImage | undefined {
     for (const current of rawImages) {
       if (current.id === id) {
         return current;
@@ -178,7 +178,7 @@ export class CocoFormatHelper {
     }
   }
 
-  getCategoryById(id: number, categoryLabels: ICategory[]): ICategory {
+  getCategoryById(id: number, categoryLabels: ICategory[]): ICategory | undefined {
     for (const current of categoryLabels) {
       if (current.id === id) {
         return current;

@@ -8,6 +8,7 @@ export interface UserState {
 }
 
 export const userReducers: ActionReducerMap<UserState> = {
+  // @ts-ignore
   user: userReducer,
 };
 

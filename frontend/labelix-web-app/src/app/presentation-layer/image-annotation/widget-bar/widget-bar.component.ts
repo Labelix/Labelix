@@ -18,8 +18,8 @@ export class WidgetBarComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   currentAnnotationMode: AnnotationMode;
-  activeProject: IProject;
-  activeLabel: ICategory;
+  activeProject: IProject | undefined;
+  activeLabel: ICategory | undefined;
 
   constructor(private annotationFacade: AnnotationFacade, public dialog: MatDialog) {
     this.subscription = new Subscription();

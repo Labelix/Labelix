@@ -8,6 +8,7 @@ export interface RawImageState {
 }
 
 export const rawImageReducers: ActionReducerMap<RawImageState> = {
+  // @ts-ignore
   rawImage: rawImageReducer,
 };
 

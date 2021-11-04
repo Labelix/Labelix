@@ -40,6 +40,6 @@ export class ImageTimelineComponent implements OnInit, OnDestroy {
         baseCode: event.target.result
       });
     });
-    reader.readAsDataURL(item.file);
+    reader.readAsDataURL(item.file!);
   }
 }

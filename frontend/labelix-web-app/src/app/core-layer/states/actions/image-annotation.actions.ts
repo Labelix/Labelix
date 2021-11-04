@@ -42,7 +42,7 @@ export class AddAnnotationLabel implements Action {
 export class SetCurrentAnnotationPicture implements Action {
   readonly type = ActionTypes.SetCurrentAnnotationPicture;
 
-  constructor(public payload: IRawImage) {
+  constructor(public payload: IRawImage | undefined) {
   }
 }
 
@@ -70,7 +70,7 @@ export class ChangeCategoryOfCurrentImageAnnotation implements Action {
 export class ChangeActiveLabel implements Action {
   readonly type = ActionTypes.ChangeActiveLabel;
 
-  constructor(public payload: ICategory) {
+  constructor(public payload: ICategory | undefined) {
   }
 }
 
@@ -98,7 +98,7 @@ export class AddPositionToActivePolygonAnnotation implements Action {
 export class SetActiveAnnotation implements Action {
   readonly type = ActionTypes.SetActiveAnnotation;
 
-  constructor(public payload: IImageAnnotation) {
+  constructor(public payload: IImageAnnotation | undefined) {
   }
 }
 

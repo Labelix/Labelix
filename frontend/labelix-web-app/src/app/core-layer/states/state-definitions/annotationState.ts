@@ -8,6 +8,7 @@ export interface AnnotationState {
 }
 
 export const annotationStateReducers: ActionReducerMap<AnnotationState> = {
+  // @ts-ignore
   annotation: annotationReducer,
 };
 

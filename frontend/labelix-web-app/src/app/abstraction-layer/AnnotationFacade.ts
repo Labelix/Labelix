@@ -39,15 +39,15 @@ import {AiModelConfigServiceService} from '../core-layer/services/aiModelConfig-
 @Injectable()
 export class AnnotationFacade {
 
-  currentAnnotationImage: Observable<IRawImage>;
+  currentAnnotationImage: Observable<IRawImage | undefined>;
   currentAnnotationMode: Observable<AnnotationMode>;
   currentImageAnnotations: Observable<IImageAnnotation[]>;
-  activeLabel: Observable<ICategory>;
+  activeLabel: Observable<ICategory | undefined>;
   numberOfCurrentImageAnnotations: Observable<number>;
-  activePolygonAnnotation: Observable<IImageAnnotation>;
-  activeProject: Observable<IProject>;
+  activePolygonAnnotation: Observable<IImageAnnotation | undefined>;
+  activeProject: Observable<IProject | undefined>;
 
-  changesPresent: boolean;
+  changesPresent: boolean | undefined;
 
   constructor(private store: Store<AnnotationState>, private aiModelConfigService: AiModelConfigServiceService) {
     this.currentAnnotationImage = this.store.pipe(select(getCurrentAnnotatingImage));
@@ -59,7 +59,7 @@ export class AnnotationFacade {
     this.activeProject = this.store.pipe(select(getActiveProject));
   }
 
-  changeCurrentAnnotationImage(input: IRawImage) {
+  changeCurrentAnnotationImage(input: IRawImage | undefined) {
       this.store.dispatch(new SetCurrentAnnotationPicture(input));
   }
 
@@ -76,7 +76,7 @@ export class AnnotationFacade {
     this.store.dispatch(new ChangeCategoryOfCurrentImageAnnotation(input));
   }
 
-  changeActiveLabel(input: ICategory) {
+  changeActiveLabel(input: ICategory | undefined) {
     this.store.dispatch(new ChangeActiveLabel(input));
   }
 
@@ -84,7 +84,7 @@ export class AnnotationFacade {
     this.store.dispatch(new DeleteImageAnnotation(input));
   }
 
-  setActiveAnnotation(input: IImageAnnotation) {
+  setActiveAnnotation(input: IImageAnnotation | undefined) {
     this.store.dispatch(new SetActiveAnnotation(input));
   }
 

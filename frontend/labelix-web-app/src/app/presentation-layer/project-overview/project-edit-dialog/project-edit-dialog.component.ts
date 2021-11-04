@@ -57,7 +57,7 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initialName = this.project.name;
-    this.changeRelation(window.innerWidth);
+    this.changeRelation();
     this.rawImageFacade.clearRawImagesOnState();
 
     this.aiModelConfigFacade.loadAllConfigsToState();
@@ -161,8 +161,8 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   filterUser(value: string) {
     if (value.length !== 0) {
       this.filteredUsers = Object
-        .assign([], this.allUsers)
-        .filter(item => item.keycloakId.toLowerCase().indexOf(value.toLowerCase()) > -1);
+        .assign([], this.allUsers
+        .filter(item => item.keycloakId.toLowerCase().indexOf(value.toLowerCase()) > -1));
     } else {
       this.filteredUsers = this.allUsers;
     }
@@ -171,8 +171,8 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
   filterConfig(value: string) {
     if (value.length !== 0) {
       this.filteredAiConfigs = Object
-        .assign([], this.allAiConfigs)
-        .filter(item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
+        .assign([], this.allAiConfigs
+        .filter(item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
     } else {
       this.filteredAiConfigs = this.allAiConfigs;
     }
@@ -269,11 +269,9 @@ export class ProjectEditDialogComponent implements OnInit, OnDestroy {
     options.map(o => this.selectedAiConfigs.push(o.value));
   }
 
-  onResize(event) {
-    this.changeRelation(event.target.innerWidth);
-  }
+  changeRelation() {
+    let width = window.innerWidth;
 
-  private changeRelation(width) {
     if (width >= 3840) {
       this.breakpoint = 8;
     } else if (width >= 3000) {

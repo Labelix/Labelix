@@ -4,6 +4,6 @@ export interface ICocoAnnotation {
   categoryId: number;
   segmentation: number[];
   area: number;
-  bbox: number[];
+  bbox: number[] | undefined;
   iscrowd: boolean;
 }

@@ -7,6 +7,7 @@ export interface ProjectState {
   project: ReducerProjectState;
 }
 export const projectReducers: ActionReducerMap<ProjectState> = {
+  // @ts-ignore
   project: projectReducer
 };
 
