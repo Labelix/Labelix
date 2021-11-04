@@ -10,7 +10,7 @@ export interface IProject extends IIdentifiable{
   finishedAnnotation: boolean;
   label: string;
   images: IImage[];
-  timestamp: Date;
+  timestamp: Date | undefined;
   AIModelConfig: number[];
-  cocoExport: ICocoFormat;
+  cocoExport: ICocoFormat | undefined;
 }

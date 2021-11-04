@@ -3,6 +3,7 @@ import {IProject} from '../../../core-layer/contracts/IProject';
 import {ProjectsFacade} from '../../../abstraction-layer/ProjectsFacade';
 import {Subscription} from 'rxjs';
 import {UserFacade} from '../../../abstraction-layer/UserFacade';
+import {Event} from "@angular/router";
 
 @Component({
   selector: 'app-project-grid-view',
@@ -13,7 +14,7 @@ export class ProjectGridViewComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  projects: IProject[] = undefined;
+  projects: IProject[];
   breakpoint: number;
 
   constructor(private projectsFacade: ProjectsFacade,
@@ -26,7 +27,7 @@ export class ProjectGridViewComponent implements OnInit, OnDestroy {
       this.projects = m.slice(0).sort((a, b) => a.id - b.id);
     }));
 
-    this.changeRelation(window.innerWidth);
+    this.changeRelation();
     this.projectsFacade.getProjects();
   }
 
@@ -34,15 +35,13 @@ export class ProjectGridViewComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onResize(event) {
-    this.changeRelation(event.target.innerWidth);
-  }
-
   isAdmin(): boolean {
     return this.userFacade.isAdmin();
   }
 
-  private changeRelation(width) {
+  changeRelation() {
+    let width = window.innerWidth;
+
     if (width >= 3840) {
       this.breakpoint = 8;
     } else if (width >= 3000) {

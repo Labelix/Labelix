@@ -12,7 +12,7 @@ export class SelectedLabelWidgetComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  selectedCategoryLabel: ICategory;
+  selectedCategoryLabel: ICategory | undefined;
 
   constructor(private annotationFacade: AnnotationFacade) {
     this.subscription = new Subscription();

@@ -19,7 +19,7 @@ export class LabelWidgetComponent implements OnInit, OnDestroy {
 
   currentLabelCategories: ICategory[] = [];
   currentAnnotationMode: AnnotationMode;
-  selectedCategoryLabel: ICategory;
+  selectedCategoryLabel: ICategory | undefined;
 
   currentlyAdding = false;
 
@@ -62,7 +62,7 @@ export class LabelWidgetComponent implements OnInit, OnDestroy {
     // wenn nur das ganze Bild annotiert werden soll, kann sofort eine Annotierung für das gesamte Bild gespeichert
     // werden
     if (this.currentAnnotationMode === AnnotationMode.WHOLE_IMAGE) {
-      this.annotationFacade.addWholeImageAnnotation(this.selectedCategoryLabel);
+      this.annotationFacade.addWholeImageAnnotation(this.selectedCategoryLabel!);
     }
   }
 

@@ -52,7 +52,7 @@ export function onMouseMovePolygon(value: MouseEvent, canvasEl: HTMLCanvasElemen
   }
 }
 
-export function onMouseUpPolygon(lastPos: { x: number; y: number }, value: MouseEvent, canvasEl: HTMLCanvasElement,
+export function onMouseUpPolygon(lastPos: { x: any; y: any }, value: MouseEvent, canvasEl: HTMLCanvasElement,
                                  currentImageAnnotations: IImageAnnotation[], annotationFacade: AnnotationFacade) {
   annotationFacade.addPointsToActivePolygonAnnotation({
     x: (value.clientX - canvasEl.getBoundingClientRect().left) / canvasEl.width,
@@ -63,7 +63,7 @@ export function onMouseUpPolygon(lastPos: { x: number; y: number }, value: Mouse
 export function drawPointsOfPolygonAnnotation(canvasEl: HTMLCanvasElement, annotation: IImageAnnotation, ctx: CanvasRenderingContext2D,
                                               currentlyDrawing: boolean, name: string) {
 
-  ctx.strokeStyle = annotation.categoryLabel.colorCode;
+  ctx.strokeStyle = annotation.categoryLabel!.colorCode;
 
   for (let i = 2; i <= annotation.segmentations.length; i += 2) {
     ctx.beginPath();
@@ -76,7 +76,7 @@ export function drawPointsOfPolygonAnnotation(canvasEl: HTMLCanvasElement, annot
     if (i + 2 <= annotation.segmentations.length) {
       ctx.lineTo(pointBeforeX, pointBeforeY);
       ctx.lineTo(annotation.segmentations[i] * canvasEl.width, annotation.segmentations[i + 1] * canvasEl.height);
-    } else if (currentlyDrawing === false) {
+    } else if (!currentlyDrawing) {
       ctx.lineTo(pointBeforeX, pointBeforeY);
       ctx.lineTo(annotation.segmentations[0] * canvasEl.width, annotation.segmentations[1] * canvasEl.height);
     }
@@ -106,7 +106,7 @@ export function drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
       && item.isVisible
       && item.image.id === activeRawImage.id) {
       drawPointsOfPolygonAnnotation(canvasEl, item, ctx, currentlyDrawing,
-        (currentImageAnnotations.indexOf(item) + 1) + ': ' + item.categoryLabel.name);
+        (currentImageAnnotations.indexOf(item) + 1) + ': ' + item.categoryLabel!.name);
     }
   }
 }
@@ -114,7 +114,7 @@ export function drawExistingPolygonAnnotations(canvasEl: HTMLCanvasElement, curr
 export function fillShape(canvasEl: HTMLCanvasElement, annotation: IImageAnnotation, ctx: CanvasRenderingContext2D, opacity: number) {
 
   if (annotation.segmentations.length > 0) {
-    ctx.fillStyle = hexToRGB(annotation.categoryLabel.colorCode, opacity);
+    ctx.fillStyle = hexToRGB(annotation.categoryLabel!.colorCode, opacity);
     ctx.beginPath();
     ctx.moveTo(annotation.segmentations[0] * canvasEl.width, annotation.segmentations[1] * canvasEl.height);
     for (let i = 2; i <= annotation.segmentations.length; i += 2) {

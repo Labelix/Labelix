@@ -33,8 +33,11 @@ export class ImageUploadEditDialogComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onFileDropped($event) {
-    for (const item of $event) {
+  onFileDropped($event: any) {
+
+    let files = $event.target.files;
+
+    for (const item of files) {
       const reader = new FileReader();
       const image = new Image();
       reader.addEventListener('load', (event: any) => {

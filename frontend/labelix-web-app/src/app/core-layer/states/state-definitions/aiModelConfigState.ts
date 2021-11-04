@@ -7,7 +7,9 @@ export interface AiModelConfigState {
   aiModelConfig: ReducerAiModelConfigState;
 }
 
+
 export const aiModelConfigReducers: ActionReducerMap<AiModelConfigState> = {
+  // @ts-ignore
   aiModelConfig: aiModelConfigReducer,
 };
 

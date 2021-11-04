@@ -6,11 +6,11 @@ import {IBoundingBox} from './IBoundingBox';
 
 export interface IImageAnnotation extends IIdentifiable{
   annotationMode: AnnotationMode;
-  categoryLabel: ICategory;
+  categoryLabel: ICategory | undefined;
   isCrowd: boolean;
   segmentations: number[];
   image: IRawImage;
   area: number;
-  boundingBox: IBoundingBox;
+  boundingBox: IBoundingBox | undefined;
   isVisible: boolean;
 }

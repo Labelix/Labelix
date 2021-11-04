@@ -7,14 +7,14 @@ import {IBoundingBox} from '../../../../core-layer/contracts/IBoundingBox';
 import {IImageAnnotation} from '../../../../core-layer/contracts/IImageAnnotation';
 
 // set the starting position of the bounding box
-export function onMouseDownBoundingBoxen(lastPos, value: MouseEvent, canvasEl: HTMLCanvasElement) {
+export function onMouseDownBoundingBoxen(lastPos: any, value: MouseEvent, canvasEl: HTMLCanvasElement) {
   lastPos.x = (value.clientX - canvasEl.getBoundingClientRect().left);
   lastPos.y = (value.clientY - canvasEl.getBoundingClientRect().top);
 }
 
 // this function is responsible for drawing the bounding box while the user manually drawing the bounding box
 export function onMouseMoveBoundingBoxen(
-  lastPos,
+  lastPos: { x: any; y: any; },
   value: MouseEvent,
   canvasEl: HTMLCanvasElement,
   ctx: CanvasRenderingContext2D,
@@ -34,7 +34,7 @@ export function onMouseMoveBoundingBoxen(
 }
 
 export function onMouseUpBoundingBoxen(
-  lastPos,
+  lastPos: any,
   value: MouseEvent,
   canvasEl: HTMLCanvasElement,
   annotationFacade: AnnotationFacade,
@@ -49,10 +49,10 @@ export function onMouseUpBoundingBoxen(
 
   annotationFacade.addImageAnnotation({
     boundingBox: {
-      width: tmpWidth * activeRawImage.width,
-      height: tmpHeight * activeRawImage.height,
-      xCoordinate: tmpX * activeRawImage.width,
-      yCoordinate: tmpY * activeRawImage.height
+      width: tmpWidth * activeRawImage.width!,
+      height: tmpHeight * activeRawImage.height!,
+      xCoordinate: tmpX * activeRawImage.width!,
+      yCoordinate: tmpY * activeRawImage.height!
     },
     segmentations: [],
     isCrowd: false,
@@ -73,10 +73,10 @@ export function drawBoundingBox(
   name: string) {
 
   if (boundingBox !== undefined) {
-    const actualX = boundingBox.xCoordinate / activeRawImage.width * canvasEl.width;
-    const actualY = boundingBox.yCoordinate / activeRawImage.height * canvasEl.height;
-    const actualWidth = boundingBox.width / activeRawImage.width * canvasEl.width;
-    const actualHeight = boundingBox.height / activeRawImage.height * canvasEl.height;
+    const actualX = boundingBox.xCoordinate / activeRawImage.width! * canvasEl.width;
+    const actualY = boundingBox.yCoordinate / activeRawImage.height! * canvasEl.height;
+    const actualWidth = boundingBox.width / activeRawImage.width! * canvasEl.width;
+    const actualHeight = boundingBox.height / activeRawImage.height! * canvasEl.height;
     ctx.beginPath();
     ctx.fillRect(actualX, actualY, actualWidth, actualHeight);
     ctx.rect(actualX, actualY, actualWidth, actualHeight);
@@ -98,9 +98,9 @@ export function drawExistingAnnotationsBoundingBoxes(
       && activeRawImage !== undefined
       && item.isVisible
       && item.image.id === activeRawImage.id) {
-      ctx.strokeStyle = item.categoryLabel.colorCode;
-      ctx.fillStyle = hexToRGB(item.categoryLabel.colorCode, opacity);
-      drawBoundingBox(item.boundingBox, canvasEl, ctx, activeRawImage, (elements.indexOf(item) + 1) + ': ' + item.categoryLabel.name);
+      ctx.strokeStyle = item.categoryLabel!.colorCode;
+      ctx.fillStyle = hexToRGB(item.categoryLabel!.colorCode, opacity);
+      drawBoundingBox(item.boundingBox!, canvasEl, ctx, activeRawImage, (elements.indexOf(item) + 1) + ': ' + item.categoryLabel!.name);
     }
   }
 }

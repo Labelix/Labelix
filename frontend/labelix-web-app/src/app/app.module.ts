@@ -9,7 +9,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {NgxImageZoomModule} from 'ngx-image-zoom';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
@@ -31,15 +30,15 @@ import {AuthGuard} from './core-layer/guard/auth-guard';
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
-    NgxImageZoomModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
     MatListModule,
     MatButtonModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}, {})
   ],
   providers: [
     UserFacade,

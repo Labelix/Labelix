@@ -84,7 +84,7 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
   deleteCategory() {
     let deletable = true;
     this.imageAnnotations.forEach(value => {
-      if (value.categoryLabel.id === this.selectedLabel.id) {
+      if (value.categoryLabel!.id === this.selectedLabel.id) {
         deletable = false;
       }
     });
@@ -92,7 +92,7 @@ export class LabelSettingsDialogComponent implements OnInit, OnDestroy {
     deletable ? this.labelFacade.deleteCategory(this.selectedLabel.id) : this.snackBar.open(message, 'ok', {duration: 5000});
   }
 
-  getColor(value) {
+  getColor(value: any) {
     this.selectedLabel.copyProperties({
       colorCode: value.color.hex,
       id: this.selectedLabel.id,
