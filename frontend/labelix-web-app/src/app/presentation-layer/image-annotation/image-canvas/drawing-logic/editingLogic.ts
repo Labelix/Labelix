@@ -27,7 +27,7 @@ function setEditingFlagPolygon(item: IImageAnnotation, value: MouseEvent, canvas
     const xTmp = (item.segmentations[i] * canvasEl.width);
     const yTmp = (item.segmentations[i + 1] * canvasEl.height);
     if ((xMousePos > xTmp - clickField
-      && xMousePos < xTmp + clickField)
+        && xMousePos < xTmp + clickField)
       && (yMousePos > yTmp - clickField
         && yMousePos < yTmp + clickField)) {
       annotationFacade.setActiveAnnotation(item);
@@ -35,6 +35,13 @@ function setEditingFlagPolygon(item: IImageAnnotation, value: MouseEvent, canvas
       editingOptions.polygonIndex = i;
     }
   }
+}
+
+function checkIfCanBeDragged(leftBoxBoundary: number, actualBoundingBoxWidth: number, spaceRatio: number, xMousePos: number, topBoxBoundary: number, actualBoundingBoxHeight: number, yMousePos: number) {
+  return leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
+    && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
+    && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
+    && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos;
 }
 
 function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawImage,
@@ -53,10 +60,8 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
 
 
     // check if the bounding box can be dragged around based on the mouse position
-    if (leftBoxBoundary + (actualBoundingBoxWidth * spaceRatio) <= xMousePos
-      && leftBoxBoundary + (actualBoundingBoxWidth * (1 - spaceRatio)) >= xMousePos
-      && topBoxBoundary + (actualBoundingBoxHeight * spaceRatio) <= yMousePos
-      && topBoxBoundary + (actualBoundingBoxHeight * (1 - spaceRatio)) >= yMousePos) {
+    if (checkIfCanBeDragged(leftBoxBoundary, actualBoundingBoxWidth, spaceRatio, xMousePos,
+      topBoxBoundary, actualBoundingBoxHeight, yMousePos)) {
       annotationFacade.setActiveAnnotation(item);
       editingOptions.annotationDragging = true;
     }
