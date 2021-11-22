@@ -2,6 +2,7 @@ version: '3.1'
 
 services: 
     postgresdb:
+        container_name: postgresdb
         image: postgres
         restart: always
         environment:
@@ -24,6 +25,7 @@ services:
         networks:
             - labelixNetwork
     keycloak:
+        container_name: keycloak
         image: jboss/keycloak:11.0.2
         command: -Dkeycloak.profile.feature.upload_scripts=enabled
         environment:
@@ -48,6 +50,7 @@ services:
             - postgres-keycloak
 
     webapi:
+        container_name: webapi
         build:
             context: ./backend/Labelix-Backend
             dockerfile: ./Labelix.WebAPI/Dockerfile
@@ -62,6 +65,7 @@ services:
             - labelixNetwork
 
     reverseproxy:
+        container_name: reverseproxy
         build:
             context: ./docker/reverseproxy
             dockerfile: Dockerfile

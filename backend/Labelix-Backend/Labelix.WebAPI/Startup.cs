@@ -69,7 +69,7 @@ namespace Labelix.WebAPI
                         o.TokenValidationParameters.ValidIssuers = new[]
                         {
                             "http://localhost:8180/auth/realms/Labelix",
-                            "http://labelix_keycloak_1:8080/auth/realms/Labelix",
+                            "http://keycloak:8080/auth/realms/Labelix",
                         };
                         //return c.Response.WriteAsync("An error occured processing your authentication.");
                         IdentityModelEventSource.ShowPII = true;
