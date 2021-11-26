@@ -32,7 +32,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSliderModule} from '@angular/material/slider';
-import {_MatMenuDirectivesModule, MatMenuModule} from '@angular/material/menu';
+import {MatMenuModule} from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
 import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatChipsModule} from '@angular/material/chips';
@@ -81,7 +81,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
         MatFormFieldModule,
         MatSelectModule,
         MatSliderModule,
-        _MatMenuDirectivesModule,
         MatMenuModule,
         MatInputModule,
         MatDialogModule,

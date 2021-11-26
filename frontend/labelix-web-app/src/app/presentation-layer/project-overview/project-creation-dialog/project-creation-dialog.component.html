@@ -155,7 +155,7 @@
               max="{{images.length}}" [step]="breakpoint" value="1" [(ngModel)]="imageNumber"></mat-slider>-->
 </div>
 
-<mat-grid-list [cols]="breakpoint" rowHeight="16:10" (window:resize)="onResize($event)">
+<mat-grid-list [cols]="breakpoint" rowHeight="16:10" (window:resize)="changeRelation()">
 
   <mat-grid-tile>
     <app-image-upload class="image-input"></app-image-upload>

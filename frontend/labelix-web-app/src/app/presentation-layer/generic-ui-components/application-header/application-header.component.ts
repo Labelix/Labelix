@@ -10,8 +10,8 @@ import {TimeInterval} from 'rxjs';
 })
 export class ApplicationHeaderComponent implements OnInit, OnDestroy {
 
-  isLoggedIn: boolean;
-  interval;
+  isLoggedIn: boolean | undefined;
+  //interval;
 
   constructor(public router: Router, private userFacade: UserFacade) {
   }

@@ -27,9 +27,11 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onFileDropped($event) {
+  onFileDropped($event: any) {
 
-    for (const item of $event) {
+    let files = $event.target.files;
+
+    for (const item of files) {
 
       const reader = new FileReader();
       const image = new Image();

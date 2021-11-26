@@ -34,7 +34,15 @@ namespace Labelix.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
+
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
+
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -61,8 +69,7 @@ namespace Labelix.WebAPI
                         o.TokenValidationParameters.ValidIssuers = new[]
                         {
                             "http://localhost:8180/auth/realms/Labelix",
-                            "http://labelix_keycloak_1:8080/auth/realms/Labelix",
-                            "https://labelix.me/auth/realms/Labelix"
+                            "http://keycloak:8080/auth/realms/Labelix",
                         };
                         //return c.Response.WriteAsync("An error occured processing your authentication.");
                         IdentityModelEventSource.ShowPII = true;
@@ -87,7 +94,7 @@ namespace Labelix.WebAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("MyPolicy");
 
             app.UseRouting();
             app.UseAuthentication();

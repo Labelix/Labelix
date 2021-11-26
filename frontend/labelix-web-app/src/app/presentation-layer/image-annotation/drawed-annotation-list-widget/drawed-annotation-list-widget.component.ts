@@ -17,7 +17,7 @@ export class DrawedAnnotationListWidgetComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   currentImageAnnotations: IImageAnnotation[];
-  activeImage: IRawImage;
+  activeImage: IRawImage | undefined;
 
   constructor(private facade: AnnotationFacade, private dialog: MatDialog) {
     this.subscription = new Subscription();

@@ -19,11 +19,11 @@ export class SingleAnnotationExportFormComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  description: string = undefined;
-  contributor: string = undefined;
-  inputUrl: string = undefined;
+  description: string | undefined = undefined;
+  contributor: string | undefined = undefined;
+  inputUrl: string | undefined = undefined;
 
-  url: SafeUrl = undefined;
+  url: SafeUrl | undefined = undefined;
 
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];

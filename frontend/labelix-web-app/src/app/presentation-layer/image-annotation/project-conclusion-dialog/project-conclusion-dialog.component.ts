@@ -21,7 +21,7 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  activeProject: IProject;
+  activeProject: IProject | undefined;
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
@@ -55,7 +55,7 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
       images: this.cocoFormatter.createListOfICocoImages(this.currentRawImages),
       info: {
         year: 2020,
-        description: this.activeProject.description,
+        description: this.activeProject!.description,
         version: '1.0',
         url: 'testurl',
         dateCreated: new Date(Date.now()),
@@ -65,30 +65,30 @@ export class ProjectConclusionDialogComponent implements OnInit, OnDestroy {
     });
 
     this.annotationFacade.replaceActiveProject({
-      description: this.activeProject.description,
-      creationDate: this.activeProject.creationDate,
-      name: this.activeProject.name,
-      finishedAnnotation: this.activeProject.finishedAnnotation,
-      AIModelConfig: this.activeProject.AIModelConfig,
-      id: this.activeProject.id,
-      images: this.activeProject.images,
+      description: this.activeProject!.description,
+      creationDate: this.activeProject!.creationDate,
+      name: this.activeProject!.name,
+      finishedAnnotation: this.activeProject!.finishedAnnotation,
+      AIModelConfig: this.activeProject!.AIModelConfig,
+      id: this.activeProject!.id,
+      images: this.activeProject!.images,
       label: jsonObject,
-      timestamp: this.activeProject.timestamp,
+      timestamp: this.activeProject!.timestamp,
       cocoExport: undefined
     });
 
     // images always have to be transferred separately because the json object would become to large as it stands now 6.1.2020
     const transferObject: IProject = {
       images: [],
-      id: this.activeProject.id,
-      AIModelConfig: this.activeProject.AIModelConfig,
-      cocoExport: this.activeProject.cocoExport,
-      creationDate: this.activeProject.creationDate,
-      description: this.activeProject.description,
-      finishedAnnotation: this.activeProject.finishedAnnotation,
-      label: this.activeProject.label,
-      name: this.activeProject.name,
-      timestamp: this.activeProject.timestamp
+      id: this.activeProject!.id,
+      AIModelConfig: this.activeProject!.AIModelConfig,
+      cocoExport: this.activeProject!.cocoExport,
+      creationDate: this.activeProject!.creationDate,
+      description: this.activeProject!.description,
+      finishedAnnotation: this.activeProject!.finishedAnnotation,
+      label: this.activeProject!.label,
+      name: this.activeProject!.name,
+      timestamp: this.activeProject!.timestamp
     };
 
     // change changesPresent to false, so Labelix knows it can leave the page without a warning

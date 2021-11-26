@@ -46,10 +46,10 @@ function setEditingFlagBoundingBox(item: IImageAnnotation, activeRawImage: IRawI
     const xMousePos = value.clientX - canvasEl.getBoundingClientRect().left;
     const yMousePos = value.clientY - canvasEl.getBoundingClientRect().top;
 
-    const leftBoxBoundary = getActualScale(item.boundingBox.xCoordinate, activeRawImage.width, canvasEl.width);
-    const topBoxBoundary = getActualScale(item.boundingBox.yCoordinate, activeRawImage.height, canvasEl.height);
-    const actualBoundingBoxWidth = getActualScale(item.boundingBox.width, activeRawImage.width, canvasEl.width);
-    const actualBoundingBoxHeight = getActualScale(item.boundingBox.height, activeRawImage.height, canvasEl.height);
+    const leftBoxBoundary = getActualScale(item.boundingBox.xCoordinate, activeRawImage.width!, canvasEl.width);
+    const topBoxBoundary = getActualScale(item.boundingBox.yCoordinate, activeRawImage.height!, canvasEl.height);
+    const actualBoundingBoxWidth = getActualScale(item.boundingBox.width, activeRawImage.width!, canvasEl.width);
+    const actualBoundingBoxHeight = getActualScale(item.boundingBox.height, activeRawImage.height!, canvasEl.height);
 
 
     // check if the bounding box can be dragged around based on the mouse position
@@ -100,13 +100,13 @@ function checkInBound(mousePos: number, boxBoundary: number, actualBoundingBoxSi
 }
 
 // hier ist jehweils immer die Breite oder die Höhe bei rawImageValue und canvasValue anzugeben
-function getActualScale(value, rawImageValue, canvasValue): number {
+function getActualScale(value: number, rawImageValue: number, canvasValue: number): number {
   return value / rawImageValue * canvasValue;
 }
 
 
 // TODO add a solution for this redundancy
-function updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, boundingBox) {
+function updateImageAnnotationBoundingBox(annotationFacade: any, activeAnnotation: any, boundingBox: any) {
   annotationFacade.updateImageAnnotation({
     id: activeAnnotation.id,
     annotationMode: activeAnnotation.annotationMode,
@@ -120,7 +120,7 @@ function updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, bo
   });
 }
 
-function updateImageAnnotationPolygon(annotationFacade, activeAnnotation, segmentations) {
+function updateImageAnnotationPolygon(annotationFacade: any, activeAnnotation: any, segmentations: any) {
   annotationFacade.updateImageAnnotation({
     id: activeAnnotation.id,
     annotationMode: activeAnnotation.annotationMode,
@@ -156,14 +156,14 @@ function changeValuesOnBoundingBoxAnnotation(annotationFacade: AnnotationFacade,
   const currentMousePositionX = value.clientX - canvasEl.getBoundingClientRect().left;
   const currentMousePositionY = value.clientY - canvasEl.getBoundingClientRect().top;
 
-  let newScaleX: number;
-  let newScaleY: number;
+  let newScaleX: number = 0;
+  let newScaleY: number = 0;
 
   if (mousePositions.length !== 0) {
     newScaleX = getActualScale((currentMousePositionX - mousePositions[mousePositions.length - 1].x),
-      canvasEl.width, activeRawImage.width);
+      canvasEl.width, activeRawImage.width!);
     newScaleY = getActualScale((currentMousePositionY - mousePositions[mousePositions.length - 1].y),
-      canvasEl.height, activeRawImage.height);
+      canvasEl.height, activeRawImage.height!);
   }
 
   if (editingOptions.annotationDragging || editingOptions.addTop
@@ -177,69 +177,69 @@ function changeValuesOnBoundingBoxAnnotation(annotationFacade: AnnotationFacade,
       if (editingOptions.addTop && editingOptions.addRight) {
         // move upper right corner
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
-          height: activeAnnotation.boundingBox.height - newScaleY,
-          width: activeAnnotation.boundingBox.width + newScaleX,
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox!.height - newScaleY,
+          width: activeAnnotation.boundingBox!.width + newScaleX,
         });
       } else if (editingOptions.addTop && editingOptions.addLeft) {
         // move upper left corner
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
-          height: activeAnnotation.boundingBox.height - newScaleY,
-          width: activeAnnotation.boundingBox.width - newScaleX,
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox!.height - newScaleY,
+          width: activeAnnotation.boundingBox!.width - newScaleX,
         });
       } else if (editingOptions.addBottom && editingOptions.addLeft) {
         // move lower left corner
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-          height: activeAnnotation.boundingBox.height + newScaleY,
-          width: activeAnnotation.boundingBox.width - newScaleX,
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate,
+          height: activeAnnotation.boundingBox!.height + newScaleY,
+          width: activeAnnotation.boundingBox!.width - newScaleX,
         });
       } else if (editingOptions.addBottom && editingOptions.addRight) {
         // move lower right corner
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-          height: activeAnnotation.boundingBox.height + newScaleY,
-          width: activeAnnotation.boundingBox.width + newScaleX,
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate,
+          height: activeAnnotation.boundingBox!.height + newScaleY,
+          width: activeAnnotation.boundingBox!.width + newScaleX,
         });
       } else if (editingOptions.annotationDragging) {
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
-          height: activeAnnotation.boundingBox.height,
-          width: activeAnnotation.boundingBox.width
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox!.height,
+          width: activeAnnotation.boundingBox!.width
         });
       } else if (editingOptions.addTop) {
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate + newScaleY,
-          height: activeAnnotation.boundingBox.height - newScaleY,
-          width: activeAnnotation.boundingBox.width
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate + newScaleY,
+          height: activeAnnotation.boundingBox!.height - newScaleY,
+          width: activeAnnotation.boundingBox!.width
         });
       } else if (editingOptions.addBottom) {
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-          height: activeAnnotation.boundingBox.height + newScaleY,
-          width: activeAnnotation.boundingBox.width
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate,
+          height: activeAnnotation.boundingBox!.height + newScaleY,
+          width: activeAnnotation.boundingBox!.width
         });
       } else if (editingOptions.addLeft) {
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate + newScaleX,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-          height: activeAnnotation.boundingBox.height,
-          width: activeAnnotation.boundingBox.width - newScaleX,
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate + newScaleX,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate,
+          height: activeAnnotation.boundingBox!.height,
+          width: activeAnnotation.boundingBox!.width - newScaleX,
         });
       } else if (editingOptions.addRight) {
         updateImageAnnotationBoundingBox(annotationFacade, activeAnnotation, {
-          xCoordinate: activeAnnotation.boundingBox.xCoordinate,
-          yCoordinate: activeAnnotation.boundingBox.yCoordinate,
-          height: activeAnnotation.boundingBox.height,
-          width: activeAnnotation.boundingBox.width + newScaleX,
+          xCoordinate: activeAnnotation.boundingBox!.xCoordinate,
+          yCoordinate: activeAnnotation.boundingBox!.yCoordinate,
+          height: activeAnnotation.boundingBox!.height,
+          width: activeAnnotation.boundingBox!.width + newScaleX,
         });
       }
 
@@ -262,10 +262,10 @@ function changeValuesOnPolygonAnnotation(annotationFacade: AnnotationFacade, mou
     const tmpSegmentations: number[] = [];
     for (let i = 0; i < imageAnnotation.segmentations.length - 1; i = i + 2) {
       if (i === editingOptions.polygonIndex) {
-        const tmpX = getActualScale(((currentMousePositionX - mousePositions[mousePositions.length - 1].x) / activeRawImage.width),
-          canvasEl.width, activeRawImage.width);
-        const tmpY = getActualScale(((currentMousePositionY - mousePositions[mousePositions.length - 1].y) / activeRawImage.height),
-          canvasEl.height, activeRawImage.height);
+        const tmpX = getActualScale(((currentMousePositionX - mousePositions[mousePositions.length - 1].x) / activeRawImage.width!),
+          canvasEl.width, activeRawImage.width!);
+        const tmpY = getActualScale(((currentMousePositionY - mousePositions[mousePositions.length - 1].y) / activeRawImage.height!),
+          canvasEl.height, activeRawImage.height!);
         tmpSegmentations.push(imageAnnotation.segmentations[i] + tmpX);
         tmpSegmentations.push(imageAnnotation.segmentations[i + 1] + tmpY);
       } else {

@@ -3,9 +3,9 @@ import {ActionTypes, ProjectActions} from '../actions/project.actions';
 
 export interface ReducerProjectState {
   projects: IProject[];
-  numberOfImagesToUpload: number;
-  numberOfUploadedImages: number;
-  uploadProjectName: string;
+  numberOfImagesToUpload: number | undefined;
+  numberOfUploadedImages: number | undefined;
+  uploadProjectName: string | undefined;
 }
 
 export const initialProjectState: ReducerProjectState = {
@@ -72,7 +72,7 @@ export function projectReducer(
       return {
         projects: state.projects,
         uploadProjectName: state.uploadProjectName,
-        numberOfUploadedImages: state.numberOfUploadedImages + 1,
+        numberOfUploadedImages: state.numberOfUploadedImages! + 1,
         numberOfImagesToUpload: state.numberOfImagesToUpload
       };
     }

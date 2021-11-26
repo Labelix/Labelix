@@ -22,9 +22,9 @@ export class ProjectsFacade {
   numberOfProjects$: Observable<number>;
 
   // these variables are here to keep track of an currently uploading project
-  numberOfImagesToUpload$: Observable<number>;
-  numberOfUploadedImages$: Observable<number>;
-  nameOfUploadingProject$: Observable<string>;
+  numberOfImagesToUpload$: Observable<number | undefined>;
+  numberOfUploadedImages$: Observable<number | undefined>;
+  nameOfUploadingProject$: Observable<string | undefined>;
 
   constructor(private projectApi: ProjectServiceService, private store: Store<ProjectState>) {
     this.projects$ = this.store.pipe(select(getAllProjects));

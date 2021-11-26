@@ -21,7 +21,7 @@ export class LeavePageDialogComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
 
-  activeProject: IProject;
+  activeProject: IProject | undefined;
   currentCategoryLabels: ICategory[];
   currentImageAnnotations: IImageAnnotation[];
   currentRawImages: IRawImage[];
@@ -56,25 +56,25 @@ export class LeavePageDialogComponent implements OnInit, OnDestroy {
 
   onLeaveWithSaving() {
     const jsonObject = this.cocoFormatter.getJsonObjectAsString(this.currentCategoryLabels, this.currentImageAnnotations,
-      this.currentRawImages, this.activeProject);
+      this.currentRawImages, this.activeProject!);
 
     const newProject = new Project();
-    newProject.copyProperties(this.activeProject);
+    newProject.copyProperties(this.activeProject!);
     newProject.label = jsonObject;
     this.annotationFacade.replaceActiveProject(newProject);
 
     // images always have to be transferred separately because the json object would become to large as it stands now 6.1.2020
     const transferObject: IProject = {
       images: [],
-      id: this.activeProject.id,
-      AIModelConfig: this.activeProject.AIModelConfig,
-      cocoExport: this.activeProject.cocoExport,
-      creationDate: this.activeProject.creationDate,
-      description: this.activeProject.description,
-      finishedAnnotation: this.activeProject.finishedAnnotation,
-      label: this.activeProject.label,
-      name: this.activeProject.name,
-      timestamp: this.activeProject.timestamp
+      id: this.activeProject!.id,
+      AIModelConfig: this.activeProject!.AIModelConfig,
+      cocoExport: this.activeProject!.cocoExport,
+      creationDate: this.activeProject!.creationDate,
+      description: this.activeProject!.description,
+      finishedAnnotation: this.activeProject!.finishedAnnotation,
+      label: this.activeProject!.label,
+      name: this.activeProject!.name,
+      timestamp: this.activeProject!.timestamp
     };
 
     // change changesPresent to false, so Labelix knows it can leave the page without a warning

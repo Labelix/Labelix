@@ -13,7 +13,7 @@ import {KeycloakProfile} from 'keycloak-js';
 @Injectable()
 export class UserFacade {
 
-  currentUser: KeycloakProfile;
+  currentUser: KeycloakProfile | undefined;
   users$: Observable<IUser[]>;
   isLoggedIn$: Subject<boolean>;
 
@@ -26,7 +26,7 @@ export class UserFacade {
     this.isLoggedIn$ = new Subject<boolean>();
   }
 
-  getIdentityClaims(): KeycloakProfile {
+  getIdentityClaims(): KeycloakProfile | undefined {
     return this.currentUser;
   }
 

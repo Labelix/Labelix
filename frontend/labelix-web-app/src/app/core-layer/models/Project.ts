@@ -4,7 +4,7 @@ import {IImage} from '../contracts/IImage';
 
 export class Project implements IProject {
   AIModelConfig: number[];
-  cocoExport: ICocoFormat;
+  cocoExport: ICocoFormat | undefined;
   creationDate: Date;
   description: string;
   finishedAnnotation: boolean;
@@ -12,7 +12,7 @@ export class Project implements IProject {
   images: IImage[];
   label: string;
   name: string;
-  timestamp: Date;
+  timestamp: Date | undefined;
 
   constructor() {
 

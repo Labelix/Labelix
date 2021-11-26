@@ -1,7 +1,8 @@
-import { KeycloakService } from 'keycloak-angular';
+import {KeycloakService} from 'keycloak-angular';
 
+/*
 export function initializer(keycloak: KeycloakService): () => Promise<any> {
-  return (): Promise<any> => {
+  return (): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         await keycloak.init({
@@ -25,4 +26,24 @@ export function initializer(keycloak: KeycloakService): () => Promise<any> {
       }
     });
   };
+}*/
+
+export function initializer(keycloak: KeycloakService) {
+  return () =>
+    keycloak.init({
+      config: {
+        url: 'http://localhost:8180/auth/',
+        realm: 'Labelix',
+        clientId: 'frontend',
+      },
+      enableBearerInterceptor: true,
+      bearerPrefix: 'Bearer',
+      bearerExcludedUrls: [],
+      loadUserProfileAtStartUp: false,
+      initOptions: {
+        onLoad: 'check-sso',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/silent-check-sso.html',
+      },
+    });
 }

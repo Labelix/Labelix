@@ -6,13 +6,13 @@ import {ICategory} from '../../contracts/ICategory';
 import {IProject} from '../../contracts/IProject';
 
 export interface ReducerAnnotationState {
-  currentAnnotatingImage: IRawImage;
+  currentAnnotatingImage: IRawImage | undefined;
   currentAnnotationMode: AnnotationMode;
   currentImageAnnotations: IImageAnnotation[];
-  activeLabel: ICategory;
+  activeLabel: ICategory | undefined;
   annotationCount: number;
-  activeAnnotation: IImageAnnotation;
-  activeProject: IProject;
+  activeAnnotation: IImageAnnotation | undefined;
+  activeProject: IProject | undefined;
 }
 
 export const initialAnnotationState: ReducerAnnotationState = {
@@ -76,7 +76,7 @@ export function annotationReducer(state = initialAnnotationState,
       const tmpImages: IImageAnnotation[] = [];
       state.currentImageAnnotations.forEach(value => tmpImages.push(value));
       tmpImages.forEach(value => {
-        if (value.image.id === state.currentAnnotatingImage.id
+        if (value.image.id === state.currentAnnotatingImage!.id
           && value.annotationMode === AnnotationMode.WHOLE_IMAGE) {
           tmpImages[tmpImages.indexOf(value)] = {
             categoryLabel: action.payload,
@@ -159,7 +159,7 @@ export function annotationReducer(state = initialAnnotationState,
 
     case ActionTypes.AddPositionToActivePolygonAnnotation: {
       const tmpPositions: number[] = [];
-      state.activeAnnotation.segmentations.forEach(value => tmpPositions.push(value));
+      state.activeAnnotation!.segmentations.forEach(value => tmpPositions.push(value));
       tmpPositions.push(action.payload.x);
       tmpPositions.push(action.payload.y);
       return {
@@ -169,15 +169,15 @@ export function annotationReducer(state = initialAnnotationState,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount,
         activeAnnotation: {
-          id: state.activeAnnotation.id,
+          id: state.activeAnnotation!.id,
           segmentations: tmpPositions,
-          categoryLabel: state.activeAnnotation.categoryLabel,
-          annotationMode: state.activeAnnotation.annotationMode,
-          boundingBox: state.activeAnnotation.boundingBox,
-          area: state.activeAnnotation.area,
-          image: state.activeAnnotation.image,
-          isCrowd: state.activeAnnotation.isCrowd,
-          isVisible: state.activeAnnotation.isVisible
+          categoryLabel: state.activeAnnotation!.categoryLabel,
+          annotationMode: state.activeAnnotation!.annotationMode,
+          boundingBox: state.activeAnnotation!.boundingBox,
+          area: state.activeAnnotation!.area,
+          image: state.activeAnnotation!.image,
+          isCrowd: state.activeAnnotation!.isCrowd,
+          isVisible: state.activeAnnotation!.isVisible
         },
         activeProject: state.activeProject
       };
@@ -222,7 +222,7 @@ export function annotationReducer(state = initialAnnotationState,
       });
 
       tmpAnnotations.push({
-        image: state.currentAnnotatingImage,
+        image: state.currentAnnotatingImage!,
         annotationMode: AnnotationMode.WHOLE_IMAGE,
         categoryLabel: action.payload,
         segmentations: [],
@@ -260,7 +260,7 @@ export function annotationReducer(state = initialAnnotationState,
         currentAnnotatingImage: state.currentAnnotatingImage,
         currentAnnotationMode: state.currentAnnotationMode,
         annotationCount: state.annotationCount + 1,
-        activeAnnotation: state.activeAnnotation.id === action.payload.id ? action.payload : state.activeAnnotation,
+        activeAnnotation: state.activeAnnotation!.id === action.payload.id ? action.payload : state.activeAnnotation,
         activeProject: state.activeProject
       };
     }
@@ -332,7 +332,7 @@ export function annotationReducer(state = initialAnnotationState,
       const tmpAnnotations: IImageAnnotation[] = [];
 
       state.currentImageAnnotations.forEach(value => {
-        if (value.categoryLabel.id === action.payload.id) {
+        if (value.categoryLabel!.id === action.payload.id) {
           tmpAnnotations.push({
             categoryLabel: action.payload,
             id: value.id,

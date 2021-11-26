@@ -8,6 +8,7 @@ export interface LabelCategoryState {
 }
 
 export const labelCategoryReducers: ActionReducerMap<LabelCategoryState> = {
+  // @ts-ignore
   labelCategory: labelCategoryReducer,
 };
 

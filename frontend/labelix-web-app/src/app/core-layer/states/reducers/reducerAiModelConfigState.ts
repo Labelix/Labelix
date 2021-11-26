@@ -80,7 +80,7 @@ export function aiModelConfigReducer(
 
       const config = configs.find(value => value.id === action.payload);
 
-      const index = configs.indexOf(config);
+      const index = configs.indexOf(config!);
 
       configs.splice(index, 1);
 

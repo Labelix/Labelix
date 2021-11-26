@@ -8,6 +8,7 @@ export interface ProjectImageUploadState {
   project: ReducerProjectImageUploadState;
 }
 export const projectImageUploadReducers: ActionReducerMap<ProjectImageUploadState> = {
+  // @ts-ignore
   project: projectImageUploadReducer,
 };
 

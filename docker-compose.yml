@@ -2,6 +2,7 @@ version: '3.1'
 
 services: 
     postgresdb:
+        container_name: postgresdb
         image: postgres
         restart: always
         environment:
@@ -54,6 +55,7 @@ services:
             - postgres-keycloak
 
     webapi:
+        container_name: webapi
         build:
             context: ./backend/Labelix-Backend
             dockerfile: ./Labelix.WebAPI/Dockerfile

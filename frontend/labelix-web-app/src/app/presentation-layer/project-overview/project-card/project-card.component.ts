@@ -13,6 +13,7 @@ import {UserFacade} from '../../../abstraction-layer/UserFacade';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
 import {ProjectEditDialogComponent} from '../project-edit-dialog/project-edit-dialog.component';
+import {ICocoFormat} from "../../../core-layer/contracts/cocoFormat/ICocoFormat";
 
 @Component({
   selector: 'app-project-card',
@@ -29,9 +30,9 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
   firstImage: IImage;
   countTries = 0;
 
-  numberOfImagesToUpload: number;
-  numberOfUploadedImages: number;
-  nameOfUploadingProject: string;
+  numberOfImagesToUpload: number | undefined;
+  numberOfUploadedImages: number | undefined;
+  nameOfUploadingProject: string | undefined;
 
   constructor(public router: Router,
               private annotationFacade: AnnotationFacade,
@@ -79,7 +80,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onProjectLoad(input) {
+  onProjectLoad(input: IProject) {
     this.annotationFacade.resetAnnotationState();
     this.rawImageFacade.clearRawImagesOnState();
 
@@ -117,7 +118,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/image-annotation/image-view']);
   }
 
-  setCurrentAnnotationImage(input) {
+  setCurrentAnnotationImage(input: IProject) {
     if (input.images.length > 0) {
       this.annotationFacade.changeCurrentAnnotationImage({
         id: input.images[0].id,
@@ -131,7 +132,7 @@ export class ProjectCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  setActiveProject(input, coco) {
+  setActiveProject(input: IProject, coco: ICocoFormat) {
     this.annotationFacade.replaceActiveProject({
       label: input.label,
       cocoExport: input.label !== '' && input.label !== null ? coco : undefined,

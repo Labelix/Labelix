@@ -5,9 +5,9 @@
     <mat-list-item
       *ngIf="item.categoryLabel !== undefined && item.image !== undefined && activeImage !== undefined && item.image.id === activeImage.id">
       <mat-icon mat-list-icon
-                [ngStyle]="{backgroundColor: item.categoryLabel.colorCode}">{{ getRightIcon(item.annotationMode) }}
+                [ngStyle]="{backgroundColor: item.categoryLabel!.colorCode}">{{ getRightIcon(item.annotationMode) }}
       </mat-icon>
-      <div mat-line>{{currentImageAnnotations.indexOf(item) + 1}}: {{item.categoryLabel.name}}</div>
+      <div mat-line>{{currentImageAnnotations.indexOf(item) + 1}}: {{item.categoryLabel!.name}}</div>
       <div *ngIf="item.isVisible === true && item.annotationMode !== 0">
         <button mat-icon-button>
           <mat-icon (click)="onChangeVisibility(item)">visibility_off</mat-icon>

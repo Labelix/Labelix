@@ -42,8 +42,8 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
 
   allProjects: IProject[] = [];
 
-  numberOfUploadedImages: number;
-  numberOfImagesToUpload: number;
+  numberOfUploadedImages: number | undefined;
+  numberOfImagesToUpload: number | undefined;
 
   constructor(public dialogRef: MatDialogRef<ProjectCreationDialogComponent>,
               private snackBar: MatSnackBar,
@@ -55,7 +55,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.changeRelation(window.innerWidth);
+    this.changeRelation();
     this.rawImageFacade.clearRawImagesOnState();
 
     this.aiModelConfigFacade.loadAllConfigsToState();
@@ -66,7 +66,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     this.subscription.add(this.aiModelConfigFacade.aiModelConfigs$.subscribe((value) => this.allAiConfigs = value));
     this.subscription.add(
       this.userFacade.users$.subscribe((value) => this.allUsers = value
-        .filter(user => user.keycloakId !== this.userFacade.getIdentityClaims().username))
+        .filter(user => user.keycloakId !== this.userFacade.getIdentityClaims()!.username))
     );
 
     this.subscription.add(this.dialogRef.afterClosed().subscribe(() => this.rawImageFacade.clearRawImagesOnState()));
@@ -85,7 +85,7 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
       const imageData: IImage[] = [];
 
       for (const i of this.images) {
-        imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, Name: i.name, Width: i.width, Height: i.height});
+        imageData.push({id: -1, Data: i.base64Url, format: '', imageId: -1, projectId: -1, Name: i.name, Width: i.width!, Height: i.height!});
       }
 
       const aiConfigIdList = this.selectedAiConfigs.map(config => config.id);
@@ -143,8 +143,8 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   filterUser(value: string) {
     if (value.length !== 0) {
       this.filteredUsers = Object
-        .assign([], this.allUsers)
-        .filter(item => item.keycloakId.toLowerCase().indexOf(value.toLowerCase()) > -1);
+        .assign([], this.allUsers
+        .filter(item => item.keycloakId.toLowerCase().indexOf(value.toLowerCase()) > -1));
     } else {
       this.filteredUsers = this.allUsers;
     }
@@ -153,8 +153,8 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
   filterConfig(value: string) {
     if (value.length !== 0) {
       this.filteredAiConfigs = Object
-        .assign([], this.allAiConfigs)
-        .filter(item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1);
+        .assign([], this.allAiConfigs
+        .filter(item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1));
     } else {
       this.filteredAiConfigs = this.allAiConfigs;
     }
@@ -226,11 +226,9 @@ export class ProjectCreationDialogComponent implements OnInit, OnDestroy {
     options.map(o => this.selectedAiConfigs.push(o.value));
   }
 
-  onResize(event) {
-    this.changeRelation(event.target.innerWidth);
-  }
+  changeRelation() {
+    let width = window.innerWidth;
 
-  private changeRelation(width) {
     if (width >= 3840) {
       this.breakpoint = 8;
     } else if (width >= 3000) {

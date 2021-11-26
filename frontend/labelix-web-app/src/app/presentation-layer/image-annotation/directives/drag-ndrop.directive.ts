@@ -13,7 +13,7 @@ export class DragNDropDirective {
   @Output() fileDropped = new EventEmitter();
 
   // Dragover listener
-  @HostListener('dragover', ['$event']) onDragOver(evt) {
+  @HostListener('dragover', ['$event']) onDragOver(evt: any) {
     evt.preventDefault();
     evt.stopPropagation();
 
@@ -21,7 +21,7 @@ export class DragNDropDirective {
   }
 
   // Dragleave listener
-  @HostListener('dragleave', ['$event']) public onDragLeave(evt) {
+  @HostListener('dragleave', ['$event']) public onDragLeave(evt: any) {
     evt.preventDefault();
     evt.stopPropagation();
 
@@ -29,7 +29,7 @@ export class DragNDropDirective {
   }
 
   // Drop listener
-  @HostListener('drop', ['$event']) public ondrop(evt) {
+  @HostListener('drop', ['$event']) public ondrop(evt: any) {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;
