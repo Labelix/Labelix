@@ -1,5 +1,5 @@
 {
-  "name": "labelix-update-test",
+  "name": "labelix-web-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

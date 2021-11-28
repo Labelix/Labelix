@@ -27,6 +27,7 @@ services:
             - labelixNetwork
             
     keycloak:
+        container_name: keycloak
         build:
             context: ./docker/keycloak
             dockerfile: ./Dockerfile
